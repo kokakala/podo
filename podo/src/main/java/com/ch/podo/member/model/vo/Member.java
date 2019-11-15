@@ -18,17 +18,16 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class Member {
 
-	private int id;
-	private String image;
-	private String email;
-	private String pwd;
-	private String nickName;
-	private String status;
-	private Date enrollDate;
-	private Date modifyDate;
-	private String googleId;
-	private String kakaoId;
-	private String autho;
-	private ArrayList<Integer> genre;
+
+	private String image;		// 프로필 사진 
+	private String email;		// 회원 ID
+	private String pwd;			// 비밀번호
+	private String nickName;	// 회원 닉네임
+	private String status;		// 탈퇴 여부 상태값
+	private Date enrollDate;	// 회원가입일
+	private Date modifyDate;	// 정보 수정일
+	private String googleId;	// 구글 API 로그인
+	private String kakaoId;		// 카카오 API 로그인
+
 	
 }
