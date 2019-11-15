@@ -6,10 +6,10 @@
 		<title>Home</title>
 	</head>
 	<body>
-		<h1>
-			Hello world!  
-		</h1>
-		asd
-		<P>  The time on the server is ${serverTime}. </P>
+		<form method="post" action="skFilm.do">
+			<input type="text" name="keyword">
+			<button type="submit">검색</button>
+		</form>
+		<a href="film.do">영화탭</a>
 	</body>
 </html>

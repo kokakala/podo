@@ -10,11 +10,13 @@
 	<typeAliases>
 		<typeAlias type="com.ch.podo.member.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.ch.podo.board.model.vo.Board" alias="Board"/>
+		<typeAlias type="com.ch.podo.film.model.vo.Film" alias="Film"/>
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml"/>
 		<mapper resource="mappers/board-mapper.xml"/>
+		<mapper resource="mappers/film-mapper.xml"/>
 	</mappers>
 	
 </configuration>

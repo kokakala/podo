@@ -1,5 +1,8 @@
 package com.ch.podo.ratingReview.model.dao;
 
-public class RatingReviewDao {
+import org.springframework.stereotype.Repository;
 
+@Repository("ratingReviewDao")
+public class RatingReviewDao {
+	
 }
