@@ -14,11 +14,13 @@ import lombok.ToString;
 
 public class DetailFilm {
 	
-	private int id;				// 영화 상세정보 번호
-	private String synobsys;	// 시놉시스
-	private String trivia;		// 트리비아
-	private String trailer;		// 예고편 링크
-	private String footage;		// 스틸 영상
-	private String status;		// 영화 정보상태
-	
+	private int id;						// 영화 상세 정보 번호
+	private int filmId;					// 영화 번호
+	private String titleKor;			// 영화 한글 제목
+	private String titleEng;			// 영화 영어 제목
+	private String director;			// 영화 감독
+	private String actor;				// 배우
+	private String trailer;				// 예고편 링크
+	private String synopsys;			// 시놉시스
+	private String trivia;				// 트리비아
 }

@@ -33,4 +33,21 @@ public class BoardDao {
 		
 	}
 	
+	
+	public int insertBoard(Board b) {
+		
+		return sqlSession.insert("boardMapper.insertBoard", b);
+		
+	}
+	
+	
+	public int updateCount(int id) {
+		return sqlSession.selectOne("boardMapper.updateCount", id);
+	}
+	
+	
+	public Board selectBoard(int id) {
+		return sqlSession.selectOne("boardMapper.selectBoard", id);
+	}
+	
 }

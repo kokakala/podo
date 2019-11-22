@@ -27,7 +27,20 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int insertBoard(Board b) {
-		return 0;
+		return boardDao.insertBoard(b);
+	}
+
+	@Override
+	public Board selectBoard(int id) {
+		
+		int result = boardDao.updateCount(id);
+		
+		if(result > 0) {
+			return boardDao.selectBoard(id);
+		}else {
+			return null;
+		}
+		
 	}
 	
 	

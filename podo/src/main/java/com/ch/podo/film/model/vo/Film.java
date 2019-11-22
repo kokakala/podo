@@ -17,9 +17,11 @@ public class Film {
 	private String titleKor;
 	private String titleEng;
 	private String director;
-	private int releaseYear;
+	private String releaseYear;
 	private String productionCountry;
 	private String productionStatus;
+	private int genreId;
 	private String genre;
+	private double avgStarRating;
 	
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="ratingFilmMapper">
+	
+	<resultMap type="RatingFilm" id="ratingResultSet">
+		<id property="id" column="id"/>
+		<result property="star" column="star"/>
+		<result property="saw" column="saw"/>
+		<result property="userId" column="member_id"/>
+		<result property="filmId" column="film_id"/>
+	</resultMap>
+	
+	<insert id="insertRateFilm">
+		insert into tb_rating_film
+		values (seq_rating_film_id.nextval, #{star}, 'Y', #{userId}, #{filmId})
+	</insert>
+	
+	<update id="updateRateFilm">
+		update tb_rating_film
+		set star = #{star}
+		where member_id = #{userId}
+			and film_id = #{filmId}
+	</update>
+	
+	<delete id="deleteRateFilm">
+		delete from tb_rating_film
+		where member_id = #{userId}
+			and film_id = #{filmId}
+	</delete>
+	
+	<!-- 해당 영화 번호를 이미 평가했는지 조회 -->
+	<select id="selectRatingFilm" resultMap="ratingResultSet">
+		select *
+		from tb_rating_film
+		where member_id = #{userId}
+			and film_id = #{filmId}
+	</select>
+	
+	<!-- 로그인한 사용자에 의해 평가된 영화 목록 조회 -->
+	<select id="selectRatedFilm" resultMap="ratingResultSet">
+		select *
+		from tb_rating_film
+		where member_id = #{id}
+	</select>
+	
+</mapper>

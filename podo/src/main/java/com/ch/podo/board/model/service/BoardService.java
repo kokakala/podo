@@ -16,5 +16,8 @@ public interface BoardService {
 	// 게시판 작성
 	int insertBoard(Board b);
 	
+	// 게시판 상세 조회용
+	Board selectBoard(int id);
+	
 	
 }

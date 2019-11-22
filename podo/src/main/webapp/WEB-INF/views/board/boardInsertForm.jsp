@@ -8,6 +8,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-		<h1 align="center">레이팅리뷰상세페이지</h1>
+
+	<jsp:include page="../common/header.jsp"/>
+	
+	
+	<h1>자유게시판 작성</h1>
+	<br>
+	
+	
+	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

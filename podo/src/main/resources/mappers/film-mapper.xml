@@ -14,23 +14,134 @@
 		<result property="genre" column="name"/>
 	</resultMap>
 	
+	<resultMap type="Film" id="recommendFilm">
+		<id property="id" column="film_id"/>
+		<result property="titleKor" column="title_kor"/>
+		<result property="avgStarRating" column="avg_star"/>
+		<result property="releaseYear" column="release_year"/>
+		<result property="genreId" column="genre_id"/>
+		<result property="genre" column="name"/>
+	</resultMap>
+	
+	<select id="getListCount" resultType="_int">
+		select count(*)
+		from tb_film
+	</select>
+	
+	<select id="selectKeywordFilmListCount" resultType="_int">
+		select count(*)
+		from tb_film f
+		join tb_genre g on (f.genre_id = g.id)
+		where title_kor like '%'||#{keyword}||'%'
+		   or title_eng like '%'||#{keyword}||'%'
+	</select>
+	
 	<select id="selectKeywordFilmList" resultMap="filmResultSet">
 		select f.*, g.name
 		from tb_film f
-		join tb_genre g
-		on (f.genre_id = g.id)
+		join tb_genre g on (f.genre_id = g.id)
 		where title_kor like '%'||#{keyword}||'%'
-		   or title_eng like '%' ||#{keyword}||'%'
+		   or title_eng like '%'||#{keyword}||'%'
 	</select>
 	
 	<select id="selectFilterFilmList" resultMap="filmResultSet">
 		select f.*, g.name
 		from tb_film f
-		join tb_genre g
-		on (f.genre_id = g.id)
-		where release_year = #{ releaseYear }
-		  and production_country = #{ productionCountry }
-		  and f.genre_id = #{ genre }
+		join tb_genre g on (f.genre_id = g.id)
+		where 1 = 1
+		<if test='releaseYear != ""'>
+			and release_year = #{ releaseYear }
+		</if>
+		<if test='productionCountry != ""'>
+			and production_country = #{ productionCountry }
+		</if>
+		<if test='genre != ""'>
+			and f.genre_id = #{ genre }
+		</if>
+	</select>
+	
+	<select id="selectFilterFilmMap" resultMap="filmResultSet">
+		select f.*, g.name, l.user_id
+		from tb_film f
+		join tb_genre g on (f.genre_id = g.id)
+    join tb_like l on (l.target_id = f.id)
+		where user_id = #{ mid }
+		<if test='film.releaseYear != ""'>
+			and release_year = #{ film.releaseYear }
+		</if>
+		<if test='film.productionCountry != ""'>
+			and production_country = #{ film.productionCountry }
+		</if>
+		<if test='film.genre != ""'>
+			and f.genre_id = #{ film.genre }
+		</if>
+	</select>
+	
+	<select id="selectAllGenreList" resultType="Genre">
+		select *
+		from tb_genre
+	</select>
+	
+	<select id="selectLikedFilmCount" resultType="_int">
+		select count(*)
+		from tb_film f
+		join tb_like l on (f.id = target_id)
+		where user_id = #{id}
+			and type = 1
+	</select>
+	
+	<select id="selectLikedFilmList" resultMap="filmResultSet">
+		select f.*, g.name
+		from tb_film f
+		join tb_like l on (f.id = target_id)
+		join tb_genre g on (f.genre_id = g.id)
+		where user_id = #{id}
+		  and type = 1
+    order by l.id asc
+	</select>
+	
+	<select id="selectPreferredGenreFilmList" resultMap="recommendFilm">
+		<![CDATA[
+			select film_id, title_kor, avg_star, release_year, genre_id, name
+			from (select * from vi_film_avg_star) a
+			where a.genre_id in (select r.genre
+			                    from (select genre, prefer, row_number() over (order by prefer desc) as rank
+			                          from (select g.id as genre, count(*) as prefer
+			                                from tb_like l
+			                                join tb_film f on (f.id = l.target_id)
+			                                join tb_genre g on (f.genre_id = g.id)
+			                                where user_id = #{id}
+			                                group by g.id)) r
+			                    where r.rank = 1)
+			  and rownum <= 5
+			union
+			select film_id, title_kor, avg_star, release_year, genre_id, name
+			from (select * from vi_film_avg_star) a
+			where a.genre_id in (select r.genre
+			                    from (select genre, prefer, row_number() over (order by prefer desc) as rank
+			                          from (select g.id as genre, count(*) as prefer
+			                                from tb_like l
+			                                join tb_film f on (f.id = l.target_id)
+			                                join tb_genre g on (f.genre_id = g.id)
+			                                where user_id = #{id}
+			                                group by g.id)) r
+			                    where r.rank = 2)
+			  and rownum <= 5
+			union
+			select film_id, title_kor, avg_star, release_year, genre_id, name
+			from (select * from vi_film_avg_star) a
+			where a.genre_id in (select r.genre
+			                    from (select genre, prefer, row_number() over (order by prefer desc) as rank
+			                          from (select g.id as genre, count(*) as prefer
+			                                from tb_like l
+			                                join tb_film f on (f.id = l.target_id)
+			                                join tb_genre g on (f.genre_id = g.id)
+			                                where user_id = #{id}
+			                                group by g.id)) r
+			                    where r.rank = 3)
+			  and rownum <= 5
+			order by genre_id asc, avg_star desc
+		]]>
 	</select>
 	
 </mapper>
