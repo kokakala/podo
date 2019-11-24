@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ch.podo.ratingReview.model.dao.RatingReviewDao;
 import com.ch.podo.ratingReview.model.vo.RatingReview;
-import com.ch.podo.review.model.vo.Review;
+
 
 @Service("ratingReviewService")
 public class RatingReviewServiceImpl implements RatingReviewService {
@@ -15,28 +15,21 @@ public class RatingReviewServiceImpl implements RatingReviewService {
 	@Autowired
 	private RatingReviewDao ratingReviewDao;
 
-	@Override
-	public RatingReview selectRatingReviewDetailView(int id) {
-
-		return ratingReviewDao.selectRatingReviewDetailView(id);
-	}
-
-	@Override
-	public RatingReview selectUpdateReview(int id) {
-		return ratingReviewDao.selectRatingReviewDetailView(id);
-	}
-
-	@Override
-	public int reviewUpdate(RatingReview rr) {
-		
-		return ratingReviewDao.reviewUpdate(rr);
-	}
-
-
-
-
-
-
-
-
+	
+	/*
+	 * @Override public RatingReview selectRatingReviewDetailView(int id) {
+	 * 
+	 * return ratingReviewDao.selectRatingReviewDetailView(id); }
+	 * 
+	 * @Override public RatingReview selectUpdateReview(int id) { return
+	 * ratingReviewDao.selectRatingReviewDetailView(id); }
+	 * 
+	 * @Override public int reviewUpdate(RatingReview rr) {
+	 * 
+	 * return ratingReviewDao.reviewUpdate(rr);
+	 * 
+	 * 
+	 * }
+	 */
+	  
 }

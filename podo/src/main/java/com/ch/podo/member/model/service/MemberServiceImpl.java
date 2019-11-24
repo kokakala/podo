@@ -1,8 +1,12 @@
 package com.ch.podo.member.model.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.member.model.dao.MemberDao;
 import com.ch.podo.member.model.vo.Member;
 
@@ -12,6 +16,7 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private MemberDao memberDao;
 	
+	@Transactional(readOnly = false)
 	@Override
 	public int insertMember(Member mem) {
 		return memberDao.insertMember(mem);
@@ -41,6 +46,26 @@ public class MemberServiceImpl implements MemberService {
 	public int deleteMember(String id) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public int getMemberListCount() {
+		return memberDao.getMemberListCount();
+	}
+
+	@Override
+	public ArrayList<Member> selectMemberList(PageInfo pi) {
+		return memberDao.selectMemberList(pi);
+	}
+
+	@Override
+	public int getBlackListCount() {
+		return memberDao.getBlackListCount();
+	}
+
+	@Override
+	public ArrayList<Member> selectBlackList(PageInfo pi) {
+		return memberDao.selectBlackList(pi);
 	}
 
 

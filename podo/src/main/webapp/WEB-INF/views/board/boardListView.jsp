@@ -23,16 +23,13 @@
 	
 	<div class="blist-header">
 		<h1 align="center" style="color: blueviolet;">자유게시판</h1>
-		<!-- <img src="resources/common/img/hhh.png" style="width: 50%; height: 50%;"/> -->
 	</div>
 	
 	<br>
 	
 	<h3 align="center">
 		총 게시글 개수 : ${ pi.listCount } 페이지 : ${ pi.currentPage } / ${ pi.maxPage }
-		<c:if test="${ !empty loginUser }">
-			<button onclick="location.href='binsertForm.do';">작성하기</button>
-		</c:if>
+		<button onclick="location.href='binsertForm.do';">작성하기</button>
 	</h3>
 	
 	<br>
@@ -50,7 +47,7 @@
 				<td>${ b.id }</td>
 				<td>
 					<c:if test="${ !empty loginUser }">
-						<a href="bderail.do?id=${ b.id }">${ b.title }</a>
+						<a href="bdetail.do?id=${ b.id }">${ b.title }</a>
 					</c:if>
 					<c:if test="${ empty loginUser }">
 						${ b.title }

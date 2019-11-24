@@ -11,8 +11,9 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.ch.podo">
+	<logger name="com.ch.podo" additivity="false">
 		<level value="info" />
+		<appender-ref ref="console"/>
 	</logger>
 	
 	<!-- 3rdparty Loggers -->

@@ -15,6 +15,11 @@
 		<result property="googleId" column="google_id"/>
 		<result property="kakaoId" column="kakao_id"/>
 		<result property="autho" column="autho"/>
+		<result property="blackName" column="blackName"/>
+		<result property="blackDate" column="blackDate"/>
+		<result property="block" column="block"/>
+		<result property="reportCount" column="report_count"/>
+		
 	</resultMap>
 	
 	<insert id="insertMember">
@@ -52,5 +57,50 @@
 		</if>
 		where id=#{id} and status='Y'
 	</update>
+	
+	
+	
+	
+	
+	<select id="getMemberListCount" resultType="_int">
+		select count(*)
+		from tb_member
+	</select>
+	
+	<select id="selectMemberList" resultMap="memberResultSet">
+		SELECT A.*,
+		        (SELECT CASE WHEN COUNT(B.target_id) >= 1
+		                     THEN 'Y'
+		                     ELSE 'N'
+		                     END
+		          FROM tb_black_member B
+		         WHERE B.target_id = A.id) AS block,
+		        (SELECT COUNT(C.reported_id)
+		          FROM tb_report C
+		         WHERE C.reported_id = A.id) AS report_count
+		  FROM tb_member A
+		 ORDER BY A.id
+	</select>
+	
+	
+	<select id="getBlackListCount" resultType="_int">
+		select count(*)
+		from tb_member m
+		join tb_black_member b on (m.id = b.target_id)
+		where m.status='Y'
+		
+	</select>
+	
+	<select id="selectBlackList" resultMap="memberResultSet">
+		select b.id, email, nickname as blackName, blackDate
+		from tb_member m
+		join tb_black_member b on (m.id = b.target_id)
+		where m.id = b.target_id and m.status='Y'
+		order by blackDate
+	</select>
+	
+	
+	
+	
 	
 </mapper>

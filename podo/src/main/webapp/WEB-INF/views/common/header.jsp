@@ -7,29 +7,31 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	
-	<link rel="icon" href="resources/bootstrap/img/Fevicon.png" type="image/png">
+	<!-- css -->
+	<link rel="icon" href="resources/bootstrap/img/favicon.png" type="image/png">
 	<link rel="stylesheet" href="resources/bootstrap/vendors/bootstrap/bootstrap.min.css">
 	<link rel="stylesheet" href="resources/bootstrap/vendors/fontawesome/css/all.min.css">
 	<link rel="stylesheet" href="resources/bootstrap/vendors/themify-icons/themify-icons.css">
 	<link rel="stylesheet" href="resources/bootstrap/vendors/linericon/style.css">
 	<link rel="stylesheet" href="resources/bootstrap/vendors/owl-carousel/owl.theme.default.min.css">
 	<link rel="stylesheet" href="resources/bootstrap/vendors/owl-carousel/owl.carousel.min.css">
+	<link rel="stylesheet" href="resources/bootstrap/vendors/nice-select/nice-select.css">
 	<link rel="stylesheet" href="resources/bootstrap/css/style.css">
 	
+	<!-- 폰트 -->
+	<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:700&display=swap" rel="stylesheet">
+	
+	<!-- js -->
 	<script src="resources/bootstrap/vendors/jquery/jquery-3.2.1.min.js"></script>
 	<script src="resources/bootstrap/vendors/bootstrap/bootstrap.bundle.min.js"></script>
-	<script src="resources/bootstrap/vendors/owl-carousel/owl.carousel.min.js"></script>
-	<script src="resources/bootstrap/js/jquery.ajaxchimp.min.js"></script>
-	<script src="resources/bootstrap/js/mail-script.js"></script>
-	<script src="resources/bootstrap/js/main.js"></script>
 	
 	<style>
 		
-		.search-form{
+		.search-form {
 			display: inline-block;
 			text-align: center;
-		}
 		
+		}
 	</style>
 
 </head>
@@ -40,18 +42,17 @@
 				<div class="container box_1620">
 	      
 					<!-- Brand and toggle get grouped for better mobile display -->
-					<a class="navbar-brand logo_h" href="resources/bootstrap/index.html">
-						<img src="img/logo.png" alt="">
+					<a class="navbar-brand logo_h" href="home.do">
+						<img src="resources/bootstrap/img/logo/logo-transparent-text-lg.png" alt="" style="width: 80px; height: 80px; object-fit: cover;">
 					</a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-				
+					
 					<div class="navbar-collapse offset collapse" id="navbarSupportedContent">
 						<ul class="nav navbar-nav menu_nav justify-content-center">
-							<li class="nav-item"><a class="nav-link" href="home.do">메인</a></li> 
 							<li class="nav-item"><a class="nav-link" href="film.do">영화</a></li>
 							<li class="nav-item"><a class="nav-link" href="reviewList.do">리뷰</a>
 							<li class="nav-item"><a class="nav-link" href="rec.do">추천</a>
@@ -66,12 +67,10 @@
 						</ul>
 					</div>
 					<form method="post" action="skFilm.do" class="form-inline my-4 my-lg-0">
-						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="keyword">
+						<input class="form-control mr-sm-2" type="search" placeholder="키워드를 입력해주세요" aria-label="Search" name="keyword">
 						<button class="button button--active my-2 my-sm-0" type="submit">검색</button>
 					</form>
 				</div>
-				
-				
 			</nav>
 		</div>
 	</header>

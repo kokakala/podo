@@ -6,8 +6,7 @@
   box-sizing: border-box;
   clear: both;
   cursor: pointer;
-  display: block;
-  float: left;
+  display: inline-block;
   font-family: inherit;
   font-size: 14px;
   font-weight: normal;
@@ -25,7 +24,8 @@
       -ms-user-select: none;
           user-select: none;
   white-space: nowrap;
-  width: auto; }
+  width: 140px;
+  margin-left: 25px; }
   .nice-select:hover {
     border-color: #dbdbdb; }
   .nice-select:active, .nice-select.open, .nice-select:focus {
@@ -55,6 +55,7 @@
         -ms-transform: rotate(-135deg);
             transform: rotate(-135deg); }
   .nice-select.open .list {
+  	width: 140px;
     opacity: 1;
     pointer-events: auto;
     -webkit-transform: scale(1) translateY(0);
@@ -91,7 +92,7 @@
     border-radius: 5px;
     box-shadow: 0 0 0 1px rgba(68, 68, 68, 0.11);
     box-sizing: border-box;
-    margin-top: 4px;
+    /* margin-top: 4px; */
     opacity: 0;
     overflow: hidden;
     padding: 0;

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ch.podo.detailFilm.model.vo.DetailFilm;
 import com.ch.podo.image.model.vo.Image;
-import com.ch.podo.review.model.vo.Review;
+import com.ch.podo.review.model.dto.Review;
 
 @Repository("dfDao")
 public class DetailFilmDao {
@@ -21,7 +21,6 @@ public class DetailFilmDao {
 		
 		DetailFilm df = sqlSession.selectOne("detailFilmmapper.selectDetailFilm", filmId);
 		
-		System.out.println("df : " + df);
 		return df;
 	}
 	
@@ -59,5 +58,26 @@ public class DetailFilmDao {
 		return sqlSession.insert("detailFilmmapper.filmImageInsert", map);
 	}
 	
-	
+	// 상세정보 롤백
+	public int detailFilmRollback(int filmId) {
+		
+		return sqlSession.update("detailFilmmapper.updateDetailFilm", filmId);
+		
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

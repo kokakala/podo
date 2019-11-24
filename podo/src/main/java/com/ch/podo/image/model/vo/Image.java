@@ -19,7 +19,4 @@ public class Image {
 	private String changeName;		// 수정된 파일명
 	private int type;				// 타입(자유게시판, 공지사항)이런식
 	
-	
-	
-
 }

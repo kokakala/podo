@@ -128,7 +128,7 @@
 		<br>
 		
 		<h3 align="center">
-			<a href="reviewUpdateView.do?id=${rr.id}">수정하기</a>
+			<a href="reviewUpdateView.do?id=${r.id}">수정하기</a>
 		</h3>
 	  <section class="blog-post-area section-margin">
     <div class="container">
@@ -137,16 +137,16 @@
             <div class="main_blog_details">
                 <img class="img-fluid" src="resources/detailFilmImage/defaultImg.png" alt="">
             <%-- 이게원래써야함    <img class="img-fluid" src="resources/detailFilmImage/ ${ rr.posterImage }" alt=""> --%>
-               <h4 align="center">${rr.titleKor }</h4>
+               <h4 align="center">${r.titleKor }</h4>
                 <div class="user_details">
                     <div class="float-left">
                       <div class="media">
                       <div class="media-body">
-                        <h5>${rr.nickName }</h5>
-                        <p>${ rr.createDate }에 작성</p>
+                        <h5>${rr.nickName }님</h5>
+                        <p>${ r.createDate }에 작성</p>
                       </div>
                       <div class="d-flex">
-                        <img width="42" height="42" src="resources/memberProfileImage/${ rr.userImage }" alt="">
+                        <img width="42" height="42" src="resources/memberProfileImage/${ r.userImage }" alt="">
                       </div>
                     </div>
                   	</div>
@@ -169,7 +169,7 @@
 							</span>
 							<output for="star-input"><b style="display: none;"></b></output>
 						</span>
-                        <p>${rr.star }점</p>
+                        <p>${r.star }점</p>
                         
                       </div>
                       <div class="d-flex">
@@ -197,14 +197,14 @@
        data: {
            labels: ["음악", "영상", "연기", "대중성", "각본","연출"],
            datasets: [{
-               label: ["${ rr.titleKor }"], 
+               label: ["${ r.titleKor }"], 
             backgroundColor: "rgb(165,102,255)",
             pointBackground:"rgba(179,181,198,1)",
             pointBorderColor:"#fff",
             pointBorderBackgroundColor:"#fff",
 
                data: [
-            	   ${rr.ratingSound},${rr.ratingVisual},${rr.ratingActing},${rr.ratingPop},${rr.ratingScript},${rr.ratingDirect}
+            	   ${r.ratingSound},${r.ratingVisual},${r.ratingActing},${r.ratingPop},${r.ratingScript},${r.ratingDirect}
             	   ]
     
            }]
@@ -239,38 +239,38 @@
       <table align="center" id="vv">
          <tr>
             <td>영화제목</td>
-            <td><input type="text" name="title" id="vtitle"  value="${ rr.titleKor }"  readonly></td>
+            <td><input type="text" name="title" id="vtitle"  value="${ r.titleKor }"  readonly></td>
          </tr>
          <tr>
             <td>음악</td>
-            <td><input type="text" name="ratingSound" class="insertRating" id="ratingSound" value="${rr.ratingSound }" readonly></td>
+            <td><input type="text" name="ratingSound" class="insertRating" id="ratingSound" value="${r.ratingSound }" readonly></td>
          </tr>
          <tr>   
             <td>영상</td>
-            <td><input type="text" name="ratingVisual" class="insertRating" id="ratingVisual" value="${rr.ratingVisual }" readonly></td>
+            <td><input type="text" name="ratingVisual" class="insertRating" id="ratingVisual" value="${r.ratingVisual }" readonly></td>
          </tr>
          <tr>
             <td>연기</td>
-            <td><input type="text" name="ratingActing" class="insertRating" id="ratingActing" value="${rr.ratingActing }" readonly></td>
+            <td><input type="text" name="ratingActing" class="insertRating" id="ratingActing" value="${r.ratingActing }" readonly></td>
          </tr>
          <tr>
             <td>대중성</td>
-            <td><input type="text" name="ratingPop" class="insertRating" id="ratingPop" value="${rr.ratingPop }" readonly></td>
+            <td><input type="text" name="ratingPop" class="insertRating" id="ratingPop" value="${r.ratingPop }" readonly></td>
          </tr>
          <tr>
             <td>각본</td>
-            <td><input type="text" name="ratingScript" class="insertRating" id="ratingScript" value="${rr.ratingScript }" readonly></td>
+            <td><input type="text" name="ratingScript" class="insertRating" id="ratingScript" value="${r.ratingScript }" readonly></td>
          </tr>
          <tr>
             <td>연출</td>
-            <td><input type="text" name="ratingDirect" class="insertRating" id="ratingDirect" value="${rr.ratingDirect }" readonly></td>
+            <td><input type="text" name="ratingDirect" class="insertRating" id="ratingDirect" value="${r.ratingDirect }" readonly></td>
          </tr>
          
 
       </table>
    </form>
    </div>
-                <p>${rr.content }</p>
+                <p>${r.content }</p>
      
 
               </div>

@@ -13,6 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="spoilerCheck" column="spoiler_check"/>
 		<result property="status" column="STATUS"/>
 	</resultMap>
+	
 	<resultMap id="reviewListSet" type="Review">
 		<id property="id" column="id"/>
 		<result property="userImage" column="image"/>
@@ -28,15 +29,63 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="status" column="status"/>
 		<result property="modifyDate" column="MODIFY_DATE"/>
 	 	<result property="createDate" column="CREATE_DATE"/>
+	 	<result property="filmId" column="FILM_ID"/>
+	 	<result property="memberId" column="MEMBER_ID"/>
+	 	<result property="posterImage" column="change_name"/>
+	</resultMap>
+	
+	
+	<resultMap id="ratingReviewSet" type="Review">
+		<id property="ratingReviewId" column="id"/>
+		<result property="ratingSound" column="RATING_SOUND"/>
+		<result property="ratingVisual" column="RATING_VISUAL"/>
+		<result property="ratingActing" column="RATING_ACTING"/>
+		<result property="ratingPop" column="RATING_POP"/>
+		<result property="ratingScript" column="RATING_SCRIPT"/>
+		<result property="ratingDirect" column="RATING_DIRECT"/>
+		<result property="titleKor" column="TITLE_KOR"/>
+	 	<result property="userImage" column="IMAGE"/>
+	 	<result property="modifyDate" column="MODIFY_DATE"/>
+	 	<result property="createDate" column="CREATE_DATE"/>
+	 	<result property="star" column="star"/>
+	 	<result property="content" column="content"/>
+	 	
+		<!-- <result property="posterImage" column=""/> 요기도 컬럼 수정된거써야함 -->
+	</resultMap>
+
+	<resultMap type="Film" id="filmResultSet">
+		<id property="id" column="id"/>
+		<result property="titleKor" column="title_kor"/>
+		<result property="titleEng" column="title_eng"/>
+		<result property="director" column="director"/>
+		<result property="releaseYear" column="release_year"/>
+		<result property="productionCountry" column="production_country"/>
+		<result property="productionStatus" column="production_status"/>
+		<result property="genre" column="name"/>
+		<result property="poster" column="change_name"/>
+	</resultMap>
+	
+	<resultMap type="Member" id="memberResultSet">
+		<id property="id" column="id"/>
+		<result property="image" column="image"/>
+		<result property="email" column="email"/>
+		<result property="pwd" column="pwd"/>
+		<result property="nickName" column="nickname"/>
+		<result property="status" column="status"/>
+		<result property="enrollDate" column="enroll_date"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="googleId" column="google_id"/>
+		<result property="kakaoId" column="kakao_id"/>
+		<result property="autho" column="autho"/>
 	</resultMap>
 	
 	<select id="selectReviewList" resultMap="reviewListSet">	
-		select *
+        select *
 		from tb_review r
 		left join tb_film f on(r.film_id = f.id)
         left join tb_member m on(r.member_id = m.id)
-		left join tb_detail_film df on(r.film_id = df.id)<!-- 수정된거 did로 바꿔야함 봉운이 did용 -->
-		left join tb_film_image fi on(dfilm_id = fi.id)
+		left join tb_detail_film df on(r.film_id = df.id)
+		left join tb_film_image fi on(df.film_id = fi.id)
 		left join tb_genre g on(genre_id = g.id)
 		where r.status='Y'
         order by r.id desc
@@ -44,7 +93,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<insert id="reviewWrite">
 		INSERT INTO TB_REVIEW
-		VALUES(SEQ_REVIEW_ID.NEXTVAL, #{content}, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, sysdate , sysdate , #{id},#{id})
+		VALUES(SEQ_REVIEW_ID.NEXTVAL, #{content}, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, sysdate , sysdate , #{filmId},#{memberId})
 	</insert>
 	
 	<update id="deleteReview">
@@ -52,5 +101,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	set status='N'
 	where id=#{id}
 	</update>
+	
+	<!-- 영화제목 장르 가져오는거 -->
+	<select id="selectFilm" resultMap="filmResultSet">
+        SELECT *
+		FROM TB_FILM f
+        left join tb_genre g on( f.genre_id = g.id)
+        where f.id=#{id}
+	</select>
+	
+	<!-- 멤버정보 가져오는거 -->
+	<select id="selectMember" resultMap="memberResultSet">
+		select *
+        from tb_member
+        where id=#{id}
+	</select>
+	
+	<!-- 합친부분 -->
+	<select id="selectRatingReviewDetailView" resultMap="ratingReviewSet">
+		select *
+		from  TB_REVIEW r
+		left join tb_rating_review rr on (rr.review_id = r.id)
+		left join TB_FILM f on (r.film_id = f.id)
+        left join tb_member m on(r.member_id = m.id)
+        left join tb_rating_film rf on(r.film_id=rf.id)
+        where r.id=#{id}
+	</select>
 
+	<update id="reviewUpdate">
+		update tb_rating_review
+		set rating_Sound=#{ratingSound},rating_Visual=#{ratingVisual},rating_Acting=#{ratingActing},rating_Pop=#{ratingPop},rating_Script=#{ratingScript},rating_Direct=#{ratingDirect}
+		where id=#{id}
+	</update>
 </mapper>

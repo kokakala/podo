@@ -12,6 +12,7 @@
 		<result property="productionCountry" column="production_country"/>
 		<result property="productionStatus" column="production_status"/>
 		<result property="genre" column="name"/>
+		<result property="poster" column="change_name"/>
 	</resultMap>
 	
 	<resultMap type="Film" id="recommendFilm">
@@ -21,6 +22,7 @@
 		<result property="releaseYear" column="release_year"/>
 		<result property="genreId" column="genre_id"/>
 		<result property="genre" column="name"/>
+		<result property="poster" column="change_name"/>
 	</resultMap>
 	
 	<select id="getListCount" resultType="_int">
@@ -37,26 +39,48 @@
 	</select>
 	
 	<select id="selectKeywordFilmList" resultMap="filmResultSet">
-		select f.*, g.name
+		select f.*, g.name, fi.change_name
 		from tb_film f
 		join tb_genre g on (f.genre_id = g.id)
+		join tb_detail_film df on (df.film_id = f.id)
+		join tb_film_image fi on (df.id = fi.dfilm_id)
 		where title_kor like '%'||#{keyword}||'%'
 		   or title_eng like '%'||#{keyword}||'%'
 	</select>
 	
-	<select id="selectFilterFilmList" resultMap="filmResultSet">
-		select f.*, g.name
+	<select id="selectFilterFilmListCount" resultType="_int">
+		select count(*)
 		from tb_film f
 		join tb_genre g on (f.genre_id = g.id)
+		join tb_detail_film df on (df.film_id = f.id)
+		join tb_film_image fi on (df.id = fi.dfilm_id)
 		where 1 = 1
-		<if test='releaseYear != ""'>
+		<if test='releaseYear != "all" and releaseYear != null'>
 			and release_year = #{ releaseYear }
 		</if>
-		<if test='productionCountry != ""'>
+		<if test='productionCountry != "all" and releaseYear != null'>
 			and production_country = #{ productionCountry }
 		</if>
-		<if test='genre != ""'>
-			and f.genre_id = #{ genre }
+		<if test='genreId != "0" and releaseYear != null'>
+			and f.genre_id = #{ genreId }
+		</if>
+	</select>
+	
+	<select id="selectFilterFilmList" resultMap="filmResultSet">
+		select f.*, g.name, fi.change_name
+		from tb_film f
+		join tb_genre g on (f.genre_id = g.id)
+		join tb_detail_film df on (df.film_id = f.id)
+		join tb_film_image fi on (df.id = fi.dfilm_id)
+		where 1 = 1
+		<if test='releaseYear != "all" and releaseYear != null'>
+			and release_year = #{ releaseYear }
+		</if>
+		<if test='productionCountry != "all" and releaseYear != null'>
+			and production_country = #{ productionCountry }
+		</if>
+		<if test='genreId != "0" and releaseYear != null'>
+			and f.genre_id = #{ genreId }
 		</if>
 	</select>
 	
@@ -66,20 +90,47 @@
 		join tb_genre g on (f.genre_id = g.id)
     join tb_like l on (l.target_id = f.id)
 		where user_id = #{ mid }
-		<if test='film.releaseYear != ""'>
+		<if test='film.releaseYear != "all" and film.releaseYear != null'>
 			and release_year = #{ film.releaseYear }
 		</if>
-		<if test='film.productionCountry != ""'>
+		<if test='film.productionCountry != "all" and film.productionCountry != null'>
 			and production_country = #{ film.productionCountry }
 		</if>
-		<if test='film.genre != ""'>
-			and f.genre_id = #{ film.genre }
+		<if test='film.genreId != "0" and film.genreId != null'>
+			and f.genre_id = #{ film.genreId }
 		</if>
 	</select>
 	
 	<select id="selectAllGenreList" resultType="Genre">
+		select g.*
+		from (select distinct genre_id
+		      from tb_film) f
+		join tb_genre g on (g.id = f.genre_id)
+		order by genre_id asc
+	</select>
+	
+	<select id="getFilmListCount" resultType="_int">
+		select count(*)
+		from tb_film
+	</select>
+	
+	<select id="selectFilmList" resultMap="filmResultSet">
 		select *
-		from tb_genre
+		from tb_film
+		order by id
+	</select>
+	
+	<insert id="insertFilm">
+		insert into tb_film
+		values(seq_id.nextval, #{title_kor}, #{title_eng}, #{director}, 
+			   #{release_year}, #{production_country}, #{production_status}, #{genre_id})
+	</insert>
+	
+
+	<select id="selectFilm" resultMap="filmResultSet">
+		select * 
+		from tb_film
+		where id=#{id}
 	</select>
 	
 	<select id="selectLikedFilmCount" resultType="_int">
@@ -102,7 +153,7 @@
 	
 	<select id="selectPreferredGenreFilmList" resultMap="recommendFilm">
 		<![CDATA[
-			select film_id, title_kor, avg_star, release_year, genre_id, name
+			select film_id, title_kor, avg_star, release_year, genre_id, name, change_name
 			from (select * from vi_film_avg_star) a
 			where a.genre_id in (select r.genre
 			                    from (select genre, prefer, row_number() over (order by prefer desc) as rank
@@ -115,7 +166,7 @@
 			                    where r.rank = 1)
 			  and rownum <= 5
 			union
-			select film_id, title_kor, avg_star, release_year, genre_id, name
+			select film_id, title_kor, avg_star, release_year, genre_id, name, change_name
 			from (select * from vi_film_avg_star) a
 			where a.genre_id in (select r.genre
 			                    from (select genre, prefer, row_number() over (order by prefer desc) as rank
@@ -128,7 +179,7 @@
 			                    where r.rank = 2)
 			  and rownum <= 5
 			union
-			select film_id, title_kor, avg_star, release_year, genre_id, name
+			select film_id, title_kor, avg_star, release_year, genre_id, name, change_name
 			from (select * from vi_film_avg_star) a
 			where a.genre_id in (select r.genre
 			                    from (select genre, prefer, row_number() over (order by prefer desc) as rank
@@ -141,6 +192,28 @@
 			                    where r.rank = 3)
 			  and rownum <= 5
 			order by genre_id asc, avg_star desc
+		]]>
+	</select>
+	
+	<select id="selectAllCountryList" resultType="string">
+		select distinct production_country
+		from tb_film
+		order by production_country asc
+	</select>
+	
+	<select id="selectAllReleaseYearList" resultType="string">
+		select distinct release_year
+		from tb_film
+		order by release_year asc
+	</select>
+	
+	<select id="selectNewFilms" resultMap="recommendFilm">
+		<![CDATA[
+			select rownum, r.*
+			from (select * from vi_film_avg_star
+			      where release_year = to_char(sysdate, 'yyyy')
+			      order by film_id desc) r
+			where rownum <= 10
 		]]>
 	</select>
 	

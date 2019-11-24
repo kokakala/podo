@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="reportMapper">
+	
+	<resultMap type="Report" id="reportResultSet">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="targetId" column="target_id"/>
+		<result property="content" column="content"/>
+		<result property="reportName" column="report"/>
+		<result property="reportedName" column="reported"/>
+		
+	</resultMap>
+	
+	
+	<select id="getReportListCount" resultType="_int">
+		select count(*)
+		from tb_report
+	</select>
+	
+	<select id="selectReportList" resultMap="reportResultSet">
+		select r.id, mr.nickname as reported, rm.nickname as report, type, content, target_id
+		from tb_report r
+		join tb_member mr on (r.reported_id = mr.id)
+		join tb_member rm on (r.report_id = rm.id)
+	</select>
+	
+	
+	
+	
+</mapper>

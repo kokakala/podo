@@ -84,6 +84,9 @@
     #synopsys{
     	border: 0px solid black;
     }
+    #addActor{
+    	cursor:pointer;
+    }
 </style>
 <body>
 	<!-- 헤더  -->
@@ -106,7 +109,7 @@
                 <div class="icon" id="modifyBtn">    <!-- 수  정 -->
                     <img id="memo" src="resources/detailFilmImage/modifyBtn.jpg" onclick="#" style="width:30px; height:30px;">
                 </div>
-
+                
                 <div id="movie_poster"> <!-- 포스터 -->
                     <img id="poster" src="resources/detailFilmImage/${i.changeName}" onclick="#" style="width:100%; height:100%;">
                 </div>
@@ -128,7 +131,8 @@
    	                	<div name="director">감독 : ${ df.director }</div>
                     </div>
                     <div class="cover" id="sysnobsis_cover">
-                    	<div id="synopsys">배우 <textarea id="text_actor" name="actor" placeholder="정보를 입력해주세요" rows="1" cols="90">${ df.actor }</textarea></div>
+                    	<div id="synopsys">배우 : ${ df.actor }</div>
+                    	<div id="addActor">추가하기</div>
                     </div>
                     <div class="cover" id="sysnobsis_cover">
                     	<div id="synopsys">시놉시스 <textarea id="text_synopsys" name="synopsys" placeholder="정보를 입력해주세요" rows="10" cols="90">${df.synopsys}</textarea></div>
@@ -147,9 +151,65 @@
             </div>
         </div>
         <hr>
+        
+        
+        <!-- collection 모달 -->
+		<hr style="margin: 0;">
+		<div class="modal fade" id="actor-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">배우</h5>						<!-- 모달창 제목 -->
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">	<!-- 닫기 버튼 -->
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					
+					<div class="modal-body">
+						<form action="updateMember.do" method="post">
+							<input type="hidden" name="id" value="${loginUser.id}">
+							
+							<div class="form-group">
+								<label for="userId">배우 검색</label>
+								<input type="email" class="form-control" id="userId" name="email" value="${ loginUser.email }" readonly>
+							</div>
+							<div class="form-group">
+								<label for="originPwd">변경 전 비밀번호</label>
+								<input type="password" class="form-control" id="originPwd" name="originPwd">
+								<span class="originguide oriok">일치</span>
+								<span class="originguide orino">불일치</span>
+								<input type="hidden" id="originPwdCheck" value="0"><br>
+								<label for="updatePwd">변경 후 비밀번호</label>
+								<input type="password" class="form-control" id="updatePwd" name="updatePwd">
+								<label for="updatePwd2">변경 후 비밀번호 확인</label>
+								<input type="password" class="form-control" id="updatePwd2">
+							</div>
+							<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn" style="background:purple; color:white;" onclick="return pwdValidate();">Update</button>
+							<!-- <button type="button" onclick="location.href='myPage.do';">Cancel</button> -->
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+        
+        
+        
     </div>
     <br>
-
+    
+    
+    <script>
+	    $(function(){
+			$("#addActor").on("click", function(){
+				$('#actor-model').modal('toggle');
+			});
+		});
+    </script>
+    
 </body>
 
 </html>

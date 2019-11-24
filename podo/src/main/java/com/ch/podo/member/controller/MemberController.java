@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ch.podo.member.model.service.MemberService;
 import com.ch.podo.member.model.vo.Member;
+import com.ch.podo.board.model.vo.PageInfo;
+import com.ch.podo.common.Pagination;
 
 @Controller
 public class MemberController {
@@ -213,6 +216,49 @@ public class MemberController {
 			return "fail";
 		}
 	}
+	
+	
+	
+	
+	
+	
+	// 관리자 회원 리스트 조회
+	@RequestMapping("mlist.do")
+	public ModelAndView memberList(ModelAndView mv, 
+								  @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		
+		int listCount = memberService.getMemberListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Member> list = memberService.selectMemberList(pi);
+		
+		mv.addObject("pi", pi).addObject("list", list)
+		  .setViewName("admin/memberListView");
+		
+		return mv;
+	}
+	
+	
+	// 관리자 블랙 리스트 조회
+	@RequestMapping("blackList.do")
+	public ModelAndView blackList(ModelAndView mv, 
+								  @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		
+		int listCount = memberService.getBlackListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Member> list = memberService.selectBlackList(pi);
+		
+		mv.addObject("pi", pi).addObject("list", list)
+		  .setViewName("admin/blackListView");
+		
+		return mv;
+	}
+	
+	
+	
 	
 	
 	

@@ -42,7 +42,21 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 	}
-	
+
+	@Override
+	public Board selectUpdateBoard(int id) {
+		return boardDao.selectBoard(id);
+	}
+
+	@Override
+	public int deleteBoard(int id) {
+		return boardDao.deleteBoard(id);
+	}
+
+	@Override
+	public int updateBoard(Board b) {
+		return boardDao.updateBoard(b);
+	}
 	
 
 }

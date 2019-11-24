@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ch.podo.detailFilm.model.dao.DetailFilmDao;
 import com.ch.podo.detailFilm.model.vo.DetailFilm;
 import com.ch.podo.image.model.vo.Image;
-import com.ch.podo.review.model.vo.Review;
+import com.ch.podo.review.model.dto.Review;
 
 @Service("dfService")
 public class DetailFilmServiceImpl implements DetailFilmService{
@@ -46,6 +46,11 @@ public class DetailFilmServiceImpl implements DetailFilmService{
 	@Override
 	public Image selectFilmImage(int id) {
 		return dfDao.selectFilmImage(id);
+	}
+
+	@Override
+	public int detailFilmRollback(int filmId) {
+		return dfDao.detailFilmRollback(filmId);
 	}
 
 }

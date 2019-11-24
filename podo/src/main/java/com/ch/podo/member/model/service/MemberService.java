@@ -1,5 +1,8 @@
 package com.ch.podo.member.model.service;
 
+import java.util.ArrayList;
+
+import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.member.model.vo.Member;
 
 public interface MemberService {
@@ -21,4 +24,23 @@ public interface MemberService {
 	
 	// 5. 회원 탈퇴
 	int deleteMember(String id);
+	
+	
+	
+	
+	// 관리자
+	// 1_1. 게시판 총 갯수 조회용 서비스
+	int getMemberListCount();
+	
+	// 1_2. 현재 페이지에 보여질 회원 리스트 조회용 서비스
+	ArrayList<Member> selectMemberList(PageInfo pi);
+	
+	// 2_1. 블랙리스트 총 갯수 조회용 서비스
+	int getBlackListCount();
+	
+	// 2_2. 현재 페이지에 보여질 회원 리스트 조회용 서비스
+	ArrayList<Member> selectBlackList(PageInfo pi);
+	
+	
+	
 }

@@ -12,12 +12,13 @@
 		<typeAlias type="com.ch.podo.board.model.vo.Board" alias="Board"/>
 		<typeAlias type="com.ch.podo.ratingReview.model.vo.RatingReview" alias="RatingReview"/>
 		<typeAlias type="com.ch.podo.film.model.vo.Film" alias="Film"/>
-		<typeAlias type="com.ch.podo.review.model.vo.Review" alias="Review"/>
+		<typeAlias type="com.ch.podo.review.model.dto.Review" alias="Review"/>
 		<typeAlias type="com.ch.podo.detailFilm.model.vo.DetailFilm" alias="DetailFilm"/>
 		<typeAlias type="com.ch.podo.film.model.vo.Genre" alias="Genre"/>
 		<typeAlias type="com.ch.podo.like.model.vo.Like" alias="Like"/>
 		<typeAlias type="com.ch.podo.ratingFilm.model.vo.RatingFilm" alias="RatingFilm"/>
 		<typeAlias type="com.ch.podo.image.model.vo.Image" alias="Image"/>
+		<typeAlias type="com.ch.podo.report.model.vo.Report" alias="Report"/>
 	</typeAliases>
 	
 	<mappers>
@@ -29,6 +30,7 @@
 		<mapper resource="mappers/detailFilm-mapper.xml"/>
 		<mapper resource="mappers/ratingFilm-mapper.xml"/>
 		<mapper resource="mappers/like-mapper.xml"/>
+		<mapper resource="mappers/report-mapper.xml"/>
 	</mappers>
 	
 </configuration>

@@ -35,7 +35,14 @@
 			            <div class="col-md-6">
 			              <div class="single-recent-blog-post card-view">
 			                <div class="thumb">
-			                  <img class="card-img rounded-0" src="http://placehold.it/300x300" alt="">
+					            	<c:choose>
+					            		<c:when test="${ not empty f.poster }">
+							              <img class="card-img rounded-0" src="resources/detailFilmImage/${ f.poster }" alt="">
+					            		</c:when>
+					            		<c:otherwise>
+							              <img class="card-img rounded-0" src="resources/detailFilmImage/podoposter.jpg" alt="">
+					            		</c:otherwise>
+					            	</c:choose>
 			                  <ul class="thumb-info">
 			                    <li><a href="#"><i class="ti-user"></i>${ f.director }</a></li>
 			                    <li><a href="#"><i class="ti-themify-favicon"></i>${ f.releaseYear }</a></li>
@@ -97,6 +104,7 @@
 	                </nav>
 		            </div>
 		          </div>
+		          
 		        </div>
 		
 		        <!-- Start Blog Post Siddebar -->

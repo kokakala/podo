@@ -29,6 +29,11 @@
 		width:300px;
 		height: 200px;
 	}
+	#posterImage{
+		width: 200px;
+		height: 200px;
+	}
+	
 
 </style>
 </head>
@@ -47,7 +52,7 @@
 	  <div class="container">
           <div class="card blog__slide text-center">
             <div class="blog__slide__img">
-              <img class="card-img rounded-0" src="resources/bootstrap/img/blog/blog-slider/blog-slide1.png" alt="">
+              <img class="card-img rounded-0" src="resources/detailFilmImage/${review.posterImage}" alt="" id="posterImage">
             </div>
             <div class="blog__slide__content">
               <p class="pTitle"> ${review.titleKor }</p>

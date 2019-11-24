@@ -68,25 +68,25 @@
       <div class="row">
         <div class="col-lg-8">
             <div class="main_blog_details">
-                <img class="img-fluid" src="resources/detailFilmImage/defaultImg.png" alt="">
-            <%-- 이게원래써야함    <img class="img-fluid" src="resources/detailFilmImage/ ${ rr.posterImage }" alt=""> --%>
-               <h4 align="center">${r.titleKor}</h4>
+				<img class="img-fluid" src="resources/detailFilmImage/ ${ f.poster }" alt=""> 
+               <h4 align="center">${f.titleKor}<p>장르 : ${f.genre } </p></h4>
+               
                 <div class="user_details">
                     <div class="float-left">
                       <div class="media">
                       <div class="media-body">
-                        <h5>${r.nickName }</h5>
+                        <h5>${m.nickName }</h5>
                         <p>${ r.createDate }에 작성</p>
                       </div>
                       <div class="d-flex">
-                        <img width="42" height="42" src="resources/memberProfileImage/${ r.userImage }" alt="">
+                        <img width="42" height="42" src="resources/memberProfileImage/${ m.image }" alt="">
                       </div>
                     </div>
                   	</div>
                   <div class="float-right mt-sm-0 mt-3">
                     <div class="media">
                       <div class="media-body">
-                        <h5>${r.nickName }</h5>
+                        <h5>${m.nickName }</h5>
                         <p>여기가 별점남기는곳입니다!!</p>
                       </div>
                       <div class="d-flex">
@@ -114,7 +114,7 @@
        data: {
            labels: ["음악", "영상", "연기", "대중성", "각본","연출"],
            datasets: [{
-               label: ["${ ratingReivew.titleKor }"], 
+               label: ["${f.titleKor} "], 
             backgroundColor: "rgb(165,102,255)",
             pointBackground:"rgba(179,181,198,1)",
             pointBorderColor:"#fff",
@@ -156,7 +156,7 @@
       <table align="center" id="vv">
          <tr>
             <td>영화제목</td>
-            <td><input type="text" name="title" id="vtitle" value="${df.titleKor}" ></td>
+            <td><input type="text" name="title" id="vtitle" value="${f.titleKor}" ></td>
          </tr>
          <tr>
             <td>음악</td>

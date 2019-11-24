@@ -53,9 +53,10 @@ public class BoardController {
 	
 	
 	@RequestMapping("binsert.do")
-	public String insertBoard(Board b, Image i, HttpServletRequest request, Model model, 
+	public ModelAndView insertBoard(Board b, Image i, HttpServletRequest request, ModelAndView mv, 
 								@RequestParam(value="", required=false) MultipartFile file) {
 		
+				
 		if(!file.getOriginalFilename().equals("")) {
 			String renameFileName = saveFile(file, request);
 			
@@ -66,11 +67,13 @@ public class BoardController {
 		int result = boardService.insertBoard(b);
 		
 		if(result > 0) {
-			return "redirect:";
+			mv.setViewName("blist.do");
 		}else {
-			model.addAttribute("", "");
-			return "common/";
+			mv.addObject("alert", "게시글 작성 실패");
+			
 		}
+		
+		return mv;
 		
 	}
 	
@@ -78,7 +81,7 @@ public class BoardController {
 	public String saveFile(MultipartFile file, HttpServletRequest request) {
 		
 		String root = request.getSession().getServletContext().getRealPath("resources");
-		String savePath = root + "/boardFiles";
+		String savePath = root + "/boardUploadFiles";
 		
 		File folder = new File(savePath);
 		
@@ -111,18 +114,81 @@ public class BoardController {
 	
 	@RequestMapping("bdetail.do")
 	public ModelAndView boardDetail(int id, ModelAndView mv) {
+		
 		Board b = boardService.selectBoard(id);
 		
 		if(b != null) {
 			mv.addObject("b", b).setViewName("board/");
 		}else {
-			mv.addObject("", "");
-			mv.setViewName("");
+			mv.addObject("alert", "error");
 		}
 		
 		return mv;
 		
 	}
+	
+	
+	@RequestMapping("bdelete.do")
+	public String boardDelete(int id, HttpServletRequest request) {
+		
+//		Board b = boardService.selectUpdateBoard(id);
+				
+		int result = boardService.deleteBoard(id);
+		
+		if(result > 0) {
+			return "redirect:blist.do";
+		}else {
+			return "";
+		}
+		
+	}
+	
+	
+	// 업로드되어있는 파일 삭제용 메소드
+	public void deleteFile(String renameFileName, HttpServletRequest request) {
+		
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		String savePath = root + "/boardUploadFiles";
+		
+		File f = new File(savePath + "/" + renameFileName);
+		
+		if(f.exists()) {
+			f.delete();
+		}
+		
+	}
+	
+	
+	@RequestMapping("bupdateView.do")
+	public ModelAndView boardUpdateView(int id, ModelAndView mv) {
+		
+		Board b = boardService.selectBoard(id);
+		
+		mv.addObject("b", b).setViewName("board/boardUpdateForm");
+		
+		return mv;
+		
+	}
+	
+	
+	@RequestMapping("bupdate.do")
+	public ModelAndView boardUpdate(Board b, HttpServletRequest request, ModelAndView mv,
+									@RequestParam(value="reloadFile", required=false) MultipartFile file) {
+		
+		
+		
+		int result = boardService.updateBoard(b);
+		
+		if(result > 0) {
+			mv.addObject("id", b.getId()).setViewName("redirect:bdetail.do");
+		}else {
+			mv.addObject("");
+		}
+		
+		return mv;
+		
+	}
+	
 	
 	
 

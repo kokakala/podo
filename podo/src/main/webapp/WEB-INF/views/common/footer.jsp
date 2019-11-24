@@ -20,25 +20,20 @@
 		font-weight: 500;
 	}
 </style>
-
-	<link rel="icon" href="resources/bootstrap/img/Fevicon.png" type="image/png">
-	<link rel="stylesheet" href="resources/bootstrap/vendors/bootstrap/bootstrap.min.css">
-	<link rel="stylesheet" href="resources/bootstrap/vendors/fontawesome/css/all.min.css">
-	<link rel="stylesheet" href="resources/bootstrap/vendors/themify-icons/themify-icons.css">
-	<link rel="stylesheet" href="resources/bootstrap/vendors/linericon/style.css">
-	<link rel="stylesheet" href="resources/bootstrap/vendors/owl-carousel/owl.theme.default.min.css">
-	<link rel="stylesheet" href="resources/bootstrap/vendors/owl-carousel/owl.carousel.min.css">
-	<link rel="stylesheet" href="resources/bootstrap/css/style.css">
 	
-	<script src="resources/bootstrap/vendors/jquery/jquery-3.2.1.min.js"></script>
-	<script src="resources/bootstrap/vendors/bootstrap/bootstrap.bundle.min.js"></script>
 	<script src="resources/bootstrap/vendors/owl-carousel/owl.carousel.min.js"></script>
+	<script src="resources/bootstrap/vendors/nice-select/jquery.nice-select.min.js"></script>
 	<script src="resources/bootstrap/js/jquery.ajaxchimp.min.js"></script>
 	<script src="resources/bootstrap/js/mail-script.js"></script>
 	<script src="resources/bootstrap/js/main.js"></script>
 	
 </head>
 <body>
+
+	<br><br>
+	
+	<hr>
+	
 	<!--================ Start Footer Area =================-->
 	<div id="footer-wrapper">
 		<div class="footer-1" align="center">

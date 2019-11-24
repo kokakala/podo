@@ -19,6 +19,8 @@
 	</resultMap>
 	
 	
+	
+	
 	<select id="getBoardCount" resultType="_int">
 		select count(*)
 		from tb_board
@@ -33,13 +35,30 @@
 	</select>
 	
 	<insert id="insertBoard">
-	
+		insert into tb_board
+		values
 	</insert>
 	
 	<update id="updateCount">
-		update board
-		set bcount = bcount + 1
-		where bid=#{id}
+		update tb_board
+		set view_count = view_count + 1
+		where id=#{id}
+	</update>
+	
+	<select id="selectBoard" resultMap="boardResultSet">
+		select *
+		from tb_board
+		where id=#{id}
+	</select>
+	
+	<update id="deleteBoard">
+		update tb_board
+		set status='N'
+		where id=#{id}
+	</update>
+	
+	<update id="updateBoard">
+		
 	</update>
 	
 	

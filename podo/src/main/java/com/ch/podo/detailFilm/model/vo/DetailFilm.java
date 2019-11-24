@@ -23,4 +23,5 @@ public class DetailFilm {
 	private String trailer;				// 예고편 링크
 	private String synopsys;			// 시놉시스
 	private String trivia;				// 트리비아
+	private String nickName;			// 기록자 닉네임
 }
