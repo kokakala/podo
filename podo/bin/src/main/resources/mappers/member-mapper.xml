@@ -3,4 +3,43 @@
 
 <mapper namespace="memberMapper">
 	
+	<resultMap type="Member" id="memberResultSet">
+		<id property="id" column="id"/>
+		<result property="image" column="image"/>
+		<result property="email" column="email"/>
+		<result property="pwd" column="pwd"/>
+		<result property="nickName" column="nickname"/>
+		<result property="status" column="status"/>
+		<result property="enrollDate" column="enroll_date"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="googleId" column="google_id"/>
+		<result property="kakaoId" column="kakao_id"/>
+		<result property="autho" column="autho"/>
+	</resultMap>
+	
+	<insert id="insertMember">
+		insert into tb_member values(seq_member_id.nextval, #{image}, #{email}, #{pwd}, #{nickName}, default, sysdate, sysdate, null, null, default)
+	</insert>
+	
+	<select id="idCheck" resultType="_int">
+		select count(*)
+		from tb_member
+		where email=#{email} and status='Y'
+	</select>
+	
+	<select id="nickCheck" resultType="_int">
+		select count(*)
+		from tb_member
+		where nickname=#{nick} and status='Y'
+	</select>
+	
+	<select id="selectLoginMember" resultMap="memberResultSet">
+		select *
+		from tb_member
+		where email=#{email}
+			and status='Y'
+	</select>
+	
+
+	
 </mapper>

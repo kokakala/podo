@@ -1,10 +1,12 @@
+
 package com.ch.podo.member.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +25,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ch.podo.member.model.service.MemberService;
 import com.ch.podo.member.model.vo.Member;
+import com.ch.podo.review.model.dto.Review;
+import com.ch.podo.review.model.service.ReviewService;
+import com.ch.podo.board.model.vo.PageInfo;
+import com.ch.podo.common.Pagination;
+
 
 @Controller
 public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private ReviewService reviewService;
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
@@ -38,7 +47,7 @@ public class MemberController {
 																	boolean rememberMe, HttpServletResponse response, HttpServletRequest request) {
 		
 		Member loginUser = memberService.selectLoginMember(mem);
-		// System.out.println("loginUser : " + loginUser);
+		System.out.println("loginUser : " + loginUser);
 		// System.out.println("rememberMe : " + rememberMe);
 		
 		if (loginUser != null && bcryptPasswordEncoder.matches(mem.getPwd(), loginUser.getPwd())) {
@@ -59,9 +68,9 @@ public class MemberController {
 					}
 				}
 			}
-			String referer = request.getHeader("Referer");
 			
 			session.setAttribute("loginUser", loginUser);
+			String referer = request.getHeader("Referer");
 			mv.setViewName("redirect:" + referer);
 			
 		} else {
@@ -157,8 +166,14 @@ public class MemberController {
 	}
 	
 	@RequestMapping("myPage.do")
-	public String myPage() {
-		return "member/myPage";
+	public ModelAndView myPage(ModelAndView mv, String id, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		int reviewListCount = reviewService.myPageReviewListCount(id);
+		PageInfo pi = Pagination.getPageInfo(currentPage, reviewListCount);
+		
+		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id,pi);
+		mv.addObject("review", reviewList).addObject("reviewCount", reviewListCount).addObject("pi", pi).addObject("reviewCount", reviewListCount).setViewName("member/myPage");
+		
+		return mv;
 	}
 	
 	@RequestMapping("memberUpdateForm.do")
@@ -191,7 +206,7 @@ public class MemberController {
 		
 		if(result > 0) {	// 업데이트 성공
 			session.setAttribute("loginUser", mem);
-			mv.addObject("msg", "회원정보 수정 성공").setViewName("member/myPage");
+			mv.addObject("msg", "회원정보 수정 성공").setViewName("redirect:myPage.do?id="+mem.getId());
 		}else {
 			mv.addObject("msg", "회원정보 수정 실패").setViewName("member/memberUpdateForm");
 		}
@@ -213,6 +228,39 @@ public class MemberController {
 			return "fail";
 		}
 	}
+	
+	
+	
+	
+	
+	
+	// 관리자 회원 리스트 조회
+	@RequestMapping("mlist.do")
+	public ModelAndView memberList(ModelAndView mv, 
+								  @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		
+		ArrayList<Member> list = memberService.selectMemberList();
+		
+		mv.addObject("list", list)
+		  .setViewName("admin/memberListView");
+		
+		return mv;
+	}
+	
+	
+	// 관리자 블랙 리스트 조회
+	@RequestMapping("blackList.do")
+	public ModelAndView blackList(ModelAndView mv, 
+								  @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		
+		ArrayList<Member> list = memberService.selectBlackList();
+		
+		mv.addObject("list", list)
+		  .setViewName("admin/blackListView");
+		
+		return mv;
+	}
+	
 	
 	
 	

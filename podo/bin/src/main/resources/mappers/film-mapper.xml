@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="filmMapper">
+	
+	<resultMap type="Film" id="filmResultSet">
+		<id property="id" column="id"/>
+		<result property="titleKor" column="title_kor"/>
+		<result property="titleEng" column="title_eng"/>
+		<result property="director" column="director"/>
+		<result property="releaseYear" column="release_year"/>
+		<result property="productionCountry" column="production_country"/>
+		<result property="productionStatus" column="production_status"/>
+		<result property="genre" column="name"/>
+	</resultMap>
+	
+	<select id="getListCount" resultType="_int">
+		select count(*)
+		from tb_film
+	</select>
+	
+	<select id="selectKeywordFilmListCount" resultType="_int">
+		select count(*)
+		from tb_film f
+		join tb_genre g
+		on (f.genre_id = g.id)
+		where title_kor like '%'||#{keyword}||'%'
+		   or title_eng like '%' ||#{keyword}||'%'
+	</select>
+	
+	<select id="selectKeywordFilmList" resultMap="filmResultSet">
+		select f.*, g.name
+		from tb_film f
+		join tb_genre g
+		on (f.genre_id = g.id)
+		where title_kor like '%'||#{keyword}||'%'
+		   or title_eng like '%' ||#{keyword}||'%'
+	</select>
+	
+	<select id="selectFilterFilmList" resultMap="filmResultSet">
+		select f.*, g.name
+		from tb_film f
+		join tb_genre g
+		on (f.genre_id = g.id)
+		where 1 = 1
+		<if test="releaseYear != ''">
+			and release_year = #{ releaseYear }
+		</if>
+		<if test="productionCountry != ''">
+			and production_country = #{ productionCountry }
+		</if>
+		<if test="genre != ''">
+			and f.genre_id = #{ genre }
+		</if>
+	</select>
+	
+	<select id="selectAllGenreList" resultType="Genre">
+		select *
+		from tb_genre
+	</select>
+	
+</mapper>

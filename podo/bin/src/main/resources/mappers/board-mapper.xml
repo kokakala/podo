@@ -3,4 +3,31 @@
 
 <mapper namespace="boardMapper">
 
+	<resultMap id="boardResultSet" type="Board">
+		<id property="id" column="id"/>
+		<result property="title" column="title"/>
+		<result property="content" column="content"/>
+		<result property="viewCount" column="view_count"/>
+		<result property="inappropriateCount" column="inappropriate_count"/>
+		<result property="spoilerCount" column="spoiler_count"/>
+		<result property="likeCount" column="like_count"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="createDate" column="create_date"/>
+		<result property="status" column="status"/>
+		<result property="memberId" column="member_id"/>
+		<result property="imageId" column="image_id"/>
+	</resultMap>
+	
+	<select id="getBoardCount" resultType="_int">
+		select count(*)
+		from tb_board
+		where status='Y'
+	</select>
+	
+	<select id="selectBoardList" resultMap="boardResultSet">
+		select *
+		from tb_board
+		where status='Y'
+		order by id desc
+	</select>
 </mapper>

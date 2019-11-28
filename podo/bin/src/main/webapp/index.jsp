@@ -1,4 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -6,6 +5,8 @@
 		<title>Insert title here</title>
 	</head>
 	<body>
-		<a href="home.do">홈으로</a>
+		<h1 style="text-align:center; color:#fff">
+			<img src="resources/bootstrap/img/logo.png" onclick="location.href='home.do'" style="cursor: pointer; height:50%; width:50%;"/>
+		</h1>
 	</body>
 </html>

@@ -7,9 +7,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ch.podo.detailFilm.model.vo.Actor;
 import com.ch.podo.detailFilm.model.vo.DetailFilm;
 import com.ch.podo.image.model.vo.Image;
-import com.ch.podo.review.model.vo.Review;
+import com.ch.podo.review.model.dto.Review;
 
 @Repository("dfDao")
 public class DetailFilmDao {
@@ -21,7 +22,6 @@ public class DetailFilmDao {
 		
 		DetailFilm df = sqlSession.selectOne("detailFilmmapper.selectDetailFilm", filmId);
 		
-		System.out.println("df : " + df);
 		return df;
 	}
 	
@@ -59,5 +59,53 @@ public class DetailFilmDao {
 		return sqlSession.insert("detailFilmmapper.filmImageInsert", map);
 	}
 	
+	public ArrayList<Actor> selectActorList(int id){
+		
+		ArrayList<Actor> list = (ArrayList)sqlSession.selectList("detailFilmmapper.selectFilmActor", id);
+		return list;
+	}
+	
+	// 상세정보 롤백
+	public int detailFilmRollback(int filmId) {
+		return sqlSession.update("detailFilmmapper.updateDetailFilm", filmId);	
+	}
+	
+	// 배우 검색
+	public ArrayList<Actor> searchActorList(String searchName){
+		
+		return (ArrayList)sqlSession.selectList("detailFilmmapper.searchActorList", searchName);
+	}
+
+	public int insertInitDetailFilm(int id, int filmId) {
+		int[] ids = {id, filmId};
+		return sqlSession.insert("detailFilmmapper.insertInitDetailFilm", ids);
+	}
+	
+	public int addActor(int actorId, int id) {
+		
+		HashMap map = new HashMap();
+		
+		map.put("actorId", actorId);
+		map.put("id", id);
+		
+		return sqlSession.insert("detailFilmmapper.addActor",map);
+	}
+	
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

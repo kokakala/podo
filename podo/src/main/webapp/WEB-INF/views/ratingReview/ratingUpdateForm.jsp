@@ -117,6 +117,14 @@
 				text-align: right;
 				vertical-align: middle;
 			}
+			.main_blog_details{
+			margin-left:200px;
+			width: 100%;
+			}
+			#ok1{
+				margin-left: 150px;
+			}
+		
 </style>
 </head>
 <body>
@@ -134,25 +142,25 @@
       <div class="row">
         <div class="col-lg-8">
             <div class="main_blog_details">
-                <img class="img-fluid" src="resources/detailFilmImage/defaultImg.png" alt="">
-            <%-- 이게원래써야함    <img class="img-fluid" src="resources/detailFilmImage/ ${ rr.posterImage }" alt=""> --%>
-               <h4 align="center">${rr.titleKor }</h4>
+                <!-- <img class="img-fluid" src="resources/detailFilmImage/defaultImg.png" alt=""> -->
+                <img class="img-fluid" src="resources/detailFilmImage/${ r.posterImage }" alt="">
+               <h4 align="center">${r.titleKor }</h4>
                 <div class="user_details">
                     <div class="float-left">
                       <div class="media">
                       <div class="media-body">
-                        <h5>${rr.nickName }님</h5>
-                        <p>${ rr.createDate }에 수정하려함</p>
+                        <h5>${r.nickName }님</h5>
+                        <p>${ r.createDate }에 수정하려함</p>
                       </div>
                       <div class="d-flex">
-                        <img width="42" height="42" src="resources/memberProfileImage/${ rr.userImage }" alt="">
+                        <img width="42" height="42" src="resources/memberProfileImage/${ r.userImage }" alt="">
                       </div>
                     </div>
                   	</div>
                   <div class="float-right mt-sm-0 mt-3">
                     <div class="media">
                       <div class="media-body">
-                        <h5>${rr.nickName }</h5>
+                        <h5>${r.nickName }</h5>
                         <span class="star-input">
 								<span class="input">
 								<input type="radio" name="star-input1" value="1" id="p1">
@@ -168,7 +176,7 @@
 								</span>
 								<output for="star-input"><b style="display: none;"></b></output>
 						</span>
-                        <p>여기가 별점남기는곳입니다!!</p>
+                        <p>${r.star }점</p>
                       </div>
                       <div class="d-flex">
                         <img width="42" height="42" src="resources/bootstrap/img/blog/user-img.png" alt="">
@@ -202,7 +210,7 @@
             pointBorderBackgroundColor:"#fff",
 
                data: [
-            	   ${rr.ratingSound},${rr.ratingVisual},${rr.ratingActing},${rr.ratingPop},${rr.ratingScript},${rr.ratingDirect}
+            	   ${r.ratingSound},${r.ratingVisual},${r.ratingActing},${r.ratingPop},${r.ratingScript},${r.ratingDirect}
             	   ]
     
            }]
@@ -233,49 +241,53 @@
    </script>
    </div>
    
-    <form action="reviewUpdate.do" method="post" enctype="mutipart/form-data" id="movieform">
+
+    <form action="reviewUpdate.do" method="post" id="movieform">
+      	<input type="hidden" name="id" value="${r.id}">
+      	<input type="hidden" name="ratingReviewId" value="${r.ratingReviewId }">
       <table align="center" id="vv">
-      	<input type="hidden" name="id" value="${rr.id }">
          <tr>
-            <td>영화제목</td>
-            <td><input type="text" name="title" id="vtitle"  value="${ rr.titleKor }"  readonly></td>
+            <td class="alert alert-primary">영화제목</td>
+            <td><input type="text" name="title" id="vtitle"  value="${ r.titleKor }"  readonly></td>
          </tr>
          <tr>
-            <td>음악</td>
-            <td><input type="number" name="ratingSound" class="insertRating" id="ratingSound" value="${rr.ratingSound }"></td>
+            <td class="alert alert-primary">음악</td>
+            <td><input type="number" name="ratingSound" class="insertRating" id="ratingSound" value="${r.ratingSound }"></td>
          </tr>
          <tr>   
-            <td>영상</td>
-            <td><input type="number" name="ratingVisual" class="insertRating" id="ratingVisual" value="${rr.ratingVisual }"></td>
+            <td class="alert alert-primary">영상</td>
+            <td><input type="number" name="ratingVisual" class="insertRating" id="ratingVisual" value="${r.ratingVisual }"></td>
          </tr>
          <tr>
-            <td>연기</td>
-            <td><input type="number" name="ratingActing" class="insertRating" id="ratingActing" value="${rr.ratingActing }"></td>
+            <td class="alert alert-primary">연기</td>
+            <td><input type="number" name="ratingActing" class="insertRating" id="ratingActing" value="${r.ratingActing }"></td>
          </tr>
          <tr>
-            <td>대중성</td>
-            <td><input type="number" name="ratingPop" class="insertRating" id="ratingPop" value="${rr.ratingPop }"></td>
+            <td class="alert alert-primary">대중성</td>
+            <td><input type="number" name="ratingPop" class="insertRating" id="ratingPop" value="${r.ratingPop }"></td>
          </tr>
          <tr>
-            <td>각본</td>
-            <td><input type="number" name="ratingScript" class="insertRating" id="ratingScript" value="${rr.ratingScript }"></td>
+            <td class="alert alert-primary">각본</td>
+            <td><input type="number" name="ratingScript" class="insertRating" id="ratingScript" value="${r.ratingScript }"></td>
          </tr>
          <tr>
-            <td>연출</td>
-            <td><input type="number" name="ratingDirect" class="insertRating" id="ratingDirect" value="${rr.ratingDirect }" ></td>
+            <td class="alert alert-primary">연출</td>
+            <td><input type="number" name="ratingDirect" class="insertRating" id="ratingDirect" value="${r.ratingDirect }" ></td>
          </tr>
 
       </table>
-   </div>
-                <p><textarea rows="3" cols="75" name="content"  >${rr.content }</textarea></p>
-               <button type="submit" id="reviewupdate">리뷰수정하기</button>
-               <button type="button" onclick="location.href='reviewList.do';">목록으로</button>
-   </form>
+   
+                <p><textarea rows="3" cols="75" name="content" id="content"  >${r.content }</textarea></p>
+                <button class="button" type="submit" id="ok1">리뷰수정하기</button>
+               <button class="button" type="button" onclick="location.href='reviewList.do';">목록으로</button>
+   </form>	
+    </div>
      
 
               </div>
         </div>
       </div>
+  
   </section>	
 	
 	<br>
@@ -284,6 +296,7 @@
 	</div>
 	
 	 <script>
+	 console.log(${r.id})
       $('.insertRating').on('input',function(){
          var ctx = document.getElementById('myChart');
          var chart = new Chart(ctx, {

@@ -19,6 +19,7 @@ public class Collection {
 	private String title;		// 제목
 	private String content;		// 내용
 	private int likeCount;		// 좋아요 갯수
+	private int inappropriateCount;	// 신고 갯수
 	private int spoilerCount;	// 스포일러 갯수
 	private Date createDate;	// 최초작성일
 	private Date modifyDate;	// 최종수정일

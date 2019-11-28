@@ -27,6 +27,7 @@ public class Board {
    private String status; 			// 상태
    private int memberId; 			// 작성자
    private int imageId; 			// 이미지 번호
+   private String nickName;			// 사용자 닉네임
    
    
 

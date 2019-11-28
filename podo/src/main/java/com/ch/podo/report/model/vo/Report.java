@@ -20,5 +20,8 @@ public class Report {
    private int reportId;   // 신고자번호
    private int reportedId;   // 신고대상자번호
    
+   private String reportName;	// 신고자이름
+   private String reportedName; // 신고대상자이름
+   
 
 }

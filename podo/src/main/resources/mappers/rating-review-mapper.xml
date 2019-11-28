@@ -4,8 +4,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="ratingReviewMapper">
 
-	<resultMap id="ratingReviewSet" type="RatingReview">
-		<id property="id" column="id"/>
+	<!-- <resultMap id="ratingReviewSet" type="Review">
+		<id property="ratingReviewId" column="id"/>
 		<result property="ratingSound" column="RATING_SOUND"/>
 		<result property="ratingVisual" column="RATING_VISUAL"/>
 		<result property="ratingActing" column="RATING_ACTING"/>
@@ -19,12 +19,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 	<result property="star" column="star"/>
 	 	<result property="content" column="content"/>
 	 	
-		<!-- <result property="posterImage" column=""/> 요기도 컬럼 수정된거써야함 -->
+		<result property="posterImage" column=""/> 요기도 컬럼 수정된거써야함
 	</resultMap>
-	
+	 -->
 
 
-	<select id="selectRatingReviewDetailView" resultMap="ratingReviewSet">
+	 <!-- <select id="selectRatingReviewDetailView" resultMap="ratingReviewSet">
 		select *
 		from  TB_REVIEW r
 		left join tb_rating_review rr on (rr.review_id = r.id)
@@ -33,13 +33,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join tb_rating_film rf on(r.film_id=rf.id)
         where r.id=#{r.id}
 	</select>
-
-	<update id="reviewUpdate">
+ -->
+<!-- 	<update id="reviewUpdate">
 		update tb_rating_review
 		set rating_Sound=#{ratingSound},rating_Visual=#{ratingVisual},rating_Acting=#{ratingActing},rating_Pop=#{ratingPop},rating_Script=#{ratingScript},rating_Direct=#{ratingDirect}
 		where id=#{id}
-	</update>
-
+		</update> -->
+ 
 
 
 

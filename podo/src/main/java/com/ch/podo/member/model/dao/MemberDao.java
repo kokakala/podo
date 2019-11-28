@@ -1,12 +1,17 @@
 package com.ch.podo.member.model.dao;
 
+import java.util.ArrayList;
+
+import org.apache.ibatis.session.RowBounds;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ch.podo.member.model.vo.Member;
+import com.ch.podo.board.model.vo.PageInfo;
 
 @Repository("memberDao")
 public class MemberDao {
@@ -34,5 +39,22 @@ public class MemberDao {
 	public int updateMember(Member mem) {
 		return sqlSession.update("memberMapper.updateMember", mem);
 	}
+	
+	
+
+	public ArrayList<Member> selectMemberList() {
+		return (ArrayList)sqlSession.selectList("memberMapper.selectMemberList");
+	}
+	
+	public ArrayList<Member> selectBlackList() {
+		return (ArrayList)sqlSession.selectList("memberMapper.selectBlackList");
+	}
+	
+	
+	public int deleteBlackMember(int result) {
+		return sqlSession.delete("memberMapper.deleteBlackMember", result);
+	}
+
+
 	
 }

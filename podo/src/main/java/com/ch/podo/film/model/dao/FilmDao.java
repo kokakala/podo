@@ -1,7 +1,6 @@
 package com.ch.podo.film.model.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
@@ -10,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ch.podo.board.model.vo.PageInfo;
+import com.ch.podo.common.SearchCondition;
 import com.ch.podo.film.model.vo.Film;
 import com.ch.podo.film.model.vo.Genre;
-import com.ch.podo.like.model.vo.Like;
-import com.ch.podo.ratingFilm.model.vo.RatingFilm;
+import com.ch.podo.image.model.vo.Image;
 
 @Repository("filmDao")
 public class FilmDao {
@@ -35,8 +34,10 @@ public class FilmDao {
 		return (ArrayList)sqlSession.selectList("filmMapper.selectKeywordFilmList", keyword, rowBounds);
 	}
 
-	public ArrayList<Film> selectFilterFilmList(Film film) {
-		return (ArrayList)sqlSession.selectList("filmMapper.selectFilterFilmList", film);
+	public ArrayList<Film> selectFilterFilmList(SearchCondition sc, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("filmMapper.selectFilterFilmList", sc, rowBounds);
 	}
 
 	public ArrayList<Film> selectFilterFilmMap(Map<String, Object> map) {
@@ -45,6 +46,26 @@ public class FilmDao {
 
 	public ArrayList<Genre> selectAllGenreList() {
 		return (ArrayList)sqlSession.selectList("filmMapper.selectAllGenreList");
+	}
+	
+	public int getFilmListCount() {
+		return sqlSession.selectOne("filmMapper.getFilmListCount");
+	}
+	
+	public ArrayList<Film> selectFilmList(){
+		return (ArrayList)sqlSession.selectList("filmMapper.selectFilmList");
+	}
+	
+	public int insertFilm(Film f) {
+		return sqlSession.insert("filmMapper.insertFilm", f);
+	}
+
+	public int insertFilmImage(Image img) {
+		return sqlSession.insert("filmMapper.insertFilmImage", img);
+	}
+
+	public Film selectFilm(int id) {
+		return sqlSession.selectOne("filmMapper.selectFilm", id);
 	}
 
 	public int selectLikedFilmCount(int id) {
@@ -59,6 +80,22 @@ public class FilmDao {
 
 	public ArrayList<Film> selectPreferredGenreFilmList(int id) {
 		return (ArrayList)sqlSession.selectList("filmMapper.selectPreferredGenreFilmList", id);
+	}
+
+	public ArrayList<String> selectAllCountryList() {
+		return (ArrayList)sqlSession.selectList("filmMapper.selectAllCountryList");
+	}
+
+	public ArrayList<String> selectAllReleaseYearList() {
+		return (ArrayList)sqlSession.selectList("filmMapper.selectAllReleaseYearList");
+	}
+
+	public int selectFilterFilmListCount(SearchCondition sc) {
+		return sqlSession.selectOne("filmMapper.selectFilterFilmListCount", sc);
+	}
+
+	public ArrayList<Film> selectNewFilms() {
+		return (ArrayList)sqlSession.selectList("filmMapper.selectNewFilms");
 	}
 
 }

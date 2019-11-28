@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>PoDo_MyPage</title>
 
 <style>
 	#imgInp{display:none}
@@ -26,22 +26,59 @@
 	}
 	.oriok{color:blue;}
 	.orino{color:red;}
-	
-
+	.modal-dialog{z-index:2000;}
+	/* --------------------- 탭메뉴시작 ---------------------  */
+	#container {
+		/* width:800px; */
+		margin:0 auto;
+		/* text-align:center */;
+	}
+	.tab {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+	}
+	/* Float the list items side by side */
+	.tab li {
+		float: left;
+	}
+	/* Style the links inside the list items */
+	.tab li a {
+		display: inline-block;
+		color: #000;
+		text-align: center;
+		text-decoration: none;
+		padding: 14px 16px;
+		font-size: 18px;
+		transition:0.3s;
+		
+	}
+	/* Style the tab content */
+	.tabcontent {
+		display: none;
+		background-color:rgb(230, 204, 255);
+		padding: 6px 12px;
+		color:#fff;
+	}
+	ul.tab li.current{
+		background-color: rgb(230, 204, 255);
+		color: #222;
+	}
+	.tabcontent.current {
+		display: block;
+	}
+	/* --------------------- 탭메뉴 끝 ---------------------  */
 </style>
 </head>
 <body>
 
 	<jsp:include page="../common/header.jsp"/>
 	
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-	
 	<section class="blog-post-area section-margin">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-8">
+				<div class="col-lg-12">
 					<div class="comments-area">
 						<h4>마이페이지</h4>
 						<div class="comment-list">
@@ -53,39 +90,152 @@
 									<div class="desc">
 										<h2>${ loginUser.nickName }</h2>
 										<a href="#"><i class="ti-heart"></i></a>
-										<p class="date">작성리뷰 - 0개  </p>
+										<p class="date">작성리뷰 - ${reviewCount}개  </p>
 										<p class="date">콜렉션 - 0개  </p>
 									</div>
 								</div>
 								<div class="reply-btn">
-									<a id="update-modal" class="btn-reply text-uppercase" href="#" data-toggle="modal" style="background:purple; color:white;">정보수정</a>
-									<a id="updatePwd-modal" class="btn-reply text-uppercase" href="#" data-toggle="modal" style="background:purple; color:white;">비밀번호 변경</a>
-									<!-- 	<a href="memberUpdateForm.do" class="btn-reply text-uppercase" style="background:purple; color:white;">정보수정</a>  -->
+									<a id="update-modal" class="btn-reply text-uppercase" href="#" data-toggle="modal" style="background:rgb(218, 179, 255); text-align:center;color:white;">정보수정</a>
+									<a id="updatePwd-modal" class="btn-reply text-uppercase" href="#" data-toggle="modal" style="background:rgb(218, 179, 255); color:white;">비밀번호 변경</a>
+									<a id="question-modal" class="btn-reply text-uppercase" href="#" data-toggle="modal" style="background:pink; text-align:center; color:white;">문의하기</a>
 								</div>
 							</div>
-							<br><br>
+							<br><br>	
 							<div style='border:1px solid lightgray'></div><br>
 							
-							<!-- 하단 탭 부분 -->
-							<div role="tabpanel">
-								<!-- Nav tabs -->
-								<ul class="nav nav-tabs" role="tablist" id="tabs">
-									<li role="presentation" class="active"><a href="#review" aria-controls="review" role="tab" data-toggle="tab" >리뷰</a></li>
-									<li role="presentation"><a href="#collection" aria-controls="collection" role="tab" data-toggle="tab">컬렉션</a></li>
-									<li role="presentation"><a href="#like" aria-controls="like" role="tab" data-toggle="tab">좋아요</a></li>
-									<li role="presentation"><a href="#qu" aria-controls="qu" role="tab" data-toggle="tab">문의</a></li>
-								</ul>
+							<!------------------------- 탭 메뉴 시작 ----------------------->
+							<div class="col-lg-12">
+								<div id="container">
+									<ul class="tab">
+											<li class="tab1 current" data-tab="tab1" ><a>Review</a></li>
+											<li class="tab2" data-tab="tab2" ><a>Collection</a></li>
+											<li class="tab3" data-tab="tab3"><a>Like</a></li>
+											<li class="tab4" data-tab="tab4"><a>Question</a></li>
+									</ul>
+							
 								
-								<!-- Tab panes -->
-								<div class="tab-content">
-									<div role="tabpanel" class="tab-pane active" id="review">안녕<br>안녕</div>
-									<div role="tabpanel" class="tab-pane" id="collection">혜은이 바보</div>
-									<div role="tabpanel" class="tab-pane" id="like">좋아요지롱</div>
-									<div role="tabpanel" class="tab-pane" id="qu">문의사항이지랑</div>
+										<div id="tab1" class="current tabcontent current"><br>
+											<!-------------------------- 리뷰 탭메뉴 바디 ------------------------>
+											<section class="blog-post-area section-margin mt-4">
+												<div class="container">
+													<div class="row">
+														<div class="col-lg-12">
+															<c:forEach items="${review}" var="list" >
+																<div class="single-recent-blog-post" style="height:300px">
+																	<div class="details mt-20">
+																		<div class="thumb" style="float:left">
+																			<div class="col-lg-12" id="moviePoster" style="width: 200px; height: 200px;  align-items: center; justify-content: center;overflow: hidde; display: flex">
+																				<img class='img-fluid' src='resources/detailFilmImage/${list.posterImage}' width='100%' height='100%'>
+																			</div>
+																		</div>
+																		<div style="float:left">
+																			<div style="float:left">
+																				<a href="#"><h3>${list.titleKor}</h3><br></a>
+																				<p>${list.content}</p>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</c:forEach>
+															<!-------------------------- 페이징바 시작 ------------------------>
+															<div class="row">
+																<div class="col-lg-12">
+																	<nav class="blog-pagination justify-content-center d-flex">
+																		<ul class="pagination">
+																			<!------ [이전] ------>
+																			<c:if test="${ pi.currentPage eq 1 }">
+																				<li class="page-item">
+																					<a class="page-link" aria-label="Previous" disabled>
+																						<span aria-hidden="true">
+																							<i class="ti-angle-left"></i>
+																						</span>
+																					</a>
+																				</li>
+																			</c:if>
+																			<c:if test="${ pi.currentPage ne 1 }">
+																				<c:url value="myPageSelectReview.do" var="before">
+																					<c:param name="currentPage" value="${ pi.currentPage-1 }"/>
+																					<c:param name="id" value="${loginUser.id}"/>
+																				</c:url>
+																				<li class="page-item">
+																					<a href="${ before }" class="page-link" aria-label="Previous">
+																						<span aria-hidden="true">
+																							<i class="ti-angle-left"></i>
+																						</span>
+																					</a>
+																				</li>
+																			</c:if>
+																			<!-- ------------- -->
+																			<!------ [페이지] ----->
+																			<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+																				<c:if test="${ p eq pi.currentPage }">
+																					<li class="page-item active"><a class="page-link" disabled>${p}</a></li>
+																				</c:if>
+																			
+																				<c:if test="${ p ne pi.currentPage }">
+																					<c:url value="myPageSelectReview.do" var="page">
+																						<c:param name="currentPage" value="${ p }"/>
+																						<c:param name="id" value="${loginUser.id}"/>
+																					</c:url>
+																					<li class="page-item active"><a href="${ page }" class="page-link">${p}</a></li>
+																				</c:if>
+																			</c:forEach>
+																			<!-- --------------- -->
+																			<!------- [다음] ------->
+																			<c:if test="${ pi.currentPage eq pi.maxPage }">
+																				<li class="page-item">
+																					<a class="page-link" aria-label="Next" disabled>
+																						<span aria-hidden="true">
+																							<i class="ti-angle-right"></i>
+																						</span>
+																					</a>
+																				</li>
+																			</c:if>
+																			<c:if test="${ pi.currentPage ne pi.maxPage }">
+																				<c:url value="myPageSelectReview.do" var="after">
+																					<c:param name="currentPage" value="${ pi.currentPage+1 }"/>
+																					<c:param name="id" value="${loginUser.id}"/>
+																				</c:url>
+																				<li class="page-item">
+																					<a href="${ after }" class="page-link" aria-label="Next">
+																						<span aria-hidden="true">
+																							<i class="ti-angle-right"></i>
+																						</span>
+																					</a>
+																				</li>
+																			</c:if>
+																			<!-- --------------- -->
+																		</ul>
+																	</nav>
+																</div>
+															</div>
+															<!-------------------------- 페이징바 끝 -------------------------->
+														</div>
+													</div>
+												</div>
+											</section>
+										</div>
+								
+									
+										
+										<div id="tab2" class="tabcontent"><br>
+											<h3>Collection</h3><br>
+											<p>컬렉입니당.</p>
+										</div>
+										
+										<div id="tab3" class="tabcontent"><br>
+											<h3>Like</h3><br>
+											<p>라이크임당.</p>
+										</div>
+										
+										<div id="tab4" class="tabcontent tab4"><br>
+											<h3>Question</h3><br>
+											<p>문의지롱</p>
+										</div>
 								</div>
 							</div>
-							<!-- 탭 부분 끝 -->
-						</div>	
+							<!-------------------------- 탭 메뉴 끝 ------------------------>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -194,16 +344,76 @@
 		</div>
 	</div>
 	
+	
+<!-- 문의하기 모달 -->
+	<hr style="margin: 0;">
+	<div class="modal fade" id="questionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">문의하기</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				
+				<div class="modal-body">
+					<form action="insertQuestion.do" method="post">
+						<input type="hidden" name="userId" value="${ loginUser.id }">
+						<div class="form-group">
+							<label for="qucontent">문의내용</label>
+							<textarea class="form-control" id="qucontent" name="content" rows="5" cols="50"  style="resize: none"></textarea>
+						</div>
+						<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn" style="background:purple; color:white;" onclick="return quValidate();">Question</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+		
+
 
 
 	<script>
-		$(function(){
-			$('li').click(function () {
-				$('li').removeAttr('class', 'active');
-				$(this).attr('class', 'active');
-			})
-	
+		// 탭메뉴 관련 
+		$(function() {
+			console.log("${tab}");
+				/* $('ul.tab li').click(function() {
+					var activeTab = $(this).attr('data-tab');
+					$('ul.tab li').removeClass('current');
+					$('.tabcontent').removeClass('current');
+					$(this).addClass('current');
+					$('#' + activeTab).addClass('current');
+				})
+			 */
+			$("#container ul>li").on("click", function(){
+				var activeTab = $(this).attr('data-tab');
+	            var tabMenu = $(this).text();
+	            var strId = "${loginUser.id}";
+	            
+	            if(tabMenu == "Review"){
+	                location.href="myPageSelectReview.do?id=${loginUser.id}&tab="+ activeTab;
+	             }else if(tabMenu =="Collection"){
+	            	  location.href="myPageSelectCollection.do?id=${loginUser.id}&tab="+ activeTab;
+	             }else if(tabMenu == "Like"){
+	            	  location.href="myPageSelectLike.do?id=${loginUser.id}&tab="+ activeTab;
+	             }else if(tabMenu == "Question"){
+	            	  location.href="myPageSelectQuestion.do?id=${loginUser.id}&tab="+ activeTab;
+	             }  
+			});
+			if("${tab}" != ''){
+				var tab = "${tab}";
+				$('ul.tab li').removeClass('current');
+				$('.tabcontent').removeClass('current');
+				$("#" + tab).addClass('current');
+				$("." + tab).addClass('current');
+			}
 		});
+
 		// 회원정보 수정, 비밀번호 변경 시 알럴트창
 		$(function(){
 			if("${msg.equals('')}"){
@@ -336,6 +546,26 @@
 			}
 		}
 		
+		
+		// 문의하기 모달창
+		$(function(){
+			$("#question-modal").on("click", function(){
+				$('#questionModal').modal('toggle');
+			});
+		});
+		
+		// 문의하기 버튼 클릭 시		
+		function quValidate(){
+			// 미입력
+			if(!$.trim($("#qucontent").val())){	
+				alert("문의 내용을 입력해주세요");
+				$("#qucontent").focus();
+				return false;
+			} else{
+				return true;
+			}
+		}
+		
 		// 이미지 삭제 버튼 클릭 시
 		function fileReset(){
 			$("#imgArea input").remove();
@@ -366,8 +596,6 @@
 			$("#imgInp").click();
 		});
 	</script>
-	
-		
 	
 </body>
 </html>

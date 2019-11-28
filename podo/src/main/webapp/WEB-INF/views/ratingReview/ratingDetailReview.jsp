@@ -13,7 +13,8 @@
   <link rel="stylesheet" href="vendors/linericon/style.css">
   <link rel="stylesheet" href="vendors/owl-carousel/owl.theme.default.min.css">
   <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
-
+<!-- 제이쿼리 -->
+  <script src="https://code.jquery.com/jquery-latest.js"></script> 
   <link rel="stylesheet" href="css/style.css">
   <script src="vendors/jquery/jquery-3.2.1.min.js"></script>
   <script src="vendors/bootstrap/bootstrap.bundle.min.js"></script>
@@ -21,9 +22,13 @@
   <script src="js/jquery.ajaxchimp.min.js"></script>
   <script src="js/mail-script.js"></script>
   <script src="js/main.js"></script>
-
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <title>Insert title here</title>
 <style>
+
+
+
+
 	body{
 		width: 100%;
 		height: 100%;
@@ -37,17 +42,22 @@
 	#mychart2{
 		margin-left:auto;
 		margin-right:auto;
-		width:300px;
-		height:190px;
+		
+		width:350px;
+		height:350px;
 		display:inline-block;
+		
 	}
+	
 	#movieform{
 		display:inline-block;
+		
+	
 	}
 	.img-fluid{
-		margin-left:180px;
-		width:300px;
-		height:190px;
+		margin-left:260px;
+		width:200px;
+		height:50px;
 	}
 			.star-input>.input,
 			.star-input>.input>label:hover,
@@ -118,6 +128,19 @@
 				text-align: right;
 				vertical-align: middle;
 			}
+		.main_blog_details{
+			margin-left:200px;
+			width: 100%;
+		}
+		#movieform{
+			text-align: center;
+		}
+	#like{
+		margin-left: 500px;
+
+	}
+
+	
 </style>
 </head>
 <body>
@@ -128,48 +151,33 @@
 		<br>
 		
 		<h3 align="center">
-			<a href="reviewUpdateView.do?id=${rr.id}">수정하기</a>
+			<a href="reviewUpdateView.do?id=${r.ratingReviewId}">수정하기</a>
 		</h3>
 	  <section class="blog-post-area section-margin">
     <div class="container">
       <div class="row">
         <div class="col-lg-8">
             <div class="main_blog_details">
-                <img class="img-fluid" src="resources/detailFilmImage/defaultImg.png" alt="">
-            <%-- 이게원래써야함    <img class="img-fluid" src="resources/detailFilmImage/ ${ rr.posterImage }" alt=""> --%>
-               <h4 align="center">${rr.titleKor }</h4>
+              <img class="img-fluid" src="resources/detailFilmImage/${r.posterImage }" alt=""> 
+        <%--     <img class="img-fluid" src="resources/detailFilmImage/${rr.posterImage }" alt=""> --%>
+               <h4 align="center">${r.titleKor }</h4>
                 <div class="user_details">
                     <div class="float-left">
                       <div class="media">
                       <div class="media-body">
-                        <h5>${rr.nickName }</h5>
-                        <p>${ rr.createDate }에 작성</p>
+                        <h5>${r.nickName }님</h5>
+                 
+                        <p>${ r.createDate }에 작성</p>
                       </div>
                       <div class="d-flex">
-                        <img width="42" height="42" src="resources/memberProfileImage/${ rr.userImage }" alt="">
+                        <img width="42" height="42" src="resources/memberProfileImage/${ r.userImage }" alt="">
                       </div>
                     </div>
                   	</div>
                   <div class="float-right mt-sm-0 mt-3">
                     <div class="media">
   					  <div class="media-body">
-                        <h5>별점입니다</h5>
-	                    <span class="star-input">
-							<span class="input">
-							<input type="radio" name="star-input1" value="1" id="p1">
-								<label for="p1" style="width: 30px; z-index: 5;">1</label>
-							<input type="radio" name="star-input1" value="2" id="p2">
-								<label for="p2" style="width: 60px; z-index: 4;">2</label>
-							<input type="radio" name="star-input1" value="3" id="p3">
-								<label for="p3" style="width: 90px; z-index: 3;">3</label>
-							<input type="radio" name="star-input1" value="4" id="p4">
-								<label for="p4" style="width: 120px; z-index: 2;">4</label>
-							<input type="radio" name="star-input1" value="5" id="p5">
-								<label for="p5" style="width: 150px; z-index: 1;">5</label>
-							</span>
-							<output for="star-input"><b style="display: none;"></b></output>
-						</span>
-                        <p>${rr.star }점</p>
+                        <h2>★ :${r.star }점</h2>
                         
                       </div>
                       <div class="d-flex">
@@ -197,14 +205,14 @@
        data: {
            labels: ["음악", "영상", "연기", "대중성", "각본","연출"],
            datasets: [{
-               label: ["${ rr.titleKor }"], 
+               label: ["${ r.titleKor }"], 
             backgroundColor: "rgb(165,102,255)",
             pointBackground:"rgba(179,181,198,1)",
             pointBorderColor:"#fff",
             pointBorderBackgroundColor:"#fff",
 
                data: [
-            	   ${rr.ratingSound},${rr.ratingVisual},${rr.ratingActing},${rr.ratingPop},${rr.ratingScript},${rr.ratingDirect}
+            	   ${r.ratingSound},${r.ratingVisual},${r.ratingActing},${r.ratingPop},${r.ratingScript},${r.ratingDirect}
             	   ]
     
            }]
@@ -235,92 +243,172 @@
    </script>
    </div>
    
-    <form action="vinsert.do" method="post" enctype="mutipart/form-data" id="movieform">
+    <form action="vinsert.do" method="post" id="movieform">
       <table align="center" id="vv">
          <tr>
-            <td>영화제목</td>
-            <td><input type="text" name="title" id="vtitle"  value="${ rr.titleKor }"  readonly></td>
+            <td class="alert alert-primary">제목</td>
+            <td><input style="text-align: center" class="button" type="text" name="title" id="vtitle"  value="${ r.titleKor }"  readonly></td>
          </tr>
          <tr>
-            <td>음악</td>
-            <td><input type="text" name="ratingSound" class="insertRating" id="ratingSound" value="${rr.ratingSound }" readonly></td>
+            <td class="alert alert-primary">음악</td>
+            <td><input style="text-align: center" class="button" type="text" name="ratingSound" class="insertRating" id="ratingSound" value="${r.ratingSound }" readonly></td>
          </tr>
          <tr>   
-            <td>영상</td>
-            <td><input type="text" name="ratingVisual" class="insertRating" id="ratingVisual" value="${rr.ratingVisual }" readonly></td>
+            <td class="alert alert-primary">영상</td>
+            <td><input style="text-align: center" class="button" type="text" name="ratingVisual" class="insertRating" id="ratingVisual" value="${r.ratingVisual }" readonly></td>
          </tr>
          <tr>
-            <td>연기</td>
-            <td><input type="text" name="ratingActing" class="insertRating" id="ratingActing" value="${rr.ratingActing }" readonly></td>
+            <td class="alert alert-primary">연기</td>
+            <td><input style="text-align: center" class="button" type="text" name="ratingActing" class="insertRating" id="ratingActing" value="${r.ratingActing }" readonly></td>
          </tr>
          <tr>
-            <td>대중성</td>
-            <td><input type="text" name="ratingPop" class="insertRating" id="ratingPop" value="${rr.ratingPop }" readonly></td>
+            <td class="alert alert-primary">대중성</td>
+            <td><input style="text-align: center" class="button" type="text" name="ratingPop" class="insertRating" id="ratingPop" value="${r.ratingPop }" readonly></td>
          </tr>
          <tr>
-            <td>각본</td>
-            <td><input type="text" name="ratingScript" class="insertRating" id="ratingScript" value="${rr.ratingScript }" readonly></td>
+            <td class="alert alert-primary">각본</td>
+            <td><input style="text-align: center" class="button" type="text" name="ratingScript" class="insertRating" id="ratingScript" value="${r.ratingScript }" readonly></td>
          </tr>
          <tr>
-            <td>연출</td>
-            <td><input type="text" name="ratingDirect" class="insertRating" id="ratingDirect" value="${rr.ratingDirect }" readonly></td>
+            <td class="alert alert-primary">연출</td>
+            <td><input style="text-align: center" class="button" type="text" name="ratingDirect" class="insertRating" id="ratingDirect" value="${r.ratingDirect }" readonly></td>
          </tr>
-         
-
+                 
+		
       </table>
    </form>
    </div>
-                <p>${rr.content }</p>
-     
+  
+        <p class="main_blog_details">${r.content }</p>
+               
+     	<div class="likedeclaration">
+		<a id="like" class="btn-reply text-uppercase" href="#">좋아요</a>
+		<a id="declaration-modal" class="btn-reply text-uppercase" href="#" data-toggle="modal">신고하기</a>
+		</div>
+		<div>
 
+					
+		</div>
               </div>
         </div>
       </div>
+      
+      
   </section>
-
-
 			
 	
 	<br>
 	
 
 	</div>
-	
+	<!-- 신고하기 모달 -->
+	<div class="modal fade" id="de_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel"></h4>
+				</div>
+				<div class="modal-body">
+				신고하기
+					<div class="eu">
+						<p></p>	
+								<input class="reviewType" type="radio"  name="reviewconent">부적절한내용
+								<input class="reviewType" type="radio"  name="reviewconent">스포일러	
+						<p></p>
+					<!-- 	<input id="commentDe" type="radio" onclick="commentClick();" name="defaultMenu">댓글
+						<p></p>
+								<input class="commentType" type="checkbox" style="display:none;"><p class="commentType" style="display:none;">부적절한내용</p>
+								<input class="commentType" type="checkbox" style="display:none;"><p class="commentType" style="display:none;">스포일러</p>
+						<p></p>
+						<input id="freeDe" type="radio" onclick="freeClick();" name="defaultMenu">자유게시판
+						<p></p>
+								<input class="freeType" type="checkbox" style="display:none;"><p class="freeType" style="display:none;">부적절한내용</p>
+								<input class="freeType" type="checkbox" style="display:none;"><p class="freeType" style="display:none;">스포일러</p>
+						<p></p>						
+						<input id="collectionDe"  type="radio" onclick="collectionClick();" name="defaultMenu">컬렉션
+						<p></p>
+								<input class="collectionType" type="checkbox" style="display:none;"><p class="collectionType" style="display:none;">부적절한내용</p>
+								<input class="collectionType" type="checkbox" style="display:none;"><p class="collectionType" style="display:none;">스포일러</p>
+						<p></p> -->
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" >신고보내기</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
 	<script>
 	
-	$(function(){
-	  	$(document)
-	    .on("mouseover", ".star-input label", function(){
-	    	$(this).parent().siblings("output").find("b").text($(this).text());
-	    })
-	    .on("mouseleave", ".star-input>.input", function(){
-    		var $checked = $(this).closest(".star-input").find(":checked");
-    		if ($checked.length === 0) {
-    			$(this).siblings("output").find("b").text("0");
-   		 	} else {
-   		 		$(this).siblings("output").find("b").text($checked.next().text());
-    		}
-	  	})
-	  	.on("click", ".star-input label", function(){
-			var fid = $(this).closest("tr").find("td").eq(1).text();
-	  		var star = $(this).text();
-	  		console.log("star : " + star);
-	  		console.log("fid : " + fid);
-	  		
-	  		var $checked = $(this).closest(".star-input").find(":checked");
-	  		console.log($checked);
-	  		
-	  		$.ajax({
-	  			url:"rateFilm.do",
-					data:{"fid":fid, "star":star},
-					type:"post",
-					dataType:"json",
-					error:function(){
-						alert("로그인 해주세요!");
-					}
-	  		});
-	  	});
-		});
+	
+	// 신고하기 모달
+
+		
+	// 신고하기 버튼 클릭 시
+	$("#declaration-modal").on( "click", function() {
+        $("#de_modal").modal();
+    });
+
+
+
+	//리뷰 클릭시
+	function reviewClick() {
+		if($("#reviewDe").is(":checked") == true) {
+			$(".reviewType").css("display","inline-block");
+		} else {
+			$(".reviewType").css("display","none");
+		}
+		
+	}
+
+	/* //댓글 클릭시
+	function commentClick() {
+		if($("#commentDe").is(":checked") == true) {
+			$(".commentType").css("display","inline-block");
+		} else {
+			$(".commentType").css("display","none");
+		}
+		
+
+	}
+	//자유게시판 클릭시
+	function freeClick() {
+		if($("#freeDe").is(":checked") == true) {
+			$(".freeType").css("display","inline-block");
+		} else {
+			$(".freeType").css("display","none");
+		}
+		
+
+	}
+	// 컬렉션 신고시
+	function collectionClick() {
+		if($("#collectionDe").is(":checked") == true) {
+			$(".collectionType").css("display","inline-block");
+		} else {
+			$(".collectionType").css("display","none");
+		}
+		
+
+	} */
 
 	</script>
 </body>

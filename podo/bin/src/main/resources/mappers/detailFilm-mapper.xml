@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="detailFilmmapper"> 
+	
+	<resultMap id="detailFilmResultSet" type="DetailFilm">
+		<id property="id" column="id"/>
+		<result property="titleKor" column="title_kor"/>
+		<result property="titleEng" column="title_eng"/>
+		<result property="director" column="director"/>
+		<result property="actor" column="name"/>
+		<result property="trailer" column="trailer"/>
+		<result property="synopsys" column="synopsys"/>
+		<result property="trivia" column="trivia"/>
+	</resultMap>
+	
+	<resultMap id="reviewListResultSet" type="Review">
+		<id property="id" column="id"/>
+		<result property="image" column="image"/>
+		<result property="nickname" column="nickname"/>
+		<result property="content" column="content"/>
+		<result property="likeCount" column="like_count"/>
+	</resultMap>
+	
+	<!-- 영화 상세 정보 보기  -->
+	<!-- 입력 날짜 최신순 기준으로 rownum 1번, status='Y'인 정보 출력 -->
+	<select id="selectDetailFilm" resultMap="detailFilmResultSet">
+		select rownum, m.*
+		from (select *
+		      from tb_film f
+		      left join tb_detail_film df on(df.film_id = f.id)
+		      left join tb_film_actor fa on(df.id = fa.dfilm_id)
+		      left join tb_actor a on(fa.actor_id = a.id)
+		      where f.id=4
+		      and df.status='Y'
+		      order by insertdate desc)m
+		where rownum =1
+	</select>
+	
+	<!-- 영화에 달린 리뷰들 보기 -->
+	<select id="selectReivewList" resultMap="reviewListResultSet">
+		select *
+		from tb_film f
+		left join tb_review r on(f.id = r.film_id)
+		left join tb_member m on(r.member_id = m.id)
+		where f.id=#{id}
+	</select>
+	
+	<!-- 영화 정보 수정 [시놉시스], [추가 정보], [예고편 링크] 수정하는 부분 insert로 DB에 추가 회원 번호는 어떻게 알지? -->
+	<!-- 입력날짜 최신순 입력 -->
+	<insert id="insertDetailFilm">
+		insert into tb_detail_film
+		values(seq_dfilm_id, #{synopsys},#{trivia},#{trailer},null,'Y',#{writer},#{id})
+	</insert>
+	
+	<!-- 관리자가 [되돌리기] 버튼을 누르면 update로 status 'N'으로 수정 -->
+	<update id="updateDetailFilm">
+		update tb_detail_film
+		set status='N'
+		where id=#{id}
+		and status='Y'
+		order by insertdate desc
+	</update>
+	
+	
+	
+</mapper>
+
+
+

@@ -13,14 +13,16 @@
 		<result property="trailer" column="trailer"/>
 		<result property="synopsys" column="synopsys"/>
 		<result property="trivia" column="trivia"/>
+		<result property="nickName" column="nickname"/>
 	</resultMap>
 	
 	<resultMap id="reviewListResultSet" type="Review">
 		<id property="id" column="id"/>
 		<result property="userImage" column="image"/>
-		<result property="nickname" column="nickname"/>
+		<result property="nickName" column="nickname"/>
 		<result property="content" column="content"/>
 		<result property="likeCount" column="like_count"/>
+		<result property="spoilerCheck" column="spoiler_check"/>
 	</resultMap>
 	
 	<resultMap id="filmImage" type="Image">
@@ -28,15 +30,23 @@
 		<result property="changeName" column="change_name"/>
 	</resultMap>
 	
+	<!-- Actor 리스트 -->
+	<resultMap id="selectFilmActorResultSet" type="Actor">
+		<id property="id" column="id"/>
+		<result property="actorName" column="name"/>
+		<result property="profileImage" column="profile_img"/>
+	</resultMap>
+		
 	<!-- 영화 상세 정보 보기  -->
 	<!-- 입력 날짜 최신순 기준으로 rownum 1번, status='Y'인 정보 출력 -->
 	<select id="selectDetailFilm" resultMap="detailFilmResultSet">
 		select rownum, m.*
-		from (select df.id, df.film_id, title_kor, title_eng, director, a.name, trailer, synopsys, trivia
+		from (select df.id, df.film_id, title_kor, title_eng, director, a.name, trailer, synopsys, trivia, nickname
 		      from tb_film f
 		      left join tb_detail_film df on(df.film_id = f.id)
 		      left join tb_film_actor fa on(df.id = fa.dfilm_id)
 		      left join tb_actor a on(fa.actor_id = a.id)
+              left join tb_member m on(df.member_id = m.id)
 		      where f.id = #{filmId}
 		      and df.status='Y'
 		      order by df.insertdate desc) m
@@ -50,6 +60,7 @@
 		left join tb_review r on(f.id = r.film_id)
 		left join tb_member m on(r.member_id = m.id)
 		where f.id=#{filmId}
+		order by r.id desc
 	</select>
 	
 	<!-- 영화 정보 수정 [시놉시스], [추가 정보], [예고편 링크] 수정하는 부분 insert로 DB에 추가 회원 번호/세션 정보/ 는 어떻게 알지? -->
@@ -59,11 +70,18 @@
 		values(seq_dfilm_id.nextval, #{df.synopsys}, #{df.trivia}, #{df.trailer}, null, 'Y', sysdate, #{uId}, #{df.filmId})
 	</insert>
 	
+	<!-- 창수의 영화등록 서비스 수정중 -->
+	<!-- 
+	<insert id="insertInitDetailFilm">
+		insert into tb_detail_film
+		values(seq_dfilm_id.nextval, null, null, null, null, 'Y', sysdate, #{id}, #{df.filmId})
+	</insert>
+	 -->
+	
 	<insert id="filmImageInsert" parameterType="hashMap">
 		insert into tb_film_image
 		values(seq_fimage_id.nextval, 1, #{filmImage}, seq_dfilm_id.currval)
 	</insert>
-	
 	
 	<!-- 영화 상세정보 보기에서 포스터 불러오기 -->
 	<select id="selectFilmImage" resultMap="filmImage">
@@ -76,7 +94,7 @@
 		where rownum = 1
 	</select>
 	
-	<!-- 영화 정보 수정 [배우] 수정하는 부분 insert로 DB에 추가 Dfilm_id 는 어떻게 알지?? -->
+	<!-- 영화 정보 수정 [배우] 수정하는 부분 insert로 DB에 추가 Dfilm_id 는 어떻게 알지?? / 이건 해결 -->
 	<insert id="insertFilmActor">
 		insert into tb_film_actor
 		values(#{actor_id}, #{dFilm_id})
@@ -87,14 +105,62 @@
 	<update id="updateDetailFilm">
 		update tb_detail_film
 		set status='N'
-		where id=#{id}
-		and status='Y'
-		order by insertdate desc
-		
-		update tb_detail_film
-		set status='N'
-		where id=78;
+		where id = (select  m.id
+		            from (select df.id, df.film_id, title_kor, title_eng, director, a.name, trailer, synopsys, trivia
+		                  from tb_film f
+		               	  left join tb_detail_film df on(df.film_id = f.id)
+		                  left join tb_film_actor fa on(df.id = fa.dfilm_id)
+		                  left join tb_actor a on(fa.actor_id = a.id)
+		                  where f.id = #{filmid}
+		                  and df.status='Y'
+		                  order by df.insertdate desc) m
+		            where rownum = 1)
 	</update>
+	
+	<!-- 콜렉션 mapping 값 -->
+	<!-- 번호, 제목, 내용, 좋아요갯수, 신고갯수, 스포일러카운트, 생성일자, 수정일자, 상태값, 공개여부, 작성자번호 -->
+	<insert id="insertCollection">
+		insert into tb_collection
+		values(seq_collection_id.nextval, '샘플 제목', '샘플 내용', default, default, default, sysdate, sysdate, default, default, #{userId})
+	</insert>
+	
+	<!-- 
+	콜렉션 리스트 출력 
+	<select id="selectCollectionList" resultMap="selectCollectionListResultSet">
+		select *
+		from tb_collection
+		where member_id=#{userId}
+		order by id desc
+	</select>
+	-->
+	
+	<!-- 생성한 콜렉션에 영화 추가 -->
+	<!-- 콜렉션 번호, 영화 번호 -->
+	<insert id="insertFilm_Collection">
+		insert into tb_film_collection
+		values(#{collectionId}, #{filmId});
+	</insert>
+	
+	<!-- 영화 배우 리스트 -->
+	<select id="selectFilmActor" resultMap="selectFilmActorResultSet">
+		select a.id, a.name, a.profile_img
+		from tb_film_actor fa
+		join tb_actor a on(fa.actor_id=a.id)
+		join tb_detail_film df on(fa.dfilm_id=df.id)
+		where df.id=#{id}
+	</select>
+	
+	<!-- 검색 배우 리스트  -->
+	<select id="searchActorList" resultMap="selectFilmActorResultSet">
+		select id, name, profile_img
+		from tb_actor
+		where name like '%'||#{searchName}||'%'
+	</select>
+	
+	<insert id="addActor">
+		insert into tb_film_actor
+		values(#{actorId},#{id})
+	</insert>
 	
 </mapper>
 

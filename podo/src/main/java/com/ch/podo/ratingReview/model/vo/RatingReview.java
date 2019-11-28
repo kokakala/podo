@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class RatingReview {
-	private int id;
+	private int ratingReviewId;		//평점주는용도
 	private int ratingSound;		//음악
 	private int ratingVisual;		//영상
 	private int ratingActing;		//연기

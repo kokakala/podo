@@ -18,8 +18,7 @@ public class Image {
 	private String originalName;	// 원본 파일명
 	private String changeName;		// 수정된 파일명
 	private int type;				// 타입(자유게시판, 공지사항)이런식
+	private int boardId; 			// 참조 게시판 번호
+	private int noticeId; 			// 참조 공지사항 번호
 	
-	
-	
-
 }

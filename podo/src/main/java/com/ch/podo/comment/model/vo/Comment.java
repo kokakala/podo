@@ -25,7 +25,9 @@ public class Comment {
 	private Date modifyDate;		// 최초 수정일
 	private String status;			// 상태
 	private int level;				// 댓글층
-	
+	private int memberId;
+	private int boardId;
+	private int reviewId;
 	
 	
 }

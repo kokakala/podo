@@ -15,8 +15,24 @@
 		<result property="createDate" column="create_date"/>
 		<result property="status" column="status"/>
 		<result property="memberId" column="member_id"/>
-		<result property="imageId" column="image_id"/>
 	</resultMap>
+	
+	<resultMap id="commentResultSet" type="Comment">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="content" column="content"/>
+		<result property="inappropriateCount" column="inappropriate_count"/>
+		<result property="spoilerCount" column="spoiler_count"/>
+		<result property="likeCount" column="like_count"/>
+		<result property="createDate" column="create_date"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="status" column="status"/>
+		<result property="level" column="level"/>
+		<result property="memberId" column="member_id"/>
+		<result property="boardId" column="board_id"/>
+		<result property="reviewId" column="review_id"/>
+	</resultMap>
+	
 	
 	
 	<select id="getBoardCount" resultType="_int">
@@ -37,12 +53,50 @@
 	</insert>
 	
 	<update id="updateCount">
-		update board
-		set bcount = bcount + 1
-		where bid=#{id}
+		update tb_board
+		set view_count = view_count + 1
+		where id=#{id}
 	</update>
 	
+	<select id="selectBoard" resultMap="boardResultSet">
+		select *
+		from tb_board
+		where id=#{id}
+	</select>
 	
+	<update id="deleteBoard">
+		update tb_board
+		set status='N'
+		where id=#{id}
+	</update>
+	
+	<!-- 
+	<update id="updateBoard">
+		
+	</update>
+	 -->
+	 
+	 <!-- 댓글 -->
+	 <select id="selectCommentList" resultMap="commentResultSet">
+	 	select *
+		from tb_comment
+		where BOARD_ID=#{id}
+		and status='Y'
+	 </select>
+	 
+	 <insert id="insertComment">
+	 	insert into tb_comment
+	 	values(seq_comment_id.nextval, 2, #{content}, default, default, default, sysdate, sysdate, default, default, 1, #{boardId}, null)
+	 </insert>
+	
+
+	<select id="selectboardListHome" resultMap="boardResultSet">
+		select *
+		from tb_board b
+        join tb_member m on(b.member_id=m.id)
+		where b.status='Y'
+		order by b.id desc
+	</select>
 	
 	
 </mapper>
