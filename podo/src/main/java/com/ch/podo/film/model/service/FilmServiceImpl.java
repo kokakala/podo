@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 
 import com.ch.podo.board.model.vo.PageInfo;
@@ -18,6 +19,9 @@ public class FilmServiceImpl implements FilmService {
 	
 	@Autowired
 	private FilmDao filmDao;
+
+	@Autowired
+	private DataSourceTransactionManager transactionManager;
 	
 	@Override
 	public int getListCount() {
@@ -58,15 +62,18 @@ public class FilmServiceImpl implements FilmService {
 	public ArrayList<Film> selectFilmList() {
 		return filmDao.selectFilmList();
 	}
-	
-	@Override
-	public int insertFilm(Film f) {
-		return filmDao.insertFilm(f);
-	}
 
 	@Override
-	public int insertFilmImage(Image img) {
-		return filmDao.insertFilmImage(img);
+	public int insertFilm(Film f, int memberId, Image img) {
+		
+		int result1 = filmDao.insertFilm(f);
+		int result2 = filmDao.insertInitDetailFilm(memberId);
+		int result3 = filmDao.insertFilmImage(img);
+		
+		if (result1 > 0 && result2 > 0 && result3 > 0) {
+			return 1;
+		}
+		return 0;
 	}
 
 	@Override

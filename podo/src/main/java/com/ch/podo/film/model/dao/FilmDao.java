@@ -60,10 +60,6 @@ public class FilmDao {
 		return sqlSession.insert("filmMapper.insertFilm", f);
 	}
 
-	public int insertFilmImage(Image img) {
-		return sqlSession.insert("filmMapper.insertFilmImage", img);
-	}
-
 	public Film selectFilm(int id) {
 		return sqlSession.selectOne("filmMapper.selectFilm", id);
 	}
@@ -96,6 +92,14 @@ public class FilmDao {
 
 	public ArrayList<Film> selectNewFilms() {
 		return (ArrayList)sqlSession.selectList("filmMapper.selectNewFilms");
+	}
+
+	public int insertInitDetailFilm(int memberId) {
+		return sqlSession.insert("filmMapper.insertInitDetailFilm", memberId);
+	}
+
+	public int insertFilmImage(Image img) {
+		return sqlSession.insert("filmMapper.insertFilmImage", img);
 	}
 
 }

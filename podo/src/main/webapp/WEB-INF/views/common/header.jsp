@@ -6,9 +6,13 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="icon" href="resources/bootstrap/img/favicon.png" type="image/png">
+	
+	<!-- js -->
+	<script src="resources/bootstrap/vendors/jquery/jquery-3.2.1.min.js"></script>
+	<script src="resources/bootstrap/vendors/bootstrap/bootstrap.bundle.min.js"></script>
 	
 	<!-- css -->
-	<link rel="icon" href="resources/bootstrap/img/favicon.png" type="image/png">
 	<link rel="stylesheet" href="resources/bootstrap/vendors/bootstrap/bootstrap.min.css">
 	<link rel="stylesheet" href="resources/bootstrap/vendors/fontawesome/css/all.min.css">
 	<link rel="stylesheet" href="resources/bootstrap/vendors/themify-icons/themify-icons.css">
@@ -21,17 +25,13 @@
 	<!-- 폰트 -->
 	<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:700&display=swap" rel="stylesheet">
 	
-	<!-- js -->
-	<script src="resources/bootstrap/vendors/jquery/jquery-3.2.1.min.js"></script>
-	<script src="resources/bootstrap/vendors/bootstrap/bootstrap.bundle.min.js"></script>
-	
 	<style>
 		
 		.search-form {
 			display: inline-block;
 			text-align: center;
-		
 		}
+		
 	</style>
 
 </head>
@@ -56,19 +56,21 @@
 							<li class="nav-item"><a class="nav-link" href="film.do?p=1">영화</a></li>
 							<li class="nav-item"><a class="nav-link" href="reviewList.do">리뷰</a>
 							<li class="nav-item"><a class="nav-link" href="rec.do">추천</a>
-							<li class="nav-item"><a class="nav-link" href="blist.do">게시판</a>
-							<c:if test="${ loginUser ne null }">
-								<li class="nav-item"><a id="logout" class="nav-link" href="logout.do">로그아웃</a>
-								<c:if test="${ loginUser.autho eq 1 }">
+
+							<li class="nav-item"><a class="nav-link" href="blist.do">게시판</a>					
+							<c:choose>
+						       <c:when test="${ loginUser.autho eq 2}">
+						       		<li class="nav-item"><a id="logout" class="nav-link" href="logout.do">로그아웃</a>
+									<li class="nav-item"><a id="logout" class="nav-link" href="admin.do">관리자</a>
+						       </c:when>
+						       <c:when test="${ loginUser ne null }">
+						       		<li class="nav-item"><a id="logout" class="nav-link" href="logout.do">로그아웃</a>
 									<li class="nav-item"><a id="logout" class="nav-link" href="myPage.do?id=${ loginUser.id }">마이페이지</a>
-								</c:if>
-								<c:if test="${ loginUser.autho eq 2 }">
-									<li class="nav-item"><a id="logout" class="nav-link" href="admin.do">관리자페이지</a>
-								</c:if>
-							</c:if>
-							<c:if test="${ loginUser eq null }">
-								<li class="nav-item"><a id="login-modal" class="nav-link" href="#" data-toggle="modal">로그인</a>
-							</c:if>
+						       </c:when>
+						       <c:otherwise>
+						       		<li class="nav-item"><a id="login-modal" class="nav-link" href="#" data-toggle="modal">로그인</a>
+						       </c:otherwise>
+						   </c:choose>
 						</ul>
 					</div>
 					<form method="post" action="skFilm.do" class="form-inline my-4 my-lg-0">

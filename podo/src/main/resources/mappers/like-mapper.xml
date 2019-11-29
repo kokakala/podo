@@ -27,4 +27,22 @@
 		where user_id = #{id}
 	</select>
 	
+	<select id="selectLikeUser" resultMap="likeResultSet">
+		select *
+		from tb_like
+		where target_id=#{userId} and
+			  user_id=#{loginUserId}
+	</select>
+	
+	<insert id="insertLikeMem">
+		insert into tb_like values (seq_like_id.nextval, 1, #{targetId}, #{userId})
+	</insert>
+	
+	<delete id="deleteLikeMem">
+		delete from tb_like
+		where user_id = #{userId} and
+			  target_id = #{targetId}
+	</delete>
+	
+	
 </mapper>

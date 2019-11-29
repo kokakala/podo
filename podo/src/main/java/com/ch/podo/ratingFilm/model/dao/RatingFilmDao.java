@@ -33,5 +33,13 @@ public class RatingFilmDao {
 	public Map<Integer, RatingFilm> selectRatedFilm(int id) {
 		return (Map)sqlSession.selectMap("ratingFilmMapper.selectRatedFilm", id, "filmId");
 	}
+
+	public int insertSawFilm(RatingFilm rate) {
+		return sqlSession.insert("ratingFilmMapper.insertSawFilm", rate);
+	}
+
+	public int deleteSawFilm(RatingFilm rate) {
+		return sqlSession.delete("ratingFilmMapper.deleteSawFilm", rate);
+	}
 	
 }

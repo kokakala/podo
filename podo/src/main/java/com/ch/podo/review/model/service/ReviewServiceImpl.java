@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ch.podo.board.model.vo.PageInfo;
+import com.ch.podo.comment.model.vo.Comment;
 import com.ch.podo.detailFilm.model.vo.DetailFilm;
 import com.ch.podo.film.model.vo.Film;
 import com.ch.podo.member.model.vo.Member;
 import com.ch.podo.ratingReview.model.vo.RatingReview;
+import com.ch.podo.report.model.vo.Report;
 import com.ch.podo.review.model.dao.ReviewDao;
 import com.ch.podo.review.model.dto.Review;
 
@@ -110,6 +112,30 @@ public class ReviewServiceImpl implements ReviewService{
 	@Override
 	public ArrayList<Review> selectAdReviewList() {
 		return reviewDao.selectAdReviewList();
+	}
+
+	@Override
+	public int insertDeclaration(Report rep) {
+		
+		return reviewDao.insertDeclaration(rep);
+	}
+
+	@Override
+	public Review selectReviewReport(int reviewNo) {
+		
+		return reviewDao.selectReviewReport(reviewNo);
+	}
+
+	@Override
+	public ArrayList<Comment> selectReviewComment(int id) {
+		
+		return reviewDao.selectReviewComment(id);
+	}
+
+	@Override
+	public int insertReviewComment(Comment c) {
+		
+		return reviewDao.insertReviewComment(c);
 	}
 
 	/*

@@ -154,6 +154,7 @@
 					</c:forEach>
                 </tbody>
               </table>
+ 				<a href="javascript:;" id="btn_multi_unblock">해제</a>
             </div>
           </div>
           <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>

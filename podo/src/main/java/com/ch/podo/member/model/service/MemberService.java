@@ -25,7 +25,8 @@ public interface MemberService {
 	// 5. 회원 탈퇴
 	int deleteMember(String id);
 	
-	
+	// 6. 유저페이지_유저조회
+	Member selectUserPageMem(String userId);
 	
 	
 	// 관리자
@@ -38,8 +39,9 @@ public interface MemberService {
 
 	
 	// 3. 블랙리스트 해제
-	int deleteBlackMember(int result);
+	int deleteBlackMember(String[] result);
 	
-	
+	// 4. 블랙리스트 기능 제한 인터셉터
+	int prohibitionBoard(int bid);
 	
 }

@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ch.podo.board.model.vo.PageInfo;
+import com.ch.podo.common.Pagination;
 import com.ch.podo.inquiry.model.service.InquiryService;
 import com.ch.podo.inquiry.model.vo.Inquiry;
+import com.ch.podo.review.model.dto.Review;
 
 @Controller
 public class InquiryController {
@@ -17,11 +21,11 @@ public class InquiryController {
 	
 	@RequestMapping("insertQuestion.do")
 	public ModelAndView insertQuestion(Inquiry inq, ModelAndView mv) {
-		
+		String id = String.valueOf(inq.getUserId());
 		int result = inquiryService.insertQuestion(inq);
 		
 		if(result > 0) {	// 업데이트 성공
-			mv.addObject("msg", "문의 등록 성공").setViewName("member/myPage");
+			mv.setViewName("redirect:myPage.do?id="+id);
 		}else {
 			mv.addObject("msg", "문의 등록 실패").setViewName("member/myPage");
 		}
@@ -30,10 +34,13 @@ public class InquiryController {
 	}
 	
 	@RequestMapping("myPageSelectQuestion.do")
-	public ModelAndView myPageSelectQuestion(String tab, String id, ModelAndView mv) {
-		ArrayList list = new ArrayList();
-		System.out.println("문의");
-		mv.addObject("list", list).addObject("tab", tab).setViewName("member/myPage");
+	public ModelAndView myPageSelectQuestion(String tab, String id, ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		int listCount = inquiryService.myPageInquiryListCount(id);
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Inquiry> inquiryList = inquiryService.myPageSelectInquiryList(id,pi);
+		mv.addObject("inquiry", inquiryList).addObject("inquiryPi", pi).addObject("tab", tab).setViewName("member/myPage");
+		
 		return mv;
 	}
 }

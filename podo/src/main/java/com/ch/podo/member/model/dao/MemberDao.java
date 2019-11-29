@@ -40,6 +40,9 @@ public class MemberDao {
 		return sqlSession.update("memberMapper.updateMember", mem);
 	}
 	
+	public Member selectUserPageMem(String userId) {
+		return sqlSession.selectOne("memberMapper.selectUserPageMem", userId);
+	}
 	
 
 	public ArrayList<Member> selectMemberList() {
@@ -51,10 +54,12 @@ public class MemberDao {
 	}
 	
 	
-	public int deleteBlackMember(int result) {
-		return sqlSession.delete("memberMapper.deleteBlackMember", result);
+	public int deleteBlackMember(String[] result) {
+		return sqlSession.delete("memberMapper.del	eteBlackMember", result);
 	}
 
-
+	public int prohibitionBoard(int bid) {
+		return sqlSession.selectOne("memberMapper.prohibitionBoard", bid);
+	}
 	
 }

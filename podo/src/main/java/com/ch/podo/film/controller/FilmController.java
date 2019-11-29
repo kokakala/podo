@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,7 +22,6 @@ import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.common.Pagination;
 import com.ch.podo.common.PodoRenamePolicy;
 import com.ch.podo.common.SearchCondition;
-import com.ch.podo.detailFilm.model.service.DetailFilmService;
 import com.ch.podo.detailFilm.model.vo.DetailFilm;
 import com.ch.podo.film.model.service.FilmService;
 import com.ch.podo.film.model.vo.Film;
@@ -47,9 +47,6 @@ public class FilmController {
 	@Autowired
 	private RatingFilmService ratingFilmService;
 	
-	@Autowired
-	private DetailFilmService detailFilmService;
-	
 	private Logger logger = LoggerFactory.getLogger(FilmController.class);
 	
 	/**
@@ -66,7 +63,7 @@ public class FilmController {
 		int listCount = filmService.selectKeywordFilmListCount(keyword);
 		// page는 최대 3페이지, board는 최대 6개 보여지도록 set
 		PageInfo pi = Pagination.setPageLimit(currentPage, listCount, 3, 6);
-		// System.out.println("pi : " + pi);
+		// logger.info("pi : " + pi);
 		
 		ArrayList<Film> list = filmService.selectKeywordFilmList(keyword, pi);
 		mv.addObject("listCount", listCount)
@@ -116,7 +113,7 @@ public class FilmController {
 		if (loginUser != null) {
 			sc.setUserId(loginUser.getId());
 		}
-		// System.out.println("sc : " + sc);
+		// logger.info("sc : " + sc);
 		
 		// 필터 목록 조회
 		ArrayList<String> release = filmService.selectAllReleaseYearList();
@@ -124,7 +121,7 @@ public class FilmController {
 		ArrayList<Genre> genre = filmService.selectAllGenreList();
 		
 		int listCount = filmService.selectFilterFilmListCount(sc);
-		// System.out.println("listCount : " + listCount);
+		// logger.info("listCount : " + listCount);
 		
 		// page는 최대 3페이지, board는 최대 12개 보여지도록 set
 		PageInfo pi = Pagination.setPageLimit(currentPage, listCount, 5, 12);
@@ -135,12 +132,12 @@ public class FilmController {
 		 	    && (sc.getSaw() == null || sc.getSaw().equals("all"))
 		 	    && (sc.getOrder() == null || sc.getOrder().equals("all")))) {
 			pi = Pagination.setNewPageLimit(currentPage, listCount, pi);
-			// System.out.println("new pi : " + pi);
+			// logger.info("new pi : " + pi);
 		}
 		// 옵션으로 검색된 영화 목록
 		ArrayList<Film> filmList = filmService.selectFilterFilmList(sc, pi);
-		// System.out.println("filmList : " + filmList);
-		// System.out.println("filmList.size() : " + filmList.size());
+		// logger.info("filmList : " + filmList);
+		// logger.info("filmList.size() : " + filmList.size());
 		
 		// 사용자가 좋아요한 영화 목록
 		HashMap<Integer, Like> likeMap = new HashMap<>();
@@ -153,7 +150,7 @@ public class FilmController {
 		if (loginUser != null) {
 			ratingMap = (HashMap<Integer, RatingFilm>)ratingFilmService.selectRatedFilm(loginUser.getId());
 		}
-		// System.out.println("ratingMap : " + ratingMap);
+		// logger.info("ratingMap : " + ratingMap);
 		
 		mv.addObject("release", release)
 			.addObject("country", country)
@@ -175,13 +172,13 @@ public class FilmController {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
-		// System.out.println("film : " + film);
+		// logger.info("film : " + film);
 		
 		// 옵션으로 검색된 영화 목록
 		// ArrayList<Film> filmList = filmService.selectFilterFilmList(film);
 		// map.put("film", filmList);
 		
-		// System.out.println("filmList : " + filmList);
+		// logger.info("filmList : " + filmList);
 		
 		// 사용자가 좋아요한 영화 목록
 		HashMap<Integer, Like> likeMap = new HashMap<>();
@@ -213,28 +210,65 @@ public class FilmController {
 	 * @throws IOException
 	 * @author Changsu Im
 	 */
+	@ResponseBody
 	@RequestMapping("likeFilm.do")
-	public void likeFilm(HttpServletResponse response, HttpSession session,
+	public int likeFilm(HttpServletResponse response, HttpSession session,
 											 String fid, @RequestParam("flag") int flag)
 			throws JsonIOException, IOException {
-		Member mem = (Member)session.getAttribute("loginUser");
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		
+		if (loginUser == null) {
+			return 0;
+		}
 		
 		Like like = new Like();
 		like.setTargetId(Integer.parseInt(fid));
-		like.setUserId(mem.getId());
+		like.setUserId(loginUser.getId());
 		
-		int result = 0;
 		if (flag > 0) {
-			result = likeService.insertLikeFilm(like);
 			logger.info("like insert 실행");
+			return likeService.insertLikeFilm(like);
 		} else {
-			result = likeService.deleteLikeFilm(like);
 			logger.info("like delete 실행");
+			return likeService.deleteLikeFilm(like);
 		}
 		
-		response.setContentType("application/json; charset=utf-8");
-		Gson gson = new Gson();
-		gson.toJson(result, response.getWriter());
+	}
+	
+	/**
+	 * 영화 페이지에서 봤어요 서비스
+	 * @param response
+	 * @param session
+	 * @param fid
+	 * @param flag
+	 * @throws JsonIOException
+	 * @throws IOException
+	 * @author Changsu Im
+	 * @since 2019-11-29
+	 */
+	@ResponseBody
+	@RequestMapping("sawFilm.do")
+	public int sawFilm(HttpServletResponse response, HttpSession session,
+											String fid, @RequestParam("flag") int flag)
+					throws JsonIOException, IOException {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+
+		if (loginUser == null) {
+			return 0;
+		}
+		
+		RatingFilm rate = new RatingFilm();
+		rate.setFilmId(Integer.parseInt(fid));
+		rate.setUserId(loginUser.getId());
+		
+		if (flag > 0) {
+			logger.info("saw insert 실행");
+			return ratingFilmService.insertSawFilm(rate);
+		} else {
+			logger.info("saw delete 실행");
+			return ratingFilmService.deleteSawFilm(rate);
+		}
+		
 	}
 	
 	/**
@@ -247,8 +281,9 @@ public class FilmController {
 	 * @throws IOException
 	 * @author Changsu Im
 	 */
+	@ResponseBody
 	@RequestMapping("rateFilm.do")
-	public void rateFilm(HttpServletResponse response, HttpSession session, String fid, String star)
+	public int rateFilm(HttpServletResponse response, HttpSession session, String fid, String star)
 			throws JsonIOException, IOException {
 		Member mem = (Member)session.getAttribute("loginUser");
 		
@@ -258,27 +293,23 @@ public class FilmController {
 		rate.setFilmId(Integer.parseInt(fid));
 		
 		RatingFilm flag = ratingFilmService.selectRatingFilm(rate);
-		int result = 0;
 
 		// 이미 기존에 있는 별점을 다시 눌렀을 경우 취소되면서 삭제
 		if (flag != null && Integer.parseInt(star) == flag.getStar()) {
-			result = ratingFilmService.deleteRateFilm(rate);
 			logger.info("rate delete 실행");
+			return ratingFilmService.deleteRateFilm(rate);
 		} else {
 			// 기존에 별점이 없다면 삽입
 			if (flag == null) {
-				result = ratingFilmService.insertRateFilm(rate);
 				logger.info("rate insert 실행");
+				return ratingFilmService.insertRateFilm(rate);
 			// 이미 기존에 별점이 있다면 수정
 			} else {
-				result = ratingFilmService.updateLikeFilm(rate);
 				logger.info("rate update실행");
+				return ratingFilmService.updateLikeFilm(rate);
 			}
 		}
 		
-		response.setContentType("application/json; charset=utf-8");
-		Gson gson = new Gson();
-		gson.toJson(result, response.getWriter());
 	}
 	
 	/**
@@ -307,8 +338,8 @@ public class FilmController {
 			liked = filmService.selectLikedFilmCount(loginUser.getId());
 		}
 		
-		// System.out.println("list : " + list);
-		// System.out.println("liked : " + liked);
+		// logger.info("list : " + list);
+		// logger.info("liked : " + liked);
 		
 		// 좋아요 누른 영화가 10개 미만일 경우 count만 넘겨줌
 		if (liked < 10) {
@@ -433,39 +464,28 @@ public class FilmController {
 	 */
 	@RequestMapping("finsert.do")
 	public ModelAndView finsert(ModelAndView mv, Film film, DetailFilm df, Image img,
-								HttpServletRequest request, HttpSession session,
-								@RequestParam(value = "uploadFile", required = false) MultipartFile file) {
+															HttpServletRequest request, HttpSession session,
+															@RequestParam(value = "uploadFile", required = false) MultipartFile file) {
 		System.out.println("film : " + film);
 		
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		
 		if (!file.getOriginalFilename().equals("")) {
-			String renameFileName = new PodoRenamePolicy().rename(file, request);
+			String renameFileName = PodoRenamePolicy.rename(file, request);
 			img.setChangeName(renameFileName);
-			System.out.println("renameFileName : " + renameFileName);
-		} else {
-			img.setChangeName("podoposter.jpg");
+			logger.info("renameFileName : " + renameFileName);
 		}
-		System.out.println("img : " + img);
+		// logger.info("img : " + img);
 		
-		/*
-		 * 트랜잭션 처리 필요
-		 */
-		int result1 = filmService.insertFilm(film);
-		System.out.println("result1 : " + result1);
+		int result = filmService.insertFilm(film, loginUser.getId(), img);
+		logger.info("result : " + result);
 		
-		int result2 = detailFilmService.insertInitDetailFilm(loginUser.getId(), film.getId());
-		System.out.println("result2 : " + result2);
-		
-		int result3 = filmService.insertFilmImage(img);
-		System.out.println("result3 : " + result3);
-		
-		if (result1 > 0 && result2 > 0 && result3 > 0) {
+		if (result > 0) {
 			mv.setViewName("redirect:flist.do");
 		} else {
 			mv.setViewName("error/errorPage");
 		}
-
+		
 		return mv;
 	}
 	

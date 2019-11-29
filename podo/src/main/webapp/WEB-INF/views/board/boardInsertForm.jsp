@@ -44,7 +44,7 @@
 	  	<div class="form-group row">
 			<label for="" class="col-sm-2 col-form-label">작성자 </label>
 	    	<div class="col-sm-4">
-				<input type="text" class="form-control" name="memberId" value="${ loginUser.id }" readonly>
+				<input type="text" class="form-control" name="memberId" value="${ m.nickName }" readonly>
 	    	</div>
 	  	</div>
 	  	<div class="form-group row">

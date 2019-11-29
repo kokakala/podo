@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ch.podo.board.model.vo.PageInfo;
-import com.ch.podo.common.Pagination;
 import com.ch.podo.report.model.service.ReportService;
 import com.ch.podo.report.model.vo.Report;
 

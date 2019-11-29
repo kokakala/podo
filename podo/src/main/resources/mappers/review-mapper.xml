@@ -100,6 +100,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="posterImage" column="change_name"/>
 	</resultMap>
 	
+	<resultMap type="Report" id="reportReview">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="targetId" column="target_id"/>
+		<result property="content" column="content"/>
+		<result property="reportId" column="REPORT_ID"/>
+		<result property="reportedId" column="REPORTED_ID"/>
+		<!-- <result property="memberId" column="member_id"/> -->
+
+	</resultMap>
+	
+	<resultMap id="commentResultSet" type="Comment">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="content" column="content"/>
+		<result property="inappropriateCount" column="inappropriate_count"/>
+		<result property="spoilerCount" column="spoiler_count"/>
+		<result property="likeCount" column="like_count"/>
+		<result property="createDate" column="create_date"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="status" column="status"/>
+		<result property="level" column="level"/>
+		<result property="memberId" column="member_id"/>
+		<result property="boardId" column="board_id"/>
+		<result property="reviewId" column="review_id"/>
+		<result property="nickName" column="nickname"/>
+	</resultMap>
+	
 	<select id="getReviewListCount" resultType="_int">
 		select count(*)
 		from tb_review r
@@ -109,20 +137,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectReviewList" resultMap="reviewListSet">	
         select *
 		from tb_review r
-		left join tb_film f on(r.film_id = f.id)
-        left join tb_member m on(r.member_id = m.id)
-		left join tb_detail_film df on(r.film_id = df.id)
-		left join tb_film_image fi on(df.film_id = fi.id)
 		left join tb_rating_review rr on(r.film_id=rr.id)
+		left join tb_member m on(r.member_id = m.id)
+		left join tb_film f on(f.id=r.film_id)
 		left join tb_genre g on(genre_id = g.id)
-        left join tb_rating_film rf on(f.id = rf.id)
+		left join tb_detail_film df on(df.film_id=f.id)
+		left join tb_film_image fi on(df.id=fi.dfilm_id)
+		left join tb_rating_film rf on(f.id = rf.id)
 		where r.status='Y'
-        order by r.id desc
+		order by r.id desc
 	</select>
 	
 	<insert id="reviewWrite">
 		INSERT INTO TB_REVIEW
-		VALUES(SEQ_REVIEW_ID.NEXTVAL, #{content}, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, sysdate , sysdate , #{filmId},#{memberId})
+		VALUES(SEQ_REVIEW_ID.NEXTVAL, #{content}, DEFAULT, DEFAULT, DEFAULT, #{spoilerCheck}, DEFAULT, sysdate , sysdate , #{filmId},#{memberId})
 	</insert>  
 	
 	<insert id="reviewRating">
@@ -169,16 +197,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 합친부분 -->
 	<select id="selectRatingReviewDetailView" resultMap="reviewListSet">
-      select r.id as id,m.image, fi.change_name,f.title_kor,rf.star,r.modify_date,r.create_date,m.nickname,r.content,rr.rating_Sound,rr.rating_Visual,rr.rating_Acting,rr.rating_Pop,rr.rating_Script,rr.rating_Direct,rr.id as rr_id
-      from  TB_REVIEW r
-      left join tb_rating_review rr on (rr.review_id = r.id)
-      left join TB_FILM f on (r.film_id = f.id)
-      left join tb_member m on(r.member_id = m.id)
-      left join tb_rating_film rf on(r.film_id=rf.id)
-      left join tb_detail_film df on(r.film_id = df.id)
-      left join tb_film_image fi on(df.film_id = fi.id)
-      left join tb_genre g on(genre_id = g.id)
-      where r.id=#{id}
+    select r.id as id,m.id as member_Id,m.image, fi.change_name,f.title_kor,rf.star,r.modify_date,r.create_date,m.nickname,r.content,rr.rating_Sound,rr.rating_Visual,rr.rating_Acting,rr.rating_Pop,rr.rating_Script,rr.rating_Direct,rr.id as rr_id
+	from  TB_REVIEW r
+	left join tb_rating_review rr on(r.film_id=rr.id)
+	left join tb_member m on(r.member_id = m.id)
+	left join tb_film f on(f.id=r.film_id)
+	left join tb_genre g on(genre_id = g.id)
+	left join tb_detail_film df on(df.film_id=f.id)
+	left join tb_film_image fi on(df.id=fi.dfilm_id)
+	left join tb_rating_film rf on(f.id = rf.id)
+    where r.id=#{id}
 	</select>
 
 	
@@ -202,24 +230,53 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by modify_date desc
 	</select>
 	
-
+	<!-- 메인화면 리뷰 3개씩 뜨는거 좋아요순 -->
 	<select id="selectReviewListMain" resultMap="reviewListSet">
 	<![CDATA[	
         select rownum, r.*
 		from (select * from tb_review r
-		left join tb_film f on(r.film_id = f.id)
+        left join tb_rating_review rr on(r.film_id=rr.id)
         left join tb_member m on(r.member_id = m.id)
-		left join tb_detail_film df on(r.film_id = df.id)
-		left join tb_film_image fi on(df.film_id = fi.id)
-		left join tb_rating_review rr on(r.film_id=rr.id)
-		left join tb_genre g on(genre_id = g.id)
+        left join tb_film f on(f.id=r.film_id)
+        left join tb_genre g on(genre_id = g.id)
+        left join tb_detail_film df on(df.film_id=f.id)
+        left join tb_film_image fi on(df.id=fi.dfilm_id)
         left join tb_rating_film rf on(f.id = rf.id)
-		where r.status='Y'
+		where r.status='Y' 
         order by r.like_count desc) r
         where rownum <=3
      ]]>
 	</select>
-
+	
+	<!-- 리뷰 신고 조회 -->
+	<select id="selectReviewReport" resultMap="reviewListSet">
+		select rownum, r.*
+		from ( select member_ID from tb_review) r
+		where rownum = 1
+	</select>
+	
+	<!-- 리뷰 신고하기 -->
+	<insert id="insertDeclaration">
+		  insert into tb_report values(SEQ_REPORT_ID.nextval,1,#{targetId},#{content},#{reportId},#{ reportedId })
+	</insert>
+	
+	<!-- 뎃글 리스트 -->
+	<select id="selectReviewComment" resultMap="commentResultSet">
+		select *
+		from tb_comment c
+        left join tb_member m on (c.member_id=m.id)
+		where BOARD_ID=#{id}
+		and c.status='Y'
+        order by c.id desc
+	</select>
+	
+	<!-- 리뷰댓글 넣기 -->
+	<insert id="insertReviewComment">
+	 	insert into tb_comment
+	 	values(seq_comment_id.nextval, 1, #{content}, default, default, default, sysdate, sysdate, default, default, #{memberId}, #{boardId}, #{reviewId})
+	 </insert>
+	
+	
 	<!-- 리뷰가져오는거 -->
 <!-- 	<select id="selectReview" resultMap="reviewListSet">
         SELECT *

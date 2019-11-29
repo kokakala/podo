@@ -128,11 +128,6 @@
 
         <div class="movie_info2">
             <div class="movie_poster_cover">    <!-- 왼쪽 영화 포스터 -->
-
-                <div class="icon" id="collection">   <!-- 콜렉션 -->
-                    <img id="plus" src="resources/detailFilmImage/plus.jpg" style="width:30px; height:30px;">
-                </div>
-
                 <div class="icon" id="likeBtn">      <!-- 좋아요 -->
                     <img id="heart" src="resources/detailFilmImage/heart.jpg" style="width:30px; height:30px;">
                 </div>
@@ -148,11 +143,12 @@
             </div>
             <div class="movie_info_cover">      <!-- 오른쪽 영화 정보 -->
             <form action="detailFilmInsert.do" method="post">
-            <input type="hidden" name="id" value="${ df.id }">	<!-- 영화 상세 정보 번호 -->
-            <input type="hidden" name="filmId" value="${ df.filmId }"> <!-- 영화 번호  -->
-            
-            <input type="hidden" name="filmImage" value="${ i.changeName }">
-            <input type="hidden" name="uId" value="${ loginUser.id }">
+	            <input type="hidden" name="id" value="${df.id}">	<!-- 영화 상세 정보 번호 -->
+	            <input type="hidden" name="filmId" value="${df.filmId}"> <!-- 영화 번호  -->
+	            <input type="hidden" name="actorList" value="${al}">	<!-- 배우 리스트 -->
+	            
+	            <input type="hidden" name="filmImage" value="${ i.changeName }">
+	            <input type="hidden" name="uId" value="${ loginUser.id }">
                 <div id="movie_detail_info">
                 	<div class="cover" id="title_cover">
 	                    <span id="movie_title">${ df.titleKor }(${ df.titleEng })</span>
@@ -195,7 +191,7 @@
             </div>
         </div>
        
-        <!-- collection 모달 -->
+        <!-- actor 모달 -->
 		<hr style="margin: 0;">
 		<div class="modal fade" id="actor-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -215,6 +211,7 @@
 								<c:forEach items="${ al }" var="a">
 								<!-- actor 틀 -->
 									<div class="actor">
+										<input type="hidden" class="actor_id" name="uId" value="${a.id}">
 										<!-- 배우 사진 -->
 										<div class="actor_profile">
 											<img src="resources/detailFilmImage/actor/${a.profileImage}" width='150' height='150' style="border-radius: 100px;">
@@ -259,12 +256,18 @@
     <br>
     
     <script>
+    	
+    	// 기존에 등록되있는 배우를 담을 리스트 -- 전역으로 선언
+    	var actorList = new Array();
+    	
+    	// 배우 등록 modal
 	    $(function(){
 			$("#addActor").on("click", function(){
-				$('#actor-model').modal('toggle');
+				/* $('#actor-model').modal('toggle'); */
 			});
 		});
 	    
+    	// 배우 검색
 	    $(document).ready(function(){
 	    	$("#searchName").keypress(function (e){
 	    		if(e.which ==13){
@@ -273,6 +276,7 @@
 	    	});
 	    });
 	        
+    	// 배우 검색 함수
 	    function searchActorList(){
 	    	
 	    	var searchName = $('#searchName').val();
@@ -282,17 +286,15 @@
 	    		data:{searchName:searchName},
 	    		datType:"json",
 	    		success: function(list){
-	    			console.log(list)
+					actorList = list;
+					
 	    			var $aList = $("#actor_cover1");		//	<div>큰틀</div>
 	    			
 	    			$aList.html("");		// 기존 div 초기화
 	    			$.each(list, function(index, value){
 	    				
 	    				var $div = $("<div class='actor check_actor'>");	// actor 틀
-	    				
-//	    				var $check = $("<input type='checkbox'>").attr({"name":"actorId", "value":value.id});		// 이거 아님
-//	    				var $check = $("<input type='checkbox'>").attr("name","actorId").val(value.id);				// 이거 아님
-	    				var $check = $("<input type='checkbox' class='test'>").attr("value",value.id);				// 이거 아님
+	    				var $check = $("<input type='radio' class='test' name='resultSearch'>").attr("value",value.id);				// 이거 됨
 	    				
 	    				var $profile = $("<div class='actor_profile'>");	// 배우 사진 틀
 	    				var $img = $("<img>").attr('src','resources/detailFilmImage/actor/'+value.profileImage).css({'width':'150', 'height':'150' ,'border-radius':'100px'});
@@ -313,16 +315,52 @@
 	    }
 	    
 	    function test(){
+
+	    	// 배우 번호만 짤라서 쭈우욱 담아줌.
+	    	var a = $("#actor_cover .actor_name");
 	    	
-	    	// 이 부분 수정필요////////////////////////////////
+	    	// 이전에 등록돼있는 배우들 만큼, 번호만 뽑아서 저장
+	    	var actorIdList = "";	// 담아 줄 곳 선언
+
+	    	// 기존에 등록된 배우길이 만큼 for문 돌려주고, actorIdList 에 배우 번호를 쌓음
+	    	for(var i=0 ; i<a.length ; i++){
+	    		
+	    		actorIdList += $(".actor_id").eq(i).val();
+	    		
+	    		// 마지막 인덱스면 , 붙여주지 않음
+	    		if (i != a.length-1){
+	    			actorIdList += "%2C";
+	    		}
+	    	}
+	    	console.log(actorIdList);
+	    	//--------- 기존에 저장된 배우들 문자열에 담아줌!
+
+	    	var compare = actorIdList.split("%2C");
 	    	
-	    	var actorId = $(".test:checked").val();
-	    	var befordActorId = "${al}";
-	    	var acotr = befordActorId+ actorId;
-	    	
-	    	console.log(acotr);
-	    	
-	    	//location.href='addActor.do?id=${df.id}&filmId=${df.filmId}&actorId=' + actorId;
+	    	$("input[class=test]:checked").each(function(){
+	    		
+	    		newActorId = $(this).val();
+	    		newActor = $(this).val();
+	    		//actorIdList += ","+$(this).val();
+	    		
+	    		if(compare.indexOf(newActor) == -1){
+   					//actorIdList += "%2C"+newActor;
+			    	//location.href='addActor.do?id=${df.id}&filmId=${df.filmId}&actorIdList='+actorIdList;
+	    			location.href='addActor.do?id=${df.id}&filmId=${df.filmId}&newActorId='+newActorId;
+	    		}
+				console.log(actorIdList);
+	    	});
+
+	    	/*
+	    	// 배우 하나만 추가
+			$("input[class=test]:checked").each(function(){
+	    		
+				newActorId = $(this).val();
+	    		
+			   	location.href='addActor.do?id=${df.id}&filmId=${df.filmId}&newActorId='+newActorId;
+	    		
+	    	});
+	    	*/
 	    }
     </script>   
     

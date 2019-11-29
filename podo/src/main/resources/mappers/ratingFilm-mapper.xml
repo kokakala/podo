@@ -44,4 +44,15 @@
 		where member_id = #{id}
 	</select>
 	
+	<insert id="insertSawFilm">
+		insert into tb_rating_film
+		values(seq_rating_film_id.nextval, null, 'Y', #{userId}, #{filmId})
+	</insert>
+	
+	<delete id="deleteSawFilm">
+		delete from tb_rating_film
+		where film_id = #{filmId}
+			and member_id = #{userId}
+	</delete>
+	
 </mapper>

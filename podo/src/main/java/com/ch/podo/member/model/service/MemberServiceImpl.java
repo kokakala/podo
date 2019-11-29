@@ -61,11 +61,19 @@ public class MemberServiceImpl implements MemberService {
 
 
 	@Override
-	public int deleteBlackMember(int result) {
+	public int deleteBlackMember(String[] result) {
 		return memberDao.deleteBlackMember(result);
 	}
 
 
+	@Override
+	public int prohibitionBoard(int bid) {
+		return memberDao.prohibitionBoard(bid);
+	}
 
+	@Override
+	public Member selectUserPageMem(String userId) {
+		return memberDao.selectUserPageMem(userId);
+	}
 
 }

@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
+		<jsp:include page="../common/header.jsp"/>
 		<title>평점 기반 영화 추천</title>
 		<style>
 			
@@ -37,7 +37,6 @@
 		</style>
 	</head>
 	<body>
-		<jsp:include page="../common/header.jsp" />
 		
 		<section class="mb-30px">
 			<div class="container">
@@ -54,6 +53,14 @@
 				</div>
 			</div>
 		</section>
+		
+		<c:if test="${ (empty loginUser) or (loginUser.premium eq 'N')}">
+	    <div class="container" style="background-color: black; background-clip: content-box; margin-bottom: 30px;">
+	    	<div style="height: 100px;">
+		      <h1 style="text-align: center; color: white;">광고</h1>
+	    	</div>
+	    </div>
+    </c:if>
 		
 		<section class="blog-post-area section-margin">
 			<div class="container">

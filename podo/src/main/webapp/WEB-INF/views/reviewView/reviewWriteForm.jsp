@@ -80,7 +80,7 @@
                    <%--       <p>${ r.createDate }에 작성</p> --%>
                       </div>
                       <div class="d-flex">
-                        <img width="42" height="42" src="resources/memberProfileImage/${ m.image }" alt="">
+                        <img width="42" height="42" src="resources/memberProfileImage/${ loginUser.image }1.jpg" alt="">
                       </div>
                     </div>
                   	</div>
@@ -91,7 +91,8 @@
                         <p>여기가 별점남기는곳입니다!!</p>
                       </div>
                       <div class="d-flex">
-                        <img width="42" height="42" src="resources/bootstrap/img/blog/user-img.png" alt="">
+                
+                        <!-- <img width="42" height="42" src="resources/bootstrap/img/blog/user-img.png" alt=""> -->
                       </div>
                     </div>
                   </div>
@@ -153,10 +154,11 @@
    </script>
    </div>
    
-    <form action="reviewWrite.do" method="post" id="movieform">
+    <form action="reviewWrite.do" method="get" id="movieform">
       <input type="hidden" value="${f.id}" name="filmId">
       <input type="hidden" value="${loginUser.id}" name="memberId">
-      
+      <input type="checkbox" name="spoilerCheck" value="0">스포일러 유무
+     
       
       <table align="center" id="vv">
          <tr>
@@ -208,6 +210,31 @@
 
 
    <script>
+   // 체크박스 유무
+    $(function(){
+	    
+	 /* $("#spoiler").click(":checked", function(){
+   		console.log(${spoilerCheck})*/
+		 
+		/*   spoiler = $("#spoiler").val();
+		  if(spoiler == 0){
+			  $("#spoiler").attr("value","1"); 	
+			
+		  }else{
+			  $("#spoiler").attr("value","0"); 
+			  
+		  } */
+		 
+		
+		 
+	  });
+   }); 
+   
+
+
+   
+   
+   
       $('.insertRating').on('input',function(){
          var ctx = document.getElementById('myChart');
          var chart = new Chart(ctx, {

@@ -45,11 +45,8 @@ public interface FilmService {
 	// 10-2. 현재 페이지에 보여질 영화 리스트 조회용 서비스
 	ArrayList<Film> selectFilmList();
 	
-	// 11-1. 영화 기본정보 등록하기 서비스
-	int insertFilm(Film f);
-	
-	// 11-2. 영화 포스터 등록하기 서비스
-	int insertFilmImage(Image img);
+	// 11. 영화 기본정보 등록하기 서비스
+	int insertFilm(Film f, int memId, Image img);
 	
 	// 12. 영화 상세보기 서비스
 	Film selectFilm(int id);

@@ -61,37 +61,47 @@
 	<h1 align="center">리뷰 리스트</h1>
 
 
-	 <c:forEach items="${ list }" var="review">
-	  <div class="container">
-          <div class="card blog__slide text-center">
-            <div class="blog__slide__img">
-              <img class="card-img rounded-0" src="resources/detailFilmImage/${review.posterImage}" alt="" id="posterImage">
-            </div>
-            <div class="blog__slide__content">
-              <p class="pTitle"> ${review.titleKor }</p>
-              <a class="blog__slide__label">${ review.name }</a>
-              <h3>
-              
-              	<p id="reviewContentFont"  class="title">
-              		<div class="df_r_spoContent">
-				          <div class="df_r_spoilerCheck">해당 내용은 스포일러를 포함하고 있습니다.</div>
-					       <div class="df_r_content">내용 : ${ review.content }</div>
-				    </div>
-              	</p>
-              
-              </h3>
-              <button class="btn btn-secondary btn-like-film" onclick="location.href='ratingDetailReview.do?id=${review.id}';"> 더보기 </button> 
-              
-              <p></p>
-          	  <button onclick="location.href='reviewDelete.do?id=${review.id}';">x</button>
-              <p>${review.nickName }님이 작성</p>
-              <p>${review.createDate }에 작성됨</p>
-            </div>
-          </div>
-      </div>
-	</c:forEach> 
-	
-	<!-- 페이징 처리 -->
+		<c:forEach items="${ list }" var="review">
+			<div class="container">
+				<div class="card blog__slide text-center">
+					<div class="blog__slide__img">
+						<img class="card-img rounded-0"
+							src="resources/detailFilmImage/${review.posterImage}" alt=""
+							id="posterImage">
+					</div>
+					<div class="blog__slide__content">
+						<p class="pTitle">${review.titleKor }</p>
+						<a class="blog__slide__label">${ review.name }</a>
+						<h3>
+
+							<p id="reviewContentFont" class="title">
+								<c:if test="${ review.spoilerCheck eq 'Y' }">
+									<div class="df_r_spoContent">
+										<div class="df_r_spoilerCheck">해당 내용은 스포일러를 포함하고 있습니다.</div>
+										<div class="df_r_content">${ review.content }</div>
+									</div>
+								</c:if>
+								<c:if test="${ review.spoilerCheck eq 'N' }">
+									<div>${ review.content }</div>
+								</c:if>
+
+							</p>
+
+						</h3>
+						<button class="btn btn-secondary btn-like-film"
+							onclick="location.href='ratingDetailReview.do?id=${review.id}';">
+							더보기</button>
+
+						<p></p>
+						<button onclick="location.href='reviewDelete.do?id=${review.id}';">x</button>
+						<p>${review.nickName }님이작성</p>
+						<p>${review.createDate }에작성됨</p>
+					</div>
+				</div>
+			</div>
+		</c:forEach>
+
+		<!-- 페이징 처리 -->
  		 <div align="center" height="20">
 			<!-- [이전] -->
 			<c:if test="${ pi.currentPage eq 1 }">

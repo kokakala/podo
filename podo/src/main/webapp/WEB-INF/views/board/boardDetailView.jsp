@@ -44,7 +44,7 @@
 	  	<div class="form-group row">
 			<label for="" class="col-sm-2 col-form-label">작성자 </label>
 	    	<div class="col-sm-5">
-				<input type="text" class="form-control" name="memberId" value="${ loginUser.id }" readonly>
+				<input type="text" class="form-control" name="memberId" value="${ b.nickName }" readonly>
 	    	</div>
 	  	</div>
 	  	<div class="form-group row">
@@ -61,17 +61,23 @@
 		</div>
 		<div class="form-group row">
 			<label for="" class="col-sm-2 col-form-label">첨부파일</label>
-			<div class="col-sm-5" id="board-file-area">
-				<input type="file" id="board-upload-file" name="board-upload-file">
-			</div>
+			<c:if test="${ !empty i.originalName }">
+				<a href="${ pageContext.servletContext.contextPath }/resources/boardUploadFiles/${ i.changeName }" download="${ i.originalName }">${ i.originalName }</a>
+			</c:if>
+			<c:if test="${ empty i.originalName }">
+				<div class="col-sm-5">
+					<input type="text" class="form-control" value="첨부파일이 없습니다." readonly>
+	    		</div>
+			</c:if>
 		</div>
 		<br>
 		<div class="form-group row">
-			<label for="" class="col-sm-2 col-form-label"></label>
 			<div class="col-sm-5" id="">
-				<button>취소</button>
-				&nbsp; &nbsp;
-				<button>등록</button>
+				<c:if test="${ loginUser.id eq b.memberId }">
+					<button>수정하기</button>
+					&nbsp; &nbsp;
+					<button>삭제하기</button>
+				</c:if>
 			</div>
 		</div>
 	</div>
@@ -90,8 +96,12 @@
 					<thead>
 						<tr>
 							<td colspan="3"><b id="commentCount"></b></td>
+							<td></td>
 						</tr>
 					</thead>
+					<tbody>
+						
+					</tbody>
 				</table>
 			</div>
 		</div>
@@ -157,21 +167,25 @@
 				data:{id:${b.id}},
 				dataType:"json",
 				success:function(data){
+					
+					console.log(data);
 					$tbody = $("#commentList tbody");
 					$tbody.html("");
 					
 					$("#commentCount").text("댓글(" + data.length + ")");
 					
 					if(data.length > 0){
+						
 						$.each(data, function(index, value){
-							$tr = $("<tr></tr>");
+							console.log(value);
+							$tr = $("<tr width='300'></tr>");
 							
-							$writerTd = $("<td width='200'></td>").text(value.writer);
 							$contentTd = $("<td></td>").text(value.content);
+							$writerTd = $("<td width='200'></td>").text(value.writer);
 							$dateTd = $("<td></td>").text(value.createDate);
 							
-							$tr.append($writerTd);
 							$tr.append($contentTd);
+							$tr.append($writerTd);
 							$tr.append($dateTd);
 							
 							$tbody.append($tr);
@@ -179,7 +193,7 @@
 						});
 						
 					}else{
-						
+						console.log('else');
 						$tr = $("<tr></tr>");
 						
 						$contentTd = $("<td colspan='3'></td>").text("등록된 댓글이 없습니다.");
@@ -195,6 +209,23 @@
 				}
 			})
 		}
+		
+		function deleteComment(id){
+			if(confirm("댓글을 삭제하시겠습니까")){
+				$.ajax({
+					type:"post",
+					url:"deleteComment.do",
+					data:{"COMMENT_ID":id},
+					success:function(){
+						alert("댓글이 삭제되었습니다.");
+					},
+					error:function(){
+						alert("댓글 삭제 실패");
+					}
+				});
+			}
+		}
+		
 	</script>
 	
 	

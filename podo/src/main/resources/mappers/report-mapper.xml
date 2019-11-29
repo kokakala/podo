@@ -9,6 +9,8 @@
 		<result property="content" column="content"/>
 		<result property="reportName" column="report"/>
 		<result property="reportedName" column="reported"/>
+		<result property="reportCount" column="reportCount"/>
+		
 		
 	</resultMap>
 	

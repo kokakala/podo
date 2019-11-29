@@ -35,6 +35,7 @@
       <mapper resource="mappers/like-mapper.xml"/>
       <mapper resource="mappers/report-mapper.xml"/>
       <mapper resource="mappers/inquiry-mapper.xml"/>
+      <mapper resource="mappers/image-mapper.xml"/>
    </mappers>
    
 </configuration>

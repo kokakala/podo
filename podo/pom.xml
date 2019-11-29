@@ -127,7 +127,6 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<!-- 1. DB 관련 (오라클, 마이바티스) 라이브러리들 -->
 		<!-- https://mvnrepository.com/artifact/com.oracle/ojdbc6 -->
 		<dependency>
 		    <groupId>com.oracle</groupId>
@@ -136,7 +135,6 @@
 		    <!-- <scope>test</scope> 지우기! -->
 		</dependency>
 		
-		<!-- 1-2. 순수 MyBatis 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
 		<dependency>
 		    <groupId>org.mybatis</groupId>
@@ -144,7 +142,6 @@
 			  <version>3.4.6</version>
 		</dependency>
 		
-		<!-- 1-3. 스프링에서 MyBatis를 사용할 수 있게 도와주는 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
 		<dependency>
 		    <groupId>org.mybatis</groupId>
@@ -152,8 +149,6 @@
 		    <version>1.3.1</version>
 		</dependency>
 		
-		<!-- 1-4. 스프링에서 데이터베이스 기능을 사용하기 위한 라이브러리 -->
-		<!-- 스프링 버전과 동일한 버전으로 지정 -->
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
@@ -162,7 +157,6 @@
 		    <version>${org.springframework-version}</version>
 		</dependency>
 		
-		<!-- 1-5. 커넥션 풀 기능을 사용하기 위한 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp -->
 		<dependency>
 		    <groupId>commons-dbcp</groupId>
@@ -170,7 +164,6 @@
 		    <version>1.4</version>
 		</dependency>
 		
-		<!-- * 추가적으로 유용한 라이브러리 (소스코드 수정 후 서버 재부팅 필요없게) -->
 		<!-- https://mvnrepository.com/artifact/org.springframework/springloaded -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
@@ -179,7 +172,6 @@
 		    <scope>provided</scope>
 		</dependency>
 		
-		<!-- * 추가 라이브러리 (롬복) -->
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 		    <groupId>org.projectlombok</groupId>
@@ -188,7 +180,6 @@
 		    <scope>provided</scope>
 		</dependency>
 		
-		<!-- 2. 스프링 시큐리티 모듈 추가하는 dependency -->
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
 		<dependency>
 		    <groupId>org.springframework.security</groupId>
@@ -210,7 +201,6 @@
 		    <version>${org.springframework-version}</version>
 		</dependency>
 		
-		<!-- 3. 파일업로드와 관련된 두 개의 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
 		<dependency>
 		    <groupId>commons-fileupload</groupId>
@@ -225,7 +215,6 @@
 		    <version>2.6</version>
 		</dependency>
 		
-		<!-- 4-1. JSON 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
 		<dependency>
 		    <groupId>com.googlecode.json-simple</groupId>
@@ -233,7 +222,6 @@
 		    <version>1.1.1</version>
 		</dependency>
 		
-		<!-- 4-2. Jackson 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
@@ -241,7 +229,6 @@
 		    <version>2.9.8</version>
 		</dependency>
 		
-		<!-- 4-3. GSON 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
 		    <groupId>com.google.code.gson</groupId>
@@ -256,7 +243,6 @@
 	    <version>${org.springframework-version}</version>
 		</dependency>
 		
-		<!-- 5. AOP 처리를 위한 aspectjweaver 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
 		<dependency>
 	    <groupId>org.aspectj</groupId>

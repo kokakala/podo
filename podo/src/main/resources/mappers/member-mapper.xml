@@ -23,7 +23,7 @@
 	</resultMap>
 	
 	<insert id="insertMember">
-		insert into tb_member values(seq_member_id.nextval, #{image}, #{email}, #{pwd}, #{nickName}, default, sysdate, sysdate, null, null, default)
+		insert into tb_member values(seq_member_id.nextval, #{image}, #{email}, #{pwd}, #{nickName}, default, sysdate, sysdate, null, null, default, default)
 	</insert>
 	
 	<select id="idCheck" resultType="_int">
@@ -59,6 +59,11 @@
 	</update>
 	
 
+	<select id="selectUserPageMem" resultMap="memberResultSet">
+		select *
+		from tb_member
+		where id=#{userId}
+	</select>
 
 	<select id="selectMemberList" resultMap="memberResultSet">
 		select a.*,
@@ -84,13 +89,22 @@
 		order by blackDate
 	</select>
 
-	
+	<!-- 블랙회원 해제 -->
 	<delete id="deleteBlackMember">
 		delete from tb_black_member
-		where taget_id = #{result}
+		where taget_id in
+		<foreach item="item" index="index" collection="result"
+			open="(" separator="," close=")">
+        	#{item[index]}
+       	</foreach>
 	</delete>
 	
-	
+	<!-- 블랙리스트 기능 제한 인터셉터 -->
+	<select id="prohibitionBoard" resultType="_int">
+		select count(*)
+		from tb_black_member
+		where target_id = #{bid}
+	</select>
 	
 	
 </mapper>

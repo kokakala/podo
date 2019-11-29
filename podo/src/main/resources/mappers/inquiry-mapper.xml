@@ -3,9 +3,33 @@
 
 <mapper namespace="inquiryMapper">
 
+	<resultMap type="Inquiry" id="inquiryResultSet">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="content" column="content"/>
+		<result property="createDate" column="create_date"/>
+		<result property="status" column="status"/>
+		<result property="userId" column="user_id"/>
+		<result property="answer" column="answer"/>
+		<result property="answerDate" column="answer_date"/>
+		<result property="adminId" column="admin_id"/>
+	</resultMap>
+
 	<insert id="insertQuestion">
 		insert into tb_inquiry values(seq_inquery_id.nextval, 1, #{content}, sysdate, default, #{userId}, null, null, 1)
 	</insert>
+	
+	<select id="myPageInquiryListCount" resultType="_int">
+		select count(*)
+		from tb_inquiry
+		where user_id=#{id}
+	</select>
+	
+	<select id="myPageSelectInquiryList" resultMap="inquiryResultSet">
+		select *
+		from tb_inquiry
+		where user_id=#{id} and type=1
+	</select>
 	
 </mapper>
 

@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class PodoRenamePolicy {
 	
-	public String rename(MultipartFile file, HttpServletRequest request) {
+	public static String rename(MultipartFile file, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "/memberProfileImage";
 		

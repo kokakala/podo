@@ -21,4 +21,10 @@ public interface RatingFilmService {
 	// 5. 로그인된 사용자의 기존 평가 정보 조회 서비스
 	Map<Integer, RatingFilm> selectRatedFilm(int id);
 	
+	// 6. 영화 봤어요 서비스
+	int insertSawFilm(RatingFilm rate);
+	
+	// 7. 영화 봤어요 취소 서비스
+	int deleteSawFilm(RatingFilm rate);
+	
 }

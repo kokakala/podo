@@ -38,5 +38,15 @@ public class RatingFilmServiceImpl implements RatingFilmService {
 	public Map<Integer, RatingFilm> selectRatedFilm(int id) {
 		return ratingFilmDao.selectRatedFilm(id);
 	}
+
+	@Override
+	public int insertSawFilm(RatingFilm rate) {
+		return ratingFilmDao.insertSawFilm(rate);
+	}
+
+	@Override
+	public int deleteSawFilm(RatingFilm rate) {
+		return ratingFilmDao.deleteSawFilm(rate);
+	}
 	
 }

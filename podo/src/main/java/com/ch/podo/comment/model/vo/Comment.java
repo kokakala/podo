@@ -29,5 +29,7 @@ public class Comment {
 	private int boardId;
 	private int reviewId;
 	
+	private String nickName;		//사용자 닉네임
+	
 	
 }

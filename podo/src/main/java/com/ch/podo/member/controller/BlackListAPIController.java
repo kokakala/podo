@@ -28,23 +28,24 @@ public class BlackListAPIController {
 	// @ResponseBody
 	public boolean unblock(@RequestBody UnblockRequest unblockRequest) throws Exception {
 		String[] blockIds = Optional.ofNullable(unblockRequest) // 자바8 optional 사용 -> nullpointexception 방지를 막음
-				.map(UnblockRequest::getBlockIds)
-				.orElse(null);
+									.map(UnblockRequest::getBlockIds)
+									.orElse(null);
 		
 		if (blockIds == null || (blockIds != null && blockIds.length == 0)) {
 			return false;
 		}
 		
 		log.info("blockIds : {}", blockIds);
-// 미완성! 지우면 안됩니당
-//		int result = memberService.deleteBlackMember(blockIds);
-//		
-//		if(result>0) {
-//			return true;
-//		}else {
-//			return false;
-//		}
+ 
+		int result = memberService.deleteBlackMember(blockIds);
 		
-		return true;
+		if(result>0) {
+			return true;
+			
+		}else {
+			return false;
+		}
+		
+//		return true;
 	}
 }

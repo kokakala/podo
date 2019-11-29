@@ -10,6 +10,7 @@ import com.ch.podo.board.model.vo.Board;
 import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.comment.model.vo.Comment;
 import com.ch.podo.image.model.vo.Image;
+import com.ch.podo.member.model.vo.Member;
 
 @Service("boardService")
 public class BoardServiceImpl implements BoardService {
@@ -66,7 +67,8 @@ public class BoardServiceImpl implements BoardService {
 	public int updateBoard(Board b) {
 		return boardDao.updateBoard(b);
 	}
-		
+	
+	// 댓글
 	@Override
 	public ArrayList<Comment> selectCommentList(int id) {
 		return boardDao.selectCommentList(id);
@@ -82,6 +84,10 @@ public class BoardServiceImpl implements BoardService {
 		
 		return boardDao.selectboardListHome();
 	}
+	
+	
+	
+	
 
 
 }

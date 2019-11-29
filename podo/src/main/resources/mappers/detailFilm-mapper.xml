@@ -70,14 +70,6 @@
 		values(seq_dfilm_id.nextval, #{df.synopsys}, #{df.trivia}, #{df.trailer}, null, 'Y', sysdate, #{uId}, #{df.filmId})
 	</insert>
 	
-	<!-- 창수의 영화등록 서비스 수정중 -->
-	<!-- 
-	<insert id="insertInitDetailFilm">
-		insert into tb_detail_film
-		values(seq_dfilm_id.nextval, null, null, null, null, 'Y', sysdate, #{id}, #{df.filmId})
-	</insert>
-	 -->
-	
 	<insert id="filmImageInsert" parameterType="hashMap">
 		insert into tb_film_image
 		values(seq_fimage_id.nextval, 1, #{filmImage}, seq_dfilm_id.currval)
@@ -93,12 +85,6 @@
 		     order by id desc)i
 		where rownum = 1
 	</select>
-	
-	<!-- 영화 정보 수정 [배우] 수정하는 부분 insert로 DB에 추가 Dfilm_id 는 어떻게 알지?? / 이건 해결 -->
-	<insert id="insertFilmActor">
-		insert into tb_film_actor
-		values(#{actor_id}, #{dFilm_id})
-	</insert>
 	
 	<!-- 되돌리기 버튼 작업 중 -->
 	<!-- 관리자가 [되돌리기] 버튼을 누르면 update로 status 'N'으로 수정  -->
@@ -124,16 +110,6 @@
 		values(seq_collection_id.nextval, '샘플 제목', '샘플 내용', default, default, default, sysdate, sysdate, default, default, #{userId})
 	</insert>
 	
-	<!-- 
-	콜렉션 리스트 출력 
-	<select id="selectCollectionList" resultMap="selectCollectionListResultSet">
-		select *
-		from tb_collection
-		where member_id=#{userId}
-		order by id desc
-	</select>
-	-->
-	
 	<!-- 생성한 콜렉션에 영화 추가 -->
 	<!-- 콜렉션 번호, 영화 번호 -->
 	<insert id="insertFilm_Collection">
@@ -157,10 +133,20 @@
 		where name like '%'||#{searchName}||'%'
 	</select>
 	
-	<insert id="addActor">
+	
+	<!-- 배우 추가 -->
+	<insert id="addActor" parameterType="hashMap">
 		insert into tb_film_actor
-		values(#{actorId},#{id})
+		values(#{newActorId},#{id})
 	</insert>
+	
+	<!-- 위키 저장시 배우 저장란 -->
+	<insert id="wikiAddActor">
+		insert into tb_film_actor
+		values(#{newActorId},seq_dfilm_id.currval)
+	</insert>
+		
+	
 	
 </mapper>
 

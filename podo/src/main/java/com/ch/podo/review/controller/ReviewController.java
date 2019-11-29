@@ -1,7 +1,9 @@
 package com.ch.podo.review.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +11,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ch.podo.board.model.vo.PageInfo;
+import com.ch.podo.comment.model.vo.Comment;
 import com.ch.podo.common.Pagination;
 import com.ch.podo.detailFilm.model.vo.DetailFilm;
 import com.ch.podo.film.model.vo.Film;
 import com.ch.podo.member.model.vo.Member;
+import com.ch.podo.report.model.vo.Report;
 import com.ch.podo.review.model.dto.Review;
 import com.ch.podo.review.model.service.ReviewService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 
 
 
@@ -39,7 +47,7 @@ public class ReviewController {
 		//System.out.println(pi);
 		mv.addObject("list",list).addObject("pi", pi).setViewName("reviewView/reviewList");
 		
-		//System.out.println("리뷰리스트 : "  + list);
+		System.out.println("리뷰리스트 왜 스포일러체크 널인지 : "  + list);
 		
 		return mv;
 		
@@ -47,7 +55,7 @@ public class ReviewController {
 	
 	//글 쓰기 폼 가기
 	@RequestMapping("reviewWriteForm.do")
-	public ModelAndView reviewWriteView(int loginUserId,int filmId, ModelAndView mv,HttpSession session) {
+	public ModelAndView reviewWriteView(String spoilerCheck,int loginUserId,int filmId, ModelAndView mv,HttpSession session) {
 		
 		Film f = reviewService.selectFilm(filmId);
 		System.out.println(f);
@@ -69,6 +77,13 @@ public class ReviewController {
 	@RequestMapping("reviewWrite.do")
 	public String reviewWrite(DetailFilm df, ModelAndView mv,Review r,Model model) {
 
+		System.out.println("스포 변경 전 : "+ r.getSpoilerCheck());
+		if (r.getSpoilerCheck().equals("0")) {
+			r.setSpoilerCheck("Y");
+		} else {
+			r.setSpoilerCheck("N");
+		}
+		System.out.println("스포 변경 후 : "+ r.getSpoilerCheck());
 		
 		//int result = reviewService.reivewInsert(df);
 		System.out.println(r);
@@ -79,7 +94,7 @@ public class ReviewController {
 		//return mv;
 		
 		if( result2>0 && result > 0) { //게시판 작성 성공
-			System.out.println("글스기인데 값이 안잡힘 : "+r);
+			//System.out.println("글스기인데 값이 안잡힘 : "+r);
 			
 			return "redirect:reviewList.do";
 			
@@ -176,7 +191,19 @@ public class ReviewController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id,pi);
-		mv.addObject("review", reviewList).addObject("pi", pi).addObject("tab", tab).setViewName("member/myPage");
+		mv.addObject("review", reviewList).addObject("reviewPi", pi).addObject("tab", tab).setViewName("member/myPage");
+		return mv;
+	}
+	
+	// 유저페이지 리뷰조회
+	@RequestMapping("userPageSelectReview.do")
+	public ModelAndView userPageSelectReview(String tab, String id, @RequestParam(value="currentPage", defaultValue="1") int currentPage, ModelAndView mv) {
+		int listCount = reviewService.myPageReviewListCount(id);
+		
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
+		
+		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id,pi);
+		mv.addObject("review", reviewList).addObject("reviewPi", pi).addObject("tab", tab).setViewName("member/myPage");
 		return mv;
 	}
 
@@ -208,6 +235,57 @@ public class ReviewController {
 		
 		return mv;
 		
+	}
+	
+	//  리뷰 신고하기
+	@RequestMapping("declarationModal.do")
+	public ModelAndView insertDeclaration(Review r,Report rep,ModelAndView mv) {
+		
+		
+		//Review r = reviewService.selectReviewReport(reviewNo);
+		System.out.println("구하고자하는값은"+rep);
+		
+		int result = reviewService.insertDeclaration(rep);
+		System.out.println("성공할건가"+result);
+		if(result>0) { // 성공
+			mv.addObject("id",rep.getTargetId()).setViewName("redirect:ratingDetailReview.do");
+			
+		}else { // 실패
+			mv.addObject("msg", "신고하기 실풰").setViewName("error/errorPage");
+		}
+		
+		return mv;
+	}
+	
+	// 리부 댓글
+	
+	@ResponseBody
+	@RequestMapping(value="reviewCommentList.do", produces="application/json; charset=UTF-8")
+	public String reviewCommentList(int id ){
+		
+		ArrayList<Comment> reviewCommentList = reviewService.selectReviewComment(id);
+		
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		
+		System.out.println("댓글"+reviewCommentList);
+		return gson.toJson(reviewCommentList);
+		 
+	}
+	
+	//댓글 등록
+	
+	@ResponseBody
+	@RequestMapping("insertReviewComment.do")
+	public String insertReviewComment(Comment c, ModelAndView mv) {
+		
+		int result = reviewService.insertReviewComment(c);
+		
+		System.out.println(result);
+		if(result > 0) {
+			return "success";
+		}else {
+			return "fail";
+		}
 	}
 
 }

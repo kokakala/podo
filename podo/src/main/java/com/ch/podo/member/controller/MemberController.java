@@ -6,13 +6,14 @@ import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,12 +24,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ch.podo.board.model.vo.PageInfo;
+import com.ch.podo.common.Pagination;
+import com.ch.podo.like.model.service.LikeService;
+import com.ch.podo.like.model.vo.Like;
 import com.ch.podo.member.model.service.MemberService;
 import com.ch.podo.member.model.vo.Member;
 import com.ch.podo.review.model.dto.Review;
 import com.ch.podo.review.model.service.ReviewService;
-import com.ch.podo.board.model.vo.PageInfo;
-import com.ch.podo.common.Pagination;
+
 
 
 @Controller
@@ -39,7 +43,11 @@ public class MemberController {
 	@Autowired
 	private ReviewService reviewService;
 	@Autowired
+	private LikeService likeService;
+	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
+	Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
 	// @CookieValue(value="storeIdCookie", required = false) Cookie storeIdCookie
 	@RequestMapping("login.do")
@@ -47,8 +55,8 @@ public class MemberController {
 																	boolean rememberMe, HttpServletResponse response, HttpServletRequest request) {
 		
 		Member loginUser = memberService.selectLoginMember(mem);
-		System.out.println("loginUser : " + loginUser);
-		// System.out.println("rememberMe : " + rememberMe);
+		// logger.info("loginUser : " + loginUser);
+		// logger.info("rememberMe : " + rememberMe);
 		
 		if (loginUser != null && bcryptPasswordEncoder.matches(mem.getPwd(), loginUser.getPwd())) {
 			if (rememberMe == true) {
@@ -166,11 +174,13 @@ public class MemberController {
 	}
 	
 	@RequestMapping("myPage.do")
-	public ModelAndView myPage(ModelAndView mv, String id, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+	public ModelAndView myPage(HttpSession session, ModelAndView mv, String id, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
 		int reviewListCount = reviewService.myPageReviewListCount(id);
 		PageInfo pi = Pagination.getPageInfo(currentPage, reviewListCount);
 		
 		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id,pi);
+		
+		session.setAttribute("reviewListCount", reviewListCount);
 		mv.addObject("review", reviewList).addObject("reviewCount", reviewListCount).addObject("pi", pi).addObject("reviewCount", reviewListCount).setViewName("member/myPage");
 		
 		return mv;
@@ -262,7 +272,24 @@ public class MemberController {
 	}
 	
 	
+	@RequestMapping("userPage.do")
+	public ModelAndView userPage(HttpSession session, ModelAndView mv, String loginUserId, String userId, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		// loginUserId = 로그인 한 회원 , userId = 유저페이지 조회할 유저
+		Member userPageMem = memberService.selectUserPageMem(userId); // 유저페이지 조회 될 해당 유저 객체
+		int reviewListCount = reviewService.myPageReviewListCount(userId);	
+		Like likeUser = likeService.selectLikeUser(userId,loginUserId);	// 유저페이지 조회 시 라이크 여부
+		PageInfo pi = Pagination.getPageInfo(currentPage, reviewListCount);
+		
+		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(userId,pi);
+		
+		session.setAttribute("reviewListCount", reviewListCount);
+		mv.addObject("likeUser", likeUser).addObject("userPageMem", userPageMem).addObject("review", reviewList).addObject("reviewCount", reviewListCount).addObject("pi", pi).addObject("reviewCount", reviewListCount).setViewName("member/userPage");
+		return mv;
+	}
 	
-	
+	@RequestMapping("premium.do")
+	public String goToPremiumPage() {
+		return "member/premium";
+	}
 	
 }

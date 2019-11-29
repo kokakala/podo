@@ -7,9 +7,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +24,7 @@ import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.comment.model.vo.Comment;
 import com.ch.podo.common.Pagination;
 import com.ch.podo.image.model.vo.Image;
+import com.ch.podo.member.model.vo.Member;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -30,7 +33,7 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService boardService;
-	
+
 	
 	@RequestMapping("blist.do")
 	public ModelAndView boardList(ModelAndView mv,
@@ -44,53 +47,62 @@ public class BoardController {
 		
 		mv.addObject("pi", pi).addObject("list", list).setViewName("board/boardListView");
 		
-		return mv;		
+		return mv;
 		
 	}
 	
 	
 	@RequestMapping("binsertForm.do")
-	public String boardInsertView() {
-		return "board/boardInsertForm";
+	public ModelAndView boardInsertView(HttpSession session, ModelAndView mv) {
+		
+		Member m = (Member)session.getAttribute("loginUser");
+		
+		System.out.println("윤진이가담은 객체"+m);
+		
+		mv.addObject("m", m).setViewName("board/boardInsertForm");
+		
+		return mv;
+		
 	}
 	
 	
 	@RequestMapping("binsert.do")
-	public ModelAndView insertBoardFile(Board b, Image i, HttpServletRequest request, ModelAndView mv,  
-								@RequestParam(value="uploadFile", required=false) MultipartFile file) {
+	public int insertBoard(HttpServletRequest request, Model model, ModelAndView mv, Board b, Image i, Member m,
+									@RequestParam(value="board-upload-file", required=false) MultipartFile file) {
 		
-		// 파일이 있을 경우
+		int result = 0;
+		
+		// 파일이 존재할 경우
 		if(!file.getOriginalFilename().equals("")) {
-			
-			int result = boardService.insertBoard(b);
 			
 			String renameFileName = saveFile(file, request);
 			
 			i.setOriginalName(file.getOriginalFilename());
 			i.setChangeName(renameFileName);
 			
+			int result1 = boardService.insertBoard(b);
 			int result2 = boardService.insertBoardFile(i);
 			
-			if(result > 0 && result2 > 0) {
-				mv.addObject("b", b).addObject("i", i).setViewName("");
+			if(result1 > 0 && result2 > 0) {
+				result = 1;
 			}else {
-				mv.addObject("");
+				result = 0;
 			}
 			
-		// 첨부파일 없이 게시판 작성
 		}else {
 			
-			int result3 = boardService.insertBoard(b);
+			int result1 = boardService.insertBoard(b);
 			
-			if(result3 > 0) {
-				mv.addObject("b", b).setViewName("");
+			if(result1 > 0) {
+				result = 1;
 			}else {
-				mv.addObject("");
+				result = 0;
 			}
+			
 			
 		}
 		
-		return mv;
+		return result;
 		
 	}
 	
@@ -133,12 +145,14 @@ public class BoardController {
 	
 	
 	@RequestMapping("bdetail.do")
-	public ModelAndView boardDetail(int id, ModelAndView mv) {
-		
+	public ModelAndView boardDetail(HttpSession session, int id, ModelAndView mv) {
+		Member m = (Member)session.getAttribute("loginUser");
 		Board b = boardService.selectBoard(id);
+		System.out.println("윤진이가적은!!"+b);
+		System.out.println("윤진이가적은!!"+m);
 		
 		if(b != null) {
-			mv.addObject("b", b).setViewName("board/boardDetailView");
+			mv.addObject("b", b).addObject("m", m).setViewName("board/boardDetailView");
 		}else {
 			mv.addObject("alert", "error");
 		}

@@ -1,5 +1,6 @@
 package com.ch.podo.like.model.dao;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -26,4 +27,19 @@ public class LikeDao {
 		return (Map)sqlSession.selectMap("likeMapper.selectLikedFilmMap", id, "targetId");
 	}
 	
+	public Like selectLikeUser(String userId, String loginUserId) {
+		HashMap map = new HashMap();
+		map.put("userId", userId);
+		map.put("loginUserId", loginUserId);
+		
+		return sqlSession.selectOne("likeMapper.selectLikeUser", map); 
+	}
+	
+	public int insertLikeMem(Like like) {
+		return sqlSession.insert("likeMapper.insertLikeMem", like);
+	}
+	
+	public int deleteLikeMem(Like like) {
+		return sqlSession.delete("likeMapper.deleteLikeMem", like);
+	}
 }

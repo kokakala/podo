@@ -60,7 +60,7 @@
 			</when>
 			<otherwise>
 				select count(*)
-				from (select f.*, g.name, fi.change_name, NVL(rf.saw, 'N') as saw, NVL(rf.member_id, 8) as mem, fas.avg_star
+				from (select f.*, g.name, fi.change_name, NVL(rf.saw, 'N') as saw, NVL(rf.member_id, null) as mem, fas.avg_star
 				      from tb_film f
 				      join tb_genre g on (f.genre_id = g.id)
 				      left outer join tb_detail_film df on (df.film_id = f.id)
@@ -70,16 +70,16 @@
 			</otherwise>
 		</choose>
 		<where>
-			<if test='releaseYear != "all" and releaseYear != null'>
+			<if test='releaseYear != "all" and releaseYear != null and releaseYear != ""'>
 				release_year = #{ releaseYear }
 			</if>
-			<if test='productionCountry != "all" and releaseYear != null'>
+			<if test='productionCountry != "all" and productionCountry != null and productionCountry != ""'>
 				and production_country = #{ productionCountry }
 			</if>
-			<if test='genreId != "0" and releaseYear != null'>
+			<if test='genreId != "0" and genreId != null and genreId != ""'>
 				and f.genre_id = #{ genreId }
 			</if>
-			<if test='saw != "all" and saw != null and userId != "0" and userId != null'>
+			<if test='saw != "all" and saw != null and saw != "" and userId != "0" and userId != null'>
 				<choose>
 					<when test='saw == "show"'>
 						and saw = 'Y'
@@ -106,7 +106,7 @@
 			</when>
 			<otherwise>
 				select t.*
-				from (select f.*, g.name, fi.change_name, NVL(rf.saw, 'N') as saw, NVL(rf.member_id, 8) as mem, fas.avg_star
+				from (select f.*, g.name, fi.change_name, NVL(rf.saw, 'N') as saw, NVL(rf.member_id, null) as mem, fas.avg_star
 				      from tb_film f
 				      join tb_genre g on (f.genre_id = g.id)
 				      left outer join tb_detail_film df on (df.film_id = f.id)
@@ -116,16 +116,16 @@
 			</otherwise>
 		</choose>
 		<where>
-			<if test='releaseYear != "all" and releaseYear != null'>
+			<if test='releaseYear != "all" and releaseYear != null and releaseYear != ""'>
 				release_year = #{ releaseYear }
 			</if>
-			<if test='productionCountry != "all" and releaseYear != null'>
+			<if test='productionCountry != "all" and productionCountry != null and productionCountry != ""'>
 				and production_country = #{ productionCountry }
 			</if>
-			<if test='genreId != "0" and releaseYear != null'>
+			<if test='genreId != "0" and genreId != null and genreId != ""'>
 				and f.genre_id = #{ genreId }
 			</if>
-			<if test='saw != "all" and saw != null and userId != "0" and userId != null'>
+			<if test='saw != "all" and saw != null and saw != "" and userId != "0" and userId != null'>
 				<choose>
 					<when test='saw == "show"'>
 						and saw = 'Y'
@@ -137,7 +137,7 @@
 				and mem = #{ userId }
 			</if>
 		</where>
-		<if test='order != "all" and order != null'>
+		<if test='order != "all" and order != null and order != ""'>
 			<choose>
 				<when test='order == "filmRatingDesc"'>
 					order by avg_star desc
@@ -190,12 +190,6 @@
 		insert into tb_film
 		values(seq_film_id.nextval, #{ titleKor }, #{ titleEng }, #{ director }, 
 			   #{ releaseYear }, #{ productionCountry }, #{ productionStatus }, #{ genreId })
-	</insert>
-	
-	<insert id="insertFilmImage">
-		insert into tb_film_image
-		values(SEQ_FIMAGE_ID.nextval, 1, #{ changeName }, null)
-		<!-- dfilm_id 수정할것 -->
 	</insert>
 	
 	<select id="selectFilm" resultMap="filmResultSet">
@@ -288,5 +282,22 @@
 			where rownum <= 10
 		]]>
 	</select>
+	
+	<insert id="insertInitDetailFilm">
+		insert into tb_detail_film
+		values(seq_dfilm_id.nextval, null, null, null, null, 'Y', sysdate, #{ memberId }, seq_film_id.currval)
+	</insert>
+	
+	<insert id="insertFilmImage">
+		insert into tb_film_image
+		<choose>
+			<when test="changeName != null">
+				values(seq_fimage_id.nextval, 1, #{ changeName }, seq_dfilm_id.currval)
+			</when>
+			<otherwise>
+				values(seq_fimage_id.nextval, 1, null, seq_dfilm_id.currval)
+			</otherwise>
+		</choose>
+	</insert>
 	
 </mapper>

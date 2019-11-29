@@ -15,6 +15,17 @@
 		<result property="createDate" column="create_date"/>
 		<result property="status" column="status"/>
 		<result property="memberId" column="member_id"/>
+		<result property="nickName" column="nickname"/>
+	</resultMap>
+	
+	<resultMap id="ImageResultSet" type="Image">
+		<id property="id" column="id"/>
+		<result property="path" column="path"/>
+		<result property="originalName" column="original_name"/>
+		<result property="changeName" column="change_name"/>
+		<result property="type" column="type"/>
+		<result property="boardId" column="board_id"/>
+		<result property="noticeId" column="notice_id"/>
 	</resultMap>
 	
 	<resultMap id="commentResultSet" type="Comment">
@@ -33,6 +44,10 @@
 		<result property="reviewId" column="review_id"/>
 	</resultMap>
 	
+	<resultMap id="memberListResultSet" type="Member">
+		<id property="id" column="id"/>
+		<result property="nickName" column="nickname"/>
+	</resultMap>
 	
 	
 	<select id="getBoardCount" resultType="_int">
@@ -43,13 +58,21 @@
 	
 	<select id="selectBoardList" resultMap="boardResultSet">
 		select *
-		from tb_board
-		where status='Y'
-		order by id desc
+		from tb_board b
+        join tb_member m on(b.member_id=m.id)
+		where b.status='Y'
+		order by b.id desc
 	</select>
 	
 	<insert id="insertBoard">
+		insert into tb_board
+		values(seq_board_id.nextval, #{title}, #{content}, default, 0, 0, 0,
+				sysdate, sysdate, default, #{memberId})
+	</insert>
 	
+	<insert id="insertBoardFile">
+		insert into tb_image
+		values(seq_image_id.nextval, #{i.path}, #{i.originalName}, #{i.changeName}, 1, #{b.id}, null)
 	</insert>
 	
 	<update id="updateCount">
@@ -60,8 +83,9 @@
 	
 	<select id="selectBoard" resultMap="boardResultSet">
 		select *
-		from tb_board
-		where id=#{id}
+		from tb_board b
+		left join tb_member m on(b.member_id=m.id) 
+		where b.id=#{id}
 	</select>
 	
 	<update id="deleteBoard">
@@ -80,7 +104,7 @@
 	 <select id="selectCommentList" resultMap="commentResultSet">
 	 	select *
 		from tb_comment
-		where BOARD_ID=#{id}
+		where board_id=#{id}
 		and status='Y'
 	 </select>
 	 
@@ -97,6 +121,8 @@
 		where b.status='Y'
 		order by b.id desc
 	</select>
+	
+	
 	
 	
 </mapper>

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
+		<jsp:include page="../common/header.jsp"/>
 		<title>영화 찾기</title>
 		<style>
 			#search-film-result {
@@ -150,7 +150,6 @@
 <!-- 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
 	</head>
   <body>
-		<jsp:include page="../common/header.jsp"/>
 		
 		
 		<section class="mb-30px">
@@ -165,7 +164,15 @@
 				</div>
 			</div>
 		</section>
-			
+		
+		<c:if test="${ (empty loginUser) or (loginUser.premium eq 'N')}">
+	    <div class="container" style="background-color: black; background-clip: content-box; margin-bottom: 30px;">
+	    	<div style="height: 100px;">
+		      <h1 style="text-align: center; color: white;">광고</h1>
+	    	</div>
+	    </div>
+    </c:if>
+		
 		<!-- =================필터================= -->
 		<div class="container" style="margin-bottom: 40px; text-align: center;">
 			<div style="display: inline-block;">
@@ -256,24 +263,30 @@
 								<small>${ film.genre } / ${ film.releaseYear }</small>
 							</div>
 							<div class="row" style="margin-top: 10px;">
-								<div class="col"></div>
 								<div class="col">
 									<c:if test="${ not empty like[film.id] }">
-										<button class='btn btn-danger btn-liked-film'>LIKED</button>
+										<button class='btn btn-danger btn-block btn-liked-film' data-toggle="tooltip" data-placement="bottom" title="좋아요 취소">
+											<img src="resources/common/img/like.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
+										</button>
 									</c:if>
 									<c:if test="${ empty like[film.id] }">
-										<button class='btn btn-secondary btn-like-film'>LIKE</button>
+										<button class='btn btn-secondary btn-block btn-like-film' data-toggle="tooltip" data-placement="bottom" title="좋아요">
+											<img src="resources/common/img/like.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
+										</button>
 									</c:if>
 								</div>
 								<div class="col">
 									<c:if test="${ rate[film.id].saw eq 'Y' }">
-										<button class='btn btn-danger btn-liked-film'>SAW</button>
+										<button class='btn btn-danger btn-block btn-saw-film' data-toggle="tooltip" data-placement="bottom" title="봤어요 취소">
+											<img src="resources/common/img/see.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
+										</button>
 									</c:if>
 									<c:if test="${ rate[film.id].saw eq 'N' or empty rate[film.id].saw }">
-										<button class='btn btn-secondary btn-like-film'>SEE</button>
+										<button class='btn btn-secondary btn-block btn-see-film' data-toggle="tooltip" data-placement="bottom" title="봤어요">
+											<img src="resources/common/img/see.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
+										</button>
 									</c:if>
 								</div>
-								<div class="col"></div>
 							</div>
 							<div style="margin-top: 10px;">
 								<span class="star-input">
@@ -347,7 +360,7 @@
 								<li class="page-item">
 							</c:if>
 									<a href=<c:out value="${ filmUrl }&p=${ pi.currentPage - 1 }"/> class="page-link" aria-label="Previous">
-										<span aria-hidden="true"><i class="ti-angle-left"></i></span>
+										&lt;
 									</a>
 								</li>
 		
@@ -371,10 +384,8 @@
 							<c:if test="${ pi.currentPage ne pi.maxPage }">
 								<li class="page-item">
 							</c:if>
-									<a href=<c:out value="${ filmUrl }&p=${ pi.currentPage + 1 }"/> class="page-link" aria-label="Next">
-									<span aria-hidden="true">
-										<i class="ti-angle-right"></i>
-									</span>
+								<a href=<c:out value="${ filmUrl }&p=${ pi.currentPage + 1 }"/> class="page-link" aria-label="Next">
+									&gt;
 								</a>
 							</li>
 						</ul>
@@ -386,6 +397,10 @@
 		
 		$(function(){
 			$(".nav").children("li").eq(0).addClass("active");
+		});
+		
+		$(function (){
+		  $('[data-toggle="tooltip"]').tooltip();
 		});
 		
 		// URL 파라미터 값을 가져오기 위한 메서드
@@ -624,7 +639,7 @@
 		$(document).on("click", ".btn-like-film, .btn-liked-film", function() {
 					// 영화 ID 찾기
 					// var fid = $(this).closest("tr").find("td").eq(1).text();
-					var fid = $(this).parent().siblings("input[type=hidden]").val();
+					var fid = $(this).closest(".row").siblings("input[type=hidden]").val();
 					var $this = $(this)[0];
 					// console.log(fid);
 
@@ -645,26 +660,85 @@
 						dataType : "json",
 						success : function(data) {
 							// 이미 'LIKE'라면 'LIKED' 버튼이 보여짐
-							if (data > 0
-									&& $($this).hasClass(
-											"btn-like-film")) {
+							if (data == 0) {
+								alert("로그인 해주세요!");
+							} else if (data > 0 && $($this).hasClass("btn-like-film")) {
 								$($this).closest("div").find("button")
 												.removeClass("btn-secondary")
 												.removeClass("btn-like-film")
 												.addClass("btn-danger")
+												.addClass("btn-block")
 												.addClass("btn-liked-film")
-												.text("LIKED");
+												.attr({"data-toggle":"tooltip", "data-placement":"bottom", "title":"좋아요 취소", "data-original-title":"좋아요 취소"})
+												.html("<img src='resources/common/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>");
+								$(".tooltip-inner").html("좋아요 취소");
 							} else {
 								$($this).closest("div").find("button")
 												.removeClass("btn-danger")
 												.removeClass("btn-liked-film")
 												.addClass("btn-secondary")
+												.addClass("btn-block")
 												.addClass("btn-like-film")
-												.text("LIKE");
+												.attr({"data-toggle":"tooltip", "data-placement":"bottom", "title":"좋아요", "data-original-title":"좋아요"})
+												.html("<img src='resources/common/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>");
+								$(".tooltip-inner").html("좋아요");
 							}
 						},
 						error : function() {
-							alert("로그인 해주세요!");
+							console.log("통신 실패!");
+						}
+					});
+				});
+		
+		/* 봤어요 AJAX */
+		$(document).on("click", ".btn-see-film, .btn-saw-film", function() {
+					// 영화 ID 찾기
+					var fid = $(this).closest(".row").siblings("input[type=hidden]").val();
+					var $this = $(this)[0];
+
+					// flag
+					if ($($this).hasClass("btn-see-film")) {
+						var sawFlag = 1;
+					} else {
+						var sawFlag = 0;
+					}
+
+					$.ajax({
+						url : "sawFilm.do",
+						data : {
+							"fid" : fid,
+							"flag" : sawFlag
+						},
+						type : "post",
+						dataType : "json",
+						success : function(data) {
+							// 이미 'SEE'라면 'SAW' 버튼이 보여짐
+							if (data == 0) {
+								alert("로그인 해주세요!");
+							} else if (data > 0 && $($this).hasClass("btn-see-film")) {
+								$($this).closest("div").find("button")
+												.removeClass("btn-secondary")
+												.removeClass("btn-see-film")
+												.addClass("btn-danger")
+												.addClass("btn-block")
+												.addClass("btn-saw-film")
+												.attr({"data-toggle":"tooltip", "data-placement":"bottom", "title":"봤어요 취소"})
+												.html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>");
+								$(".tooltip-inner").html("봤어요 취소");
+							} else {
+								$($this).closest("div").find("button")
+												.removeClass("btn-danger")
+												.removeClass("btn-saw-film")
+												.addClass("btn-secondary")
+												.addClass("btn-block")
+												.addClass("btn-see-film")
+												.attr({"data-toggle":"tooltip", "data-placement":"bottom", "title":"봤어요"})
+												.html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>");
+								$(".tooltip-inner").html("봤어요");
+							}
+						},
+						error : function() {
+							console.log("통신 실패!");
 						}
 					});
 				});

@@ -28,5 +28,20 @@ public class LikeServiceImpl implements LikeService{
 	public Map<Integer, Like> selectLikedFilmMap(int id) {
 		return likeDao.selectLikedFilmMap(id);
 	}
+
+	@Override
+	public Like selectLikeUser(String userId, String loginUserId) {
+		return likeDao.selectLikeUser(userId, loginUserId);
+	}
+
+	@Override
+	public int insertLikeMem(Like like) {
+		return likeDao.insertLikeMem(like);
+	}
+
+	@Override
+	public int deleteLikeMem(Like like) {
+		return likeDao.deleteLikeMem(like);
+	}
 	
 }

@@ -67,7 +67,7 @@ public class DetailFilmDao {
 	
 	// 상세정보 롤백
 	public int detailFilmRollback(int filmId) {
-		return sqlSession.update("detailFilmmapper.updateDetailFilm", filmId);	
+		return sqlSession.update("detailFilmmapper.updateDetailFilm", filmId);
 	}
 	
 	// 배우 검색
@@ -75,28 +75,45 @@ public class DetailFilmDao {
 		
 		return (ArrayList)sqlSession.selectList("detailFilmmapper.searchActorList", searchName);
 	}
-
-	public int insertInitDetailFilm(int id, int filmId) {
-		int[] ids = {id, filmId};
-		return sqlSession.insert("detailFilmmapper.insertInitDetailFilm", ids);
-	}
 	
-	public int addActor(int actorId, int id) {
+	// 배우 등록
+	public int addActor(int newActorId, int id) {
 		
-		HashMap map = new HashMap();
+		System.out.println("newActor : "+newActorId);
 		
-		map.put("actorId", actorId);
+		HashMap map= new HashMap();
+		
+		map.put("newActorId", newActorId);
 		map.put("id", id);
 		
-		return sqlSession.insert("detailFilmmapper.addActor",map);
+		return sqlSession.insert("detailFilmmapper.addActor", map);
 	}
 	
-	
+	// 배우 수정 등록
+	public int actorInsert(String actorIdList) {
+		
+		String[] actorList = actorIdList.split(",");
+		int[] actorIntList = new int[actorList.length];
+		
+		System.out.println("actorList : "+actorList);
+		System.out.println("actorList.length :"+actorList.length);
+		
+		// 인트형으로 변환
+		for(int i=0; i<actorList.length; i++) {
+			actorIntList[i] = Integer.parseInt(actorList[i]);
+		}
+		
+		int result=0;
+		
+		for(int i=0; i<actorIntList.length; i++) {
+			
+			result = sqlSession.insert("detailFilmmapper.wikiAddActor", actorIntList[i]);
+			
+		}
+		
+		return result;
+	}
 }
-
-
-
-
 
 
 

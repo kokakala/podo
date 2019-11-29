@@ -20,5 +20,5 @@ public class Image {
 	private int type;				// 타입(자유게시판, 공지사항)이런식
 	private int boardId; 			// 참조 게시판 번호
 	private int noticeId; 			// 참조 공지사항 번호
-	
+	private int detailFilmId;		// 영화 상세정보 ID
 }

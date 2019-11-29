@@ -69,15 +69,18 @@ public class DetailFilmServiceImpl implements DetailFilmService{
 		return dfDao.searchActorList(searchName);
 	}
 
-	@Override
-	public int insertInitDetailFilm(int id, int filmId) {
-		return dfDao.insertInitDetailFilm(id, filmId);
-
 	// 배우 등록
 	@Override
-	public int addActor(int actorId, int id) {
+	public int addActor(int newActorId, int id) {
 		
-		return dfDao.addActor(actorId, id);
+		return dfDao.addActor(newActorId, id);
+	}
+
+	// 위키 영화 배우 수정 입력
+	@Override
+	public int actorInsert(String actorIdList) {
+		
+		return dfDao.actorInsert(actorIdList);
 	}
 
 }

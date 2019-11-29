@@ -77,22 +77,13 @@ public class DetailFilmController {
 	
 	// 배우 등록
 	@RequestMapping("addActor.do")
-	public ModelAndView addActor(int id, int filmId, int actorId, ModelAndView mv) {
+	public ModelAndView addActor(int id, int filmId, int newActorId, ModelAndView mv) {
 		
 		// 배우 등록
-		int result = dfService.addActor(actorId, id);
+		System.out.println("newActor 컨트롤러 :" + newActorId);
+		int result = dfService.addActor(newActorId, id);
 		
-		// 영화 업데이트 뷰 한번 더 뿌려주기
-		// 영화 상세정보
-		DetailFilm df = dfService.selectDetailFilm(filmId);	
-		
-		// 포스터 이미지
-		Image i = dfService.selectFilmImage(df.getId()); 
-		
-		// 배우 리스트
-		ArrayList<Actor> al = dfService.selectActorList(filmId);
-		
-		mv.addObject("df",df).addObject("al",al).addObject("i",i).setViewName("detailFilm/detailFilmUpdate");
+		mv.addObject("filmId",filmId).setViewName("redirect:detailFilmUpdate.do");
 		
 		return mv;
 	}
@@ -101,11 +92,26 @@ public class DetailFilmController {
 	@RequestMapping("detailFilmInsert.do")
 	public ModelAndView detailFilmInsert(DetailFilm df, int uId, String filmImage, ModelAndView mv) {
 		
+		// 배우 리스트 한번 쫙 빼기
+		ArrayList<Actor> al = dfService.selectActorList(df.getId());
+		String actorIdList = "";
+		
+		// 배우 리스트에서 배우 번호만 String으로 한줄로 저장
+		for(int i=0; i<al.size(); i++) {
+			
+			actorIdList += al.get(i).getId();
+    		
+    		// 마지막 인덱스면 , 붙여주지 않음
+    		if (i != al.size()-1){
+    			// 구분자
+    			actorIdList += ",";
+    		}
+		}
+		
 		// 이미지 저장용 select 한번 더
 		int result = dfService.detailFilmInsert(df, uId);
 		int result2 = dfService.filmImageInsert(filmImage, df.getId());
-		
-		// 배우 검색 창 구현 -> 배우 검색 -> 배우 선택해서 확인 -> 배우 번호/ df.detailId랑 tb_film_actor에 insert
+		int result3 = dfService.actorInsert(actorIdList);
 		
 		mv.addObject("filmId", df.getFilmId()).setViewName("redirect:detailFilm.do");
 		
