@@ -1,10 +1,12 @@
 package com.ch.podo.like.model.service;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.like.model.dao.LikeDao;
 import com.ch.podo.like.model.vo.Like;
 
@@ -43,5 +45,47 @@ public class LikeServiceImpl implements LikeService{
 	public int deleteLikeMem(Like like) {
 		return likeDao.deleteLikeMem(like);
 	}
+
+	@Override
+	public int myPageLikeFilmListCount(String id) {
+		return likeDao.myPageLikeFilmListCount(id);
+	}
+
 	
+	@Override public ArrayList<Like> myPageSelectLikeFilm(String id, PageInfo pi){
+		return likeDao.myPageSelectLikeFilm(id, pi); 
+	}
+
+	@Override
+	public int myPageLikeUserListCount(String id) {
+		return likeDao.myPageLikeUserListCount(id);
+	}
+
+	@Override
+	public ArrayList<Like> myPageSelectLikeUser(String id, PageInfo pi) {
+		return likeDao.myPageSelectLikeUser(id, pi);
+	}
+
+	@Override
+	public int myPageLikeReviewListCount(String id) {
+		return likeDao.myPageLikeReviewListCount(id);
+	}
+
+	@Override
+	public ArrayList<Like> myPageSelectLikeReview(String id, PageInfo pi) {
+		return likeDao.myPageSelectLikeReview(id, pi);
+	}
+
+	@Override
+	public int insertLikeReview(Like like) {
+		
+		return likeDao.insertLikeReview(like);
+	}
+
+	@Override
+	public int deleteLikeReview(Like like) {
+		
+		return likeDao.deleteLikeReview(like);
+	}
+	 
 }

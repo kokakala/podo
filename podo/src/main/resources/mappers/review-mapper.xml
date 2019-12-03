@@ -276,6 +276,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 	values(seq_comment_id.nextval, 1, #{content}, default, default, default, sysdate, sysdate, default, default, #{memberId}, #{boardId}, #{reviewId})
 	 </insert>
 	
+	<!-- 댓글 신고하기 -->
+	<insert id="insertDeclarationComment">
+		  insert into tb_report values(SEQ_REPORT_ID.nextval,2,#{targetId},#{content},#{reportId},#{ reportedId })
+	</insert>
+	
+	
+	<!-- 리부댓글 삭제 -->
+	<update id="deleteReviewComment">
+	update tb_comment
+	set status='N'
+	where id=#{id}
+	</update>
 	
 	<!-- 리뷰가져오는거 -->
 <!-- 	<select id="selectReview" resultMap="reviewListSet">

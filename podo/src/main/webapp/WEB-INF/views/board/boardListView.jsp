@@ -8,12 +8,11 @@
 <title>Insert title here</title>
 <style>
 	table{
-		background: lightgray;
 		text-align: center;
 	}
 	table <a{
 		text-decoration: none;
-		color: black;
+		color: white;
 	}
 </style>
 </head>

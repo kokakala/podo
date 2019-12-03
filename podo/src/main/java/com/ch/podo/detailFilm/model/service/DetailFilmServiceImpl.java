@@ -76,11 +76,19 @@ public class DetailFilmServiceImpl implements DetailFilmService{
 		return dfDao.addActor(newActorId, id);
 	}
 
+	// 배우 삭제
+	@Override
+	public int deleteActor(int actorId, int id) {
+		
+		return dfDao.deleteActor(actorId, id);
+	}
+	
 	// 위키 영화 배우 수정 입력
 	@Override
 	public int actorInsert(String actorIdList) {
 		
 		return dfDao.actorInsert(actorIdList);
 	}
+	
 
 }

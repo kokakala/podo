@@ -144,8 +144,10 @@
                 <tbody align="center">
 				<c:forEach items="${ list }" var="r">	
 					<tr>
-						<td>${ r.id }</td>
-						<td>${ r.titleKor } ${r.titleEng }</td>
+						<td>${ r.id }</td>			
+						<td>
+							<a href="ratingDetailReview.do?id=${ r.id }">${ r.titleKor }&nbsp;/ ${ r.titleEng }</a>
+						</td>
 						<td>${ r.nickName }</td>
 						<td>${ r.likeCount }</td>
 						<td>${ r.spoilerCheck }</td>

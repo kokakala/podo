@@ -151,6 +151,18 @@ public class ReviewDao {
 	}
 
 
+	public int insertDeclarationComment(Report rep) {
+		
+		return sqlSession.insert("reviewMapper.insertDeclarationComment", rep);
+	}
+
+
+	public int deleteReviewComment(int id) {
+		
+		return sqlSession.update("reviewMapper.deleteReviewComment",id);
+	}
+
+
 
 	/*
 	public Review selectReview() {

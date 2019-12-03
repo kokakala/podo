@@ -16,7 +16,7 @@ import lombok.ToString;
 public class Inquiry {
 	
 	private int id;			  	// 문의번호
-	private int type;		  	// 타입(신고 종류)
+	private int type;		  	// 타입(신고 종류)	// 1= 마이페이지 문의 , 2= DB제보
 	private String content;	  	// 문의 내용
 	private Date createDate;	// 최초 작성일
 	private String status;	  	// 상태

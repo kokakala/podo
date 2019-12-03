@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ch.podo.member.model.vo.Member;
+import com.ch.podo.member.model.vo.Pay;
 import com.ch.podo.board.model.vo.PageInfo;
 
 @Repository("memberDao")
@@ -55,11 +56,41 @@ public class MemberDao {
 	
 	
 	public int deleteBlackMember(String[] result) {
-		return sqlSession.delete("memberMapper.del	eteBlackMember", result);
+		for(int i=0; i<result.length; i++) {
+			String item = result[i];
+			sqlSession.insert("memberMapper.deleteBlackMember", item);
+		}
+		return 1;
 	}
 
 	public int prohibitionBoard(int bid) {
 		return sqlSession.selectOne("memberMapper.prohibitionBoard", bid);
+	}
+
+	public int insertPaymentInfo(Pay pay) {
+		return sqlSession.insert("memberMapper.insertPaymentInfo", pay);
+	}
+
+	public int updatePremiumInfo(String memberId) {
+		return sqlSession.update("memberMapper.updatePremiumInfo", memberId);
+	}
+	
+	public int insertBlackList(String[] result) {
+		
+		for(int i=0; i<result.length; i++) {
+			String item = result[i];
+			sqlSession.insert("memberMapper.insertBlackList", item);
+		}
+		return 1;
+	}
+	
+	public int deleteReport(String[] result) {
+		
+		for(int i=0; i<result.length; i++) {
+			String item = result[i];
+			sqlSession.insert("memberMapper.deleteReport", item);
+		}
+		return 1;
 	}
 	
 }

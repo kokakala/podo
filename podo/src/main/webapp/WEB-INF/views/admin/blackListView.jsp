@@ -13,6 +13,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  
 
   <title>AdminPage</title>
   <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>

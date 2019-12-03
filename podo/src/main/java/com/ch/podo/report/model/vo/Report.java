@@ -14,7 +14,7 @@ import lombok.ToString;
 public class Report {
    
    private int id;         // 신고번호
-   private int type;      // 타입
+   private int type;      // 타입	
    private int targetId;   // 대상번호
    private int content;   // 신고내용
    private int reportId;   // 신고자번호

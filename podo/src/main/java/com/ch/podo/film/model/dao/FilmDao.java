@@ -1,6 +1,7 @@
 package com.ch.podo.film.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
@@ -24,14 +25,22 @@ public class FilmDao {
 		return sqlSession.selectOne("filmMapper.getListCount");
 	}
 
-	public int selectKeywordFilmListCount(String keyword) {
-		return sqlSession.selectOne("filmMapper.selectKeywordFilmListCount", keyword);
+	public int selectKeywordFilmListCount(String keyword, String skeyword) {
+		HashMap<String, String> map = new HashMap<>();
+		map.put("keyword", keyword);
+		map.put("skeyword", skeyword);
+		return sqlSession.selectOne("filmMapper.selectKeywordFilmListCount", map);
 	}
 	
-	public ArrayList<Film> selectKeywordFilmList(String keyword, PageInfo pi) {
+	public ArrayList<Film> selectKeywordFilmList(String keyword, String skeyword, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList)sqlSession.selectList("filmMapper.selectKeywordFilmList", keyword, rowBounds);
+
+		HashMap<String, String> map = new HashMap<>();
+		map.put("keyword", keyword);
+		map.put("skeyword", skeyword);
+		
+		return (ArrayList)sqlSession.selectList("filmMapper.selectKeywordFilmList", map, rowBounds);
 	}
 
 	public ArrayList<Film> selectFilterFilmList(SearchCondition sc, PageInfo pi) {

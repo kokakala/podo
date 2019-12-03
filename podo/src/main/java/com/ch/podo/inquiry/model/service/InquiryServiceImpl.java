@@ -29,4 +29,9 @@ public class InquiryServiceImpl implements InquiryService{
 	public  ArrayList<Inquiry> myPageSelectInquiryList(String id, PageInfo pi) {
 		return inquiryDao.myPageSelectInquiryList(id, pi);
 	}
+
+	@Override
+	public int dbInquiryInsert(String content, String userId) {
+		return inquiryDao.dbInquiryInsert(content, userId);
+	}
 }

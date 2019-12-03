@@ -15,10 +15,10 @@ public interface FilmService {
 	int getListCount();
 	
 	// 2. 영화 키워드 검색 결과 개수 조회 서비스
-	int selectKeywordFilmListCount(String keyword);
+	int selectKeywordFilmListCount(String keyword, String skeyword);
 
 	// 3. 영화 키워드 검색 서비스
-	ArrayList<Film> selectKeywordFilmList(String keyword, PageInfo pi);
+	ArrayList<Film> selectKeywordFilmList(String keyword, String skeyword, PageInfo pi);
 	
 	// 4. 전체 장르 목록 불러오기 서비스
 	ArrayList<Genre> selectAllGenreList();

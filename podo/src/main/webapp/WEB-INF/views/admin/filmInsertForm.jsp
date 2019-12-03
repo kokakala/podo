@@ -145,9 +145,11 @@
 						<div class="form-group">
 							* 이미지를 삭제하면 기본이미지로 등록됩니다.<br>
 							<img id="preview" src="resources/detailFilmImage/podoposter.jpg" style="width: 107px; height: 152px; object-fit: cover; cursor: pointer;"><br>
-							<button type="button" id="uploadBtn">이미지 변경</button>
 							<button type="button" onclick="fileReset();">이미지 삭제</button><br>
-							<div id="imgArea"><input type='file' id='imgInp' name='uploadFile'></div><br>
+							<div style="display: none;">
+								<button type="button" id="uploadBtn">이미지 변경</button>
+								<div id="imgArea"><input type='file' id='imgInp' name='uploadFile'></div><br>
+							</div>
 						</div>
 					</td>
 				</tr>
@@ -165,7 +167,7 @@
 				</tr>
 				<tr>
 					<td>제작년도</td>
-					<td><input type="text" name="releaseYear" required></td>
+					<td><input type="number" min="1895" max="2050" step="1" name="releaseYear" required></td>
 				</tr>
 				<tr>
 					<td>제작국가</td>

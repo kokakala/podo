@@ -14,7 +14,7 @@
 <style>
     body{
         width:100%;
-        height:1000px;
+        height:1300px;
     }
     #body{
         width:60%;
@@ -25,7 +25,7 @@
     .movie_info2{
         width:100%;
         float:left;
-        border:1px solid black;
+        border:0px solid black;
     }
     .movie_poster_cover{
         width:30%;
@@ -33,28 +33,13 @@
         position:relative;
         float:left;
         left:20px;
-        border:1px solid blue;
+        border:0px solid blue;
     }
     .movie_info_cover{
         width: 60%;
         float:right;
     }
-    .icon{
-        position: absolute;
-        z-index: 1;
-        width: 30px;
-        height: 30px;
-    }
-    #collection{
-        left:90%;
-    }
-    #likeBtn{
-        top:90%;
-    }
-    #modifyBtn{
-        top:90%;
-        left:90%;
-    }
+    
     #movie_poster{
         position: relative;
     }
@@ -64,19 +49,20 @@
         height: 40%;
     }
     .cover{
-        border: 1px solid black;
+        border: 0px solid black;
     }
     #title_cover{
         font-size:50px;
     }
     .movie_clip{
         font-size:15px;
-        border: 1px solid black;
+        border: 0px solid black;
         float:right;
     }
     #modify_all{
         width: 30%;
         float:right;
+        
     }
     #modifyBtn{    
     	float:right;
@@ -84,9 +70,21 @@
     #synopsys{
     	border: 0px solid black;
     }
-    #addActor{
+    .textArea{
+    	background-color: rgb(9, 15, 33);
+    	color:grey;
+    }
+    #addActor, .deleteActor, .modifyPoster, #cancel{
     	cursor:pointer;
     }
+    #addActor, #cancel{
+    	float:right;
+    }
+    #poster{
+    	border-radius: 10px;
+    	border : 1px solid white;
+    }
+    
     #actor_cover, #actor_cover1{
     	border : 0px solid lightgrey;
     	height: 200px;
@@ -109,6 +107,7 @@
     .actor_name{
     	border : 0px solid lightgrey;
     	text-align:center;
+    	color:black;
     }
     .image_cover{
     	text-align:center;
@@ -117,6 +116,9 @@
     }
     .check_actor{
     	cursor:pointer;
+    }
+    #mdfPosterBtn{
+    	display:none;
     }
 </style>
 <body>
@@ -127,68 +129,72 @@
     <div id="body">
 
         <div class="movie_info2">
-            <div class="movie_poster_cover">    <!-- 왼쪽 영화 포스터 -->
-                <div class="icon" id="likeBtn">      <!-- 좋아요 -->
-                    <img id="heart" src="resources/detailFilmImage/heart.jpg" style="width:30px; height:30px;">
+        <!-- 왼쪽 영화 포스터 -->
+        <!-- 포스터 -->
+            <form action="detailFilmInsert.do" method="post" enctype="multipart/form-data">
+	            <input type="hidden" name="id" value="${df.id}">	<!-- 영화 상세 정보 번호 -->
+	            <input type="hidden" name="filmId" value="${df.filmId}">  <!-- 영화 번호  -->
+	            <input type="hidden" name="actorList" value="${al}">	 <!-- 배우 리스트 -->
+	            
+	            <input type="hidden" id="filmImage" name="filmImage" value="${ i.changeName }">
+	            <input type="hidden" name="uId" value="${ loginUser.id }">
+            <div class="movie_poster_cover"> 
+                <div id="movie_poster"> 
+               		<c:if test="${i.changeName ne null}">
+                    	<img id="poster" src="resources/detailFilmImage/${i.changeName}" style="width:100%; height:100%;">
+                    </c:if>
+                    <c:if test="${i.changeName eq null}">
+    	                <img id="poster" src="resources/detailFilmImage/podoposter.jpg" style="width:100%; height:100%;">
+                	</c:if>
                 </div>
-
-                <div class="icon" id="modifyBtn">    <!-- 수  정 -->
-                    <img id="memo" src="resources/detailFilmImage/modifyBtn.jpg" style="width:30px; height:30px;">
-                </div>
-                
-                <div id="movie_poster"> <!-- 포스터 -->
-                    <img id="poster" src="resources/detailFilmImage/${i.changeName}" style="width:100%; height:100%;">
-                </div>
-                
+                <br>
+                <div class="modifyPoster btn" style="background:purple; color:white;"  id="modify_p_Btn">수정하기</div>
+                <div id="cancel" class="btn" style="background:#6c757d; color:white;" onclick="cancel();">취소하기</div>
+                <div id="mdfPosterBtn"><input type="file" id="uploadPBtn" name="uploadPoster"></div>
             </div>
             <div class="movie_info_cover">      <!-- 오른쪽 영화 정보 -->
-            <form action="detailFilmInsert.do" method="post">
-	            <input type="hidden" name="id" value="${df.id}">	<!-- 영화 상세 정보 번호 -->
-	            <input type="hidden" name="filmId" value="${df.filmId}"> <!-- 영화 번호  -->
-	            <input type="hidden" name="actorList" value="${al}">	<!-- 배우 리스트 -->
-	            
-	            <input type="hidden" name="filmImage" value="${ i.changeName }">
-	            <input type="hidden" name="uId" value="${ loginUser.id }">
                 <div id="movie_detail_info">
                 	<div class="cover" id="title_cover">
 	                    <span id="movie_title">${ df.titleKor }(${ df.titleEng })</span>
-	                    <textarea class="movie_clip" name="trailer" placeholder="유튜브 링크를 연결해주세요!" rows="2" cols="40" style="border:0px;">${ df.trailer }</textarea>
+	                    <textarea class="movie_clip textArea" name="trailer" placeholder="유튜브 링크를 연결해주세요!" rows="2" cols="30" style="border:0px; resize: none;">${ df.trailer }</textarea>
                 	</div>
+                	<br>
                     <div class="cover" id="sysnobsis_cover">
    	                	<h5>감독</h5>
    	                	<div>${ df.director }</div>
                     </div>
                     <div class="cover" id="sysnobsis_cover">
-                    
+                    <br>
                     <h5>출연 배우</h5>
    	               	<div class="actorImage">
 		            	<c:forEach items="${ al }" var="a">
    		                	<div class="image_cover">
 	   	                		<img src="resources/detailFilmImage/actor/${a.profileImage}" width='150' height='150' style="border-radius: 100px;">
-				                <div name="actorName">${a.actorName}</div>
+				                <div class="actorName">${a.actorName}</div>
+				                <div class="deleteActor " onclick="deleteActor('${a.id}');">삭제</div>
 	   	                	</div>	
 					    </c:forEach>   
    	                </div>
-    	            
-                    <div id="addActor">추가하기</div>
+    	            <br>
+                    <div id="addActor" class="btn" style="background:purple; color:white;">추가하기</div>
                     </div>
+                    <br>
                     <div class="cover" id="sysnobsis_cover">
 	                    <h5>시놉시스</h5>
-                    	<div id="synopsys"><textarea id="text_synopsys" name="synopsys" placeholder="정보를 입력해주세요" rows="10" cols="80" style="border:0px; resize: none;">${df.synopsys}</textarea></div>
+                    	<div id="synopsys"><textarea id="text_synopsys" class="textArea" name="synopsys" placeholder="정보를 입력해주세요" rows="10" cols="80" style="border:0px; resize: none;">${df.synopsys}</textarea></div>
                     </div>
-                    
+                    <br>
                     <div class="cover" id="plusInfo_cover">
                     	<h5>트리비아</h5>
-                    	<div id="trivia"><textarea id="text_trivia" name="trivia" placeholder="정보를 입력해주세요" rows="10" cols="80" style="border:0px; resize: none;">${df.trivia}</textarea></div>
+                    	<div id="trivia"><textarea id="text_trivia" class="textArea" name="trivia" placeholder="정보를 입력해주세요" rows="10" cols="80" style="border:0px; resize: none;">${df.trivia}</textarea></div>
                     </div>
-                    
+                    <br>
                     <div class="cover">
-                    	<button type="submit" id="modifyBtn">내용 저장</button>
-                    </div>	<!-- 버튼 클릭시, updateForm 으로 이동 -->
-                    		<!-- updateForm 에서 수정하고 저장 누르면 다시 이 페이지 -->
+                    	<button type="submit" class="btn" style="background:purple; color:white;" id="modifyBtn">내용 저장</button>
+                    </div>	
                 </div>
-            </form>
             </div>
+            </form>
         </div>
        
         <!-- actor 모달 -->
@@ -226,7 +232,7 @@
 						<!-- 배우 검색부 모달창 -->
 						<form action="#" onsubmit='return false;'>
 							<div class="form-group">
-								<lavel>배우 검색</label>
+								<label>배우 검색</label>
 								<input type="text" id="searchName" class="form-control" name="searchName" placeholder="이름을 입력해주세요">
 							</div>
 						</form>
@@ -263,10 +269,10 @@
     	// 배우 등록 modal
 	    $(function(){
 			$("#addActor").on("click", function(){
-				/* $('#actor-model').modal('toggle'); */
+				$('#actor-model').modal('toggle');
 			});
 		});
-	    
+    	
     	// 배우 검색
 	    $(document).ready(function(){
 	    	$("#searchName").keypress(function (e){
@@ -329,39 +335,64 @@
 	    		
 	    		// 마지막 인덱스면 , 붙여주지 않음
 	    		if (i != a.length-1){
-	    			actorIdList += "%2C";
+	    			actorIdList += "/";
 	    		}
 	    	}
-	    	console.log(actorIdList);
 	    	//--------- 기존에 저장된 배우들 문자열에 담아줌!
 
-	    	var compare = actorIdList.split("%2C");
+	    	var compare = actorIdList.split("/");
 	    	
 	    	$("input[class=test]:checked").each(function(){
 	    		
 	    		newActorId = $(this).val();
 	    		newActor = $(this).val();
-	    		//actorIdList += ","+$(this).val();
 	    		
 	    		if(compare.indexOf(newActor) == -1){
-   					//actorIdList += "%2C"+newActor;
-			    	//location.href='addActor.do?id=${df.id}&filmId=${df.filmId}&actorIdList='+actorIdList;
 	    			location.href='addActor.do?id=${df.id}&filmId=${df.filmId}&newActorId='+newActorId;
 	    		}
-				console.log(actorIdList);
 	    	});
-
-	    	/*
-	    	// 배우 하나만 추가
-			$("input[class=test]:checked").each(function(){
-	    		
-				newActorId = $(this).val();
-	    		
-			   	location.href='addActor.do?id=${df.id}&filmId=${df.filmId}&newActorId='+newActorId;
-	    		
-	    	});
-	    	*/
 	    }
+	    
+	    // 배우 삭제
+	    function deleteActor(actorId){
+	    	location.href='deleteActor.do?id=${df.id}&filmId=${df.filmId}&actorId='+actorId;
+	    }
+	    
+		// 포스터 변경 버튼
+		$('#modify_p_Btn').on('click',function(e){
+			// input type="file" 버튼 클릭하게 해줌
+			e.preventDefault();
+			$("#uploadPBtn").click();
+		});
+	    
+	    // 포스터 변경전 미리보기 ===================미리보기 안됨
+	    function readURL(input){
+	    	if (input.files && input.files[0]) {
+	            var reader = new FileReader();
+	            reader.onload = function(e) {
+	                $('#poster').attr('src', e.target.result);
+	            }
+	            reader.readAsDataURL(input.files[0]);
+	        }
+	    }
+	    
+		// 이미지 변경 될 때마다 이미지 미리보기
+		$(document).on("change","#uploadPBtn",function(){
+			readURL(this);
+		});
+	    
+	    // 이미지 삭제 = 완성
+	    function cancel(){
+	    	$("#mdfPosterBtn input").remove();
+	    	$("#poster").attr('src','resources/detailFilmImage/${i.changeName}').css({'width':'100%','height':'100%'});
+	    	var newInput = "<input type='file' id='uploadPBtn' name='uploadPoster'>";
+	    	$("#mdfPosterBtn").append(newInput);
+	    }
+	    
+//////////////////////////////  이미지 클릭만으로 선택되게 하려고 시도 중 /////////////////////////////////
+	    $('.check_actor').on('click',function(){
+	    	$('.test').prop('checked', true);
+	    });
     </script>   
     
 </body>

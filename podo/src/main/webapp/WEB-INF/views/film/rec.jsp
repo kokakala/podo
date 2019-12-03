@@ -5,7 +5,7 @@
 <html>
 	<head>
 		<jsp:include page="../common/header.jsp"/>
-		<title>평점 기반 영화 추천</title>
+		<title>영화 추천</title>
 		<style>
 			
 			@media (min-width: 1000px) {
@@ -34,6 +34,43 @@
 				font-size: 18px;
 			}
 			
+			.podo-ad-banner {
+				background: linear-gradient(133deg, #7b08c8, #e67518, #554dc6, #f776e7);
+				background-size: 800% 800%;
+				
+				-webkit-animation: AnimationName 10s ease infinite;
+				-moz-animation: AnimationName 10s ease infinite;
+				animation: AnimationName 10s ease infinite;
+
+				height: 100px;
+				overflow: hidden;
+				cursor: pointer;
+			}
+			
+			@-webkit-keyframes AnimationName {
+			    0%{background-position:0% 50%}
+			    50%{background-position:100% 50%}
+			    100%{background-position:0% 50%}
+			}
+			@-moz-keyframes AnimationName {
+			    0%{background-position:0% 50%}
+			    50%{background-position:100% 50%}
+			    100%{background-position:0% 50%}
+			}
+			@keyframes AnimationName {
+			    0%{background-position:0% 50%}
+			    50%{background-position:100% 50%}
+			    100%{background-position:0% 50%}
+			}
+			
+			.podo-ad-banner>div {
+				height: 100%;
+				line-height: 100px;
+				text-align: center;
+				font-size: 20px;
+				color: blanchedalmond;
+			}
+			
 		</style>
 	</head>
 	<body>
@@ -54,13 +91,17 @@
 			</div>
 		</section>
 		
-		<c:if test="${ (empty loginUser) or (loginUser.premium eq 'N')}">
+    <!--================ Advertisement start =================-->
+    <c:if test="${ (empty loginUser) or (loginUser.premium eq 'N')}">
 	    <div class="container" style="background-color: black; background-clip: content-box; margin-bottom: 30px;">
-	    	<div style="height: 100px;">
-		      <h1 style="text-align: center; color: white;">광고</h1>
+	    	<div class="podo-ad-banner" onclick="location.href='premium.do'">
+	    		<div>
+		      	무료로 가입하시고 단돈 1,100원에 광고를 제거해보세요!
+	    		</div>
 	    	</div>
 	    </div>
     </c:if>
+    <!--================Advertisement end =================-->
 		
 		<section class="blog-post-area section-margin">
 			<div class="container">
@@ -85,7 +126,7 @@
 						      	<!--================ Blog slider start =================-->
 						        	
 						          <div class="card blog__slide text-center">
-						            <div class="blog__slide__img">
+						            <div class="blog__slide__img" onclick="location.href='detailFilm.do?filmId=${ f.id }'">
 						            	<c:choose>
 						            		<c:when test="${ not empty f.poster }">
 								              <img class="card-img rounded-0" src="resources/detailFilmImage/${ f.poster }" alt="">
@@ -96,8 +137,8 @@
 						            	</c:choose>
 						            </div>
 						            <div class="blog__slide__content">
-						              <a class="blog__slide__label" href="#">${ f.avgStarRating }</a>
-						              <h3><a href="#">${ f.titleKor }</a></h3>
+						              <a class="blog__slide__label" href="detailFilm.do?filmId=${ f.id }">${ f.avgStarRating }</a>
+						              <h3><a href="detailFilm.do?filmId=${ f.id }">${ f.titleKor }</a></h3>
 						              <p>${ f.releaseYear }</p>
 						            </div>
 						          </div>
@@ -115,7 +156,7 @@
 						      	<!--================ Blog slider start =================-->
 						        	
 						          <div class="card blog__slide text-center">
-						            <div class="blog__slide__img">
+						            <div class="blog__slide__img" onclick="location.href='detailFilm.do?filmId=${ f.id }'">
 						            	<c:choose>
 						            		<c:when test="${ not empty f.poster }">
 								              <img class="card-img rounded-0" src="resources/detailFilmImage/${ f.poster }" alt="">
@@ -126,8 +167,8 @@
 						            	</c:choose>
 						            </div>
 						            <div class="blog__slide__content">
-						              <a class="blog__slide__label" href="#">${ f.avgStarRating }</a>
-						              <h3><a href="#">${ f.titleKor }</a></h3>
+						              <a class="blog__slide__label" href="detailFilm.do?filmId=${ f.id }">${ f.avgStarRating }</a>
+						              <h3><a href="detailFilm.do?filmId=${ f.id }">${ f.titleKor }</a></h3>
 						              <p>${ f.releaseYear }</p>
 						            </div>
 						          </div>
@@ -145,7 +186,7 @@
 						      	<!--================ Blog slider start =================-->
 						        	
 						          <div class="card blog__slide text-center">
-						            <div class="blog__slide__img">
+						            <div class="blog__slide__img" onclick="location.href='detailFilm.do?filmId=${ f.id }'">
 						            	<c:choose>
 						            		<c:when test="${ not empty f.poster }">
 								              <img class="card-img rounded-0" src="resources/detailFilmImage/${ f.poster }" alt="">
@@ -156,8 +197,8 @@
 						            	</c:choose>
 						            </div>
 						            <div class="blog__slide__content">
-						              <a class="blog__slide__label" href="#">${ f.avgStarRating }</a>
-						              <h3><a href="#">${ f.titleKor }</a></h3>
+						              <a class="blog__slide__label" href="detailFilm.do?filmId=${ f.id }">${ f.avgStarRating }</a>
+						              <h3><a href="detailFilm.do?filmId=${ f.id }">${ f.titleKor }</a></h3>
 						              <p>${ f.releaseYear }</p>
 						            </div>
 						          </div>

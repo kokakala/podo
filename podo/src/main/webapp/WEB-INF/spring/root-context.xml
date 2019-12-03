@@ -35,11 +35,6 @@
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
 	
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="100000000"/>
-	 	<property name="maxInMemorySize" value="100000000"/>
-	</bean>
-	
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="select*" read-only="true" rollback-for="Exception"/>
@@ -53,5 +48,10 @@
 		<aop:pointcut expression="execution(* com.ch.podo..*ServiceImpl.*(..))" id="serviceMethod"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethod"/>
 	</aop:config>
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="100000000"/>
+	 	<property name="maxInMemorySize" value="100000000"/>
+	</bean>
 	
 </beans>

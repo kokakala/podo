@@ -134,7 +134,7 @@
                   <tr>
 					<th>No</th>
 					<th>장르</th>
-					<th colspan="2">제목(국문/영문)</th>
+					<th>제목(국문/영문)</th>
 					<th>감독</th>
 					<th>제작년도</th>
 					<th>제작국가</th>
@@ -146,8 +146,8 @@
 						<tr>
 							<td>${ f.id }</td>
 							<td>${ f.genre }</td>
-							<td colspan="2">
-								<a href="detailFilm.do?id=${ f.id }">${ f.titleKor }&nbsp;/ ${ f.titleEng }</a>
+							<td>
+								<a href="detailFilm.do?filmId=${ f.id }">${ f.titleKor }&nbsp;/ ${ f.titleEng }</a>
 							</td>
 							<td>${ f.director }</td>
 							<td>${ f.releaseYear }</td>

@@ -31,5 +31,8 @@
 		where user_id=#{id} and type=1
 	</select>
 	
+	<insert id="dbInquiryInsert">
+		insert into tb_inquiry values(seq_inquery_id.nextval, 2, #{content}, sysdate, default, #{userId}, null, null, 1)
+	</insert>
 </mapper>
 

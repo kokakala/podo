@@ -20,9 +20,23 @@
 		<id property="id" column="id"/>
 		<result property="userImage" column="image"/>
 		<result property="nickName" column="nickname"/>
+		<result property="titleKor" column="TITLE_KOR"/>
+		<result property="titleEng" column="TITLE_Eng"/>
+		<result property="name" column="name"/>
+		<result property="releaseYear" column="RELEASE_YEAR"/>
 		<result property="content" column="content"/>
-		<result property="likeCount" column="like_count"/>
-		<result property="spoilerCheck" column="spoiler_check"/>
+		<result property="inappropriateCount" column="INAPPROPRIATE_COUNT"/>
+		<result property="spoilerCount" column="SPOILER_COUNT"/>
+		<result property="likeCount" column="LIKE_COUNT"/>
+		<result property="spoilerCheck" column="SPOILER_CHECK"/>
+		<result property="status" column="status"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+	 	<result property="createDate" column="CREATE_DATE"/>
+	 	<result property="filmId" column="FILM_ID"/>
+	 	<result property="memberId" column="MEMBER_ID"/>
+	 	<result property="posterImage" column="change_name"/>
+	  	<result property="ratingReviewId" column="rr_id"/>
+		<result property="star" column="star"/>
 	</resultMap>
 	
 	<resultMap id="filmImage" type="Image">
@@ -48,19 +62,19 @@
 		      left join tb_actor a on(fa.actor_id = a.id)
               left join tb_member m on(df.member_id = m.id)
 		      where f.id = #{filmId}
-		      and df.status='Y'
+		      and (df.status='Y' or df.status is null)
 		      order by df.insertdate desc) m
 		where rownum = 1
 	</select>
 	
 	<!-- 영화에 달린 리뷰들 보기 -->
 	<select id="selectReivewList" resultMap="reviewListResultSet">
-		select *
-		from tb_film f
-		left join tb_review r on(f.id = r.film_id)
-		left join tb_member m on(r.member_id = m.id)
-		where f.id=#{filmId}
-		order by r.id desc
+		select * from tb_review r
+        left join tb_member m on(r.member_id = m.id)
+        left join tb_film f on(f.id=r.film_id)
+        left join tb_rating_film rf on(f.id = rf.id)
+      	where r.status='Y' and f.id=#{filmId}
+        order by r.id desc
 	</select>
 	
 	<!-- 영화 정보 수정 [시놉시스], [추가 정보], [예고편 링크] 수정하는 부분 insert로 DB에 추가 회원 번호/세션 정보/ 는 어떻게 알지? -->
@@ -133,7 +147,6 @@
 		where name like '%'||#{searchName}||'%'
 	</select>
 	
-	
 	<!-- 배우 추가 -->
 	<insert id="addActor" parameterType="hashMap">
 		insert into tb_film_actor
@@ -146,7 +159,12 @@
 		values(#{newActorId},seq_dfilm_id.currval)
 	</insert>
 		
-	
+	<!-- 배우 삭제 -->
+	<delete id="deleteActor">
+		delete from tb_film_actor
+		where actor_id=#{actorId}
+		and dfilm_id=#{id}
+	</delete>
 	
 </mapper>
 

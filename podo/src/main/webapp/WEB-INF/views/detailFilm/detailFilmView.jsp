@@ -88,6 +88,10 @@
         width: 30%;
         float:right;
     }
+    #rollbackBtn{
+    	width:50%;
+    	float:left;
+    }
     #modifyBtn{    
     	float:right;
     }
@@ -100,6 +104,7 @@
     	display : block;
     }
     .df_r_content{
+    	float:left;
     	display : none;
     }
     .actorImage{
@@ -117,7 +122,84 @@
     	width:32%;
     	float:left;
     }
-    
+    .homeReviewArea{
+		margin-left:auto;
+		margin-right:auto;
+		
+		height: 150px;
+		/* border: 1px solid blue; */
+		width: 1150px;
+	}
+    .leftImage{
+		 background:rgba(49,58,102,0.75);
+		/* border: 1px solid green; */
+		width: 20%;
+		height: 100%;
+		margin-left:auto;
+		margin-right:auto;
+		float: left;
+	}
+	.userImageHome{
+		border-radius: 100%;
+		height:60%;
+		width:100%;
+		border-radius:30;
+		float:left;
+		text-align:center;
+	}
+	.nickNameHome{
+		font-size:10px;
+		font-weight:bold;
+		height:10%;
+		width:100%;
+		/* border: 1px solid purple; */
+		float:left;
+		text-align:center;
+	}
+	.countReview{
+		height:15%;
+		width:100%;
+		float:left;
+		text-align:center;
+	}
+	.starReview{
+		height:15%;
+		width:100%;
+		float:left;
+		text-align:center;
+	}
+	.rightContent{
+		background:rgba(49,58,102,0.75);
+		height:100%;
+		width: 80%;
+		float: left;
+	}
+	.homeContent{
+		width:100%;
+		height:100%;
+		float:left;
+	}
+	.titleKorea{
+		width:100%;
+		float: left;
+		height: 20%;
+	}
+	.contentKorea{
+		background:rgb(18,22,49);
+		float: left;
+		width:95%;
+		height:65%;
+	}
+	.btns{
+	 	float:left;
+		margin-left:610px;
+		width:100%;
+		height: 15%;
+	}
+	#poster{
+		border-radius: 10px;
+    	border : 1px solid white;
+	}
 </style>
 <body>
 	<!-- 헤더  -->
@@ -134,17 +216,14 @@
         <div class="movie_info">
         	<!-- 왼쪽 영화 포스터 -->
             <div class="movie_poster_cover">
-            
-            	<c:if test="${ loginUser.id ne null }">
-	                <div class="icon" id="likeBtn">      <!-- 좋아요 -->
-	                    <img id="heart" src="resources/detailFilmImage/heart.jpg" style="width:30px; height:30px;">
-	                </div>
-			    </c:if>
-                                
-                <div id="movie_poster"> <!-- 포스터 -->	
-                    <img id="poster" src="resources/detailFilmImage/${i.changeName}" style="width:100%; height:100%;">
+                <div id="movie_poster"> <!-- 포스터 -->
+ 	               	<c:if test="${i.changeName ne null}">
+    	                <img id="poster" src="resources/detailFilmImage/${i.changeName}" style="width:100%; height:100%;">
+                	</c:if>
+                	<c:if test="${i.changeName eq null}">
+    	                <img id="poster" src="resources/detailFilmImage/podoposter.jpg" style="width:100%; height:100%;">
+                	</c:if>
                 </div>
-
             </div>
             <!-- 오른쪽 영화 정보 -->
             <div class="movie_info_cover">
@@ -183,45 +262,51 @@
                     <div class="cover" id="nickName_cover">
                     	<div id="df_nickName"><h5>작성자</h5>${ df.nickName }</div>
                     </div>
-                    <c:if test="${ loginUser.id ne null }">
+                    <br>
+                    <c:if test="${ loginUser.autho eq 2 }">
                     	<div class="cover" id="rollbackBtn">
-                    		<a href="detailFilmRollback.do?filmId=${df.filmId}">되돌리기</a>
+                    		<a href="detailFilmRollback.do?filmId=${df.filmId}" class="btn" style="background:purple; color:white;">되돌리기</a>
                     	</div>
                     </c:if>
-                 
-	                    <div class="cover" id="modifyBtn">
-	                    	<a href="detailFilmUpdate.do?filmId=${ df.filmId }">정보 수정</a>
-	                    </div>
+                    <div class="cover" id="modifyBtn">
+                    	<a href="detailFilmUpdate.do?filmId=${ df.filmId }" class="btn" style="background:purple; color:white;">정보 수정</a>
+                    </div>
+                    <br>
                 </div>
             </div>
-        </div>
+        </div>        
+		<hr>
         <div class="df_review_list">
-        	
-		    <div><a href="reviewWriteForm.do?filmId=${df.filmId}&loginUserId=${loginUser.id}">리뷰 작성하기 버튼</a></div>		<!-- 버튼 -->
-		 
+        <br>
+		    <div>
+	        	<h5>리뷰</h5><a href="reviewWriteForm.do?filmId=${df.filmId}&loginUserId=${loginUser.id}" class="btn" style="background:purple; color:white;">작성하기</a>
+	    	</div>		<!-- 버튼 -->
 		        <c:forEach items="${ rl }" var="r">
-			        <div class="review">
-				        <div>리뷰</div>
-				        <c:if test="${ r.spoilerCheck eq 'Y' }">
-				            <div class="df_r_spoContent">
-					            <div class="df_r_spoilerCheck">해당 내용은 스포일러를 포함하고 있습니다.</div>
-					            <div class="df_r_content">내용 : ${ r.content }</div>
-				            </div>
-				        </c:if>
-				        <c:if test="${ r.spoilerCheck eq 'N' }">
-				            <div>내용 : ${ r.content }</div>
-				        </c:if>
-				            <div>별점 : 아직 처리 못함</div>			        
-				            <div>작성자 : ${ r.nickName}</div>
-				            <div>좋아요 : ${ r.likeCount }</div>
-			        </div>   
-		        </c:forEach>
+				<div class="homeReviewArea">
+					
+						<div class="leftImage">
+						<img class="userImageHome" src="resources/memberProfileImage/${ r.userImage }" height="100%" width="100%">
+						<div class="nickNameHome">${ r.nickName }님</div>
+						<div class="starReview">★점:${ r.star }점</div>
+						<div class="countReview">추천수:${ r.likeCount }회</div>
+					</div>
+					<div class="rightContent">
+						<div class="titleKorea">${ r.titleKor }</div>
+						<div class="contentKorea"> ${ r.content }</div>
+						<div class="btns">${r.modifyDate }에
+							작성 &nbsp;<a href="">추천</a>&nbsp;<a
+								class="declaration-modal btn-reply text-uppercase" href="#"
+								data-toggle="modal">신고하기</a> &nbsp;<a href="#">댓글 0개</a>
+						</div>
+						</div>
+					
+				</div>
+				<br>
+			</c:forEach>
     	</div>
 	    <br>
     	</div>
     <br>
-    
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<script async src="https://www.youtube.com/iframe_api"></script>
 	<script type="text/javascript">
 		
@@ -229,7 +314,6 @@
 		var trailer = "${df.trailer}";
 		var trSplit = trailer.split('=');
 		var trailer1 = trSplit[1];
-		
 		var player;
 		
         function onYouTubePlayerAPIReady(){

@@ -1,7 +1,9 @@
 package com.ch.podo.like.model.service;
 
+import java.util.ArrayList;
 import java.util.Map;
 
+import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.like.model.vo.Like;
 
 public interface LikeService {
@@ -24,5 +26,29 @@ public interface LikeService {
 	
 	// 6. 회원 좋아요 취소
 	int deleteLikeMem(Like like);
+	
+	// 7_1. 마이페이지_ 영화좋아요 리스트 카운트
+	int myPageLikeFilmListCount(String id);
+	
+	// 7_2. 마이페이지_ 영화좋아요 조회 
+	ArrayList<Like> myPageSelectLikeFilm(String id,PageInfo pi);
+	 
+	// 8_1. 마이페이지_유저좋아요 리스트 카운트
+	int myPageLikeUserListCount(String id);
+	
+	// 8_2. 마이페이지_유저좋아요 조회
+	ArrayList<Like> myPageSelectLikeUser(String id, PageInfo pi);
+	
+	// 9_1. 마이페이지_리뷰좋아요 리스트 카운트
+	int myPageLikeReviewListCount(String id);
+	
+	// 8_2. 마이페이지_리뷰좋아요 조회
+	ArrayList<Like> myPageSelectLikeReview(String id, PageInfo pi);
+
+	// 리뷰 좋아요 
+	int insertLikeReview(Like like);
+	
+	// 리뷰 좋아요 취소
+	int deleteLikeReview(Like like);
 	
 }

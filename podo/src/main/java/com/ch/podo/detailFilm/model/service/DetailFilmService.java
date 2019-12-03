@@ -27,16 +27,21 @@ public interface DetailFilmService {
 	// 2_2. 배우 등록 --(배우 번호, 영화 상세 번호)
 	int addActor(int newActorId, int id);
 	
-	// 2_3. 배우 검색 리스트 출력-- (영화 번호, 검색어)
+	// 2_3. 배우 삭제 --(배우 번호, 영화 상세 번호)
+	int deleteActor(int actorId, int id);
+
+	// 2_4. 배우 검색 리스트 출력-- (영화 번호, 검색어)
 	ArrayList<Actor> searchActorList(String searchName);
 	
-	// 2_4. 영화 포스터 수정 입력 -- (영화 포스터 이미지, 영화 상세번호)
+	// 2_5. 영화 포스터 수정 입력 -- (영화 포스터 이미지, 영화 상세번호)
 	int filmImageInsert(String filmImage, int id);
 
-	// 2_5. 영화 배우 수정 입력 -- (배우 번호(String), 영화 상세번호)
+	// 2_6. 영화 배우 수정 입력 -- (배우 번호(String), 영화 상세번호)
 	int actorInsert(String actorIdList);
 	
-	// 2_6. 영화 데이터 롤백 버튼 --(영화 번호)
+	// 2_7. 영화 데이터 롤백 버튼 --(영화 번호)
 	int detailFilmRollback(int filmId);
+
+	
 	
 }

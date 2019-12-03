@@ -19,6 +19,7 @@ import com.ch.podo.comment.model.vo.Comment;
 import com.ch.podo.common.Pagination;
 import com.ch.podo.detailFilm.model.vo.DetailFilm;
 import com.ch.podo.film.model.vo.Film;
+import com.ch.podo.like.model.service.LikeService;
 import com.ch.podo.member.model.vo.Member;
 import com.ch.podo.report.model.vo.Report;
 import com.ch.podo.review.model.dto.Review;
@@ -35,6 +36,8 @@ public class ReviewController {
 	
 	@Autowired
 	private ReviewService reviewService;
+	@Autowired
+	private LikeService likeService;
 
 	// 전체리스트 조회 
 	@RequestMapping("reviewList.do")
@@ -189,7 +192,6 @@ public class ReviewController {
 		int listCount = reviewService.myPageReviewListCount(id);
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		
 		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id,pi);
 		mv.addObject("review", reviewList).addObject("reviewPi", pi).addObject("tab", tab).setViewName("member/myPage");
 		return mv;
@@ -203,7 +205,7 @@ public class ReviewController {
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id,pi);
-		mv.addObject("review", reviewList).addObject("reviewPi", pi).addObject("tab", tab).setViewName("member/myPage");
+		mv.addObject("review", reviewList).addObject("reviewPi", pi).addObject("tab", tab).setViewName("member/userPage");
 		return mv;
 	}
 
@@ -257,6 +259,28 @@ public class ReviewController {
 		return mv;
 	}
 	
+	
+
+	// 댓글 신고하기
+	@RequestMapping("declarationCommentModal.do")
+	public ModelAndView insertDeclarationComment(Review r, Report rep, ModelAndView mv) {
+
+		// Review r = reviewService.selectReviewReport(reviewNo);
+		System.out.println("댓글신고" + rep);
+
+		int result = reviewService.insertDeclarationComment(rep);
+		System.out.println("성공할건가" + result);
+		if (result > 0) { // 성공
+			mv.addObject("id", rep.getTargetId()).setViewName("redirect:ratingDetailReview.do");
+
+		} else { // 실패
+			mv.addObject("msg", "신고하기 실풰").setViewName("error/errorPage");
+		}
+
+		return mv;
+	}
+	
+	
 	// 리부 댓글
 	
 	@ResponseBody
@@ -280,12 +304,32 @@ public class ReviewController {
 		
 		int result = reviewService.insertReviewComment(c);
 		
+		
 		System.out.println(result);
 		if(result > 0) {
 			return "success";
 		}else {
 			return "fail";
 		}
+	}
+	
+	// 리뷰 좋아요
+	
+	
+	//리뷰 삭제
+	// 글삭제 (아직 조건 안걸음 사용자 아이디 비교해서 그사람이 삭제할수있게끔해놓기)
+	@RequestMapping("deleteReviewComment.do")
+	public String deleteReviewComment(int id, ModelAndView mv) {
+		
+		
+		int result = reviewService.deleteReviewComment(id);
+		
+		if(result>0) {
+			return "redirect:ratingDetailReview.do";
+		}else {
+			return "error/errorPage";
+		}
+		
 	}
 
 }

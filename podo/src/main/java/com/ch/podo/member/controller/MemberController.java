@@ -1,10 +1,6 @@
 
 package com.ch.podo.member.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.http.Cookie;
@@ -26,10 +22,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.common.Pagination;
+import com.ch.podo.common.PodoRenamePolicy;
 import com.ch.podo.like.model.service.LikeService;
 import com.ch.podo.like.model.vo.Like;
 import com.ch.podo.member.model.service.MemberService;
 import com.ch.podo.member.model.vo.Member;
+import com.ch.podo.member.model.vo.Pay;
 import com.ch.podo.review.model.dto.Review;
 import com.ch.podo.review.model.service.ReviewService;
 
@@ -51,7 +49,7 @@ public class MemberController {
 	
 	// @CookieValue(value="storeIdCookie", required = false) Cookie storeIdCookie
 	@RequestMapping("login.do")
-	public ModelAndView loginMember(Member mem, HttpSession session, ModelAndView mv,
+	public String loginMember(Member mem, HttpSession session, ModelAndView mv,
 																	boolean rememberMe, HttpServletResponse response, HttpServletRequest request) {
 		
 		Member loginUser = memberService.selectLoginMember(mem);
@@ -70,21 +68,17 @@ public class MemberController {
 				Cookie[] cookies = request.getCookies();
 				for (int i = 0; i < cookies.length; i++) {
 					if (cookies[i].getName().equals("email") || cookies[i].getName().equals("pwd")) {
-						// System.out.println("cookies[" + i + "].name : " + cookies[i].getName());
+						// logger.info("cookies[" + i + "].name : " + cookies[i].getName());
 						cookies[i].setMaxAge(0);
 						response.addCookie(cookies[i]);
 					}
 				}
 			}
-			
 			session.setAttribute("loginUser", loginUser);
-			String referer = request.getHeader("Referer");
-			mv.setViewName("redirect:" + referer);
-			
 		} else {
-			mv.addObject("msg", "로그인 실패").setViewName("error/errorPage");
+			session.setAttribute("msg", "아이디와 비밀번호를 확인해주세요!");
 		}
-		return mv;
+		return "redirect:" + request.getHeader("Referer");
 	}
 	
 	@RequestMapping("logout.do")
@@ -103,10 +97,9 @@ public class MemberController {
 							 @RequestParam(value="uploadFile", required=false) MultipartFile file) {
 		
 		if(!file.getOriginalFilename().equals("")) {	// 프로필 사진 등록하는 경우
-			String renameFileName = saveFile(file, request);	// 공통 메소드(saveFile)를 만들어서 파일 수정명 반환(수정할 때 재사용하려고 메소드 뺌)
-			
+			String renameFileName = PodoRenamePolicy.rename(file, request, "/memberProfileImage");
 			mem.setImage(renameFileName);
-		}else {
+		} else {
 			mem.setImage("podoImage.png");
 		}
 		
@@ -121,32 +114,6 @@ public class MemberController {
 			model.addAttribute("msg", "회원가입 실패");
 			return "redirect:login.do";
 		}
-	}
-	
-	public String saveFile(MultipartFile file, HttpServletRequest request) {
-		String root = request.getSession().getServletContext().getRealPath("resources");
-		String savePath = root + "/memberProfileImage";
-		
-		File folder = new File(savePath);	// 저장 folder를 한번 알아옴
-		
-		if(!folder.exists()) {	// savePath 경로가 없으면 폴더 생성하기
-			folder.mkdir();
-		}
-		
-		String originFileName = file.getOriginalFilename();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + "."
-								+ originFileName.substring(originFileName.lastIndexOf(".") + 1);	// .뒷자리부터 뽑아내기 위해 +1
-		
-		String renamePath = savePath + "/" + renameFileName;
-		
-		try {
-			file.transferTo(new File(renamePath));	//수정명으로 파일 업로드
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}	
-		
-		return renameFileName;
 	}
 	
 	@ResponseBody
@@ -177,18 +144,12 @@ public class MemberController {
 	public ModelAndView myPage(HttpSession session, ModelAndView mv, String id, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
 		int reviewListCount = reviewService.myPageReviewListCount(id);
 		PageInfo pi = Pagination.getPageInfo(currentPage, reviewListCount);
-		
 		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id,pi);
 		
 		session.setAttribute("reviewListCount", reviewListCount);
-		mv.addObject("review", reviewList).addObject("reviewCount", reviewListCount).addObject("pi", pi).addObject("reviewCount", reviewListCount).setViewName("member/myPage");
+		mv.addObject("review", reviewList).addObject("reviewCount", reviewListCount).addObject("reviewPi", pi).addObject("reviewCount", reviewListCount).setViewName("member/myPage");
 		
 		return mv;
-	}
-	
-	@RequestMapping("memberUpdateForm.do")
-	public String memberUpdateForm() {
-		return "member/memberUpdateForm";
 	}
 	
 	@RequestMapping("updateMember.do")
@@ -198,11 +159,11 @@ public class MemberController {
 		// 정보수정만 한 경우
 		if(mem.getUpdatePwd().equals("")) {
 			
-			if(!file.getOriginalFilename().equals("")) {	
-				String renameFileName = saveFile(file, request);	
+			if(!file.getOriginalFilename().equals("")) {
+				String renameFileName = PodoRenamePolicy.rename(file, request, "/memberProfileImage");
 				mem.setImage(renameFileName);
 			}else {
-				mem.setImage("podoImage.png");
+				mem.setImage(mem.getImage());
 			}
 			
 		  // 비밀번호만 변경 한 경우
@@ -218,7 +179,7 @@ public class MemberController {
 			session.setAttribute("loginUser", mem);
 			mv.addObject("msg", "회원정보 수정 성공").setViewName("redirect:myPage.do?id="+mem.getId());
 		}else {
-			mv.addObject("msg", "회원정보 수정 실패").setViewName("member/memberUpdateForm");
+			mv.addObject("msg", "회원정보 수정 실패").setViewName("member/mypage");
 		}
 		
 		return mv;
@@ -238,9 +199,6 @@ public class MemberController {
 			return "fail";
 		}
 	}
-	
-	
-	
 	
 	
 	
@@ -283,7 +241,8 @@ public class MemberController {
 		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(userId,pi);
 		
 		session.setAttribute("reviewListCount", reviewListCount);
-		mv.addObject("likeUser", likeUser).addObject("userPageMem", userPageMem).addObject("review", reviewList).addObject("reviewCount", reviewListCount).addObject("pi", pi).addObject("reviewCount", reviewListCount).setViewName("member/userPage");
+		session.setAttribute("userPageMem", userPageMem);
+		mv.addObject("likeUser", likeUser).addObject("review", reviewList).addObject("reviewCount", reviewListCount).addObject("reviewPi", pi).addObject("reviewCount", reviewListCount).setViewName("member/userPage");
 		return mv;
 	}
 	
@@ -292,4 +251,10 @@ public class MemberController {
 		return "member/premium";
 	}
 	
+	@ResponseBody
+	@RequestMapping("pay.do")
+	public int pay(Pay pay) {
+		logger.info("payment info : " + pay);
+		return memberService.insertPaymentInfo(pay);
+	}
 }

@@ -15,4 +15,7 @@ public interface InquiryService {
 	
 	// 2_2. 문의 리스트 조회
 	ArrayList<Inquiry> myPageSelectInquiryList(String id, PageInfo pi);
+	
+	// 3. DB제보
+	int dbInquiryInsert(String content, String userId);
 }

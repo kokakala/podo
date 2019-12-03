@@ -26,6 +26,7 @@
 	<!-- interceptor -->
 	<!-- 블랙리스트 회원 게시물 등록, 수정, 삭제, 별점 제한 -->
 	<interceptors>
+	
 		<interceptor>
 			<mapping path="/binsertForm.do"/>
 			<mapping path="/bdelete.do"/>
@@ -37,13 +38,14 @@
 			<mapping path="/reviewUpdateView.do"/>
 			<mapping path="/reviewDelete.do"/>
 			<mapping path="/insertQuestion.do"/>
-			<mapping path="/rateFilm.do"/>
-			<mapping path="/insertReviewComment.do"/>
-			
-			
-			<beans:bean id="BoardInsertInterceptor" class="com.ch.podo.common.interceptor.BoardInsertInterceptor"/>
-			
+			<!-- <mapping path="/insertReviewComment.do"/> -->
+			<beans:bean id="MemberInterceptor" class="com.ch.podo.common.interceptor.MemberInterceptor"/>
 		</interceptor>
+		
+		<!-- <interceptor>
+			<mapping path="/login.do"/>
+			<beans:bean id="LoginInterceptor" class="com.ch.podo.common.interceptor.LoginInterceptor"/>
+		</interceptor> -->
 		
 	</interceptors>
 

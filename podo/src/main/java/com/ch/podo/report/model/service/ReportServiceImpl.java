@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.report.model.dao.ReportDao;
 import com.ch.podo.report.model.vo.Report;
 
@@ -25,6 +24,12 @@ public class ReportServiceImpl implements ReportService {
 	public ArrayList<Report> selectReportBoardList() {
 		return reportDao.selectReportBoardList();
 	}
+
+	@Override
+	public int blindReport(ArrayList<Report> r) {
+		return reportDao.blindReport(r);
+	}
+	
 	
 	
 

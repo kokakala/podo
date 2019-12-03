@@ -57,7 +57,7 @@
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="logout.do" data-toggle="modal" data-target="#logoutModal">Logout</a>
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
         </div>
       </li>
     </ul>
@@ -66,7 +66,7 @@
 
   <div id="wrapper">
 
-    <!-- Sidebar -->
+    <!-- Sidebar 메뉴바 -->
     <ul class="sidebar navbar-nav">
       <li class="nav-item active">
         <a class="nav-link" href="admin.do">
@@ -82,12 +82,13 @@
         <div class="dropdown-menu" aria-labelledby="pagesDropdown">
           <h6 class="dropdown-header">회원::</h6>
           <a class="dropdown-item" href="mlist.do">전체회원</a>
-          <a class="dropdown-item" href="register.html">블랙리스트</a>
+          <a class="dropdown-item" href="blackList.do">블랙리스트</a>
           <div class="dropdown-divider"></div>
           <h6 class="dropdown-header">신고::</h6>
-          <a class="dropdown-item" href="404.html">신고회원관리</a>
-          <a class="dropdown-item" href="blank.html">신고게시글관리</a>
+          <a class="dropdown-item" href="rlist.do">신고회원관리</a>
+          <a class="dropdown-item" href="rblist.do">신고게시글관리</a>
         </div>
+      </li>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -121,39 +122,7 @@
 
       <div class="container-fluid">
 
-        <!-- DataTables Example -->
-        <div class="card mb-3">
-          <div class="card-header">
-            <i class="fas fa-table"></i>
-            	</div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Age</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Aiger Nixon</td>
-                    <td>System Architect</td>
-                    <td>Edinburgh</td>
-                    <td>61</td>
-                    <td>2011/04/25</td>
-                    <td>$320,800</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-        </div>
+     
 
       </div>
       <!-- /.container-fluid -->
@@ -191,7 +160,7 @@
         <div class="modal-body">관리자 페이지를 종료하시려면 아래 Logout을 선택하십시오.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="logout.do">Logout</a>
+          <a class="btn btn-primary" href="home.do">Logout</a>
         </div>
       </div>
     </div>

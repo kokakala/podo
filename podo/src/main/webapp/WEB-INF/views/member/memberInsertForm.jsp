@@ -27,36 +27,89 @@
 </style>
 </head>
 <body>
-<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-	<div>
-		<form action="insertMember.do" method="post" enctype="multipart/form-data">
-			<input type="email" id="userId" name="email" placeholder="이메일을 입력하세요.">
-				<span class="idguide idok">사용가능</span>
-				<span class="idguide idno">사용불가</span>
-				<input type="hidden" id="idCheck" value="0"><br>
-			<input type="password" id="userPwd" name="pwd" placeholder="비밀번호를 입력하세요."><br>
-			<input type="password" id="userPwd2"  placeholder="비밀번호를 입력하세요."><br>
-			<input type="text" id="userNickName" name="nickName" placeholder="닉네임을 입력하세요.">
-				<span class="nickguide nickok">사용가능</span>
-				<span class="nickguide nickno">사용불가</span>
-				<input type="hidden" id="nickCheck" value="0"><br>
-			<div class="form-group">
-				<label for="userId">Profile</label><br>
-				* 이미지를 삭제하면 기본이미지로 등록됩니다.<br>
-			<img id="preview" src="resources/memberProfileImage/podoImage.png" width="70px" height="70px"><br>
+
+	<jsp:include page="../common/header.jsp"/>
+	
+	 <h1 align="center">회원가입</h1>
+      
+      <br>
+      
+      <form action="insertMember.do" method="post" enctype="multipart/form-data" style="width: 600px; margin-right: auto; margin-left: auto;">
+        <div class="form-group row">
+          <label for="joinUserId" class="col-sm-4 col-form-label">* ID</label>
+          <div class="col-sm-8">
+            <input type="email" class="form-control" name="email" id="userId" placeholder="이메일을 입력해주세요" required>
+            <span class="idguide idok">사용가능</span>
+			<span class="idguide idno">사용불가</span>
+			<input type="hidden" id="idCheck" value="0"><br>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="joinUserPwd" class="col-sm-4 col-form-label">* Password</label>
+          <div class="col-sm-8">
+            <input type="password" class="form-control" name="pwd" id="userPwd" placeholder="비밀번호를 입력해주세요" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="joinUserPwd2" class="col-sm-4 col-form-label">* Confirm</label>
+          <div class="col-sm-8">
+            <input type="password" class="form-control" name="joinUserPwd2" id="userPwd2" placeholder="비밀번호를 다시 입력해주세요" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="userName" class="col-sm-4 col-form-label">* NickName</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" name="nickName" id="userNickName" placeholder="닉네임을 입력해주세요" required>
+            <span class="nickguide nickok">사용가능</span>
+			<span class="nickguide nickno">사용불가</span>
+			<input type="hidden" id="nickCheck" value="0"><br>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="email" class="col-sm-4 col-form-label">* Profile</label>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+          <div class="col-sm-8">
+            <img id="preview" src="resources/memberProfileImage/podoImage.png" width="70px" height="70px"><br><br>
 			<button type="button" id="uploadBtn">이미지 변경</button>
 			<button type="button" onclick="fileReset();">이미지 삭제</button><br>
+			* 이미지를 삭제하면 기본이미지로 등록됩니다.<br>
 			<div id="imgArea"><input type='file' id='imgInp' name='uploadFile'></div><br>
-			</div>
-			
-			
-			
-			
-			
-			<button type="submit" onclick="return validate();">Join</button>
-			<button type="button" onclick="location.href='home.do';">Cancel</button>
-		</form>
-	</div>
+          </div>
+        </div>
+        
+        <div class="form-group row" align="center">
+          <div class="col-sm-12">
+            <button type="reset" class="btn btn-outline-dark">Reset</button>
+            <button type="submit" class="btn btn-outline-success" onclick="return validate();">Sign in</button>
+          </div>
+        </div>
+      </form>
+
+				<!-- 	<form action="insertMember.do" method="post" enctype="multipart/form-data">
+						<input type="email" id="userId" name="email" placeholder="이메일을 입력하세요.">
+							<span class="idguide idok">사용가능</span>
+							<span class="idguide idno">사용불가</span>
+							<input type="hidden" id="idCheck" value="0"><br>
+							
+						<input type="password" id="userPwd" name="pwd" placeholder="비밀번호를 입력하세요."><br>
+						<label for="userPwd2">비밀번호 확인 : </label>
+						<input type="password" id="userPwd2"  placeholder="비밀번호를 입력하세요."><br>
+						<input type="text" id="userNickName" name="nickName" placeholder="닉네임을 입력하세요.">
+							<span class="nickguide nickok">사용가능</span>
+							<span class="nickguide nickno">사용불가</span>
+							<input type="hidden" id="nickCheck" value="0"><br>
+						<div class="form-group">
+							<label for="userId">Profile</label><br>
+						<img id="preview" src="resources/memberProfileImage/podoImage.png" width="70px" height="70px"><br><br>
+						<button type="button" id="uploadBtn">이미지 변경</button>
+						<button type="button" onclick="fileReset();">이미지 삭제</button><br>
+						* 이미지를 삭제하면 기본이미지로 등록됩니다.<br>
+						<div id="imgArea"><input type='file' id='imgInp' name='uploadFile'></div><br>
+						</div>
+						
+						<button type="submit" onclick="return validate();">Join</button>
+						<button type="button" onclick="location.href='home.do';">Cancel</button>
+					</form> -->
+		
 
 	<script>
 		function validate(){
@@ -182,5 +235,6 @@
 			$("#imgInp").click();
 		});
 	</script>
+	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

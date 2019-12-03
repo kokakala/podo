@@ -18,7 +18,7 @@
 		<result property="nickName" column="nickname"/>
 	</resultMap>
 	
-	<resultMap id="ImageResultSet" type="Image">
+	<resultMap id="imageResultSet" type="Image">
 		<id property="id" column="id"/>
 		<result property="path" column="path"/>
 		<result property="originalName" column="original_name"/>
@@ -57,22 +57,22 @@
 	</select>
 	
 	<select id="selectBoardList" resultMap="boardResultSet">
-		select *
+		select * 
 		from tb_board b
         join tb_member m on(b.member_id=m.id)
 		where b.status='Y'
 		order by b.id desc
 	</select>
-	
-	<insert id="insertBoard">
+
+	<insert id="insertBoard" parameterType="hashmap">
 		insert into tb_board
-		values(seq_board_id.nextval, #{title}, #{content}, default, 0, 0, 0,
+		values(seq_board_id.nextval, #{title}, #{content}, default, default, default, default,
 				sysdate, sysdate, default, #{memberId})
 	</insert>
 	
 	<insert id="insertBoardFile">
 		insert into tb_image
-		values(seq_image_id.nextval, #{i.path}, #{i.originalName}, #{i.changeName}, 1, #{b.id}, null)
+		values(seq_image_id.nextval, #{path}, #{originalName}, #{changeName}, 1, seq_board_id.currval, null)
 	</insert>
 	
 	<update id="updateCount">
@@ -88,18 +88,30 @@
 		where b.id=#{id}
 	</select>
 	
+	<select id="selectBoardFile" resultMap="imageResultSet">
+		select *
+		from tb_image
+		where board_id=#{boardId}
+	</select>
+	
 	<update id="deleteBoard">
 		update tb_board
 		set status='N'
 		where id=#{id}
 	</update>
 	
-	<!-- 
 	<update id="updateBoard">
-		
+		update tb_board
+		set title=#{title}, content=#{content}, modify_date=sysdate
+		where id=#{id}
 	</update>
-	 -->
-	 
+	
+	<update id="updateBoardFile">
+		update tb_image
+		set path=#{path}, original_name=#{originalName}, change_name=#{changeName}
+		where board_id=#{boardId}
+	</update>
+	
 	 <!-- 댓글 -->
 	 <select id="selectCommentList" resultMap="commentResultSet">
 	 	select *

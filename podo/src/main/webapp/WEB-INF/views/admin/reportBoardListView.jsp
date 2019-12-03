@@ -12,7 +12,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-
+  
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+ 
   <title>AdminPage</title>
   <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
 
@@ -148,6 +151,7 @@
 							<td><input type="checkbox" value="${r.id}" class="checkbox_target" /></td>
 							<td>${ r.id }</td>
 							<td>
+								<input type="hidden" value="${ r.type }">
 								<c:choose>
 								    <c:when test="${  r.type == 1}">
 										리뷰
@@ -163,7 +167,7 @@
 								    </c:when>
 								</c:choose>
 							</td>
-							<td>${ r.targetId }</td>
+							<td class="target-id">${ r.targetId }</td>
 							<td>
 								<c:choose>
 								    <c:when test="${  r.content == 1}">
@@ -176,12 +180,12 @@
 							</td>
 							<td>${ r.reportedName }</td>
 							<td>${ r.reportName }</td>
-							<td><a href="javascript:;" class="btn_blind" data-id="${r.id}">블라인드</a></td>
-			
+							<td><a href="javascript:;" class="btn_blind" data-id="${r.targetId}, ${r.type}">블라인드</a></td>
 						</tr>
 					</c:forEach>
                 </tbody>
               </table>
+              <a href="javascript:;" id="btn_multi_blind">블라인드</a>
             </div>
           </div>
           <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
@@ -228,6 +232,79 @@
       </div>
     </div>
   </div>
+  
+  
+  
+    <!-- 블라인드처리 ajax -->
+
+	<script>
+		$(function() {
+			$('.btn_blind').click(function() {
+				
+				var blinds = $(this).data('id');
+				var jbSplit = blinds.split(', ');
+				
+				console.log(jbSplit);
+				
+				$.ajax({
+					url: '/podo/v1/reportList/blind.do',
+					type:"post",
+					data: {targetId: jbSplit[0],
+						   type: jbSplit[1]},
+					success: function(data){
+						console.log(data);
+						
+						if (data) {
+							location.reload();
+						} else {
+							alert('blind에 실패했습니다.');
+						}
+					},
+					error: function(){
+						console.log("아이디 ajax 통신 실패");
+					}
+				});
+			});
+			
+			var $checkboxTarget = $('.checkbox_target');
+			var checkedIds = [];
+			
+			$('#btn_multi_blind').click(function() {
+				
+				$checkboxTarget.each(function() {
+					var $this = $(this);
+					if ($this.is(':checked')) {
+						checkedIds.push($this.closest("tr").find(".target-id").text());
+						checkedIds.push($this.closest("tr").find("input[type=hidden]").val());
+					}
+				});
+				console.log(checkedIds);
+				
+				$.ajax({
+					url: '/podo/v1/reportList/blind.do',
+					type: 'post',
+					data: {checked:checkedIds},
+				    traditional : true,
+					success: function(data){
+						console.log(data);
+						
+		 				if (data) {
+							location.reload();
+						} else {
+							alert('blind에 실패했습니다.');
+						}
+					},
+					error: function(){
+						console.log("아이디 ajax 통신 실패");
+					}
+				});
+			});
+		});
+	</script>
+  
+ 
+ 
+  
 
   <!-- Bootstrap core JavaScript-->
   <script src="<c:url value="/resources/adBootstrap/vendor/jquery/jquery.min.js" />"></script>

@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,11 +38,11 @@ public class BoardController {
 	public ModelAndView boardList(ModelAndView mv,
 								  @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
 		
-		int listCount = boardService.getBoardCount();
+		int listCount = boardService.getBoardCount(); // 게시판 총 개수 조회
 		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
-		ArrayList<Board> list = boardService.selectBoardList(pi);
+		ArrayList<Board> list = boardService.selectBoardList(pi); // 페이지에 보여질 리스트 조회
 		
 		mv.addObject("pi", pi).addObject("list", list).setViewName("board/boardListView");
 		
@@ -57,8 +56,6 @@ public class BoardController {
 		
 		Member m = (Member)session.getAttribute("loginUser");
 		
-		System.out.println("윤진이가담은 객체"+m);
-		
 		mv.addObject("m", m).setViewName("board/boardInsertForm");
 		
 		return mv;
@@ -66,48 +63,48 @@ public class BoardController {
 	}
 	
 	
+	// 게시판 작성
 	@RequestMapping("binsert.do")
-	public int insertBoard(HttpServletRequest request, Model model, ModelAndView mv, Board b, Image i, Member m,
-									@RequestParam(value="board-upload-file", required=false) MultipartFile file) {
+	public String insertBoard(HttpServletRequest request, Board b, Image i, ModelAndView mv, HttpSession session, 
+								@RequestParam(value="board-upload-file", required=false) MultipartFile file) {
 		
-		int result = 0;
-		
-		// 파일이 존재할 경우
-		if(!file.getOriginalFilename().equals("")) {
+		if(!file.getOriginalFilename().equals("")) { // 파일이 존재할 경우
 			
-			String renameFileName = saveFile(file, request);
+			Image img = saveFile(file, request, i);
 			
-			i.setOriginalName(file.getOriginalFilename());
-			i.setChangeName(renameFileName);
+			b.setPath(img.getPath());
+			b.setOriginalName(img.getOriginalName());
+			b.setChangeName(img.getChangeName());
+						
+			i.setPath(img.getPath());
+			i.setOriginalName(img.getOriginalName());
+			i.setChangeName(img.getChangeName());
 			
-			int result1 = boardService.insertBoard(b);
+			int result = boardService.insertBoard(b);
 			int result2 = boardService.insertBoardFile(i);
 			
-			if(result1 > 0 && result2 > 0) {
-				result = 1;
+			if(result > 0 && result2 > 0) {
+				return "redirect:blist.do";
 			}else {
-				result = 0;
+				
 			}
 			
 		}else {
 			
-			int result1 = boardService.insertBoard(b);
+			int result = boardService.insertBoard(b);
 			
-			if(result1 > 0) {
-				result = 1;
-			}else {
-				result = 0;
+			if(result > 0) {
+				return "redirect:blist.do";
 			}
-			
 			
 		}
 		
-		return result;
+		return null;
 		
 	}
 	
 	
-	public String saveFile(MultipartFile file, HttpServletRequest request) {
+	public Image saveFile(MultipartFile file, HttpServletRequest request, Image i) {
 		
 		String root = request.getSession().getServletContext().getRealPath("resources");
 		String savePath = root + "/boardUploadFiles";
@@ -122,39 +119,38 @@ public class BoardController {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		
-		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + "." + originalFileName.substring(originalFileName.lastIndexOf(".")+1);
-		
+		String renameFileName = sdf.format(new Date(System.currentTimeMillis())) + "." + originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+				
 		String renamePath = savePath + "/" + renameFileName;
 		
+		i.setPath(renamePath);
+		i.setOriginalName(originalFileName);
+		i.setChangeName(renameFileName);
+		
 		try {
-			
 			file.transferTo(new File(renamePath));
-			
 		} catch (IllegalStateException | IOException e) {
-			
 			e.printStackTrace();
-			
 		}
 		
-		return renameFileName;
+		return i;
 		
 	}
 	
 	
-	
-	
-	
+	// 수정 및 삭제 할 게시글 상세 조회
 	@RequestMapping("bdetail.do")
-	public ModelAndView boardDetail(HttpSession session, int id, ModelAndView mv) {
-		Member m = (Member)session.getAttribute("loginUser");
-		Board b = boardService.selectBoard(id);
-		System.out.println("윤진이가적은!!"+b);
-		System.out.println("윤진이가적은!!"+m);
+	public ModelAndView boardDetail(int id, ModelAndView mv) {
 		
-		if(b != null) {
-			mv.addObject("b", b).addObject("m", m).setViewName("board/boardDetailView");
-		}else {
-			mv.addObject("alert", "error");
+		Board b = boardService.selectBoard(id);
+		Image i = boardService.selectBoardFile(id);
+		
+		if(i != null) {
+			
+			mv.addObject("b", b).addObject("i", i).setViewName("board/boardDetailView");
+			
+		}else{
+			mv.addObject("b", b).setViewName("board/boardDetailView");
 		}
 		
 		return mv;
@@ -162,18 +158,24 @@ public class BoardController {
 	}
 	
 	
+	// 게시글 삭제
 	@RequestMapping("bdelete.do")
-	public String boardDelete(int id, HttpServletRequest request) {
+	public String boardDelete(int id, HttpServletRequest request, ModelAndView mv, Image i) {
 		
-//		Board b = boardService.selectUpdateBoard(id);
-				
+		Board b = boardService.selectUpdateBoard(id);
+		
+		if(i.getOriginalName() != null) {
+			deleteFile(i.getChangeName(), request);
+		}
+		
 		int result = boardService.deleteBoard(id);
 		
 		if(result > 0) {
 			return "redirect:blist.do";
 		}else {
-			return "";
+			return "redirect:blist.do";
 		}
+		
 		
 	}
 	
@@ -196,9 +198,12 @@ public class BoardController {
 	@RequestMapping("bupdateView.do")
 	public ModelAndView boardUpdateView(int id, ModelAndView mv) {
 		
-		Board b = boardService.selectBoard(id);
+		Board b = boardService.selectUpdateBoard(id);
+		Image i = boardService.selectUpdateBoardFile(id);
 		
-		mv.addObject("b", b).setViewName("board/boardUpdateForm");
+		System.out.println("i : " + i);
+		System.out.println("b : " + b);
+		mv.addObject("b", b).addObject("i", i).setViewName("board/boardUpdateForm");
 		
 		return mv;
 		
@@ -206,22 +211,42 @@ public class BoardController {
 	
 	
 	@RequestMapping("bupdate.do")
-	public ModelAndView boardUpdate(Board b, HttpServletRequest request, ModelAndView mv,
-									@RequestParam(value="reloadFile", required=false) MultipartFile file) {
+	public ModelAndView boardUpdate(Board b, Image i, HttpServletRequest request, ModelAndView mv,
+			@RequestParam(value = "board-upload-file", required = false) MultipartFile file) {
 		
-		
-		
-		int result = boardService.updateBoard(b);
-		
-		if(result > 0) {
-			mv.addObject("id", b.getId()).setViewName("redirect:bdetail.do");
-		}else {
-			mv.addObject("");
+		System.out.println(i);
+		if(!i.getOriginalName().equals("")) {
+			
+			deleteFile(i.getChangeName(), request);
+			
+			Image img = saveFile(file, request, i);			
+			
+			int result1 = boardService.updateBoard(b);
+			int result2 = boardService.updateBoardFile(i);
+			
+			i.setPath(img.getPath());
+			i.setOriginalName(img.getOriginalName());
+			i.setChangeName(img.getChangeName());
+			
+			if (result1 > 0 && result2 > 0) {
+				mv.addObject("id", b.getId()).setViewName("redirect:bdetail.do");
+			}
+
+		} else {
+
+			int result1 = boardService.updateBoard(b);
+
+			if (result1 > 0) {
+				mv.addObject("id", b.getId()).setViewName("redirect:bdetail.do");
+			}
+
 		}
-		
+
 		return mv;
-		
+
 	}
+	
+	// ----------------------------- 정말 모르겠다...
 	
 	
 	// 댓글

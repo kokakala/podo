@@ -62,7 +62,8 @@
             <div class="blog__slide__content">
               <p class="pTitle"> ${review.titleKor }</p>
               <a class="blog__slide__label">${ review.name }</a>
-              <h3><a href="ratingDetailReview.do?id=${review.id}"><p id="reviewContentFont">${ review.content }</p></a> </h3>
+              <h3><a href="ratingDetailReview.do?id=${review.id}">
+              <p id="reviewContentFont">${ review.content }</p></a> </h3>
               <button onclick="location.href='ratingDetailReview.do?id=${review.id}';"> 더보기 </button> 
               
               <p></p>

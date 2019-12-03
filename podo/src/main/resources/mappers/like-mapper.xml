@@ -10,6 +10,35 @@
 		<result property="userId" column="user_id"/>
 	</resultMap>
 	
+	<resultMap type="Like" id="likeFilmResultSet">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="targetId" column="target_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="titleKor" column="title_kor"/>
+		<result property="changeName" column="change_name"/>
+	</resultMap>
+	
+	<resultMap type="Like" id="likeUserResultSet">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="targetId" column="target_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="nickName" column="nickname"/>
+		<result property="changeName" column="image"/>
+	</resultMap>
+	
+	<resultMap type="Like" id="likeReviewResultSet">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="targetId" column="target_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="content" column="content"/>
+		<result property="titleKor" column="title_kor"/>
+		<result property="changeName" column="change_name"/>
+	</resultMap>
+
+	
 	<insert id="insertLikeFilm">
 		insert into tb_like
 		values (seq_like_id.nextval, 1, #{targetId}, #{userId})
@@ -18,31 +47,97 @@
 	<delete id="deleteLikeFilm">
 		delete from tb_like
 		where user_id = #{userId}
-			and target_id = #{targetId}
+			and target_id = #{targetId} and
+			type=1
 	</delete>
 	
 	<select id="selectLikedFilmMap" resultMap="likeResultSet">
 		select *
 		from tb_like
-		where user_id = #{id}
+		where user_id = #{id} and
+			  type=1
 	</select>
 	
 	<select id="selectLikeUser" resultMap="likeResultSet">
 		select *
 		from tb_like
 		where target_id=#{userId} and
-			  user_id=#{loginUserId}
+			  user_id=#{loginUserId} and
+              type = 2
 	</select>
 	
 	<insert id="insertLikeMem">
-		insert into tb_like values (seq_like_id.nextval, 1, #{targetId}, #{userId})
+		insert into tb_like values (seq_like_id.nextval, 2, #{targetId}, #{userId})
 	</insert>
 	
 	<delete id="deleteLikeMem">
 		delete from tb_like
 		where user_id = #{userId} and
-			  target_id = #{targetId}
+			  target_id = #{targetId} and
+			  type=2
 	</delete>
 	
+	<select id="myPageLikeFilmListCount" resultType="_int">
+		select count(*)
+		from tb_like
+		where user_id=#{id} and
+			  type=1
+	</select>
+	
+	<select id="myPageSelectLikeFilm" resultMap="likeFilmResultSet">
+		select l.id, type, target_id, user_id, title_kor, change_name
+		from tb_like l
+		join tb_film f on(l.target_id = f.id)  
+		left join (select film_id, change_name
+		            from tb_detail_film df
+		            join tb_film_image fi on(df.id = fi.dfilm_id))b on(b.film_id = f.id)
+		where type=1 and
+		      user_id=#{id}    
+	</select>
+	
+	<select id="myPageLikeUserListCount" resultType="_int">
+		select count(*)
+		from tb_like
+		where user_id=#{id} and
+			  type=2
+	</select>
+	
+	<select id="myPageSelectLikeUser" resultMap="likeUserResultSet">
+		select l.*, nickname, image
+		from tb_like l
+        join tb_member m on(l.target_id = m.id)
+		where user_id=#{id} and
+		      type=2 
+	</select>
+	
+	<select id="myPageLikeReviewListCount" resultType="_int">
+		select count(*)
+		from tb_like
+		where user_id=#{id} and
+			  type=3
+	</select>
+	
+	<select id="myPageSelectLikeReview" resultMap="likeReviewResultSet">
+		select l.*, r.content, f.title_kor, change_name
+		from tb_like l
+		join tb_review r on(r.id = l.target_id)
+		join tb_film f on(r.film_id = f.id)
+		join tb_detail_film df on(f.id = df.film_id)
+		join tb_film_image i on(df.id = i.dfilm_id)
+		where user_id=#{id} and
+		      l.type=3
+	</select>
+	
+	
+	<insert id="insertLikeReview">
+		insert into tb_like values (seq_like_id.nextval, 3, #{targetId}, #{userId})
+	</insert>
+	
+	<delete id="deleteLikeReview">
+		delete from tb_like
+		where user_id = #{userId} and
+			  target_id = #{targetId} and
+			  type=3
+	</delete>
 	
 </mapper>

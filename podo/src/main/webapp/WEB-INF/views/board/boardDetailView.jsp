@@ -9,9 +9,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -19,8 +19,12 @@
 	.board-detail-form, .board-detail-comment{
 		margin-top: 50px;
 		margin-right: 10px;
-		margin-left: 400px;
+		margin-left: 350px;
 		text-align: center;
+	}
+	
+	#b-detail-btn{
+		margin-left: 150px;
 	}
 </style>
 </head>
@@ -38,7 +42,7 @@
 		<div class="form-group row">
 			<label for="" class="col-sm-2 col-form-label">제목 </label>
 	    	<div class="col-sm-5">
-				<input type="text" class="form-control" name="title" value="${ b.title }" required>
+				<input type="text" class="form-control" name="title" value="${ b.title }" readonly>
 	    	</div>
 	  	</div>
 	  	<div class="form-group row">
@@ -56,9 +60,10 @@
 		<div class="form-group row">
 			<label for="" class="col-sm-2 col-form-label">내용</label>
 			<div class="col-sm-5">
-				<textarea class="form-control" name="content" cols="20" rows="7">${ b.content }</textarea>
+				<textarea class="form-control" name="content" cols="20" rows="7" readonly>${ b.content }</textarea>
 			</div>
 		</div>
+		
 		<div class="form-group row">
 			<label for="" class="col-sm-2 col-form-label">첨부파일</label>
 			<c:if test="${ !empty i.originalName }">
@@ -72,11 +77,11 @@
 		</div>
 		<br>
 		<div class="form-group row">
-			<div class="col-sm-5" id="">
+			<div class="col-sm-5" id="b-detail-btn">
 				<c:if test="${ loginUser.id eq b.memberId }">
-					<button>수정하기</button>
+					<button class="btn btn-secondary btn-lg" onclick="location.href='bdelete.do?id=${ b.id }';">삭제하기</button>
 					&nbsp; &nbsp;
-					<button>삭제하기</button>
+					<button class="btn btn-lg btn-primary" onclick="location.href='bupdateView.do?id=${ b.id }';">수정하기</button>
 				</c:if>
 			</div>
 		</div>

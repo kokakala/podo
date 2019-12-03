@@ -79,8 +79,6 @@ public class DetailFilmDao {
 	// 배우 등록
 	public int addActor(int newActorId, int id) {
 		
-		System.out.println("newActor : "+newActorId);
-		
 		HashMap map= new HashMap();
 		
 		map.put("newActorId", newActorId);
@@ -89,27 +87,34 @@ public class DetailFilmDao {
 		return sqlSession.insert("detailFilmmapper.addActor", map);
 	}
 	
+	// 배우 삭제
+	public int deleteActor(int actorId, int id) {
+		
+		HashMap map= new HashMap();
+		
+		map.put("actorId", actorId);
+		map.put("id", id);
+		
+		return sqlSession.insert("detailFilmmapper.deleteActor", map);
+	}
+	
 	// 배우 수정 등록
 	public int actorInsert(String actorIdList) {
 		
 		String[] actorList = actorIdList.split(",");
 		int[] actorIntList = new int[actorList.length];
-		
-		System.out.println("actorList : "+actorList);
-		System.out.println("actorList.length :"+actorList.length);
+		int result=0;
 		
 		// 인트형으로 변환
 		for(int i=0; i<actorList.length; i++) {
 			actorIntList[i] = Integer.parseInt(actorList[i]);
 		}
 		
-		int result=0;
-		
 		for(int i=0; i<actorIntList.length; i++) {
 			
-			result = sqlSession.insert("detailFilmmapper.wikiAddActor", actorIntList[i]);
-			
+			result = sqlSession.insert("detailFilmmapper.wikiAddActor", actorIntList[i]);		
 		}
+			
 		
 		return result;
 	}

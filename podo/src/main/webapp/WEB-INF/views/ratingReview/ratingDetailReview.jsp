@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -11,24 +12,6 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	
-  <link rel="icon" href="img/Fevicon.png" type="image/png">
-
-  <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
-  <link rel="stylesheet" href="vendors/fontawesome/css/all.min.css">
-  <link rel="stylesheet" href="vendors/themify-icons/themify-icons.css">
-  <link rel="stylesheet" href="vendors/linericon/style.css">
-  <link rel="stylesheet" href="vendors/owl-carousel/owl.theme.default.min.css">
-  <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
-<!-- 제이쿼리 -->
-  <script src="https://code.jquery.com/jquery-latest.js"></script> 
-  <link rel="stylesheet" href="css/style.css">
-  <script src="vendors/jquery/jquery-3.2.1.min.js"></script>
-  <script src="vendors/bootstrap/bootstrap.bundle.min.js"></script>
-  <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
-  <script src="js/jquery.ajaxchimp.min.js"></script>
-  <script src="js/mail-script.js"></script>
-  <script src="js/main.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <title>Insert title here</title>
 <style>
 
@@ -141,12 +124,21 @@
 		#movieform{
 			text-align: center;
 		}
-	#like{
+	.likeReview{
 		margin-left: 500px;
 
 	}
+	tbody{
+				background-color: rgb(131,36,255);
+				font-size: 12px;
+								margin-left:auto;
+				margin-right:auto;
+		}
+		#review-comment{
+			border: none;
+			resize: none;
+		}
 
-	
 </style>
 </head>
 <body>
@@ -160,48 +152,63 @@
 			<a href="reviewUpdateView.do?id=${r.ratingReviewId}">수정하기</a>
 		</h3>
 	  <section class="blog-post-area section-margin">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8">
-            <div class="main_blog_details">
-              <img class="img-fluid" src="resources/detailFilmImage/${r.posterImage }" alt=""> 
-        <%--     <img class="img-fluid" src="resources/detailFilmImage/${rr.posterImage }" alt=""> --%>
-               <h4 align="center">${r.titleKor }</h4>
-                <div class="user_details">
-                    <div class="float-left">
-                      <div class="media">
-                      <div class="media-body">
-                        <a href="userPage.do?userId=${r.memberId}&loginUserId=${ loginUser.id }"><h5>${r.nickName }님</h5></a>
-                 
-                        <p>${ r.createDate }에 작성</p>
-                      </div>
-                      <div class="d-flex">
-                        <img width="42" height="42" src="resources/memberProfileImage/${ r.userImage }" onclick="location.href='userPage.do?userId=${r.memberId}&loginUserId=${ loginUser.id }'">
-                      </div>
-                    </div>
-                  	</div>
-                  <div class="float-right mt-sm-0 mt-3">
-                    <div class="media">
-  					  <div class="media-body">
-                        <h2>★ :${r.star }점</h2>
-                        
-                      </div>
-                      <div class="d-flex">
-                        <img width="42" height="42" src="resources/bootstrap/img/blog/user-img.png" alt="">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <br>
-                <div id="mychart2">
-   <canvas id="myChart">캔버스</canvas>
-   
-   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-   
-   
-   
-   <script>
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-8">
+						<div class="main_blog_details">
+							<img class="img-fluid"
+								src="resources/detailFilmImage/${r.posterImage }" alt="">
+							<%--     <img class="img-fluid" src="resources/detailFilmImage/${rr.posterImage }" alt=""> --%>
+							<h4 align="center">${r.titleKor }</h4>
+							<div class="user_details">
+								<div class="float-left">
+									<div class="media">
+										<div class="media-body">
+											<c:if test="${ loginUser.id != r.memberId }">
+												<a
+													href="userPage.do?userId=${r.memberId}&loginUserId=${ loginUser.id }"><h5>${r.nickName }님</h5></a>
+											</c:if>
+											<c:if test="${ loginUser.id == r.memberId }">
+												<a href="myPage.do?id=${ loginUser.id }"><h5>${r.nickName }님</h5></a>
+											</c:if>
+											<p>${ r.createDate }에작성</p>
+										</div>
+										<div class="d-flex">
+											<c:if test="${ loginUser.id == r.memberId }">
+												<img width="42" height="42"
+													src="resources/memberProfileImage/${ r.userImage }"
+													onclick="location.href='myPage.do?id=${ loginUser.id }'">
+											</c:if>
+											<c:if test="${ loginUser.id != r.memberId }">
+												<img width="42" height="42"
+													src="resources/memberProfileImage/${ r.userImage }"
+													onclick="location.href='userPage.do?userId=${r.memberId}&loginUserId=${ loginUser.id }'">
+											</c:if>
+										</div>
+									</div>
+								</div>
+								<div class="float-right mt-sm-0 mt-3">
+									<div class="media">
+										<div class="media-body">
+											<h2>★ :${r.star }점</h2>
+
+										</div>
+										<div class="d-flex">
+											공간1
+												
+										</div>
+									</div>
+								</div>
+							</div>
+							<br> <br>
+							<div id="mychart2">
+								<canvas id="myChart">캔버스</canvas>
+
+								<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+
+
+								<script>
    var ctx = document.getElementById('myChart');
    var chart = new Chart(ctx, {
        // The type of chart we want to create
@@ -247,82 +254,109 @@
               }
     });
    </script>
-   </div>
-   
-    <form action="vinsert.do" method="post" id="movieform">
-      <table align="center" id="vv">
-         <tr>
-            <td class="alert alert-primary">제목</td>
-            <td><input style="text-align: center" class="button" type="text" name="title" id="vtitle"  value="${ r.titleKor }"  readonly></td>
-         </tr>
-         <tr>
-            <td class="alert alert-primary">음악</td>
-            <td><input style="text-align: center" class="button" type="text" name="ratingSound" class="insertRating" id="ratingSound" value="${r.ratingSound }" readonly></td>
-         </tr>
-         <tr>   
-            <td class="alert alert-primary">영상</td>
-            <td><input style="text-align: center" class="button" type="text" name="ratingVisual" class="insertRating" id="ratingVisual" value="${r.ratingVisual }" readonly></td>
-         </tr>
-         <tr>
-            <td class="alert alert-primary">연기</td>
-            <td><input style="text-align: center" class="button" type="text" name="ratingActing" class="insertRating" id="ratingActing" value="${r.ratingActing }" readonly></td>
-         </tr>
-         <tr>
-            <td class="alert alert-primary">대중성</td>
-            <td><input style="text-align: center" class="button" type="text" name="ratingPop" class="insertRating" id="ratingPop" value="${r.ratingPop }" readonly></td>
-         </tr>
-         <tr>
-            <td class="alert alert-primary">각본</td>
-            <td><input style="text-align: center" class="button" type="text" name="ratingScript" class="insertRating" id="ratingScript" value="${r.ratingScript }" readonly></td>
-         </tr>
-         <tr>
-            <td class="alert alert-primary">연출</td>
-            <td><input style="text-align: center" class="button" type="text" name="ratingDirect" class="insertRating" id="ratingDirect" value="${r.ratingDirect }" readonly></td>
-         </tr>
-                 
-		
-      </table>
-   </form>
-   </div>
-  
-        <p class="main_blog_details">${r.content }</p>
-               
-     	<div class="likedeclaration">
-		<a id="like" class="btn-reply text-uppercase" href="#">좋아요</a>
-		<a id="declaration-modal" class="btn-reply text-uppercase" href="#" data-toggle="modal">신고하기</a>
-		</div>
-		<div>
+							</div>
 
-					
-		</div>
-              </div>
-        </div>
-      </div>
-      
-      
-  </section>
-  
+							<form action="vinsert.do" method="post" id="movieform">
+								<table align="center" id="vv">
+									<tr>
+										<td class="alert alert-primary">제목</td>
+										<td><input style="text-align: center" class="button"
+											type="text" name="title" id="vtitle" value="${ r.titleKor }"
+											readonly></td>
+									</tr>
+									<tr>
+										<td class="alert alert-primary">음악</td>
+										<td><input style="text-align: center" class="button"
+											type="text" name="ratingSound" class="insertRating"
+											id="ratingSound" value="${r.ratingSound }" readonly></td>
+									</tr>
+									<tr>
+										<td class="alert alert-primary">영상</td>
+										<td><input style="text-align: center" class="button"
+											type="text" name="ratingVisual" class="insertRating"
+											id="ratingVisual" value="${r.ratingVisual }" readonly></td>
+									</tr>
+									<tr>
+										<td class="alert alert-primary">연기</td>
+										<td><input style="text-align: center" class="button"
+											type="text" name="ratingActing" class="insertRating"
+											id="ratingActing" value="${r.ratingActing }" readonly></td>
+									</tr>
+									<tr>
+										<td class="alert alert-primary">대중성</td>
+										<td><input style="text-align: center" class="button"
+											type="text" name="ratingPop" class="insertRating"
+											id="ratingPop" value="${r.ratingPop }" readonly></td>
+									</tr>
+									<tr>
+										<td class="alert alert-primary">각본</td>
+										<td><input style="text-align: center" class="button"
+											type="text" name="ratingScript" class="insertRating"
+											id="ratingScript" value="${r.ratingScript }" readonly></td>
+									</tr>
+									<tr>
+										<td class="alert alert-primary">연출</td>
+										<td><input style="text-align: center" class="button"
+											type="text" name="ratingDirect" class="insertRating"
+											id="ratingDirect" value="${r.ratingDirect }" readonly></td>
+									</tr>
+
+
+								</table>
+							</form>
+						</div>
+
+						<p class="main_blog_details">${r.content }</p>
+
+						<div class="likedeclaration">
+							  		<div class="thumb">
+										<br><br>
+										<c:if test="${ not empty likeUser }">
+		                                	<button class='btn btn-danger likeReviewBtn'>LIKED</button>
+		                                	<input type="hidden" class="likeInp" value="1"/>
+		                                </c:if>
+		                                <c:if test="${ empty likeUser }">
+		                                    <button class='btn btn-secondary likeReviewBtn'>LIKE</button>
+		                                   <input type="hidden" class="likeInp" value="0"/>
+		                                </c:if>
+									</div>
+							<a class="declaration-modal btn-reply text-uppercase" href="#" data-toggle="modal">신고하기</a>
+						</div>
+						<div></div>
+					</div>
+				</div>
+			</div>
+
+
+		</section>
+
   <!-- 댓글 등록 -->
-  <table align="center" width="500" border="1" cellspacing="0">
+  <table class="table table-striped table-dark" align="center" border="1" cellspacing="0">
 	  <tr>
-		  	<td><textarea rows="3" cols="55" id="review-comment"></textarea></td>
+		  	<td><textarea rows="3" cols="100" id="review-comment"></textarea></td>
 		  	<td><button id="rBtn">댓글등록</button></td>
 	  </tr>
   </table>
   
   <!-- 댓글리스트 -->
-	<table align="center" width="500" border="1" cellspacing="0" id="rtb">
+	<table class="table table-striped table-dark" align="center" border="1" cellspacing="0" id="rtb">
   		<thead>
 	  		<tr>
-	  			<td colspan="3"><b id="rCount"></b></td>
+	  			<td colspan="4" style="height: 10px;font-size: 12px;" ><b id="rCount"></b></td>
+	  		</tr>
+	  		<tr style="height: 10px;font-size: 12px;">
+	  			<td>닉네임</td>
+	  			<td>내용</td>
+	  			<td>작성일</td>
+	  			<td></td>
 	  		</tr>
   		</thead>
   		<tbody>
   		
   		</tbody>
   	</table>
-	
-	
+	<!-- 댓글신고인데.. -->
+	<a class="comment-modal btn-reply text-uppercase" href="#" data-toggle="modal">댓글신고하기</a>
 	<script>
 	// 댓글 작성해주는거
 	$(function(){
@@ -337,17 +371,21 @@
 				
 				var content = $("#review-comment").val();
 				var boardId = ${r.id};
+				var memberId = ${r.memberId};
+				var reviewId = ${r.ratingReviewId};
 				var nickName = "${r.nickName}";
-				
+					
 				$.ajax({
 					url:"insertReviewComment.do",
 					data:{content:content,
 						  boardId:boardId,
+						  memberId:memberId,
+						  reviewId:reviewId,
 						  nickName:nickName
 					},
 					success:function(data){
 						if(data == "success"){
-							console.log(data);
+							console.log(data.nickName);
 							getReplyReviewCommentList();
 							$("#review-comment").val("");
 						}else{
@@ -387,13 +425,24 @@
 						$.each(data, function(index, value){
 							$tr = $("<tr></tr>");
 							
-							$writerTd = $("<td width='200'></td>").text(value.nickName);
-							$contentTd = $("<td></td>").text(value.content);
-							$dateTd = $("<td></td>").text(value.createDate);
+							console.log(value.nickName);
+						
+							
+							$writerTd = $("<td width='100'></td>").text(value.nickName); 
+							$contentTd = $("<td width='300'></td>").text(value.content);
+							$dateTd = $("<td width='100'></td>").text(value.createDate+'에 작성');
+							$deleteButton = $("<input class='delComment btn' type='button'>").val('삭제')
+							$updateButton = $("<input class='btn' type='button'>").val('수정')
+							$deButton = $("<a class='comment-modal btn-reply text-uppercase' href='#' data-toggle='modal'>댓글신고하기</a>")
+							
+							
 							
 							$tr.append($writerTd);
 							$tr.append($contentTd);
 							$tr.append($dateTd);
+							$tr.append($deleteButton);
+							$tr.append($updateButton);
+							$tr.append($deButton);
 							
 							$tbody.append($tr);
 							
@@ -403,7 +452,7 @@
 						
 						$tr = $("<tr></tr>");
 						
-						$contentTd = $("<td colspan='3'></td>").text("등록된 댓글이 없습니다.");
+						$contentTd = $("<td colspan='4'></td>").text("등록된 댓글이 없습니다.");
 						$tr.append($contentTd);
 						
 						$tbody.append($tr);
@@ -415,6 +464,23 @@
 				}
 				
 			});
+		}
+		
+		
+		function deleteReviewComment(id){
+			if(confirm("댓글을 삭제하시겠습니까")){
+				$.ajax({
+					type:"post",
+					url:"deleteReviewComment.do",
+					data:{"COMMENT_ID":id},
+					success:function(){
+						alert("댓글이 삭제되었습니다.");
+					},
+					error:function(){
+						alert("댓글 삭제 실패");
+					}
+				});
+			}
 		}
 		
 		
@@ -478,9 +544,8 @@
 	
 
 	</div>
-	<!-- 신고하기 모달 -->
-	<div class="modal fade" id="de_modal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
+	<!-- 리뷰 신고하기 모달 -->
+	<div class="modal fade de_modal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -501,6 +566,41 @@
 						<p></p>
 							<input class="reviewType" type="radio" value="1" name="content">부적절한내용
 							<input class="reviewType" type="radio" value="2" name="content">스포일러
+						<p></p>
+					</div>
+					<div class="modal-footer">
+						<button  type="submit" class="btn btn-primary">신고보내기</button>
+						<button  class="btn btn-primary" data-dismiss="modal">Close</button>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- 댓글 신고하기 모달 -->
+	<div class="modal fade cm_modal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					신고하기
+					<form action="declarationCommentModal.do" method="post">
+						<input type="hidden" name="reportId" value="${ loginUser.id }">
+						<input type="hidden" name="targetId" value="${ r.id }">
+						<input type="hidden" name="reportedId" value="${ r.memberId }">
+						
+					<div class="eu">
+						
+						<p></p>
+							<input class="commentType" type="radio" value="1" name="content">부적절한내용
+							<input class="commentType" type="radio" value="2" name="content">스포일러
 						<p></p>
 					</div>
 					<div class="modal-footer">
@@ -540,19 +640,89 @@
 
 
 	<script>
-	
-	
+	// 리뷰 좋아요
+	$(function() {
+		//var likeUser = $(".likeInp").val();
+		//console.log("처음인풋 : " + likeUser);
+		
+		$(".likeReviewBtn").on("click", function(){
+			var targetId = "${ r.id }";
+			var userId = "${loginUser.id}";
+			var likeInp = $(".likeInp").val();
+			var status = "";
+			
+			//console.log("버튼클릭시 : " + likeInp);
+			
+			if(likeInp == '0'){
+				status = "like";
+			}else if(likeInp == '1'){
+				status = "nonlike";
+			}
+			//console.log(status);
+			$.ajax({
+					url:"likeReviewClick.do",
+					data:{userId:userId,
+						  targetId:targetId,
+						  status:status},
+					type:"post",
+					success:function(data){
+						//console.log(data);
+						if(status == "like"){ // 좋아요클릭시
+							if(data == 1){
+								$(".likeBtn").removeClass("btn-danger");
+								$(".likeBtn").removeClass("btn-secondary");
+								$(".likeBtn").addClass("btn-danger");
+								$(".likeBtn").text('LIKED');
+								$(".likeInp").val('1');
+							}else{
+								alert("좋아요 실패");
+							}
+						}else if(status == "nonlike"){ // 좋아요 취소
+							if(data == 1){
+								$(".likeBtn").removeClass("btn-danger");
+								$(".likeBtn").removeClass("btn-secondary");
+								$(".likeBtn").addClass("btn-secondary");
+								$(".likeBtn").text('LIKE');
+								$(".likeInp").val('0');
+							}else{
+								alert("좋아요 실패");
+							}
+						}
+						//console.log("에이작스 후 : " + likeInp);
+							
+					},error:function(){
+						console.log("라이크 ajax 통신 실패");
+					}
+				});  
+		});
+		
+	});
 	// 신고하기 모달
 
 		
-	// 신고하기 버튼 클릭 시
-	$("#declaration-modal").on( "click", function() {
-        $("#de_modal").modal();
+	// 리뷰 신고하기 버튼 클릭 시
+	$(".declaration-modal").on( "click", function() {
+        $(".de_modal").modal();
         //console.log("${ loginUser.id }");
     });
-
-
-
+	// 댓글 신고하기 버튼 클릭시
+	$(".comment-modal").on( "click", function() {
+        $(".cm_modal").modal();
+        //console.log("${ loginUser.id }");
+    });
+	
+	
+/*  신고..에이작스?   $(document).on("click","cm_modal", function() {
+    	$(".cm_modal").modal(this);
+    }); */
+    
+    
+	// 댓글 삭제
+	$(".delComment").on( "click", function() {
+		$(function () {
+			deleteReviewComment();
+		});
+	});
 	//리뷰 클릭시
 	function reviewClick() {
 		if($("#reviewDe").is(":checked") == true) {
@@ -593,6 +763,7 @@
 		
 
 	} */
+	
 
 	</script>
 </body>

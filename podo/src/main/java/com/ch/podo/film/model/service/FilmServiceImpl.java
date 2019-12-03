@@ -29,13 +29,13 @@ public class FilmServiceImpl implements FilmService {
 	}
 
 	@Override
-	public int selectKeywordFilmListCount(String keyword) {
-		return filmDao.selectKeywordFilmListCount(keyword);
+	public int selectKeywordFilmListCount(String keyword, String skeyword) {
+		return filmDao.selectKeywordFilmListCount(keyword, skeyword);
 	}
 
 	@Override
-	public ArrayList<Film> selectKeywordFilmList(String keyword, PageInfo pi) {
-		return filmDao.selectKeywordFilmList(keyword, pi);
+	public ArrayList<Film> selectKeywordFilmList(String keyword, String skeyword, PageInfo pi) {
+		return filmDao.selectKeywordFilmList(keyword, skeyword, pi);
 	}
 
 	@Override

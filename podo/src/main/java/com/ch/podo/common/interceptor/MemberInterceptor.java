@@ -11,16 +11,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.ch.podo.common.interceptor.BoardInsertInterceptor;
 import com.ch.podo.member.model.service.MemberService;
 import com.ch.podo.member.model.vo.Member;
 
-public class BoardInsertInterceptor extends HandlerInterceptorAdapter {
+public class MemberInterceptor extends HandlerInterceptorAdapter {
 
 	@Autowired
 	private MemberService memberService;
 
-	private Logger logger = LoggerFactory.getLogger(BoardInsertInterceptor.class);
+	private Logger logger = LoggerFactory.getLogger(MemberInterceptor.class);
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -29,23 +28,20 @@ public class BoardInsertInterceptor extends HandlerInterceptorAdapter {
 
 		Member loginUser = (Member) session.getAttribute("loginUser");
 
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+
 		if (loginUser == null) {
 			logger.info("비로그인 상태에서 작성하려고 함");
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
 			out.println("<script>alert('회원이 아니면 접근 불가능한 서비스입니다.');history.back();</script>");
 			out.flush();
 			return false; // 실행 실패
-
 		} else {
 			int bid = loginUser.getId();
-
 			int result = memberService.prohibitionBoard(bid);
 
-			if (result == 1) { // 블랙리스트 회원일 때
+			if (result > 0) { // 블랙리스트 회원일 때
 				logger.info("블랙리스트인 상태에서 게시물 작성하려 함");
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
 				out.println("<script>alert('블랙리스트 회원은 접근 불가능한 서비스입니다.');history.back();</script>");
 				out.flush();
 				return false;
@@ -53,4 +49,5 @@ public class BoardInsertInterceptor extends HandlerInterceptorAdapter {
 			return true;
 		}
 	}
+
 }
