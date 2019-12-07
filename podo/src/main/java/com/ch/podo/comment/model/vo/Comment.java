@@ -24,12 +24,10 @@ public class Comment {
 	private Date createDate;		// 최초 작성일
 	private Date modifyDate;		// 최초 수정일
 	private String status;			// 상태
-	private int level;				// 댓글층
+	private int level;
 	private int memberId;
-	private int boardId;
-	private int reviewId;
+	private int boardId;			// 상위 댓글
+	private int reviewId;			// 상위 댓글
 	
 	private String nickName;		//사용자 닉네임
-	
-	
 }

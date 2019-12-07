@@ -34,7 +34,7 @@ public interface DetailFilmService {
 	ArrayList<Actor> searchActorList(String searchName);
 	
 	// 2_5. 영화 포스터 수정 입력 -- (영화 포스터 이미지, 영화 상세번호)
-	int filmImageInsert(String filmImage, int id);
+	int filmImageInsert(String filmImage, int id, int filmId);
 
 	// 2_6. 영화 배우 수정 입력 -- (배우 번호(String), 영화 상세번호)
 	int actorInsert(String actorIdList);

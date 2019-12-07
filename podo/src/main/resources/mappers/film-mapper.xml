@@ -25,6 +25,20 @@
       <result property="poster" column="change_name"/>
    </resultMap>
    
+      <resultMap type="Film" id="manyStar2">
+	      <id property="id" column="id"/>
+	      <result property="titleKor" column="title_kor"/>
+	      <result property="avgStarRating" column="avg_star"/>
+	      <result property="releaseYear" column="release_year"/>
+	      <result property="productionCountry" column="production_country"/>
+          <result property="productionStatus" column="production_status"/>
+	      <result property="genreId" column="genre_id"/>
+	      <result property="genre" column="name"/>
+	      <result property="poster" column="change_name"/>
+	   </resultMap>
+   
+   
+   
    <select id="getListCount" resultType="_int">
       select count(*)
       from tb_film
@@ -67,12 +81,12 @@
    <select id="selectFilterFilmListCount" resultType="_int">
       <choose>
          <when test='userId == "0" or userId == null or saw == "all" or saw == null'>
-            select count(*)
-         from tb_film f
-         join tb_genre g on (f.genre_id = g.id)
-         left outer join tb_detail_film df on (df.film_id = f.id)
-         left outer join tb_film_image fi on (df.id = fi.dfilm_id)
-             join vi_film_avg_star fas on (fas.film_id = f.id)
+						select count(*)
+						from tb_film f
+						join tb_genre g on (f.genre_id = g.id)
+						left outer join tb_detail_film df on (df.film_id = f.id)
+						left outer join tb_film_image fi on (df.id = fi.dfilm_id)
+				    join vi_film_avg_star fas on (fas.film_id = f.id)
          </when>
          <otherwise>
             select count(*)
@@ -169,7 +183,7 @@
       select f.*, g.name, l.user_id
       from tb_film f
       left outer join tb_genre g on (f.genre_id = g.id)
-    left outer join tb_like l on (l.target_id = f.id)
+    	left outer join tb_like l on (l.target_id = f.id)
       where user_id = #{ mid }
       <if test='film.releaseYear != "all" and film.releaseYear != null'>
          and release_year = #{ film.releaseYear }
@@ -196,10 +210,10 @@
    </select>
    
    <select id="selectFilmList" resultMap="filmResultSet">
-      select *
-      from tb_film
-      join tb_genre using(id)
-      order by id
+      select f.*, g.name
+      from tb_film f
+      join tb_genre g on(f.genre_id = g.id)
+      order by f.id
    </select>
    
    <select id="selectFilm" resultMap="filmResultSet">
@@ -296,7 +310,7 @@
    <insert id="insertFilm">
       insert into tb_film
       values(seq_film_id.nextval, #{ titleKor }, #{ titleEng }, #{ director }, 
-            #{ releaseYear }, #{ productionCountry }, #{ productionStatus }, #{ genreId })
+            #{ releaseYear }, #{ productionCountry }, #{ productionStatus }, #{ genreId }, null)
    </insert>
    
    <insert id="insertInitDetailFilm">
@@ -308,12 +322,26 @@
       insert into tb_film_image
       <choose>
          <when test="changeName != null">
-            values(seq_fimage_id.nextval, 1, #{ changeName }, seq_dfilm_id.currval)
+            values(seq_fimage_id.nextval, 1, #{ changeName }, seq_dfilm_id.currval, seq_film_id.currval)
          </when>
          <otherwise>
-            values(seq_fimage_id.nextval, 1, null, seq_dfilm_id.currval)
+            values(seq_fimage_id.nextval, 1, null, seq_dfilm_id.currval, seq_film_id.currval)
          </otherwise>
       </choose>
    </insert>
+   
+   <select id="manyStar" resultMap="manyStar2">
+         <![CDATA[
+   		select rownum,at.*
+		from(select f.*, g.name, fas.dfid, fi.change_name, nvl(fas.avg_star, 0) as avg_star
+		        from tb_film f
+		        join tb_genre g on (f.genre_id = g.id)
+		        join vi_film_avg_star fas on (fas.film_id = f.id)
+		        left outer join tb_detail_film df on (df.id = dfid)
+		        left outer join tb_film_image fi on (df.id = fi.dfilm_id)
+		        order by avg_star desc) at
+		 where rownum <=3
+		       ]]>
+   </select>
    
 </mapper>

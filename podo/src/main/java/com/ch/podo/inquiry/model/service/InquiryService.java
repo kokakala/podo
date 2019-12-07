@@ -18,4 +18,8 @@ public interface InquiryService {
 	
 	// 3. DB제보
 	int dbInquiryInsert(String content, String userId);
+	
+	// 4. 관리자 문의 리스트 조회
+	ArrayList<Inquiry> selectInquiryList();
+
 }

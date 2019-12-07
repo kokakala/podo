@@ -18,8 +18,12 @@ public class RatingFilmDao {
 		return sqlSession.insert("ratingFilmMapper.insertRateFilm", rate);
 	}
 
-	public int updateLikeFilm(RatingFilm rate) {
+	public int updateRateFilm(RatingFilm rate) {
 		return sqlSession.update("ratingFilmMapper.updateRateFilm", rate);
+	}
+
+	public int updateSameRateFilm(RatingFilm rate) {
+		return sqlSession.update("ratingFilmMapper.updateSameRateFilm", rate);
 	}
 
 	public int deleteRateFilm(RatingFilm rate) {

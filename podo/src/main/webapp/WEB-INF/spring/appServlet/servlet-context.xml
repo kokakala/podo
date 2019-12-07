@@ -38,6 +38,24 @@
 			<mapping path="/reviewUpdateView.do"/>
 			<mapping path="/reviewDelete.do"/>
 			<mapping path="/insertQuestion.do"/>
+
+			<mapping path="/admin.do"/>
+			<mapping path="/mlist.do"/>
+			<mapping path="/blackList.do"/>
+			<mapping path="/rlist.do"/>
+			<mapping path="/rblist.do"/>
+			<mapping path="/flist.do"/>
+			<mapping path="/finsertForm.do"/>
+			<mapping path="/adRlist.do"/>
+			<mapping path="/inquiryList.do"/>
+			
+
+			<mapping path="/declarationModal.do"/>
+			<mapping path="/declarationModal2.do"/>
+			
+			<mapping path="/likeReviewClick.do"/>
+			
+
 			<!-- <mapping path="/insertReviewComment.do"/> -->
 			<beans:bean id="MemberInterceptor" class="com.ch.podo.common.interceptor.MemberInterceptor"/>
 		</interceptor>
@@ -46,6 +64,22 @@
 			<mapping path="/login.do"/>
 			<beans:bean id="LoginInterceptor" class="com.ch.podo.common.interceptor.LoginInterceptor"/>
 		</interceptor> -->
+		
+		<!-- 일반 사용자 관리자 페이지 접속 제한 인터셉터 -->
+		<interceptor>
+			<mapping path="/admin.do"/>
+			<mapping path="/mlist.do"/>
+			<mapping path="/blackList.do"/>
+			<mapping path="/rlist.do"/>
+			<mapping path="/rblist.do"/>
+			<mapping path="/flist.do"/>
+			<mapping path="/finsertForm.do"/>
+			<mapping path="/adRlist.do"/>
+			<mapping path="/inquiryList.do"/>
+			
+			<beans:bean id="AdminInterceptor" class="com.ch.podo.common.interceptor.AdminInterceptor"/>
+		</interceptor>
+		
 		
 	</interceptors>
 

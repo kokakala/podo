@@ -38,9 +38,9 @@ public class DetailFilmServiceImpl implements DetailFilmService{
 	
 	// 영화 상세정보 추가 입력, 포스터
 	@Override
-	public int filmImageInsert(String filmImage, int id) {
+	public int filmImageInsert(String filmImage, int id, int filmId) {
 		
-		return dfDao.filmImageInsert(filmImage, id);
+		return dfDao.filmImageInsert(filmImage, id, filmId);
 	}
 	
 	// 영화 상세정보 영화 포스터 불러오기

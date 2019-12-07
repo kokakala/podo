@@ -116,4 +116,9 @@ public class FilmServiceImpl implements FilmService {
 		return filmDao.selectNewFilms();
 	}
 
+	@Override
+	public ArrayList<Film> manyStar() {
+		return filmDao.manyStar();
+	}
+
 }

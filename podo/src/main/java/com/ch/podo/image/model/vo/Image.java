@@ -21,4 +21,5 @@ public class Image {
 	private int boardId; 			// 참조 게시판 번호
 	private int noticeId; 			// 참조 공지사항 번호
 	private int detailFilmId;		// 영화 상세정보 ID
+	private int filmId;	// 영화 번호
 }

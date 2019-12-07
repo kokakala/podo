@@ -30,34 +30,38 @@
 		join tb_member rm on (r.report_id = rm.id)
 	</select>
 	
-	
-	<!-- 신고 게시글 블라인드 처리(타입별 따로) 
-	<update id="blindReport1" parameterType="hashMap">
-		update tb_review r
+	<!-- 게시판별 블라인드 처리 -->
+	<update id="blindReport1">
+	    update tb_review
 		set status = 'N'
-		where r.id = #{targetId}
+   		<where>
+			<foreach item="item" index="index" collection="list">
+				<if test="index == 0">
+					id = #{item.targetId}
+				</if>
+				<if test="index != 0">
+					or id = #{item.targetId}
+				</if>
+			</foreach>
+		</where>
 	</update>
 	
-	<update id="blindReport2" parameterType="hashMap">
-		update tb_comment c
+	<update id="blindReport2">
+	    update tb_comment
 		set status = 'N'
-		where c.id = #{targetId}
+   		<where>
+			<foreach item="item" index="index" collection="list">
+				<if test="index == 0">
+					id = #{item.targetId}
+				</if>
+				<if test="index != 0">
+					or id = #{item.targetId}
+				</if>
+			</foreach>
+		</where>
 	</update>
 	
-	<update id="blindReport3" parameterType="hashMap">
-		update tb_board b
-		set status = 'N'
-		where b.id = #{targetId}
-	</update>
-	
-	<update id="blindReport4" parameterType="hashMap">
-		update tb_collection l
-		set status = 'N'
-		where l.id = #{targetId}
-	</update>
-	-->
-	
-	<update id="blindReport">
+	<update id="blindReport3">
 	    update tb_board
 		set status = 'N'
    		<where>
@@ -70,7 +74,21 @@
 				</if>
 			</foreach>
 		</where>
-		
+	</update>
+	
+	<update id="blindReport4">
+	    update tb_collection
+		set status = 'N'
+   		<where>
+			<foreach item="item" index="index" collection="list">
+				<if test="index == 0">
+					id = #{item.targetId}
+				</if>
+				<if test="index != 0">
+					or id = #{item.targetId}
+				</if>
+			</foreach>
+		</where>
 	</update>
 	
 	

@@ -4,6 +4,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<title>포도포도</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<link rel="icon" href="resources/bootstrap/img/favicon.png" type="image/png">
@@ -75,7 +76,7 @@
 								<c:choose>
 							       <c:when test="${ loginUser.autho eq 2}">
 							       		<li class="nav-item"><a id="logout" class="nav-link" href="logout.do">로그아웃</a>
-										<li class="nav-item"><a id="logout" class="nav-link" href="admin.do">관리자</a>
+										<li class="nav-item"><a id="logout" class="nav-link" href="manyStar.do">관리자</a>
 							       </c:when>
 							       <c:when test="${ loginUser ne null }">
 							       		<li class="nav-item"><a id="logout" class="nav-link" href="logout.do">로그아웃</a>
@@ -101,13 +102,13 @@
 			</div>
 		</header>
 	  
-	  	<!-- 로그인 모달 -->
+  	<!-- 로그인 모달 -->
 		<hr style="margin: 0;">
 		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Login</h5>
+						<h5 class="modal-title" id="exampleModalLabel">로그인</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -116,25 +117,25 @@
 					<div class="modal-body">
 						<form class="" action="login.do" method="post">
 							<div class="form-group">
-								<label for="email">Email address</label>
+								<label for="email">이메일</label>
 								<input type="email" class="form-control" name="email" id="email" placeholder="email@address.com">
 							</div>
 							<div class="form-group">
-								<label for="pwd">Password</label>
+								<label for="pwd">비밀번호</label>
 								<input type="password" class="form-control" name="pwd" id="pwd" placeholder="Password">
 							</div>
 							<div class="form-group">
 								<div class="form-check">
 									<input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
 									<label class="form-check-label" for="rememberMe">
-								  		Remember me
+								  		로그인 정보 기억하기
 									</label>
 								</div>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-								<button type="submit" id="btn-sign-in" class="btn" style="background:purple; color:white;">Sign in</button>
-								<button type="button" class="btn btn-default" id="myBtn"  style="background:#ff79fb; color:white; width:60px;" onclick="location.href='insertFormMember.do';">Join</button>
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+								<button type="submit" id="btn-sign-in" class="btn" style="background:purple; color:white;">로그인</button>
+								<button type="button" class="btn btn-default" id="myBtn"  style="background:#ff79fb; color:white;" onclick="location.href='insertFormMember.do';">가입하기</button>
 							</div>
 						</form>
 					</div>

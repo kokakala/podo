@@ -6,10 +6,21 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	#privacy-div{
+		width: 900px;
+		margin-right: auto;
+		margin-left: auto;
+	}
+</style>
 </head>
 <body>
 
 	<jsp:include page="../common/header.jsp"/>
+	
+	<div id="privacy-div">
+	
+	<br>
 
 	<h1>
 		<p style="text-align: center; text-decoration: underline">개인정보
@@ -131,6 +142,9 @@
 
 
 	<p>본 방침은 2019년 12월 1일부터 적용됩니다.</p>
+	
+	
+	</div>
 	
 	<jsp:include page="../common/footer.jsp"/>
 

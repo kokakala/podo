@@ -9,20 +9,17 @@
 <script type="text/javascript" src="resources/js/jquery-3.4.1.min.js"></script>
 <style>
 	.faq{
-		width: 700px;
-		margin-left: 500px;
-		display: inline-block;
-		text-align: center;
+		width: 900px;
+		margin-right: auto;
+		margin-left: auto;
 	}
 	.faq-q{
-		background: lightgray;
 		cursor: pointer;
+		background: gray;
 		font-size: 17px;
 	}
 	.contents{
 		display: none;
-		background: gray;
-		color: white;
 		font-size: 15px;
 	}
 	.moreBtn{
@@ -53,7 +50,7 @@
 		<br>
 		
 		<div class="faq-q">Q. 영화 평가와 리뷰 작성은 어디서 할 수 있나요?</div>
-		<p class="contents">A. 2</p>
+		<p class="contents">A. </p>
 		
 		<br>
 		

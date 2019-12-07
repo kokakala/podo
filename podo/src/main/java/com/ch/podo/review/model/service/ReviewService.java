@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.comment.model.vo.Comment;
 import com.ch.podo.film.model.vo.Film;
+import com.ch.podo.like.model.vo.Like;
 import com.ch.podo.member.model.vo.Member;
 import com.ch.podo.report.model.vo.Report;
 import com.ch.podo.review.model.dto.Review;
@@ -81,4 +82,11 @@ public interface ReviewService {
 	
 	// 댓글 삭제
 	int deleteReviewComment(int id);
+	
+	// 좋아요 관련 체크
+	ArrayList<Like> checkLike(Member m);
+	// 댓글 갯수 가져오기
+	int getCommentCount();
+	
+	// 
 }

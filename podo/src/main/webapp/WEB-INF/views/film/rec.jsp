@@ -103,138 +103,147 @@
     </c:if>
     <!--================Advertisement end =================-->
 		
-		<section class="blog-post-area section-margin">
-			<div class="container">
-			
-	<%-- 				<c:set var="count" value="${ fn:length(list) }" /> --%>
-					<c:choose>
-						<c:when test="${ empty loginUser }">
-							<div class="row">
-								<div class="container">
-								  <div class="row justify-content-md-center">
-								  	<a id="rec-login-modal" class="button" href="#" data-toggle="modal">로그인</a>
-								  </div>
-								</div>
+		<div class="container">
+		
+<%-- 				<c:set var="count" value="${ fn:length(list) }" /> --%>
+				<c:choose>
+					<c:when test="${ empty loginUser }">
+						<div class="row">
+							<div class="container">
+							  <div class="row justify-content-md-center">
+							  	<a id="rec-login-modal" class="button" href="#" data-toggle="modal">로그인</a>
+							  </div>
 							</div>
-						</c:when>
-						<c:when test="${ not empty loginUser and not empty genre1 and count ge 10 }">
-							<h1>${ genre1.get(0).genre }</h1>
-					    <section>
-					      <div class="container">
-					        <div class="owl-carousel owl-theme blog-slider">
-					      		<c:forEach items="${ genre1 }" var="f">
-						      	<!--================ Blog slider start =================-->
-						        	
-						          <div class="card blog__slide text-center">
-						            <div class="blog__slide__img" onclick="location.href='detailFilm.do?filmId=${ f.id }'">
-						            	<c:choose>
-						            		<c:when test="${ not empty f.poster }">
-								              <img class="card-img rounded-0" src="resources/detailFilmImage/${ f.poster }" alt="">
-						            		</c:when>
-						            		<c:otherwise>
-								              <img class="card-img rounded-0" src="resources/detailFilmImage/podoposter.jpg" alt="">
-						            		</c:otherwise>
-						            	</c:choose>
-						            </div>
-						            <div class="blog__slide__content">
-						              <a class="blog__slide__label" href="detailFilm.do?filmId=${ f.id }">${ f.avgStarRating }</a>
-						              <h3><a href="detailFilm.do?filmId=${ f.id }">${ f.titleKor }</a></h3>
-						              <p>${ f.releaseYear }</p>
-						            </div>
-						          </div>
-					          	
-								    <!--================ Blog slider end =================-->
-					     			</c:forEach>
-					        </div>
-					      </div>
-		   	  		</section>
-							<h1>${ genre2.get(0).genre }</h1>
-					    <section>
-					      <div class="container">
-					        <div class="owl-carousel owl-theme blog-slider">
-					      		<c:forEach items="${ genre2 }" var="f">
-						      	<!--================ Blog slider start =================-->
-						        	
-						          <div class="card blog__slide text-center">
-						            <div class="blog__slide__img" onclick="location.href='detailFilm.do?filmId=${ f.id }'">
-						            	<c:choose>
-						            		<c:when test="${ not empty f.poster }">
-								              <img class="card-img rounded-0" src="resources/detailFilmImage/${ f.poster }" alt="">
-						            		</c:when>
-						            		<c:otherwise>
-								              <img class="card-img rounded-0" src="resources/detailFilmImage/podoposter.jpg" alt="">
-						            		</c:otherwise>
-						            	</c:choose>
-						            </div>
-						            <div class="blog__slide__content">
-						              <a class="blog__slide__label" href="detailFilm.do?filmId=${ f.id }">${ f.avgStarRating }</a>
-						              <h3><a href="detailFilm.do?filmId=${ f.id }">${ f.titleKor }</a></h3>
-						              <p>${ f.releaseYear }</p>
-						            </div>
-						          </div>
-					          	
-								    <!--================ Blog slider end =================-->
-					     			</c:forEach>
-					        </div>
-					      </div>
-		   	  		</section>
-							<h1>${ genre3.get(0).genre }</h1>
-					    <section>
-					      <div class="container">
-					        <div class="owl-carousel owl-theme blog-slider">
-					      		<c:forEach items="${ genre3 }" var="f">
-						      	<!--================ Blog slider start =================-->
-						        	
-						          <div class="card blog__slide text-center">
-						            <div class="blog__slide__img" onclick="location.href='detailFilm.do?filmId=${ f.id }'">
-						            	<c:choose>
-						            		<c:when test="${ not empty f.poster }">
-								              <img class="card-img rounded-0" src="resources/detailFilmImage/${ f.poster }" alt="">
-						            		</c:when>
-						            		<c:otherwise>
-								              <img class="card-img rounded-0" src="resources/detailFilmImage/podoposter.jpg" alt="">
-						            		</c:otherwise>
-						            	</c:choose>
-						            </div>
-						            <div class="blog__slide__content">
-						              <a class="blog__slide__label" href="detailFilm.do?filmId=${ f.id }">${ f.avgStarRating }</a>
-						              <h3><a href="detailFilm.do?filmId=${ f.id }">${ f.titleKor }</a></h3>
-						              <p>${ f.releaseYear }</p>
-						            </div>
-						          </div>
-					          	
-								    <!--================ Blog slider end =================-->
-					     			</c:forEach>
-					        </div>
-					      </div>
-		   	  		</section>
-		   	  		
-							<!-- [더보기] -->
-							<!-- 
-							<div class="row">
-								<div class="col-lg-12">
-									<nav class="blog-pagination justify-content-center d-flex">
-										<ul class="pagination">
-											<li class="page-item">
-												<a class="page-link" id="more-recommendation">더보기</a>
-											</li>
-										</ul>
-									</nav>
-								</div>
+						</div>
+					</c:when>
+					<c:when test="${ not empty loginUser and not empty genre1 and count ge 10 }">
+						<h1>${ genre1.get(0).genre }</h1>
+				    <section>
+				      <div class="container">
+				        <div class="owl-carousel owl-theme blog-slider">
+				      		<c:forEach items="${ genre1 }" var="f">
+					      	<!--================ Blog slider start =================-->
+					        	
+					          <div class="card blog__slide text-center">
+					            <div class="blog__slide__img" onclick="location.href='detailFilm.do?filmId=${ f.id }'">
+					            	<c:choose>
+					            		<c:when test="${ not empty f.poster }">
+							              <img class="card-img rounded-0" src="resources/detailFilmImage/${ f.poster }" alt="">
+					            		</c:when>
+					            		<c:otherwise>
+							              <img class="card-img rounded-0" src="resources/detailFilmImage/podoposter.jpg" alt="">
+					            		</c:otherwise>
+					            	</c:choose>
+					            </div>
+					            <div class="blog__slide__content">
+					              <a class="blog__slide__label" href="detailFilm.do?filmId=${ f.id }">${ f.avgStarRating }</a>
+					              <h3><a href="detailFilm.do?filmId=${ f.id }">${ f.titleKor }</a></h3>
+					              <p>${ f.releaseYear }</p>
+					            </div>
+					          </div>
+				          	
+							    <!--================ Blog slider end =================-->
+				     			</c:forEach>
+				        </div>
+				      </div>
+	   	  		</section>
+						<h1>${ genre2.get(0).genre }</h1>
+				    <section>
+				      <div class="container">
+				        <div class="owl-carousel owl-theme blog-slider">
+				      		<c:forEach items="${ genre2 }" var="f">
+					      	<!--================ Blog slider start =================-->
+					        	
+					          <div class="card blog__slide text-center">
+					            <div class="blog__slide__img" onclick="location.href='detailFilm.do?filmId=${ f.id }'">
+					            	<c:choose>
+					            		<c:when test="${ not empty f.poster }">
+							              <img class="card-img rounded-0" src="resources/detailFilmImage/${ f.poster }" alt="">
+					            		</c:when>
+					            		<c:otherwise>
+							              <img class="card-img rounded-0" src="resources/detailFilmImage/podoposter.jpg" alt="">
+					            		</c:otherwise>
+					            	</c:choose>
+					            </div>
+					            <div class="blog__slide__content">
+					              <a class="blog__slide__label" href="detailFilm.do?filmId=${ f.id }">${ f.avgStarRating }</a>
+					              <h3><a href="detailFilm.do?filmId=${ f.id }">${ f.titleKor }</a></h3>
+					              <p>${ f.releaseYear }</p>
+					            </div>
+					          </div>
+				          	
+							    <!--================ Blog slider end =================-->
+				     			</c:forEach>
+				        </div>
+				      </div>
+	   	  		</section>
+						<h1>${ genre3.get(0).genre }</h1>
+				    <section>
+				      <div class="container">
+				        <div class="owl-carousel owl-theme blog-slider">
+				      		<c:forEach items="${ genre3 }" var="f">
+					      	<!--================ Blog slider start =================-->
+					        	
+					          <div class="card blog__slide text-center">
+					            <div class="blog__slide__img" onclick="location.href='detailFilm.do?filmId=${ f.id }'">
+					            	<c:choose>
+					            		<c:when test="${ not empty f.poster }">
+							              <img class="card-img rounded-0" src="resources/detailFilmImage/${ f.poster }" alt="">
+					            		</c:when>
+					            		<c:otherwise>
+							              <img class="card-img rounded-0" src="resources/detailFilmImage/podoposter.jpg" alt="">
+					            		</c:otherwise>
+					            	</c:choose>
+					            </div>
+					            <div class="blog__slide__content">
+					              <a class="blog__slide__label" href="detailFilm.do?filmId=${ f.id }">${ f.avgStarRating }</a>
+					              <h3><a href="detailFilm.do?filmId=${ f.id }">${ f.titleKor }</a></h3>
+					              <p>${ f.releaseYear }</p>
+					            </div>
+					          </div>
+				          	
+							    <!--================ Blog slider end =================-->
+				     			</c:forEach>
+				        </div>
+				      </div>
+	   	  		</section>
+	   	  		
+						<!-- [더보기] -->
+						<!-- 
+						<div class="row">
+							<div class="col-lg-12">
+								<nav class="blog-pagination justify-content-center d-flex">
+									<ul class="pagination">
+										<li class="page-item">
+											<a class="page-link" id="more-recommendation">더보기</a>
+										</li>
+									</ul>
+								</nav>
 							</div>
-							 -->
-						</c:when>
-						<c:otherwise>
-							<h2 style="text-align: center; background-color: #bf9dc3;">10개 이상의 영화를 좋아해주세요!</h2>
-						</c:otherwise>
-					</c:choose>
-			</div>
-		</section>
+						</div>
+						 -->
+					</c:when>
+					<c:otherwise>
+						<blockquote class="blockquote text-center my-5">
+						  <p class="mb-0">
+							  <mark style="background-color:#7768b2;color:#d4d4d4;">10개 이상</mark> 의 영화를 좋아해주세요.
+							  <mark style="background-color:#7768b2;color:#d4d4d4;">"좋아요"</mark> 이력을 기반으로 추천해드립니다.
+						  </p>
+						  <footer class="blockquote-footer">
+						  	추천 목록을 불러올 수 없습니다!
+						  </footer>
+						</blockquote>
+					  <div class="row justify-content-md-center">
+					  	<a class="button" href="film.do">영화 페이지로</a>
+					  </div>
+					</c:otherwise>
+				</c:choose>
+		</div>
 	
 		<jsp:include page="../common/footer.jsp" />
 		
 		<script>
-		
+			
 			$(function(){
 				$(".nav").children("li").eq(2).addClass("active");
 			});

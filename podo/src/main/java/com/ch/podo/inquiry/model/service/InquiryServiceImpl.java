@@ -34,4 +34,10 @@ public class InquiryServiceImpl implements InquiryService{
 	public int dbInquiryInsert(String content, String userId) {
 		return inquiryDao.dbInquiryInsert(content, userId);
 	}
+
+	@Override
+	public ArrayList<Inquiry> selectInquiryList() {
+		return inquiryDao.selectInquiryList();
+	}
+
 }

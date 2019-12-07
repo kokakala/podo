@@ -74,8 +74,12 @@
 			<button type="submit" class="btn btn-lg btn-primary">작성하기</button>
 		</div>
 	</form>
+	
+	
 	<div id="summernote">
 	</div>
+	
+	
     <script>
       $('#summernote').summernote({
         placeholder: 'Hello stand alone ui',
@@ -86,10 +90,6 @@
 	
 	
 	<jsp:include page="../common/footer.jsp"/>
-	
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
 	
 </body>
 </html>

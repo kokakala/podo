@@ -22,6 +22,7 @@
       <typeAlias type="com.ch.podo.detailFilm.model.vo.Actor" alias="Actor"/>
       <typeAlias type="com.ch.podo.inquiry.model.vo.Inquiry" alias="Inquiry"/>
       <typeAlias type="com.ch.podo.comment.model.vo.Comment" alias="Comment"/>
+      <typeAlias type="com.ch.podo.notice.model.vo.Notice" alias="Notice"/>      
    </typeAliases>
    
    <mappers>
@@ -36,6 +37,7 @@
       <mapper resource="mappers/report-mapper.xml"/>
       <mapper resource="mappers/inquiry-mapper.xml"/>
       <mapper resource="mappers/image-mapper.xml"/>
+      <mapper resource="mappers/notice-mapper.xml"/>      
    </mappers>
    
 </configuration>

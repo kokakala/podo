@@ -36,7 +36,30 @@
 		<result property="content" column="content"/>
 		<result property="titleKor" column="title_kor"/>
 		<result property="changeName" column="change_name"/>
+		<result property="rrId" column="rId"/>
 	</resultMap>
+	
+ 	<resultMap type="Like" id="manyLikeResultSet">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="targetId" column="target_id"/>
+	</resultMap>
+	
+
+	
+		<resultMap type="Film" id="manyFilmLikeResultSet">
+			<id property="id" column="id"/>
+			<result property="type" column="type"/>
+			<result property="targetId" column="target_id"/>
+			<result property="userId" column="user_id"/>
+			<result property="titleKor" column="title_kor"/>
+			<result property="titleEng" column="title_eng"/>
+		</resultMap>
+	
+	
+	
+	
+	
 
 	
 	<insert id="insertLikeFilm">
@@ -85,14 +108,14 @@
 	</select>
 	
 	<select id="myPageSelectLikeFilm" resultMap="likeFilmResultSet">
-		select l.id, type, target_id, user_id, title_kor, change_name
+		select l.id, l.type, l.target_id, l.user_id, f.title_kor, b.change_name
 		from tb_like l
 		join tb_film f on(l.target_id = f.id)  
-		left join (select film_id, change_name
+		left join (select df.film_id, fi.change_name
 		            from tb_detail_film df
 		            join tb_film_image fi on(df.id = fi.dfilm_id))b on(b.film_id = f.id)
-		where type=1 and
-		      user_id=#{id}    
+		where l.type=1 and
+		      l.user_id=#{id}   
 	</select>
 	
 	<select id="myPageLikeUserListCount" resultType="_int">
@@ -118,12 +141,13 @@
 	</select>
 	
 	<select id="myPageSelectLikeReview" resultMap="likeReviewResultSet">
-		select l.*, r.content, f.title_kor, change_name
+		select l.*, r.content, f.title_kor, change_name, rr.id as rId
 		from tb_like l
 		join tb_review r on(r.id = l.target_id)
 		join tb_film f on(r.film_id = f.id)
 		join tb_detail_film df on(f.id = df.film_id)
 		join tb_film_image i on(df.id = i.dfilm_id)
+        join tb_rating_review rr on(rr.review_id = r.id)
 		where user_id=#{id} and
 		      l.type=3
 	</select>
@@ -135,9 +159,23 @@
 	
 	<delete id="deleteLikeReview">
 		delete from tb_like
-		where user_id = #{userId} and
-			  target_id = #{targetId} and
-			  type=3
+		where user_id = #{userId}
+		  and target_id = #{targetId}
+		  and type=3
 	</delete>
+	
+	
+	<!-- 좋아요 카운트 갯수 +- -->
+	<!-- <update id="updateLikeCount">
+		update tb_review
+		set 
+		<if test='likeInp == "like"'>
+			LIKE_COUNT = LIKE_COUNT+1
+		</if>
+		<if test='likeInp == "nonlike"'>
+			LIKE_COUNT = LIKE_COUNT-1
+		</if>
+		where id = #{targetId}
+	</update> -->
 	
 </mapper>

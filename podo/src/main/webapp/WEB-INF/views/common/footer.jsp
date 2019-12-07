@@ -42,7 +42,7 @@
 			<a href="faq.do">이용가이드</a> | 
 
 			<c:if test="${!empty loginUser }">
-			<a href="#" data-toggle="modal" data-target="#db-inquiry-modal">영화 DB 제보</a>
+			<a href="#" data-toggle="modal" id="db" data-target="#db-inquiry-modal">영화 DB 제보</a>
 			</c:if>
 			<c:if test="${empty loginUser }">
 			<a  href="#" onclick="btn();">영화 DB 제보</a>
@@ -67,7 +67,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="myModalLabel">영화 DB 제보</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-lable="Close">
+					<button type="button" id="close" class="close" data-dismiss="modal" aria-lable="Close">
 					<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
@@ -80,14 +80,14 @@
 					</div>
 					<div class="form-group">
 						<label for="db-inquiry-content">내용</label>
-						<textarea rows="10" cols="15" class="form-control" id="content" name="content"></textarea>
+						<textarea rows="10" cols="15" class="form-control" id="DBcontent" name="content"></textarea>
 					</div>
 					
 					<div class="modal-footer">
 						<div class="db-inquiry-btn">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 						&nbsp;
-						<button type="submit" class="btn" id="db-submit-btn" style="background:purple; color:white;" onclick="return validate();">보내기</button>
+						<button type="button" class="btn" id="db-submit-btn" style="background:purple; color:white;" onclick="return DBvalidate();">보내기</button>
 						</div>
 					</div>
 				</form>
@@ -97,17 +97,22 @@
 	</div>
 	
 	<script>
+	$(function(){
+		$("#db").on("click", function(){
+			$('#db-inquiry-modal').modal('toggle');
+		});
+	});
 		function btn(){
 			alert("로그인 후 DB 제보가 가능합니다.");
 		}
-		function validate(){
-			var content = $("#content").val();
+		function DBvalidate(){
+			var content = $("#DBcontent").val();
 			var userId = "${loginUser.id}";
 			
 			// 미입력
-			if($("#content").val().length == 0){	
+			if($("#DBcontent").val().length == 0){	
 				alert("내용을 입력해주세요.")
-				$("#content").focus();
+				$("#DBcontent").focus();
 				return false;
 				
 			}else{	
@@ -119,6 +124,8 @@
 					success:function(data){
 						if(data=="success"){
 							alert("DB제보 완료");
+							$('#DBcontent').val('');
+							$(".close").click();
 							
 						}else{
 							alert("DB제보 실패");

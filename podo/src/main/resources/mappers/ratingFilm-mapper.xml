@@ -23,6 +23,13 @@
 			and film_id = #{filmId}
 	</update>
 	
+	<update id="updateSameRateFilm">
+		update tb_rating_film
+		set star = null
+		where member_id = #{userId}
+			and film_id = #{filmId}
+	</update>
+	
 	<delete id="deleteRateFilm">
 		delete from tb_rating_film
 		where member_id = #{userId}

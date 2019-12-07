@@ -14,6 +14,19 @@
 		<result property="answerDate" column="answer_date"/>
 		<result property="adminId" column="admin_id"/>
 	</resultMap>
+	
+	<resultMap type="Inquiry" id="adminInquiryResultSet">
+		<id property="id" column="id"/>
+		<result property="type" column="type"/>
+		<result property="content" column="content"/>
+		<result property="createDate" column="create_date"/>
+		<result property="status" column="status"/>
+		<result property="userId" column="user_id"/>
+		<result property="answer" column="answer"/>
+		<result property="answerDate" column="answer_date"/>
+		<result property="adminId" column="admin_id"/>
+		<result property="nickname" column="nickname"/>
+	</resultMap>
 
 	<insert id="insertQuestion">
 		insert into tb_inquiry values(seq_inquery_id.nextval, 1, #{content}, sysdate, default, #{userId}, null, null, 1)
@@ -34,5 +47,14 @@
 	<insert id="dbInquiryInsert">
 		insert into tb_inquiry values(seq_inquery_id.nextval, 2, #{content}, sysdate, default, #{userId}, null, null, 1)
 	</insert>
+	
+	<!-- 관리자 문의 리스트 조회 -->
+	<select id="selectInquiryList" resultMap="adminInquiryResultSet">
+		select q.*, m.nickname
+        from tb_inquiry q
+        join tb_member m on(q.user_id = m.id)
+	</select>
+	
+	
 </mapper>
 

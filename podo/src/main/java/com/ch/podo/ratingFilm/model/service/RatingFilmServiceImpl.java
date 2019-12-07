@@ -20,8 +20,13 @@ public class RatingFilmServiceImpl implements RatingFilmService {
 	}
 
 	@Override
-	public int updateLikeFilm(RatingFilm rate) {
-		return ratingFilmDao.updateLikeFilm(rate);
+	public int updateRateFilm(RatingFilm rate) {
+		return ratingFilmDao.updateRateFilm(rate);
+	}
+
+	@Override
+	public int updateSameRateFilm(RatingFilm rate) {
+		return ratingFilmDao.updateSameRateFilm(rate);
 	}
 
 	@Override

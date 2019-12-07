@@ -125,14 +125,11 @@
     .homeReviewArea{
 		margin-left:auto;
 		margin-right:auto;
-		
-		height: 150px;
-		/* border: 1px solid blue; */
+		height: 200px;
 		width: 1150px;
 	}
     .leftImage{
-		 background:rgba(49,58,102,0.75);
-		/* border: 1px solid green; */
+		background:rgba(49,58,102,0.75);
 		width: 20%;
 		height: 100%;
 		margin-left:auto;
@@ -192,7 +189,7 @@
 	}
 	.btns{
 	 	float:left;
-		margin-left:610px;
+		margin-left:500px;
 		width:100%;
 		height: 15%;
 	}
@@ -200,6 +197,9 @@
 		border-radius: 10px;
     	border : 1px solid white;
 	}
+	.review_con{
+    	overflow:hidden;
+    }
 </style>
 <body>
 	<!-- 헤더  -->
@@ -283,26 +283,58 @@
 	    	</div>		<!-- 버튼 -->
 		        <c:forEach items="${ rl }" var="r">
 				<div class="homeReviewArea">
-					
 						<div class="leftImage">
-						<img class="userImageHome" src="resources/memberProfileImage/${ r.userImage }" height="100%" width="100%">
+						<c:if test="${ not empty r.userImage }">
+							<img class="userImageHome" src="resources/memberProfileImage/${ r.userImage }" height="100%" width="100%">
+						</c:if>
+						<c:if test="${ empty r.userImage }">
+							<img class="userImageHome" src="resources/memberProfileImage/podoImage.png" height="100%" width="100%">
+						</c:if>
 						<div class="nickNameHome">${ r.nickName }님</div>
 						<div class="starReview">★점:${ r.star }점</div>
 						<div class="countReview">추천수:${ r.likeCount }회</div>
 					</div>
 					<div class="rightContent">
-						<div class="titleKorea">${ r.titleKor }</div>
-						<div class="contentKorea"> ${ r.content }</div>
-						<div class="btns">${r.modifyDate }에
-							작성 &nbsp;<a href="">추천</a>&nbsp;<a
-								class="declaration-modal btn-reply text-uppercase" href="#"
-								data-toggle="modal">신고하기</a> &nbsp;<a href="#">댓글 0개</a>
+						<div class="titleKorea">
+			   				${ r.titleKor }
+			   				<c:if test="${loginUser.id eq r.memberId }">
+								<a href="reviewUpdateView.do?id=${r.id}" style="margin-left: 725px;">수정하기</a>
+							</c:if>
+							<c:if test="${ loginUser.id eq r.memberId }">
+								<a href="reviewDelete.do?id=${r.id}" >삭제하기</a>
+							</c:if>
+			   			</div>
+			   			
+			   			<p id="reviewContentFont" class="title">
+								<c:if test="${ r.spoilerCheck eq 'Y' }">
+									<div class="contentKorea df_r_spoContent">
+										<div class="df_r_spoilerCheck">해당 내용은 스포일러를 포함하고 있습니다.</div>
+										<div class="df_r_content">${ r.content }</div>
+									</div>
+								</c:if>
+								<c:if test="${ r.spoilerCheck eq 'N' }">
+			            			<div class="contentKorea review_con"> ${ r.content }</div>
+									
+								</c:if>
+
+							</p>
+	             		 <div class="btns">${r.modifyDate } 작성 &nbsp;
+										<c:if test="${ r.like==loginUser.id }">
+		                                	<button class='likeReviewBtn btn-danger'>LIKED</button>
+		                                	<input type="hidden" class="likeInp" value="1"/>
+		                                </c:if>
+		                                <c:if test="${ r.like!=loginUser.id }">
+		                                    <button class='likeReviewBtn btn-secondary'>LIKE</button>
+		                                   <input type="hidden" class="likeInp" value="0"/>
+		                                </c:if>
+							<a class="declaration-modal btn-reply text-uppercase" href="#" data-toggle="modal">리뷰신고하기</a>
+						<a class="declaration-modal" href="#" data-toggle="modal">신고하기</a>&nbsp;
+						<a href="ratingDetailReview.do?id=${r.id}">댓글보기</a>
 						</div>
-						</div>
-					
-				</div>
-				<br>
-			</c:forEach>
+			        </div>       
+	    </div>
+	     	<hr style="width: 600px;">
+     			</c:forEach> 
     	</div>
 	    <br>
     	</div>
@@ -348,12 +380,12 @@
         
 	</script>
 	<script>
-		$(document).ready(function(){
+	/* 	$(document).ready(function(){
 			$(".df_r_spoContent").on("click",function(){
 				$(this).children(".df_r_spoilerCheck").css("display","none");
 	        	$(this).children(".df_r_content").css("display","block");
 			});
-		});
+		}); */
     </script>
     
     <jsp:include page="../common/footer.jsp"/>

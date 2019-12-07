@@ -26,7 +26,7 @@ import com.ch.podo.common.Pagination;
 import com.ch.podo.common.PodoRenamePolicy;
 import com.ch.podo.common.SearchCondition;
 import com.ch.podo.detailFilm.model.vo.DetailFilm;
-import com.ch.podo.film.model.service.FilmService; 
+import com.ch.podo.film.model.service.FilmService;
 import com.ch.podo.film.model.vo.Film;
 import com.ch.podo.film.model.vo.Genre;
 import com.ch.podo.image.model.vo.Image;
@@ -166,7 +166,7 @@ public class FilmController {
 		if (loginUser != null) {
 			sc.setUserId(loginUser.getId());
 		}
-		log.info("sc : " + sc);
+		// log.info("sc : " + sc);
 		
 		// 필터 목록 조회
 		ArrayList<String> release = filmService.selectAllReleaseYearList();
@@ -174,7 +174,7 @@ public class FilmController {
 		ArrayList<Genre> genre = filmService.selectAllGenreList();
 		
 		int listCount = filmService.selectFilterFilmListCount(sc);
-		log.info("listCount : " + listCount);
+		// log.info("listCount : " + listCount);
 		
 		// page는 최대 3페이지, board는 최대 12개 보여지도록 set
 		PageInfo pi = Pagination.setPageLimit(currentPage, listCount, 5, 12);
@@ -185,12 +185,12 @@ public class FilmController {
 		 	    && (sc.getSaw() == null || sc.getSaw().equals("all"))
 		 	    && (sc.getOrder() == null || sc.getOrder().equals("all")))) {
 			pi = Pagination.setNewPageLimit(currentPage, listCount, pi);
-			// logger.info("new pi : " + pi);
+			// log.info("new pi : " + pi);
 		}
 		// 옵션으로 검색된 영화 목록
 		ArrayList<Film> filmList = filmService.selectFilterFilmList(sc, pi);
-		// logger.info("filmList : " + filmList);
-		// logger.info("filmList.size() : " + filmList.size());
+		// log.info("filmList : " + filmList);
+		// log.info("filmList.size() : " + filmList.size());
 		
 		// 사용자가 좋아요한 영화 목록
 		HashMap<Integer, Like> likeMap = new HashMap<>();
@@ -203,7 +203,7 @@ public class FilmController {
 		if (loginUser != null) {
 			ratingMap = (HashMap<Integer, RatingFilm>)ratingFilmService.selectRatedFilm(loginUser.getId());
 		}
-		// logger.info("ratingMap : " + ratingMap);
+		// log.info("ratingMap : " + ratingMap);
 		
 		mv.addObject("release", release)
 			.addObject("country", country)
@@ -234,13 +234,13 @@ public class FilmController {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
-		// logger.info("film : " + film);
+		// log.info("film : " + film);
 		
 		// 옵션으로 검색된 영화 목록
 		// ArrayList<Film> filmList = filmService.selectFilterFilmList(film);
 		// map.put("film", filmList);
 		
-		// logger.info("filmList : " + filmList);
+		// log.info("filmList : " + filmList);
 		
 		// 사용자가 좋아요한 영화 목록
 		HashMap<Integer, Like> likeMap = new HashMap<>();
@@ -278,7 +278,7 @@ public class FilmController {
 											 String fid, @RequestParam("flag") int flag)
 			throws JsonIOException, IOException {
 		Member loginUser = (Member)session.getAttribute("loginUser");
-		log.info("loginUser : " + loginUser);
+		// log.info("loginUser : " + loginUser);
 		
 		if (loginUser == null) {
 			return 0;
@@ -289,10 +289,10 @@ public class FilmController {
 		like.setUserId(loginUser.getId());
 		
 		if (flag > 0) {
-			log.info("like insert 실행");
+			// log.info("like insert 실행");
 			return likeService.insertLikeFilm(like);
 		} else {
-			log.info("like delete 실행");
+			// log.info("like delete 실행");
 			return likeService.deleteLikeFilm(like);
 		}
 		
@@ -323,12 +323,12 @@ public class FilmController {
 		RatingFilm rate = new RatingFilm();
 		rate.setFilmId(Integer.parseInt(fid));
 		rate.setUserId(loginUser.getId());
-		
+
 		if (flag > 0) {
-			log.info("saw insert 실행");
+			// log.info("saw insert 실행");
 			return ratingFilmService.insertSawFilm(rate);
 		} else {
-			log.info("saw delete 실행");
+			// log.info("saw delete 실행");
 			return ratingFilmService.deleteSawFilm(rate);
 		}
 		
@@ -356,21 +356,24 @@ public class FilmController {
 		rate.setFilmId(Integer.parseInt(fid));
 		
 		RatingFilm flag = ratingFilmService.selectRatingFilm(rate);
-
-		// 이미 기존에 있는 별점을 다시 눌렀을 경우 취소되면서 삭제
-		if (flag != null && Integer.parseInt(star) == flag.getStar()) {
-			log.info("rate delete 실행");
-			return ratingFilmService.deleteRateFilm(rate);
-		} else {
-			// 기존에 별점이 없다면 삽입
-			if (flag == null) {
-				log.info("rate insert 실행");
-				return ratingFilmService.insertRateFilm(rate);
-			// 이미 기존에 별점이 있다면 수정
+		
+		// 이미 기존에 있는 별점을 다시 눌렀을 경우 취소되면서 update
+		// (insert할때 saw가 'Y'가 되기 때문에 별점을 지운다고 삭제하진 않음)
+		if (flag == null) {
+			// log.info("rate insert 실행");
+			return ratingFilmService.insertRateFilm(rate);
+		// 이미 기존에 별점이 있다면 수정
+		} else if (flag.getStar() == Integer.parseInt(star)) {
+			// log.info("rate same update 실행");
+			int result = ratingFilmService.updateSameRateFilm(rate);
+			if (result > 0) {
+				return 414;
 			} else {
-				log.info("rate update실행");
-				return ratingFilmService.updateLikeFilm(rate);
+				return 0;
 			}
+		} else {
+			// log.info("rate update실행");
+			return ratingFilmService.updateRateFilm(rate);
 		}
 		
 	}
@@ -401,8 +404,8 @@ public class FilmController {
 			liked = filmService.selectLikedFilmCount(loginUser.getId());
 		}
 		
-		// logger.info("list : " + list);
-		// logger.info("liked : " + liked);
+		// log.info("list : " + list);
+		// log.info("liked : " + liked);
 		
 		// 좋아요 누른 영화가 10개 미만일 경우 count만 넘겨줌
 		if (liked < 10) {
@@ -529,20 +532,20 @@ public class FilmController {
 	public ModelAndView finsert(ModelAndView mv, Film film, DetailFilm df, Image img,
 															HttpServletRequest request, HttpSession session,
 															@RequestParam(value = "uploadFile", required = false) MultipartFile file) {
-		// logger.info("film : " + film);
-		// logger.info("file : " + file);
+		// log.info("film : " + film);
+		// log.info("file : " + file);
 		
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		
 		if (!file.getOriginalFilename().equals("")) {
 			String renameFileName = PodoRenamePolicy.rename(file, request, "/detailFilmImage");
 			img.setChangeName(renameFileName);
-			log.info("renameFileName : " + renameFileName);
+			// log.info("renameFileName : " + renameFileName);
 		}
-		// logger.info("img : " + img);
+		// log.info("img : " + img);
 		
 		int result = filmService.insertFilm(film, loginUser.getId(), img);
-		// logger.info("result : " + result);
+		// log.info("result : " + result);
 		
 		if (result > 0) {
 			mv.setViewName("redirect:flist.do");
@@ -552,5 +555,23 @@ public class FilmController {
 		
 		return mv;
 	}
+	
+	
+	// 관리자 메인 별점 top3 영화
+	@RequestMapping("manyStar.do")
+	public ModelAndView starTop3(ModelAndView mv) {
+		
+		ArrayList<Film> list = filmService.manyStar();
+		
+		// System.out.println(list);
+		
+		mv.addObject("list", list).setViewName("admin/admin");
+		
+		return mv;
+	}
+	 
+	
+	
+	
 	
 }

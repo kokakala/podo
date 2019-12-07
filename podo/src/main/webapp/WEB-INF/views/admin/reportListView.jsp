@@ -72,7 +72,7 @@
     <!-- Sidebar 메뉴바 -->
     <ul class="sidebar navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="admin.do">
+        <a class="nav-link" href="manyStar.do">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>AdminPage</span>
         </a>
@@ -110,12 +110,12 @@
           <span>리뷰관리</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="blist.do">
           <ion-icon name="done-all"></ion-icon>
           <span>공지사항</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="inquiryList.do">
           <ion-icon name="help-circle"></ion-icon>
           <span>문의사항</span></a>
       </li>
@@ -196,7 +196,7 @@
         <div class="modal-body">관리자 페이지를 종료하시려면 아래 Logout을 선택하십시오.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="home.do">Logout</a>
+          <a class="btn btn-primary" href="logout.do">Logout</a>
         </div>
       </div>
     </div>

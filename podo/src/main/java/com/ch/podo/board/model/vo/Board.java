@@ -26,12 +26,7 @@ public class Board {
    private Date createDate; 		// 최초 작성일
    private String status; 			// 상태
    private int memberId; 			// 작성자
-   private int imageId; 			// 이미지 번호
+   private String imageName;		// 변경된 이미지 파일명
    private String nickName;			// 사용자 닉네임
-   
-   private String path;
-   private String originalName; 	// 원본 파일명
-   private String changeName; 		// 수정된 파일명
-   
 
 }

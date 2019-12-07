@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.comment.model.vo.Comment;
-import com.ch.podo.detailFilm.model.vo.DetailFilm;
 import com.ch.podo.film.model.vo.Film;
+import com.ch.podo.like.model.vo.Like;
 import com.ch.podo.member.model.vo.Member;
 import com.ch.podo.report.model.vo.Report;
 import com.ch.podo.review.model.dto.Review;
@@ -163,6 +163,11 @@ public class ReviewDao {
 	}
 
 
+	public ArrayList<Like> checkLike(Member m) {
+		return (ArrayList)sqlSession.selectList("reviewMapper.checkLike",m);
+	}
+
+
 
 	/*
 	public Review selectReview() {
@@ -174,7 +179,15 @@ public class ReviewDao {
 	}*/
 
 
-	
+	public int updateReviewCount(Report rep) {
+		return sqlSession.update("reviewMapper.updateReviewCount", rep);
+	}
+
+
+	public int getCommentCount() {
+		
+		return sqlSession.selectOne("reviewMapper.getCommentCount");
+	}
 	
 	
 }

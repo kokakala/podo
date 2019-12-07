@@ -13,6 +13,7 @@ import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.comment.model.vo.Comment;
 import com.ch.podo.image.model.vo.Image;
 import com.ch.podo.member.model.vo.Member;
+import com.ch.podo.report.model.vo.Report;
 
 @Repository("boardDao")
 public class BoardDao {
@@ -27,26 +28,15 @@ public class BoardDao {
 	
 	
 	public ArrayList<Board> selectBoardList(PageInfo pi){
-		
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		
 		ArrayList<Board> list = (ArrayList)sqlSession.selectList("boardMapper.selectBoardList", null, rowBounds);
-		
 		return list;		
-		
 	}
 	
-	
-	public int insertBoard(Board b) {
-		return sqlSession.insert("boardMapper.insertBoard", b);
+	public int insertBoard(Board board) {
+		return sqlSession.insert("boardMapper.insertBoard", board);
 	}
-	
-	
-	public int insertBoardFile(Image i) {		
-		return sqlSession.insert("boardMapper.insertBoardFile", i);
-	}
-	
 	
 	public int updateCount(int id) {
 		return sqlSession.update("boardMapper.updateCount", id);
@@ -80,7 +70,6 @@ public class BoardDao {
 	
 	// 댓글
 	public ArrayList<Comment> selectCommentList(int id){
-		
 		return (ArrayList)sqlSession.selectList("boardMapper.selectCommentList", id);
 	}
 	
@@ -90,6 +79,22 @@ public class BoardDao {
 	}
 	
 	
+	public int updateComment(int id, String content) {
+		HashMap map = new HashMap<>();
+		map.put("id", id);
+		map.put("content", content);
+		
+		
+		return sqlSession.update("boardMapper.updateComment", map);
+	}
+	
+	
+	public int deleteComment(int id) {
+		return sqlSession.update("boardMapper.deleteComment", id);
+	}
+	
+	
+	
 	public ArrayList<Board> selectboardListHome() {
 		
 		ArrayList<Board> list = (ArrayList)sqlSession.selectList("boardMapper.selectboardListHome");
@@ -97,6 +102,10 @@ public class BoardDao {
 		return list;
 	}
 	
+	
+	public int insertInappro(Report r) {
+		return sqlSession.insert("boardMapper.insertInappro", r);
+	}
 	
 	
 	

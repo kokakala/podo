@@ -110,5 +110,9 @@ public class FilmDao {
 	public int insertFilmImage(Image img) {
 		return sqlSession.insert("filmMapper.insertFilmImage", img);
 	}
+	
+	public ArrayList<Film> manyStar(){
+		return (ArrayList)sqlSession.selectList("filmMapper.manyStar");
+	}
 
 }

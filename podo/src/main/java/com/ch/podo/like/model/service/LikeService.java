@@ -50,5 +50,6 @@ public interface LikeService {
 	
 	// 리뷰 좋아요 취소
 	int deleteLikeReview(Like like);
+
 	
 }

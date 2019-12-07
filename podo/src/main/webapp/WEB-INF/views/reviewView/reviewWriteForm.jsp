@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<jsp:include page="../common/header.jsp"/>
 <meta charset="UTF-8">
   <link rel="icon" href="img/Fevicon.png" type="image/png">
 
@@ -21,7 +22,7 @@
   <script src="js/jquery.ajaxchimp.min.js"></script>
   <script src="js/mail-script.js"></script>
   <script src="js/main.js"></script>
-<title>Insert title here</title>
+<title>리뷰 글쓰기 페이지</title>
 <style>
 	body{
 		width: 100%;
@@ -58,7 +59,6 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../common/header.jsp"/>
 	<div id="body">
 		<h1 align="center">리뷰 글쓰기 페이지</h1>
 		
@@ -80,15 +80,15 @@
                    <%--       <p>${ r.createDate }에 작성</p> --%>
                       </div>
                       <div class="d-flex">
-                        <img width="42" height="42" src="resources/memberProfileImage/${ loginUser.image }1.jpg" alt="">
+                        <img width="42" height="42" src="resources/memberProfileImage/${ loginUser.image }" alt="">
                       </div>
                     </div>
                   	</div>
                   <div class="float-right mt-sm-0 mt-3">
                     <div class="media">
                       <div class="media-body">
-                        <h5>${m.nickName }</h5>
-                        <p>여기가 별점남기는곳입니다!!</p>
+                        <h5>청포도</h5>
+                        <p>여기가 글쓰는곳입니다!!</p>
                       </div>
                       <div class="d-flex">
                 
@@ -123,8 +123,9 @@
             pointBorderBackgroundColor:"#fff",
 
                data: [
-            	   ${r.ratingSound},${r.ratingVisual},${r.ratingActing},${r.ratingPop},${r.ratingScript},${r.ratingDirect}
+            	   ${rr.ratingSound},${rr.ratingVisual},${rr.ratingActing},${rr.ratingPop},${rr.ratingScript},${rr.ratingDirect}
             	   ]
+           			
     
            }]
        },
@@ -157,7 +158,7 @@
     <form action="reviewWrite.do" method="get" id="movieform">
       <input type="hidden" value="${f.id}" name="filmId">
       <input type="hidden" value="${loginUser.id}" name="memberId">
-      <input type="checkbox" name="spoilerCheck" value="0">스포일러 유무
+      <input type="checkbox" value="0" name="spoilerCheck">스포일러 유무
      
       
       <table align="center" id="vv">
@@ -167,31 +168,31 @@
          </tr>
          <tr>
             <td>음악</td>
-            <td><input type="number" name="ratingSound" class="insertRating" id="ratingSound" placeholder="10점까지 입력가능"  min="0" max="10" value=""></td>
+            <td><input type="number" name="ratingSound" class="form-control insertRating" id="ratingSound" placeholder="10점까지 입력가능"  min="0" max="10" value=""></td>
          </tr>
          <tr>   
             <td>영상</td>
-            <td><input type="number" name="ratingVisual" class="insertRating" id="ratingVisual" placeholder="10점까지 입력가능"  min="0" max="10"  value=""></td>
+            <td><input type="number" name="ratingVisual" class="form-control insertRating" id="ratingVisual" placeholder="10점까지 입력가능"  min="0" max="10" ></td>
          </tr>
          <tr>
             <td>연기</td>
-            <td><input type="number" name="ratingActing" class="insertRating" id="ratingActing" placeholder="10점까지 입력가능"  min="0" max="10" value="" ></td>
+            <td><input type="number" name="ratingActing" class="form-control insertRating" id="ratingActing" placeholder="10점까지 입력가능"  min="0" max="10" ></td>
          </tr>
          <tr>
             <td>대중성</td>
-            <td><input type="number" name="ratingPop" class="insertRating" id="ratingPop" placeholder="10점까지 입력가능"  min="0" max="10" value=""></td>
+            <td><input type="number" name="ratingPop" class="form-control insertRating" id="ratingPop" placeholder="10점까지 입력가능"  min="0" max="10"></td>
          </tr>
          <tr>
             <td>각본</td>
-            <td><input type="number" name="ratingScript" class="insertRating" id="ratingScript" placeholder="10점까지 입력가능"  min="0" max="10" value="" ></td>
+            <td><input type="number" name="ratingScript" class="form-control insertRating" id="ratingScript" placeholder="10점까지 입력가능"  min="0" max="10"></td>
          </tr>
          <tr>
             <td>연출</td>
-            <td><input type="number" name="ratingDirect" class="insertRating" id="ratingDirect" placeholder="10점까지 입력가능"  min="0" max="10" value=""></td>
+            <td><input type="number" name="ratingDirect" class="form-control insertRating" id="ratingDirect" placeholder="10점까지 입력가능"  min="0" max="10"></td>
          </tr>
          <tr>
          	<td>내용</td>
-         	<td><textarea rows="4" cols="22" name="content"></textarea></td>
+         	<td><textarea class="form-control" rows="4" cols="22" name="content"></textarea></td>
          </tr>
          <tr>
              <td colspan="2" align="center">
@@ -210,75 +211,53 @@
 
 
    <script>
-   // 체크박스 유무
-    $(function(){
-	    
-	 /* $("#spoiler").click(":checked", function(){
-   		console.log(${spoilerCheck})*/
-		 
-		/*   spoiler = $("#spoiler").val();
-		  if(spoiler == 0){
-			  $("#spoiler").attr("value","1"); 	
-			
-		  }else{
-			  $("#spoiler").attr("value","0"); 
-			  
-		  } */
-		 
-		
-		 
-	  });
-   }); 
-   
+ 
+     
+    
+   $('.insertRating').on('input',function(){
+       var ctx = document.getElementById('myChart');
+       var chart = new Chart(ctx, {
+           // The type of chart we want to create
+           type: 'radar',
 
+           // The data for our dataset
+           data: {
+               labels: ["음악", "영상", "연기", "대중성", "각본","연출"],
+               datasets: [{
+              	 label: ["${ rr.titleKor }"], 
+                   backgroundColor: "rgb(165,102,255)",
+                   pointBackground:"rgba(179,181,198,1)",
+                   pointBorderColor:"#fff",
+                   pointBorderBackgroundColor:"#fff", 
+           
+                  data: [$('#ratingSound').val(),$('#ratingVisual').val(),$('#ratingActing').val(),$('#ratingPop').val(),$('#ratingScript').val(),$('#ratingDirect').val()]
+ 
+             }]
+           },
 
-   
-   
-   
-      $('.insertRating').on('input',function(){
-         var ctx = document.getElementById('myChart');
-         var chart = new Chart(ctx, {
-             // The type of chart we want to create
-             type: 'radar',
-
-             // The data for our dataset
-             data: {
-                 labels: ["음악", "영상", "연기", "대중성", "각본","연출"],
-                 datasets: [{
-                	 label: ["${f.titleKor} "], 
-                     backgroundColor: "rgb(165,102,255)",
-                     pointBackground:"rgba(179,181,198,1)",
-                     pointBorderColor:"#fff",
-                     pointBorderBackgroundColor:"#fff", 
-             
-                    data: [$('#ratingSound').val(),$('#ratingVisual').val(),$('#ratingActing').val(),$('#ratingPop').val(),$('#ratingScript').val(),$('#ratingDirect').val()]
-   
-               }]
-             },
-
-             // Configuration options go here
-             options: {
-                 
-                 scale: {
-                      angleLines: {
-                          display: false
-                      },
-                      ticks: {
-                          suggestedMin: 0,
-                          suggestedMax: 10,
-                      }
-                  },
-                  tooltips:{
-                     callbacks: {
-                          label: function(tooltipItem, data) {
-                              
-                              return data.labels[tooltipItem.index]  + " : "+ Math.round(tooltipItem.yLabel * 100) / 100 +"점";
-                          }
-                      }
-                  }
-              }
-          });
-   })
+           // Configuration options go here
+           options: {
+               
+               scale: {
+                    angleLines: {
+                        display: false
+                    },
+                    ticks: {
+                        suggestedMin: 0,
+                        suggestedMax: 10,
+                    }
+                },
+                tooltips:{
+                   callbacks: {
+                        label: function(tooltipItem, data) {
+                            
+                            return data.labels[tooltipItem.index]  + " : "+ Math.round(tooltipItem.yLabel * 100) / 100 +"점";
+                        }
+                    }
+                }
+            }
+        });
+ })
  
 
    </script>

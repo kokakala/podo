@@ -102,6 +102,7 @@
 		where target_id = #{bid}
 	</select>
 	
+	
 	<!-- 신고회원 블랙리스트로 추가 -->
 	<insert id="insertBlackList">
 		insert into tb_black_member values(seq_black_id.nextval, SYSTIMESTAMP, #{item})
@@ -122,6 +123,12 @@
 		update tb_member
 		set premium = 'Y'
 		where id = #{memberId}
+	</update>
+	
+	<update id="exit">
+		update tb_member
+		set status = 'N'
+		where id = #{id}
 	</update>
 	
 </mapper>

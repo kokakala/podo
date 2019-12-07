@@ -10,7 +10,7 @@ public interface RatingFilmService {
 	int insertRateFilm(RatingFilm rate);
 	
 	// 2. 영화 별점 평가 수정 서비스
-	int updateLikeFilm(RatingFilm rate);
+	int updateRateFilm(RatingFilm rate);
 	
 	// 3. 영화 별점 평가 삭제 서비스
 	int deleteRateFilm(RatingFilm rate);
@@ -27,4 +27,7 @@ public interface RatingFilmService {
 	// 7. 영화 봤어요 취소 서비스
 	int deleteSawFilm(RatingFilm rate);
 	
+	// 8. 같은 별점일 경우 star를 null로 초기화
+	int updateSameRateFilm(RatingFilm rate);
+
 }

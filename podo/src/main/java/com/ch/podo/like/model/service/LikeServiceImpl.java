@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ch.podo.board.model.vo.PageInfo;
+import com.ch.podo.film.model.vo.Film;
 import com.ch.podo.like.model.dao.LikeDao;
 import com.ch.podo.like.model.vo.Like;
+import com.ch.podo.member.model.vo.Member;
+import com.ch.podo.review.model.dto.Review;
 
 @Service("likeService")
 public class LikeServiceImpl implements LikeService{
@@ -79,6 +82,11 @@ public class LikeServiceImpl implements LikeService{
 	@Override
 	public int insertLikeReview(Like like) {
 		
+		//int result=0;
+		//result = 
+		//result =likeDao.updateLikeCount(like);
+		
+		//return likeDao.insertLikeReview(like);
 		return likeDao.insertLikeReview(like);
 	}
 
@@ -87,5 +95,8 @@ public class LikeServiceImpl implements LikeService{
 		
 		return likeDao.deleteLikeReview(like);
 	}
+
+	  
+
 	 
 }

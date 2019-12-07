@@ -25,7 +25,7 @@ public class ReportAPIController {
 	@ResponseBody
 	public boolean blind(String targetId, String type, String[] checked) throws Exception {
 
-		System.out.println(targetId + " " + type);
+//		System.out.println(targetId + " " + type);
 		log.info("checked : " + checked);
 
 		ArrayList<Report> r = new ArrayList<>();
@@ -49,7 +49,7 @@ public class ReportAPIController {
 		}
 		
 
-		System.out.println(r);
+//		System.out.println(r);
 		
 		int result = reportService.blindReport(r);
 		

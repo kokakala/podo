@@ -41,5 +41,6 @@ public class Review {
 	private int ratingScript;		//각본
 	private int ratingDirect;		//연출
 	private int star;				// 영화 별점
+	private int like;
 	
 }

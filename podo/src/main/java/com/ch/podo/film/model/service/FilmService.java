@@ -60,5 +60,8 @@ public interface FilmService {
 	// 15. 최신 등록 영화 조회 서비스
 	ArrayList<Film> selectNewFilms();
 	
+	// 16. 관리자 메인 별점 영화 탑3
+	ArrayList<Film> manyStar();
+	
 
 }

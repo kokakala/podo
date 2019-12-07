@@ -39,4 +39,11 @@ public class InquiryDao {
 		
 		return sqlSession.insert("inquiryMapper.dbInquiryInsert", map);
 	}
+	
+	public ArrayList<Inquiry> selectInquiryList(){
+		ArrayList<Inquiry> list = (ArrayList)sqlSession.selectList("inquiryMapper.selectInquiryList");
+		return list;
+	}
+
+	
 }

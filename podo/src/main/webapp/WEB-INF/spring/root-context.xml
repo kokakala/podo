@@ -9,6 +9,7 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
+	<!-- Persistence beans Start -->
 	<bean class="org.apache.commons.dbcp.BasicDataSource"
 			  id="dataSource"
 			  destroy-method="close">
@@ -30,7 +31,9 @@
 		  	id="sqlSessionTemplate">
 		<constructor-arg ref="sqlSession"/>
 	</bean>
+	<!-- Persistence beans End -->
 	
+	<!-- Transaction beans Start -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
@@ -53,5 +56,6 @@
 		<property name="maxUploadSize" value="100000000"/>
 	 	<property name="maxInMemorySize" value="100000000"/>
 	</bean>
-	
+	<!-- Transaction beans End -->
+
 </beans>

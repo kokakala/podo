@@ -43,9 +43,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int deleteMember(String id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int exit(String id) {
+		return memberDao.exit(id);
 	}
 	
 	
@@ -83,12 +82,9 @@ public class MemberServiceImpl implements MemberService {
 		}
 		return 0;
 		
-		//return memberDao.insertBlackList(result);
 	}
 	
-	
-	
-	
+
 
 	@Override
 	public Member selectUserPageMem(String userId) {

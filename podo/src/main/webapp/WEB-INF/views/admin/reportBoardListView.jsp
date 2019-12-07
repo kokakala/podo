@@ -17,6 +17,13 @@
  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
  
   <title>AdminPage</title>
+  <style>
+	
+	td .unblind { color:red ; }
+	
+  </style>
+  
+  
   <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
 
   <!-- Custom fonts for this template-->
@@ -72,7 +79,7 @@
     <!-- Sidebar 메뉴바 -->
     <ul class="sidebar navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="admin.do">
+        <a class="nav-link" href="manyStar.do">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>AdminPage</span>
         </a>
@@ -110,12 +117,12 @@
           <span>리뷰관리</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="blist.do">
           <ion-icon name="done-all"></ion-icon>
           <span>공지사항</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="inquiryList.do">
           <ion-icon name="help-circle"></ion-icon>
           <span>문의사항</span></a>
       </li>
@@ -135,10 +142,10 @@
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead align="center">                
                   <tr>
-                  	<th>체크</th>
+<!--                <th>체크</th> --> 
 					<th>NO</th>
 					<th>타입</th>
-					<th>신고게시글</th>
+					<th>신고게시글 번호</th>
 					<th>신고내용</th>
 					<th>신고대상자</th>
 					<th>신고자</th>
@@ -148,7 +155,7 @@
                 <tbody align="center">
 					<c:forEach items="${ list }" var="r">	
 						<tr>
-							<td><input type="checkbox" value="${r.id}" class="checkbox_target" /></td>
+<!--						<td><input type="checkbox" value="${r.id}" class="checkbox_target" /></td> -->
 							<td>${ r.id }</td>
 							<td>
 								<input type="hidden" value="${ r.type }">
@@ -179,13 +186,13 @@
 								</c:choose>
 							</td>
 							<td>${ r.reportedName }</td>
-							<td>${ r.reportName }</td>
+							<td>${ r.reportName }</td>			
 							<td><a href="javascript:;" class="btn_blind" data-id="${r.targetId}, ${r.type}">블라인드</a></td>
 						</tr>
 					</c:forEach>
                 </tbody>
               </table>
-              <a href="javascript:;" id="btn_multi_blind">블라인드</a>
+<!--             <a href="javascript:;" id="btn_multi_blind">블라인드</a>  --> 
             </div>
           </div>
           <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
@@ -227,7 +234,7 @@
         <div class="modal-body">관리자 페이지를 종료하시려면 아래 Logout을 선택하십시오.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="home.do">Logout</a>
+          <a class="btn btn-primary" href="logout.do">Logout</a>
         </div>
       </div>
     </div>
@@ -240,9 +247,13 @@
 	<script>
 		$(function() {
 			$('.btn_blind').click(function() {
+								
+				var btn= $(this);
 				
+
 				var blinds = $(this).data('id');
 				var jbSplit = blinds.split(', ');
+
 				
 				console.log(jbSplit);
 				
@@ -253,9 +264,12 @@
 						   type: jbSplit[1]},
 					success: function(data){
 						console.log(data);
-						
 						if (data) {
-							location.reload();
+							//location.reload();
+							alert("해당 게시물이 블라인드 처리 되었습니다.");
+							btn.addClass("unblind");
+							
+							btn.removeClass("btn_blind");
 						} else {
 							alert('blind에 실패했습니다.');
 						}
@@ -266,7 +280,8 @@
 				});
 			});
 			
-			var $checkboxTarget = $('.checkbox_target');
+			
+/* 			var $checkboxTarget = $('.checkbox_target');
 			var checkedIds = [];
 			
 			$('#btn_multi_blind').click(function() {
@@ -289,7 +304,7 @@
 						console.log(data);
 						
 		 				if (data) {
-							location.reload();
+							//location.reload();
 						} else {
 							alert('blind에 실패했습니다.');
 						}
@@ -298,7 +313,7 @@
 						console.log("아이디 ajax 통신 실패");
 					}
 				});
-			});
+			}); */
 		});
 	</script>
   

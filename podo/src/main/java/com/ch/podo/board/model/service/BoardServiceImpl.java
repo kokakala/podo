@@ -1,21 +1,16 @@
 package com.ch.podo.board.model.service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.ch.podo.board.model.dao.BoardDao;
 import com.ch.podo.board.model.vo.Board;
 import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.comment.model.vo.Comment;
 import com.ch.podo.image.model.vo.Image;
+import com.ch.podo.report.model.vo.Report;
 
 @Service("boardService")
 public class BoardServiceImpl implements BoardService {
@@ -41,49 +36,19 @@ public class BoardServiceImpl implements BoardService {
 	
 	// 게시글 작성
 	@Override
-	public int insertBoard(Board b) {
-		
-		return boardDao.insertBoard(b);
-		
-		/*
-		 * DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		 * def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		 * 
-		 * TransactionStatus status = transactionManager.getTransaction(def);
-		 * 
-		 * try { sqlSession.getConnection().setAutoCommit(false); } catch (SQLException
-		 * e) { e.printStackTrace(); }
-		 */
-				
+	public int insertBoard(Board board) {
+		return boardDao.insertBoard(board);
 	}
-	
-	
-	// 게시글 첨부파일
-	@Override
-	public int insertBoardFile(Image i) {
-		return boardDao.insertBoardFile(i);
-	}
-	
 	
 	@Override
 	public Board selectBoard(int id) {
-		
 		int result = boardDao.updateCount(id);
-		
-		if(result > 0) {
+		if (result > 0) {
 			return boardDao.selectBoard(id);
-		}else {
+		} else {
 			return null;
 		}
-		
 	}
-	
-	
-	@Override
-	public Image selectBoardFile(int id) {
-		return boardDao.selectBoardFile(id);
-	}
-	
 
 	@Override
 	public Board selectUpdateBoard(int id) {
@@ -122,12 +87,30 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
+	public int updateComment(int id, String content) {
+		return boardDao.updateComment(id, content);
+	}
+
+	@Override
+	public int deleteComment(int id) {
+		return boardDao.deleteComment(id);
+	}
+	
+	
+	
+	
+	@Override
 	public ArrayList<Board> selectboardListHome() {
 		
 		return boardDao.selectboardListHome();
 	}
-
 	
-
+	
+	// 신고
+	@Override
+	public int insertInappro(Report r) {
+		return boardDao.insertInappro(r);
+	}
+	
 
 }

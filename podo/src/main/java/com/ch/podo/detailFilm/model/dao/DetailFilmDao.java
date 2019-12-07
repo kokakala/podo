@@ -49,12 +49,13 @@ public class DetailFilmDao {
 	}
 
 	// 포스터 이미지 수정
-	public int filmImageInsert(String filmImage, int id) {
+	public int filmImageInsert(String filmImage, int id, int filmId) {
 		
 		HashMap map= new HashMap();
 		
 		map.put("filmImage", filmImage);
 		map.put("id", id);
+		map.put("filmId", filmId);
 		
 		return sqlSession.insert("detailFilmmapper.filmImageInsert", map);
 	}

@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -23,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.common.Pagination;
 import com.ch.podo.common.PodoRenamePolicy;
+import com.ch.podo.film.model.service.FilmService;
 import com.ch.podo.like.model.service.LikeService;
 import com.ch.podo.like.model.vo.Like;
 import com.ch.podo.member.model.service.MemberService;
@@ -31,8 +30,9 @@ import com.ch.podo.member.model.vo.Pay;
 import com.ch.podo.review.model.dto.Review;
 import com.ch.podo.review.model.service.ReviewService;
 
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 @Controller
 public class MemberController {
 	
@@ -41,11 +41,11 @@ public class MemberController {
 	@Autowired
 	private ReviewService reviewService;
 	@Autowired
+	private FilmService filmService;
+	@Autowired
 	private LikeService likeService;
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
-	
-	Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
 	// @CookieValue(value="storeIdCookie", required = false) Cookie storeIdCookie
 	@RequestMapping("login.do")
@@ -213,8 +213,7 @@ public class MemberController {
 		  .setViewName("admin/memberListView");
 		
 		return mv;
-	}
-	
+	}	
 	
 	// 관리자 블랙 리스트 조회
 	@RequestMapping("blackList.do")
@@ -254,7 +253,20 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping("pay.do")
 	public int pay(Pay pay) {
-		logger.info("payment info : " + pay);
+		log.info("payment info : " + pay);
 		return memberService.insertPaymentInfo(pay);
+	}
+	
+	@RequestMapping("exit.do")
+	public ModelAndView exit(String id, ModelAndView mv, HttpSession session) {
+		int result = memberService.exit(id);
+		
+		if(result > 0) {
+			session.removeAttribute("loginUser");
+			mv.setViewName("member/myPage");
+		}else {
+			mv.addObject("msg", "탈퇴실패").setViewName("member/myPage");
+		}
+		return mv;
 	}
 }

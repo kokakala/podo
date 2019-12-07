@@ -66,6 +66,7 @@ public class MemberDao {
 	public int prohibitionBoard(int bid) {
 		return sqlSession.selectOne("memberMapper.prohibitionBoard", bid);
 	}
+	
 
 	public int insertPaymentInfo(Pay pay) {
 		return sqlSession.insert("memberMapper.insertPaymentInfo", pay);
@@ -93,4 +94,7 @@ public class MemberDao {
 		return 1;
 	}
 	
+	public int exit(String id) {
+		return sqlSession.update("memberMapper.exit", id);
+	}
 }

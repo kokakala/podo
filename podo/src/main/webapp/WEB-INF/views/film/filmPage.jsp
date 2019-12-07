@@ -336,7 +336,7 @@
 									</c:if>
 								</div>
 							</div>
-							<div style="margin-top: 10px;">
+							<div class="star-area" style="margin-top: 10px;">
 								<span class="star-input">
 									<span class="input">
 										<input type="radio" name="star-input${ status.count }" value="1" id="p${ (status.count - 1) * 5 + 1 }" <c:if test="${ rate[film.id].star eq 1 }">checked</c:if>>
@@ -446,11 +446,7 @@
 		$(function(){
 			$(".nav").children("li").eq(0).addClass("active");
 		});
-		
-		$(function (){
-		  $('[data-toggle="tooltip"]').tooltip();
-		});
-		
+
 		// URL 파라미터 값을 가져오기 위한 메서드
 		$.urlParam = function(name) {
 			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -487,10 +483,7 @@
 		});
 
 		/* 영화 검색목록 불러오기 Synchronous 통신 */
-		$(document).on(
-				"click",
-				"li.option",
-				function() {
+		$(document).on("click", "li.option", function() {
 					// 연도별, 국가별 데이터도 같이 가져와야하기 때문에 $(this)가 무엇인지 고민해봐야하고 이벤트도 같이 걸어줘야함
 					// 먼저 selected 클래스가 걸려있는 data-value 값을 가져옴
 					// var releaseYear = $("select[name=releaseYear]").val();
@@ -682,7 +675,14 @@
 			
 		});
 		 */
-
+		
+		$(document).ready(function(){
+			$('[data-toggle="tooltip"]').tooltip();
+			$('[data-toggle="tooltip"]').click(function () {
+			 $(this).tooltip('toggle');
+			});
+	  });
+		
 		/* 좋아요 AJAX */
 		$(document).on("click", ".btn-like-film, .btn-liked-film", function() {
 					// 영화 ID 찾기
@@ -697,6 +697,7 @@
 					} else {
 						var likeFlag = 0;
 					}
+					
 
 					$.ajax({
 						url : "likeFilm.do",
@@ -717,8 +718,9 @@
 												.addClass("btn-danger")
 												.addClass("btn-block")
 												.addClass("btn-liked-film")
-												.attr({"data-toggle":"tooltip", "data-placement":"bottom", "title":"좋아요 취소", "data-original-title":"좋아요 취소"})
-												.html("<img src='resources/common/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>");
+												.attr({"data-original-title":"좋아요 취소"})
+												.html("<img src='resources/common/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
+												.blur();
 								$(".tooltip-inner").html("좋아요 취소");
 							} else {
 								$($this).closest("div").find("button")
@@ -727,13 +729,14 @@
 												.addClass("btn-secondary")
 												.addClass("btn-block")
 												.addClass("btn-like-film")
-												.attr({"data-toggle":"tooltip", "data-placement":"bottom", "title":"좋아요", "data-original-title":"좋아요"})
-												.html("<img src='resources/common/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>");
+												.attr({"data-original-title":"좋아요"})
+												.html("<img src='resources/common/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
+												.blur();
 								$(".tooltip-inner").html("좋아요");
 							}
 						},
 						error : function() {
-							console.log("통신 실패!");
+							// console.log("통신 실패!");
 						}
 					});
 				});
@@ -770,8 +773,9 @@
 												.addClass("btn-danger")
 												.addClass("btn-block")
 												.addClass("btn-saw-film")
-												.attr({"data-toggle":"tooltip", "data-placement":"bottom", "title":"봤어요 취소"})
-												.html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>");
+												.attr({"data-original-title":"봤어요 취소"})
+												.html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
+												.blur();
 								$(".tooltip-inner").html("봤어요 취소");
 							} else {
 								$($this).closest("div").find("button")
@@ -780,13 +784,19 @@
 												.addClass("btn-secondary")
 												.addClass("btn-block")
 												.addClass("btn-see-film")
-												.attr({"data-toggle":"tooltip", "data-placement":"bottom", "title":"봤어요"})
-												.html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>");
+												.attr({"data-original-title":"봤어요"})
+												.html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
+												.blur();
 								$(".tooltip-inner").html("봤어요");
+
+								$($this).closest(".row").siblings(".star-area").find("[name*=star-input]")
+																															 .prop("checked", false)
+																														   .trigger("blur");
+								$($this).closest(".row").siblings(".star-area").find("b").text("0");
 							}
 						},
 						error : function() {
-							console.log("통신 실패!");
+							// console.log("통신 실패!");
 						}
 					});
 				});
@@ -829,6 +839,23 @@
 					dataType : "json",
 					success : function(data) {
 						// console.log(data);
+						if (data === 414) {
+							// jQuery 1.6 이후 부터 라디오버튼과 체크박스를 다루기 위해서는 .prop() 함수를 사용해야 한다.
+							$($this).closest(".star-input").find("[name*=star-input]")
+																						 .prop("checked", false)
+																					   .trigger("blur");
+							$($this).parent().siblings("output").find("b").text("0");
+						} else {
+							$this.closest(".podo-film-card")
+									 .find(".btn-see-film")
+									 .removeClass("btn-secondary")
+									 .removeClass("btn-see-film")
+									 .addClass("btn-danger")
+									 .addClass("btn-block")
+									 .addClass("btn-saw-film")
+									 .attr({"data-original-title":"봤어요 취소"})
+									 .html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>");
+						}
 					},
 					error : function() {
 						// 비회원일 경우 별점 checked false

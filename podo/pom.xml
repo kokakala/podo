@@ -249,7 +249,7 @@
 	    <artifactId>aspectjweaver</artifactId>
 	    <version>${org.aspectj-version}</version>
 		</dependency>
-		      
+		
 	</dependencies>
     <build>
         <plugins>

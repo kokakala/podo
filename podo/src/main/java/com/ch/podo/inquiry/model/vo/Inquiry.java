@@ -24,5 +24,6 @@ public class Inquiry {
 	private String answer;	 	// 문의 답변
 	private Date answerDate;	// 답변 작성일
 	private int adminId;		// 관리자 아이디
+	private String nickname;	// 회원닉네임
 
 }

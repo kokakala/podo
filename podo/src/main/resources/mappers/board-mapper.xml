@@ -16,16 +16,7 @@
 		<result property="status" column="status"/>
 		<result property="memberId" column="member_id"/>
 		<result property="nickName" column="nickname"/>
-	</resultMap>
-	
-	<resultMap id="imageResultSet" type="Image">
-		<id property="id" column="id"/>
-		<result property="path" column="path"/>
-		<result property="originalName" column="original_name"/>
-		<result property="changeName" column="change_name"/>
-		<result property="type" column="type"/>
-		<result property="boardId" column="board_id"/>
-		<result property="noticeId" column="notice_id"/>
+		<result property="imageName" column="image_name"/>
 	</resultMap>
 	
 	<resultMap id="commentResultSet" type="Comment">
@@ -42,6 +33,9 @@
 		<result property="memberId" column="member_id"/>
 		<result property="boardId" column="board_id"/>
 		<result property="reviewId" column="review_id"/>
+		
+		<result property="nickName" column="nickname"/>
+		
 	</resultMap>
 	
 	<resultMap id="memberListResultSet" type="Member">
@@ -53,88 +47,93 @@
 	<select id="getBoardCount" resultType="_int">
 		select count(*)
 		from tb_board
-		where status='Y'
+		where status = 'Y'
 	</select>
 	
 	<select id="selectBoardList" resultMap="boardResultSet">
 		select * 
 		from tb_board b
-        join tb_member m on(b.member_id=m.id)
-		where b.status='Y'
+		join tb_member m on (b.member_id = m.id)
+		where b.status = 'Y'
 		order by b.id desc
 	</select>
 
-	<insert id="insertBoard" parameterType="hashmap">
+	<insert id="insertBoard">
 		insert into tb_board
-		values(seq_board_id.nextval, #{title}, #{content}, default, default, default, default,
-				sysdate, sysdate, default, #{memberId})
-	</insert>
-	
-	<insert id="insertBoardFile">
-		insert into tb_image
-		values(seq_image_id.nextval, #{path}, #{originalName}, #{changeName}, 1, seq_board_id.currval, null)
+		values (seq_board_id.nextval, #{title}, #{content},
+						default, default, default, default,
+						sysdate, sysdate, default, #{memberId}, #{imageName})
 	</insert>
 	
 	<update id="updateCount">
 		update tb_board
 		set view_count = view_count + 1
-		where id=#{id}
+		where id = #{id}
 	</update>
 	
 	<select id="selectBoard" resultMap="boardResultSet">
 		select *
 		from tb_board b
-		left join tb_member m on(b.member_id=m.id) 
-		where b.id=#{id}
-	</select>
-	
-	<select id="selectBoardFile" resultMap="imageResultSet">
-		select *
-		from tb_image
-		where board_id=#{boardId}
+		left join tb_member m on (b.member_id = m.id) 
+		where b.id = #{id}
 	</select>
 	
 	<update id="deleteBoard">
 		update tb_board
-		set status='N'
-		where id=#{id}
+		set status = 'N'
+		where id = #{id}
 	</update>
 	
 	<update id="updateBoard">
 		update tb_board
-		set title=#{title}, content=#{content}, modify_date=sysdate
-		where id=#{id}
+		set title = #{title},
+				content = #{content},
+				modify_date = sysdate,
+				image_name = #{imageName}
+		where id = #{id}
 	</update>
 	
-	<update id="updateBoardFile">
-		update tb_image
-		set path=#{path}, original_name=#{originalName}, change_name=#{changeName}
-		where board_id=#{boardId}
-	</update>
 	
-	 <!-- 댓글 -->
+	 <!-- 댓글 -->	 	 
 	 <select id="selectCommentList" resultMap="commentResultSet">
-	 	select *
-		from tb_comment
-		where board_id=#{id}
-		and status='Y'
+		select c.*, m.nickname
+		from tb_comment c
+		join tb_member m on (c.member_id = m.id)
+		where board_id=#{boardId} and c.status='Y'
+        order by c.id desc
 	 </select>
 	 
 	 <insert id="insertComment">
 	 	insert into tb_comment
-	 	values(seq_comment_id.nextval, 2, #{content}, default, default, default, sysdate, sysdate, default, default, 1, #{boardId}, null)
+	 	values(seq_comment_id.nextval, 2, #{content}, default, default, default, sysdate, sysdate, default, default, #{memberId}, #{boardId}, default)
 	 </insert>
-	
-
-	<select id="selectboardListHome" resultMap="boardResultSet">
+	 
+	 <update id="updateComment" parameterType="hashmap">
+	 	update tb_comment
+	 	set content=#{content}
+	 	where id=#{id}
+	 </update>
+	 
+	 <update id="deleteComment">
+	 	update tb_comment
+	 	set status='N'
+	 	where id=#{id}
+	 </update>
+	 
+	 
+	 <select id="selectboardListHome" resultMap="boardResultSet">
 		select *
-		from tb_board b
-        join tb_member m on(b.member_id=m.id)
+		from tb_board
+		b
+		join tb_member m on(b.member_id=m.id)
 		where b.status='Y'
 		order by b.id desc
 	</select>
 	
-	
-	
+	<!-- 신고 -->
+	<insert id="insertInappro">
+		insert into tb_report
+		values(seq_report_id.nextval, 2, #{targetId}, #{content}, #{reportId}, #{reportedId})
+	</insert>
 	
 </mapper>
