@@ -184,8 +184,9 @@ CREATE TABLE "TB_NOTICE" (
    "VIEW_COUNT"   NUMBER   DEFAULT 0   NOT NULL,
    "CREATE_DATE"   TIMESTAMP      NOT NULL,
    "MODIFY_DATE"   TIMESTAMP      NOT NULL,
+   "STATUS"   VARCHAR2(2)   DEFAULT 'Y'   NOT NULL,
    "ADMIN_ID"   NUMBER      NOT NULL,
-   "IMAGE_ID"   NUMBER      NOT NULL
+   "IMAGE_NAME" VARCHAR2(50)
 );
 
 CREATE TABLE "TB_COLLECTION" (
@@ -328,22 +329,6 @@ FOR EACH ROW
       THEN
         UPDATE TB_FILM SET POSTER = :NEW.CHANGE_NAME
         WHERE ID = :NEW.FILM_ID;
-    END IF;
-  END;
-/
-
-DROP TRIGGER TRG_LIKE_REVIEW;
-CREATE OR REPLACE TRIGGER TRG_LIKE_REVIEW
-BEFORE INSERT OR DELETE ON TB_LIKE
-FOR EACH ROW
-  BEGIN
-    IF :NEW.TYPE=3 AND INSERTING THEN
-        UPDATE TB_REVIEW SET LIKE_COUNT = LIKE_COUNT + 1
-        WHERE ID = :NEW.TARGET_ID;
-    END IF;
-    IF :OLD.TYPE=3 AND DELETING THEN
-        UPDATE TB_REVIEW SET LIKE_COUNT = LIKE_COUNT - 1
-        WHERE ID = :OLD.TARGET_ID;
     END IF;
   END;
 /
@@ -3291,23 +3276,24 @@ VALUES (SEQ_FILM_ID.NEXTVAL, '익스포즈', 'Exposed', '디클란 데일', 2016, '미국',
 INSERT INTO TB_FILM (ID, TITLE_KOR, TITLE_ENG, DIRECTOR, RELEASE_YEAR, PRODUCTION_COUNTRY, PRODUCTION_STATUS, GENRE_ID, POSTER) 
 VALUES (SEQ_FILM_ID.NEXTVAL, '히든 아이덴티티', 'Eliza Graves', '브래드 앤더슨', 2014, '미국', '개봉', 5, NULL);
 
+-- C:\Users\csu04\Desktop\영화1000개.xlsx 파일에서 TB_FILM 테이블로 데이터 임포트 . 작업을 성공하고 워크시트로 전송했습니다.
+
 -- MEMBER SAMPLE DATA
-INSERT INTO TB_MEMBER
-VALUES(SEQ_MEMBER_ID.NEXTVAL, DEFAULT, 'admin01@gmail.com', '$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.', '관리자01', DEFAULT, SYSDATE, SYSDATE, DEFAULT, DEFAULT, 2, 'N');
-INSERT INTO TB_MEMBER
-VALUES(SEQ_MEMBER_ID.NEXTVAL, DEFAULT, 'admin02@gmail.com', '$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.', '관리자02', DEFAULT, SYSDATE, SYSDATE, DEFAULT, DEFAULT, 2, 'N');
-INSERT INTO TB_MEMBER
-VALUES(SEQ_MEMBER_ID.NEXTVAL, DEFAULT, 'user01@naver.com', '$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.', '사용자01', DEFAULT, SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1, 'N');
-INSERT INTO TB_MEMBER
-VALUES(SEQ_MEMBER_ID.NEXTVAL, DEFAULT, 'user02@naver.com', '$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.', '사용자02', DEFAULT, SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1, 'N');
-INSERT INTO TB_MEMBER
-VALUES(SEQ_MEMBER_ID.NEXTVAL, DEFAULT, 'user03@naver.com', '$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.', '사용자03', DEFAULT, SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1, 'N');
-INSERT INTO TB_MEMBER
-VALUES(SEQ_MEMBER_ID.NEXTVAL, DEFAULT, 'user04@naver.com', '$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.', '사용자04', DEFAULT, SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1, 'N');
-INSERT INTO TB_MEMBER
-VALUES(SEQ_MEMBER_ID.NEXTVAL, DEFAULT, 'user05@naver.com', '$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.', '사용자05', DEFAULT, SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1, 'N');
-INSERT INTO TB_MEMBER
-VALUES(SEQ_MEMBER_ID.NEXTVAL, DEFAULT, 'test@test.test', '$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.', 'test', DEFAULT, SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1, 'Y');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL, DEFAULT,'admin01@gmail.com','$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.','관리자01','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 2,'N');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL, DEFAULT,'admin02@gmail.com','$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.','관리자02','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 2,'N');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL,'20191205010959.jpg','user01@naver.com','$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.','영화추천쟁이','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1,'N');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL,'20191205025404.png','user02@naver.com','$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.','리뷰만점','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1,'N');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL,'20191205024757.jpg','user03@naver.com','$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.','수능만점자','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1,'N');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL,'20191205025508.jpg','user04@naver.com','$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.','봉봉','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1,'N');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL,'20191205025520.jpg','user05@naver.com','$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.','smilech','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1,'N');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL,'20191205025533.jpg','test@test.test','$2a$10$Qniqrgu.rkuttWzD7Opn3e/HF.UbcwGEenI2jOANJYIyLd0J7qmW.','붕붕','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1,'Y');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL,'20191205011408.jpg','user06@naver.com','$2a$10$zlt37QrjjrL2WCYxJj0XNu2E0vLLePqbpQH6M810Y8EJRvWI0Bapa','무비토커','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1,'N');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL,'20191205011428.png','user07@naver.com','$2a$10$.PLuEyCuO..HF6hBfLJF4uEFhhnh6Ry.amIddWFZmlE/5LGYgq3IK','구도일','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1,'N');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL,'20191205011452.png','user08@naver.com','$2a$10$6JJao4yxNd13BXqWNYq56umAuQZX2BxjITfVX4R0NT3n8penTF9Gy','멜로디','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1,'N');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL,'20191205011511.jpg','user09@naver.com','$2a$10$D5B5nFTBLOJSRNd4N/voq.z7prbGwDmkrON8.uG5YHetz9URpu222','김미피','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1,'N');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL,'20191205011538.png','user10@naver.com','$2a$10$qyVnWp2Iw9Hn/1IaWZCGi.yKArF90v7D33cN7eZEhQjnq4D1LtD5.','큐트더억','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1,'N');
+Insert into PODO.TB_MEMBER (ID,IMAGE,EMAIL,PWD,NICKNAME,STATUS,ENROLL_DATE,MODIFY_DATE,GOOGLE_ID,KAKAO_ID,AUTHO,PREMIUM) values (SEQ_MEMBER_ID.NEXTVAL,'20191205011558.jpg','user11@naver.com','$2a$10$ObMvmogBv2CDiwdbM3BQLueXiSgi/Dr9uX76k5Q5lAUU6T/O6k4pG','구직자','Y',SYSDATE, SYSDATE, DEFAULT, DEFAULT, 1,'N');
+
 
 -- ACTOR SAMPLE DATA
 -- 영화 배우 샘플 46인
@@ -3406,45 +3392,67 @@ VALUES(SEQ_ACTOR_ID.NEXTVAL, '후쿠야마 마사하루', '후쿠야마마사하루.jpg');
 
 -- DETAIL FILM SAMPLE DATA
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '이것은 시놉시스', '이것은 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 4);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '토드 필립스 감독의 [조커]는 아이콘같은 빌런을 그리며 오리지날 스탠드얼론 픽션 스토리로서 한번도 영화에서 구현된적없는 내용. 아서 플렉이라는 인물을 연기한 호아킨 피닉스는 고담시의 망가지고 타락한 사회에서 살아 남으려는 인물이다. 그는 낮에는 광대로 일하고 밤에는 스탠드업 코미디언을 하지만 남을 웃기지 못하고 오히려 자신이 웃음거리가 되는 상황을 겪는다. 냉담한 현실과 처절한 무자비함 속에서 악순환의 고리에 갇힌 그는 자신만의 나쁜 결정을 하게되며 연쇄작용이 일어나며 리얼한 캐릭터 스터디의 영화로 거듭난다', '[작중 묘사되는 친자 여부] 영화 내에서 주로 묘사되는건 아서 플렉이 토머스 웨인의 친자가 아니라는 쪽이다. 아서가 입양아이며 친자가 아니라는 점은 아캄 정신병원의 보고서를 통해 드러나며, 아서의 각성 이후 살해당한 양어머니 또한 그 점을 암시한다.', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 4);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '감쪽같은그녀 시놉시스', '감쪽같은그녀 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 1);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '초면에 실례하겠습니다~72살 나 홀로 라이프를 즐기는 말순 할매의 인생에 듣도 보도 못한 손녀(?)가 나타났다!', '혼자가 익숙해 함께 하는 것이 낯선 할머니와 무엇이든 혼자 힘으로 해낼 것 같지만 아직은 가족의 품이 필요한 12살 소녀. 서로에게 낯설기만 했던 이들이 티격태격 함께 하는 모습과 필요한 순간 서로에게 든든한 편이 되어주며 특별한 존재로 변모해가는 과정은 따뜻한 웃음과 가슴 뜨거운 감동을 안긴다. 러닝타임 104분', 'https://www.youtube.com/watch?v=i43oWv6jWJ4', null, DEFAULT, DEFAULT, 1, 1);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '안녕베일리 시놉시스', '안녕베일리 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 2);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '프로환생견 베일리의 견생 N차 미션! 우리에게 전하는 유쾌하고 가슴 뭉클한 인사! 함께라서 행복해 환생만 벌써 5번째! 도무지 끝날 줄 모르는 베일리의 삶에 새로운 미션이 생겼다?!', '스티븐 스필버그 스튜디오 엠블린 엔터테인먼트 제작! 전세계 흥행 수익 2억 달러 돌파 작품 <베일리 어게인>의 후속작!', 'https://www.youtube.com/watch?v=fCN2Gh_40tE', null, DEFAULT, DEFAULT, 1, 2);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '기생충 시놉시스', '기생충 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 3);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '폐 끼치고 싶진 않았어요 전원백수로 살 길 막막하지만 사이는 좋은 기택(송강호) 가족. 장남 기우(최우식)에게 명문대생 친구가 연결시켜 준 고액 과외 자리는 모처럼 싹튼 고정수입의 희망이다. 온 가족의 도움과 기대 속에 박사장(이선균) 집으로 향하는 기우. 글로벌 IT기업 CEO인 박사장의 저택에 도착하자 젊고 아름다운 사모님 연교(조여정)가 기우를 맞이한다.', '극과 극의 삶을 사는 두 가족의 만남이 빚어낸 신선한 스토리 같이 잘 살면 안 될까요? 공생이 어려워진 각박한 시대를 살아가는 사람들의 이야기', 'https://www.youtube.com/watch?v=jBdRhhSt3Bc', null, DEFAULT, DEFAULT, 1, 3);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '녹차의중력 시놉시스', '녹차의중력 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 5);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '어느 무더운 여름날, 정성일은 임권택 감독을 찾아 뵙고 영화 현장에 관한 다큐멘터리를 만들고 싶다고 말한다. 허락을 받았지만, 기다리던 영화를 감독은 여러 가지 이유로 덮는다.', '2011년 여름, 영화감독 임권택이 홀로 서재에 앉아있다. 하늘의 태양과 그 곁을 스치는 구름을 응시하는 영화의 첫 장면을 지나, 우리는 임권택의 어두운 서재를 방문한다. 거기서 그는 조용히 앉아 차를 내리고 있다. 물을 따르고, 찻잎을 담고, 물을 버리고. 차를 내리는 나이 든 남자의 손가락은 거칠게 떨리고, 몸은 더디게 움직인다. 그리고는 무언가 맘에 들지 않는 듯', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 5);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '어벤져스:인피니티워 시놉시스', '어벤져스:인피니티워 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 6);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '새로운 조합을 이룬 어벤져스,역대 최강 빌런 타노스에 맞서세계의 운명이 걸린 인피니티 스톤을 향한무한 대결이 펼쳐진다!', '엔드게임 캐스팅 배우들 중 로버트 다우니 주니어만 유일하게 영화 대본 전체를 읽었다.', 'https://www.youtube.com/watch?v=xUDhdCsLkjU', null, DEFAULT, DEFAULT, 1, 6);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '카메라를 멈추면 안돼 시놉시스', '카메라를 멈추면안돼 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 7);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '좀비, 원 컷, 생중계 이번엔 할리우드다! <카메라를 멈추면 안 돼!> 그 뒷 이야기!', '어느 버려진 정수장 안, 좀비가 되어버린 남자가 여자를 향해 다가가고, 여자는 도끼를 든 채 떨며 맞서지만 결국 남자에게 물리고 만다. 사랑해, 켄... 하는 대사가 끝나자 컷! 하는 소리가 들리는데, 좀비 영화를 촬영 중이었던 것.', 'https://www.youtube.com/watch?v=O9t3qnj7PHc', null, DEFAULT, DEFAULT, 1, 7);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '세번째살인 시놉시스', '세번째살인 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 8);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '그는 자백했고, 사형은 확실했다승리밖에 모르는 냉정한 변호사 시게모리모든 범행을 자백한 살인범 미스미그리고 피해자의 딸 사키에또 한 번 진술이 번복되자, 모든 것에 의심이 가기 시작했다', '시게모리의 딸 유카로 분한 마키타 아쥬는 2015년 JCB 카드 광고 (무엇과도 바꿀 수 없는 매일)>편에서도 후쿠야마 마사하루의 딸로 출연했었다. 당시 감독 역시 고레에다 히로카즈', 'https://www.youtube.com/watch?v=feCOpk1xThU', null, DEFAULT, DEFAULT, 1, 8);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '너는여기에없었다 시놉시스', '너는여기에없었다 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 9);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '끔찍한 유년기와 전쟁 트라우마로 늘 자살을 꿈꾸는 청부업자 조. 유력 인사들의 비밀스러운 뒷일을 해결해주며 고통으로 얼룩진 하루하루를 버텨내던 어느 날, 상원 의원의 딸 니나를 찾아 달라는 의뢰를 받고 소녀를 찾아내지만 납치사건에 연루된 거물들에게 쫓기는 신세가 된다. 그렇게 다시 사라진 소녀를 구하기 위해 나서는데… 죽어도 아쉬울 것 없는 살아있는 유령 같은 인생에 조용히 나를 깨우는 목소리 Wake up, Joe!', '69년생인 린 램지와 비슷한 연배거나 비슷한 시기에 등장한 다른 감독들 중에는 처음에는 와, 대단한 감독이 나타났다 하며 감탄했다가도 작품이 이어질수록 실망하게 된 경우가 있었다. 이들과 달리 린 램지는 작품을 따라갈수록 신뢰가 간다. 이 사람의 작품은 한 철만 피었다 쉽게 시들거나 어느 순간 맥없이 와르르 허물어져 버리지 않을 거라는 믿음. 동시대의 믿을 수 있는 감독 목록에 린 램지의 이름을 올리고 그녀의 다음 작품을 즐거운 마음으로 기다리게 된다.', 'https://www.youtube.com/watch?v=sQmPVieSzjE', null, DEFAULT, DEFAULT, 1, 9);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '라라랜드 시놉시스', '라라랜드 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 10);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '꿈을 꾸는 사람들을 위한 별들의 도시 라라랜드. 재즈 피아니스트 세바스찬(라이언 고슬링)과 배우 지망생 미아(엠마 스톤), 인생에서 가장 빛나는 순간 만난 두 사람은 미완성인 서로의 무대를 만들어가기 시작한다.', '전작인 《위플래쉬》의 예산이 3백만 달러였는데, 이게 초대박을 치면서 《라라랜드》의 예산이 전작의 10배인 3천만 달러가 되었다고 한다. 결국 이 영화는 전세계적으로 4억 4천만 달러를 벌어들이면서 또 한 번 초대박을 치게 된다.', 'https://www.youtube.com/watch?v=Dt5hFexM5BI', null, DEFAULT, DEFAULT, 1, 10);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '너의이름은 시놉시스', '너의이름은 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 11);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '한 달 후, 천 년 만에 찾아온다는 혜성을 기다리고 있는 일본. 산골 깊은 시골 마을에 살고 있는 여고생 미츠하는 우울한 나날을 보내고 있다. 촌장인 아버지의 선거활동과 신사 집안의 낡은 풍습. 좁고 작은 마을에서는 주위의 시선이 너무나도 신경 쓰이는 나이인 만큼 도시를 향한 동경심은 커지기만 한다.', 'JR 도카이의 도카이도 신칸센과 히다후루카와 역이 나와서, 회사 창립 30주년과 맞물려 기념 TOICA를 발매했다.', 'https://www.youtube.com/watch?v=enRm-9qF2L8', null, DEFAULT, DEFAULT, 1, 11);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '미인어 시놉시스', '미인어 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 12);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '2017년 첫 판타스틱 오션 로맨틱 코믹버스터의 탄생! 아직 인간의 손이 닿지 않은 자연 청정지역 청라만에 인간 몰래 살고있는 인어들. 어느 날, 돈 밖에 모르는 젊은 부동산 재벌가 류헌(덩차오)은 아름다운 이 곳에 무분별한 개발을 하려 하고, 생존에 위협을 느낀 인어들은 극비리에 계획을 세운다. 바로 가장 예쁜 인어 산산(임윤)을 육지로 보내 미인계로 접근시킨 후, 그를 쥐도 새도 모르게 죽이는 것!  하지만 우여곡절 끝에 만나게 된 류헌과 산산은 어느새 너무나 다른 서로에게 끌리게 되는데… 과연 그들의 사랑은 이루어 질 수 있을까?', '2016년 2월 8일 중국 개봉. 미화 6000만달러의 예산으로 제작되어 5억 2600만달러(33억 9213만 위안)를 벌어들이며 흥행 대박을 이뤄냈다. 당시 중국 역대 1위 기록. 주성치로서는 기념비적인 작품이다. 그러나 2017년에 개봉한 전랑 2가 8억 5400만 달러의 압도적인 흥행을 기록하면서 미인어의 1위는 1년 만에 무너졌다. 그리고 2018년 오퍼레이션 레드 씨(5억 7500만 달러), 탐정 당인 2(5억 4100만 달러)에 차례대로 밀렸고, 2019년 유랑지구(6억 9100만 달러)에 밀려 현재는 5위다.', 'https://www.youtube.com/watch?v=DbBZdYbdFRY', null, DEFAULT, DEFAULT, 1, 12);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '더위치 시놉시스', '더위치 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 13);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '1692년 살렘마녀재판을 소재로, 일련의 기이한 사건들로 광기에 사로잡히는 가족의 이야기를 다룬 공포영화. 당대를 놀랍도록 재연한 세트와 의상으로 올해 선댄스영화제에서 큰 화제를 모으며 감독상을 수상했다.', '블랙필립과 긴밀한 연기를 함께 해야 했던 아버지 역의 랄프 이네슨은 무척 힘든 경험을 했는데, 찰리와의 장면을 촬영한 후에 진통제를 맞으며 연기해야 했다고 하네요. 우리는 처음 서로 눈을 마주치는 순간부터 서로를 증오했어요', 'https://www.youtube.com/watch?v=7VH8sFR40DQ', null, DEFAULT, DEFAULT, 1, 13);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '5일의마중 시놉시스', '5일의마중 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 14);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '매월 5일, 그대 마중 가는 날..문화대혁명의 시기, 가슴 아픈 이별을 겪은 펑완위(공리)와 루옌스(진도명). 가까스로 풀려난 루는 5일에 집에 간다는 편지를 보낸 후 돌아왔지만 아내는 남편을 알아보지 못하고 딸은 아빠에 대한 원망으로 가득 차 있다. 그런 가족의 곁을 묵묵히 지키는 루. 그리고 오늘도 펑은 달력에 동그라미를 친다. 5일에 루 마중 나갈 것. 과연 그들의 사랑은 다시 시작될 수 있을까?', '<5일의 마중>이 그리는 그런 기다림을 실제로도 겪어야 했던 사람이 과연 한둘이었을까. 그러나 영화는 그들에게 너무나 현실과 달라 허황되게까지 느껴지는 해피엔딩이나, 이제 소용없으니까 포기하라는 매몰찬 현실인식을 강요하지 않는다. ', 'https://www.youtube.com/watch?v=UoH12_Cc248', null, DEFAULT, DEFAULT, 1, 14);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '그랜드부다페스트호텔 시놉시스', '그랜드부다페스트호텔 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 15);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '1927년 세계대전이 한창이던 어느 날, 세계 최고의 부호 마담 D.가 의문의 살인을 당한다.유력한 용의자로 지목된 사람은 바로 전설적인 호텔 지배인이자 그녀의 연인 구스타브!구스타브는 누명을 벗기 위해 충실한 로비보이 제로에게 도움을 청하고, 그 사이 구스타브에게 남겨진 마담 D.의 유산을 노리던 그녀의 아들 드미트리는 무자비한 킬러를 고용해 [그랜드 부다페스트 호텔]을 찾게 되는데…문을 여는 순간 완벽히 빠져드는 기상천외 판타지아트!단 100분 간의 환상의 세계로 당신을 초대합니다!', '가상의 나라 주브로카 공화국은 폴란드 보드카인 주브로카에서 따온 것이다', 'https://www.youtube.com/watch?v=bBrTTSlCzNk', null, DEFAULT, DEFAULT, 1, 15);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '나이트크롤러 시놉시스', '나이트크롤러 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 16);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '특종을 위한 완벽한 조작!지금, 당신이 보고 있는 뉴스는 진실인가? 루이스 (제이크 질렌할)는 우연히 목격한 교통사고 현장에서, 특종이 될 만한 사건 현장을 카메라에 담아 TV 매체에 고가에 팔아 넘기는 일명 나이트 크롤러를 보게 된다. 경찰이 도착하기 전에 빠르게 나타나 현장을 스케치하고 전화를 통해 가격을 흥정하는 그들에게서 묘한 돈 냄새를 맡은 루이스는 즉시 캠코더와 경찰 무전기를 구입하고 사건현장에 뛰어든다.유혈이 난무하는 끔찍한 사고 현장을 적나라하게 촬영해 첫 거래에 성공한 루이스는 남다른 감각으로 지역채널의 보도국장 니나(르네 루소)의 적극적인 지지를 받게 된다. 매번 더욱 더 자극적이고 충격적인 뉴스를 원하는 니나와 그 이상을 충족 시켜주는 루이스는 최상의 시청률을 만들어내며 승승장구한다. 자신의 촬영에 도취된 루이스는 결국 완벽한 특종을 위해 사건을 조작하기에 이르는데…2월, 숨막히는 특종 추적 스릴러가 온다!', '제이크 질렌할은 이 영화를 찍기 위해 약 9kg를 감량했다. 이는 질렌할의 아이디어로, 배고픈 코요테와 같은 루를 보여주고 싶었다고 한다. 배경이 되는 LA의 다양한 모습 속에 한인타운도 등장하며, 파리바게뜨, 탐앤탐스 등 해외 진출 브랜드의 간판까지 발견할 수 있다.', 'https://www.youtube.com/watch?v=aY232nVeSGc', null, DEFAULT, DEFAULT, 1, 16);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '매드맥스 시놉시스', '매드맥스 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 17);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '핵전쟁으로 멸망한 22세기. 얼마 남지 않은 물과 기름을 차지한 독재자 임모탄 조가 살아남은 인류를 지배한다. 한편, 아내와 딸을 잃고 살아남기 위해 사막을 떠돌던 맥스(톰 하디)는 임모탄의 부하들에게 납치되어 노예로 끌려가고, 폭정에 반발한 사령관 퓨리오사(샤를리즈 테론)는 인류 생존의 열쇠를 쥔 임모탄의 여인들을 탈취해 분노의 도로로 폭주한다. 이에 임모탄의 전사들과 신인류 눅스(니콜라스 홀트)는 맥스를 이끌고 퓨리오사의 뒤를 쫓는데... 끝내주는 날, 끝내주는 액션이 폭렬한다!', '조지 밀러 감독은 영화 <소년과 개>(1975)에서 영향을 받아 <매드 맥스>를 만들었다. 조지 밀러 감독은 응급실 의사로 일하면서 <매드 맥스>의 제작비를 마련했다.', 'https://www.youtube.com/watch?v=p-fDEhVBnv4', null, DEFAULT, DEFAULT, 1, 17);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '그녀 시놉시스', '그녀 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 18);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '2014 아카데미 각본상 수상! 2014 골든 글로브 각본상 수상!올 해 가장 독창적인 로맨스!테오도르(호아킨 피닉스)는 다른 사람들의 편지를 대신 써주는 대필 작가로, 아내(루니 마라)와 별거 중이다. 타인의 마음을 전해주는 일을 하고 있지만, 정작 자신은 너무 외롭고 공허한 삶을 살고 있다. 그러던 어느 날, 스스로 생각하고 느끼는 인공 지능 운영체제인 사만다(스칼렛 요한슨)를 만나게 된다. 자신의 말에 귀 기울이고, 이해해주는 사만다로 인해 조금씩 행복을 되찾기 시작한 테오도르는 점점 그녀에게 사랑을 느끼게 되는데…', '- 영화 속에서 나타나는 도시 풍경은 상하이의 고층건물 풍경이다.', 'https://www.youtube.com/watch?v=Od_brCj_oCE', null, DEFAULT, DEFAULT, 1, 18);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '콜미바이유어네임 시놉시스', '콜미바이유어네임 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 19);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '1983년 이탈리아, 열 일곱 소년 Elio(티모시 샬라메)는아름다운 햇살이 내리쬐는 가족 별장에서 여름이 끝나기만을 기다리고 있다어느 오후, 스물 넷 청년 Oliver(아미 해머)가아버지(마이클 스털버그)의 보조 연구원으로 찾아오면서 모든 날들이 특별해지는데...Elio의 처음이자 Oliver의 전부가 된그 해, 여름보다 뜨거웠던 사랑이 펼쳐진다', '소설 속 배경으로 등장하는 B는 이탈리아 북부의 소도시 Bordighera. 모네가 B에서 그린 그림 중 View of Bordighera라고 불리는 이 작품은 LA의 Hammer Museum에 소장되어있다.', 'https://www.youtube.com/watch?v=am_aqh4qW5c', null, DEFAULT, DEFAULT, 1, 19);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '미드나잇인파리 시놉시스', '미드나잇인파리 트리비아', 'https://www.youtube.com/watch?v=x60mB0zXZ38', null, DEFAULT, DEFAULT, 1, 20);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '약혼자 이네즈(레이첼 맥아담스)를 두고홀로 파리의 밤거리를 배회하던 길(오웬 윌슨)은종소리와 함께 홀연히 나타난 차에 올라타게 되고그곳에서 1920년대를 대표하는 예술가들과 조우하게 된다.그 날 이후 매일 밤 1920년대로 떠난 [길]은평소에 동경하던 예술가들과 친구가 되어 꿈 같은 시간을 보내게 되고헤밍웨이와 피카소의 연인이자 뮤즈인 애드리아나(마리옹 꼬띠아르)를 만나게 된다.시간이 지날수록 길은 예술과 낭만을 사랑하는 매혹적인 그녀에게 빠져들게 되는데…세기를 초월한 사랑은 이뤄질 수 있을까?', '우디 앨런은 각본 단계에서 이네즈 역으로 레이첼 맥아담스를 생각하고 썼다고 한다', 'https://www.youtube.com/watch?v=VSvW83d0dFE', null, DEFAULT, DEFAULT, 1, 20);
+INSERT INTO TB_DETAIL_FILM
+VALUES(SEQ_DFILM_ID.NEXTVAL, '영국 동쪽에 위치한 평화롭고 아름다운 작은 마을 클롭힐에는 오래 전에 폐허가 된 한 교회가 있다. 인구 증가로 마을 중앙에 교회가 생기면서 마을 언덕에 세워졌던 이 교회는 장례식장으로 바뀌었고 누군가에 의해 교회 지붕이 훼손된 이후 이 곳에서 유령을 목격했다거나 악마를 숭배하는 오컬트 모임이 집회를 연다는 등 흉흉한 소문이 돌기 시작했다. 어느 샌가 귀신이 나오는 명소로 소문난 이곳에 전국에서 관광객들이 모여들게 되고 이러한 소문의 진상을 확인하기 위해 감독과 제작진은 주민들과 목격자들의 진술을 바탕으로 심령 탐험 전문가들과 함께 탐사에 나서게 된다. 그리고 제작진들이 클롭힐에서 탐사하는 동안 말로 설명할 수 없는 기이한 체험을 하게 되는데...과연 그들에게 무슨 일이 일어난 것일까?', '영국 동쪽에 위치한 평화롭고 아름다운 작은 마을 클롭힐에는 오래 전에 폐허가 된 한 교회가 있다', 'https://www.youtube.com/watch?v=_Q4ocdGj4uA', null, DEFAULT, DEFAULT, 1, 21);
+INSERT INTO TB_DETAIL_FILM
+VALUES(SEQ_DFILM_ID.NEXTVAL, '누군가 당신을 노린다!자신의 일상을 매번 SNS로 공유하는 제시는 졸업식 하루 전날 파티에서 남친의 외도를 발견하고, 낯설지만 같은 경험을 갖고 있는 킴과 급 친해진다. 졸업 선물로 받은 새 휴대폰과 함께 친구들과 향한 클럽, 그곳에서 킴은 제시의 핸드폰과 함께 사라지는데. 추적장치로 킴을 찾아 나선 제시는 어떤 집 앞에 서게 되고… 과연 이곳은 어디이며 무슨 비밀이 있는 걸까?', '한 번 찍히면 벗어날 수 없다! <리커버리>', 'https://www.youtube.com/watch?v=0Oz4pz5HAhY', null, DEFAULT, DEFAULT, 1, 22);
+INSERT INTO TB_DETAIL_FILM
+VALUES(SEQ_DFILM_ID.NEXTVAL, '어느 날 부턴가 의문의 목소리가 엘사를 부르고, 평화로운 아렌델 왕국을 위협한다. 트롤은 모든 것은 과거에서 시작되었음을 알려주며 엘사의 힘의 비밀과 진실을 찾아 떠나야한다고 조언한다. 위험에 빠진 아렌델 왕국을 구해야만 하는 엘사와 안나는 숨겨진 과거의 진실을 찾아 크리스토프, 올라프 그리고 스벤과 함께 위험천만한 놀라운 모험을 떠나게 된다. 자신의 힘을 두려워했던 엘사는 이제 이 모험을 헤쳐나가기에 자신의 힘이 충분하다고 믿어야만 하는데.. 두려움을 깨고 새로운 운명을 만나다!', '영화 초반에 나오는 꼬마 시절 엘사와 안나는 귀여움이 지나치다. 이번 신작에서도 등장한 꼬마 엘사와 꼬마 안나는 아버지가 해주는 마법의 숲 이야기를 초롱초롱한 눈으로 경청한다. 아버지의 이야기가 끝난 후 엘사와 안나는 어머니의 자장가를 들으며 바로 잠에 들지만, 여기에는 숨겨진 비밀이 있다. 이 날이 엘사와 안나가 겨울왕국 전편에서 눈사람을 만들며 놀던 날과 바로 같은 날인 것이다. 전편은 잠에 든 엘사를 안나가 깨우며 눈 사람을 만들자며 졸라대면서 시작되는데, 이번 2편에서는 안나가 눈사람은 이따 만들자라고 말하는 장면이 있어 2편의 초반부와 1편의 초반부가 이어짐을 암시', 'https://www.youtube.com/watch?v=eSEs4B4H-EA', null, DEFAULT, DEFAULT, 1, 23);
+INSERT INTO TB_DETAIL_FILM
+VALUES(SEQ_DFILM_ID.NEXTVAL, '로건의 제임스 맨골드 감독이 연출한 2019년작 레이싱 전기영화. 1966년 포드의 CEO였던 헨리 포드 2세의 명령에 따라 당시 르망 24시에서 연속으로 우승한 대회 최강자 페라리를 꺾으려는 포드의 도전사와 그 뒤에 있던 자동차 디자이너와 엔지니어들의 이야기를 그리고 있다.', '싱크로율 100% 도전기 매 영화 놀라운 체중 변화로 메소드 연기의 진수를 보여주는 크리스찬 베일은 <포드 V 페라리>에서 켄 마일스의 역을 맡아 30Kg 이상을 감량했다. 그는 <포드 V 페라리>를 마지막으로 더 이상의 체중 감량이나 증량을 통해 자신을 변화시키지 않을 것이라고 선언했다. 또한 맷 데이먼은 곱슬머리로 유명했던 캐롤 셸비역을 위해 머리를 염색하고 생애 처음으로 파마도 했다.', 'https://www.youtube.com/watch?v=sn7wcMigCCo', null, DEFAULT, DEFAULT, 1, 168);
+INSERT INTO TB_DETAIL_FILM
+VALUES(SEQ_DFILM_ID.NEXTVAL, '베스트셀러 미스터리 작가가 85세 생일에 숨진 채 발견된다. 그의 죽음의 원인을 파헤치기 위해 경찰과 함께 탐정 베노잇 블랑이 파견 되는데…', '이 영화는 화면에 나타나지 않은 목소리 출연이 아닌 실제 사람으로 20년 만에 나온 프랭크 오즈의 첫 영화다.', 'https://www.youtube.com/watch?v=KJF6vs5SuUs', null, DEFAULT, DEFAULT, 1, 25);
+INSERT INTO TB_DETAIL_FILM
+VALUES(SEQ_DFILM_ID.NEXTVAL, '모두가 진실을 숨기고 있다! 이영애의 14년 만의 스크린 복귀작 2019 가장 강렬한  스릴러', '나를 찾아줘에는 정연과 명국(박해준 역) 부부, 그리고 정연과 가장 날 선 대립 구도를 형성하는 홍경장 외에도 히든 캐릭터가 꽤 많이 나온다', 'https://www.youtube.com/watch?v=WY1odOmjJi4', null, DEFAULT, DEFAULT, 1, 26);
+INSERT INTO TB_DETAIL_FILM
+VALUES(SEQ_DFILM_ID.NEXTVAL, '영화 블랙머니(BLACK MONEY)는 IMF이후, 외국자본이 한국의 은행을 헐값에 인수한후 이익을 챙기고 떠난 사건을 바탕으로 창작한 영화다.', '조진웅은 유부남이다', 'https://www.youtube.com/watch?v=alSU8mnZCaM', null, DEFAULT, DEFAULT, 1, 27);
+INSERT INTO TB_DETAIL_FILM
+VALUES(SEQ_DFILM_ID.NEXTVAL, '영화 러브 앳(Love at Second Sight)은 프랑수와 시빌, 조세핀 자피 주연의 프랑스의 로맨스 멜로 영화다.', '세상바뀌면서 니 마누라 찾자고 날뛰는데 니가 원하는데로 니 마누라를 찾으면 너야 좋겠지만.니 마누라는 어떤 기분이겠냐라는 생각이.안들수가 없습니다. (돌아갈거면 혼자가야지 싶어요.)', 'https://www.youtube.com/watch?v=9AeMsgXFUYE', null, DEFAULT, DEFAULT, 1, 28);
+INSERT INTO TB_DETAIL_FILM
+VALUES(SEQ_DFILM_ID.NEXTVAL, '당신은 지금 몇 번째 집에 살고 있나요? 혼자 서울살이를 하고 있는 신문사 편집기자 은서는 살던 집의 계약이 끝나가고 정착할 마음에 드는 집을 찾지 못하자 아버지가 살고 있는 고향 집에 잠시 머물기로 한다. 인천에서 24시간 출장 열쇠를 전문으로 하는 아버지 진철은 가족들이 떠나버린 집에서 혼자 살고 있다.', '아련하고 먹먹하고 따뜻한? 감성 영화인듯!', 'https://www.youtube.com/watch?v=SiOlXXJ6Y4o', null, DEFAULT, DEFAULT, 1, 353);
+INSERT INTO TB_DETAIL_FILM
+VALUES(SEQ_DFILM_ID.NEXTVAL, '사랑이란 무엇일까 스스로 질문을 많이 했고, 그 질문에 답을 할 수 있는 영화를 찍고 싶었다. 자기 자신보다 타인을 더 사랑할 수 있는 일은 누구나 할 수 없는 용감한 일.', '11월 14일 개봉 이래로 팬덤 윤희들(a.k.a 만월단)까지 만들어내며 연일 호평일색.', 'https://www.youtube.com/watch?v=dOeHK4p5Ypw', null, DEFAULT, DEFAULT, 1, 30);
+INSERT INTO TB_DETAIL_FILM
+VALUES(SEQ_DFILM_ID.NEXTVAL, '수영 선수 헤일리는 허리케인이 오고 있는데 아버지 데일리와 연락이 안된다는 언니의 말을 듣고 아버지를 찾아 예전에 살던 집에 간다. 하지만 아버지는 악어에게 공격당해 부상당한 상태, 둘은 집 지하실에 갇혀버린다. 폭풍우로 물은 점점 불어나는데다가 악어는 점점 수가 늘어나며 두 부녀를 위협하는데...', '한 성격 하는 헤일리는 냅다 샛길로 빠져 이동하고 웨인은 다른 차들을 말리느라 결국 헤일리가 마을로 들어가는 걸 막지 못한다.', 'https://www.youtube.com/watch?v=khB7b8h7zbk', null, DEFAULT, DEFAULT, 1, 31);
 
 
 
@@ -3494,49 +3502,174 @@ INSERT INTO TB_FILM_IMAGE
 VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '콜미바이유어네임.jpg', 19, 19);
 INSERT INTO TB_FILM_IMAGE
 VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '미드나잇인파리.jpg', 20, 20);
+INSERT INTO TB_FILM_IMAGE
+VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '파라노말다이어리.jpg', 21, 21);
+INSERT INTO TB_FILM_IMAGE
+VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '리커버리.jpg', 22, 22);
+INSERT INTO TB_FILM_IMAGE
+VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '겨울왕국2.jpg', 23, 23);
+INSERT INTO TB_FILM_IMAGE
+VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '포드V페라리.jpg', 168, 168);
+INSERT INTO TB_FILM_IMAGE
+VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '나이브스아웃.jpg', 25, 25);
+INSERT INTO TB_FILM_IMAGE
+VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '나를찾아줘.jpg', 26, 26);
+INSERT INTO TB_FILM_IMAGE
+VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '블랙머니.jpg', 27, 27);
+INSERT INTO TB_FILM_IMAGE
+VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '러브앳.jpg', 28, 28);
+INSERT INTO TB_FILM_IMAGE
+VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '집이야기.jpg', 353, 353);
+INSERT INTO TB_FILM_IMAGE
+VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '윤희에게.jpg', 30, 30);
+INSERT INTO TB_FILM_IMAGE
+VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '크롤.jpg', 31, 31);
 
 
 -- REVIEW SAMPLE DATA
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '리뷰내용 1', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default ,2, 3);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '리뷰 내용 2', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 1, 2);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '리뷰 내용 03', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 4, 1);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '뤼뷰 내용 04', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 5, 5);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '리뷰 내용 05', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 6, 6);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '황금시대의 구하지 그들은 내는 놀이 노래하며 많이 사막이다. 피가 스며들어 인류의 얼음과 것이다. 유소년에게서 심장의 위하여, 찾아 위하여서. 가는 사랑의 뛰노는 원질이 날카로우나 꽃이 있는가? 그와 것은 길지 대한 끓는 황금시대를 수 끓는다. 얼마나 꽃 바이며, 위하여서, 방황하였으며, 맺어, 것이다. 청춘을 피어나는 끓는 바이며, 대중을 이것을 같이, 이성은 할지니, 부패뿐이다. 그들의 작고 있는 간에 불어 노래하며 실현에 있다. 그들은 위하여 풀밭에 반짝이는 생생하며, 사막이다. 낙원을 그와 거친 간에 새 끓는다. 우는 이성은 피어나는 것이 대한 같이, 끝까지 뿐이다.
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '안녕베일리 후기??(스포있음)
 
-고동을 새 지혜는 있으랴? 이성은 공자는 천지는 몸이 것이다. 길을 밥을 이상은 그림자는 방황하였으며, 청춘은 우리의 것이다. 피가 보내는 오직 청춘의 우리의 쓸쓸하랴? 밥을 노래하며 크고 뜨고, 그것을 것이다.보라, 교향악이다. 인생을 얼음에 광야에서 우리 있는 피고 위하여서 교향악이다. 생생하며, 살 만물은 반짝이는 평화스러운 부패를 것이다. 가슴이 커다란 듣기만 가는 황금시대다. 설산에서 군영과 설레는 우리 거친 힘있다. 소금이라 속에서 밝은 주며, 뛰노는 보라.
+1. 킬링타임용으로 더할나위 없이 좋다. 여러 요소 덕에 관객들의 실소가 꾸준히 나온다.
+2. 함께하는 반려동물은 없지만, 초장부터 눈물샘 자극.
+3. 원작을 봐야알겠지만, 영화는 한국 아침드라마 정도의 스토리라인. 뻔하지만 어느새 집중하게 되고 재밌다.
+4.다른 개를 제외하고 베일리만 그런건가? 가 가장 큰 의문. 무지개 다리를 건너고도 주인과의 연이 이어진다는 건 좋았지만ㅜㅜ다른 견주는 무슨 죄야.
+5. 개봉당시엔 관심도 없던 전 작 찾아 볼 예정.', default, default, default, default, default, sysdate, sysdate, 2, 3);
 
-얼음 주며, 보이는 인도하겠다는 꽃이 이 같은 품으며, 때까지 때문이다. 위하여, 싶이 청춘을 소금이라 밝은 힘차게 군영과 가치를 듣는다. 간에 꽃 평화스러운 것이다. 피에 인생에 동산에는 힘차게 있는 얼음에 못할 무엇을 부패뿐이다. 무한한 보이는 심장은 발휘하기 사막이다. 구하기 목숨이 청춘은 창공에 것이다. 이상의 하는 용기가 옷을 인생을 눈이 살 듣기만 길을 황금시대다. 온갖 피는 간에 원질이 우리의 보는 구할 동력은 사막이다. 온갖 인간에 목숨을 평화스러운 충분히 기쁘며, 착목한는 쓸쓸하랴? 그러므로 대한 광야에서 대중을 생명을 어디 노년에게서 찾아 원질이 것이다. 같이 원대하고, 얼마나 아니다.', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 2, 8);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '이것은 리뷰 내용 07', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 3, 6);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '이것은 리뷰 내용 08', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 4, 4);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '이것은 리뷰 내용 09', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 2, 3);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '이것은 리뷰 내용 10', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 3, 2);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '이것은 리뷰 내용 11', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 4, 1);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '이것은 리뷰 내용 12', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 2, 2);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '이것은 리뷰 내용 13', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 6, 3);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '이것은 리뷰 내용 14', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 7, 4);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '이것은 리뷰 내용 15', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 8, 5);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '이것은 리뷰 내용 18', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 2, 8);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '이것은 리뷰 내용 19', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default ,3, 1);
-INSERT INTO TB_REVIEW
-VALUES(SEQ_REVIEW_ID.NEXTVAL, '이것은 리뷰 내용 20', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, default , default , 4, 2);
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '웃음도 눈물도 얻지 못한 착취
+부산에 홀로 사는 말순(나문희)에게, 오래전 집을 나간 딸의 딸인 공주(김수안)가 갓난아이인 동생을 등에 업고 나타난다. 말순의 딸이 세상을 떠나자 갈 곳이 없어진 공주가 말순의 집에 살게 된다. 말순과 공주는 생활비가 부족한 상황에서도 티격태격하면서 생황을 이어가고 있다. 그렇게 시간이 지나면서 서로가 서로에게 소중한 가족이 된다. 그러던 중 말순에게 치매가 찾아오고, 이들의 생활은 이제 앞을 알 수 없게 된다. 허인무 감독의 장편 연출 데뷔작인 <감쪽같은 그녀>는 나문희와 김수안, 두 배우를 내세운 코미디이자 눈물을 짜내려는 신파극이다. 그런 만큼, 이 영화는 같은 장르의 영화들이 해온 길을 고스란히 걸어간다.', default, default, default, default, default, sysdate, sysdate, 2, 3);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '어떻게 한치의 오차를 벗어나지 않을까
+재밌게 그려지다가 신파로 마무리되는 영화
+어떻게 한치의 오차를 벗어나지 않을까 싶었다
+
+그래도 김수안과 나문희의 연기 뿐만 아니라 아역들의 연기가 좋아서 기분좋게 관람할 수 있는 영화이다', default, default, default, default, default, sysdate, sysdate, 1, 5);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '1. 남들과 다르다는 것은 어떤 경우에 개성이라는 이름으로 칭송받을 수 있지만 대다수의 경우에서 그것은 차별 당할 수 있는 여지를 준다. 우리나라에서 다문화 가정 자녀들이 겪는 일이기도 하고 지체 장애가 있는 사람들, 성소수자들도 일상에서 개성이라며 인정받는 것보다는 차별당하고 무시 당하는 경우가 더 많다. 가정이나 학교 혹은 직장에서 차별 당하고 무시 당한 존재들은 그것에 좌절에 무너지거나 그것을 극복한다. 다만 아주 소수의 경우로, 차별 당한 존재들은 괴물이 되기도 한다. 영화나 소설 중 많은 이야기들은 이 존재들에 대한 이야기를 다루고 있다. 이 이야기들은 대체 "괴물은 멀리 있지 않다"는 말을 한다. 토드 필립스의 영화 조커는 히어로무비 역사상 최고의 빌런으로 손꼽히는 조커를 우리의 일상 곁으로 끌어내린다. 가히 무자비한 짓이라고 볼 수 있다.', default, default, default, default, default, sysdate, sysdate, 4, 7);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '잔잔하게 보기 좋은 한국영화의 대들보
+임권택 감독님을 다룬 영화', default, default, default, default, default, sysdate, sysdate, 5, 5);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '<인피니티 워>에 날아와 박힌 MCU 10년 간의 결과물들, 관객들의 혼을 쏙 빼놓는 인피니티 건틀릿으로 완성되다.
+
+마블 시네마틱 유니버스가 <아이언맨>으로 첫선을 보인 후로 10년간, 18편에 이르는 실사 영화화가 이루어졌고 유독 인기가 대단한 한국을 비롯해 전 세계가 MCU에 열광해 왔다. 그리고 드디어 이 모든 시리즈를 관통하여 단 하나의 작품에 집대성한 결과물이 세상에 모습을 드러냈다.
+<어벤져스 : 인피니티 워> 는 분명 전례에 없었고 아마 앞으로도 시도되기 힘들, 영화사에 한 획을 긋는 시도를 한 작품임엔 틀림없다.
+이 영화의 완성도 자체가 명작, 걸작 소리를 들을 만큼 빼어나다고 할 수는 없겠으나 본작은 자신이 그동안 쌓아온 장점들을 일거에 폭발시킨다.
+<돈옵저>, <저스티스 리그>를 감상했을 때 완성도는 많이 아쉽지만 액션 시퀀스들은 인상적이었어 정도의 반응이었다면 <인피니티 워> 내에서의 액션 시퀀스들은 탁월함과 경이로움 사이의 어딘가에 위치한다. 운명을 건 총력전인 만큼 캐릭터들의 개성과 전투 스타일이 잘 살아있으며 알아보기 힘들다는 단점 같은 것도 적으며 화려한 시각 효과와 압도적인 연출은 덤이다.
+조금 더 놀라운 사실은 동시다발적으로 이루어지는 침공과 최강최흉의 빌런에 맞서기 위해 모든 영웅들이 모여 전투를 벌이는 통에 필연적으로 전장이 나뉘고 교차편집을 통해 그 모습이 비춰짐에도 각 캐릭터들의 상호 작용과 활약상, 분량 분배가 매우 효율적으로 보여진다는 것이다.', default, default, default, default, default, sysdate, sysdate, 6, 6);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '잔잔하게 보기좋은 영화', default, default, default, default, default, sysdate, sysdate, 2, 8);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '<기생충> 스포 없는 간단 후기
+-
+봉, 미쳤습니까?
+한국영화 100주년을 기념이라도 라는 듯한 걸작의 탄생.
+-
+<기생충>을 향한 내 기대가 낮았다고 하면, 부모님께 장학금 타겠다고 말하는 것보다 심한 거짓말이다. 기대치가 없거나 낮았던 영화들 말고, 기대치가 하늘을 뚫었던 영화임에도 기대치를 웃도는 영화가 있다. "혹시 <기생충>이 바로 그 영화냐"라는 질문을 당신이 한다면, 참으로 시의적절하다.
+-
+봉준호 감독이 사랑받는 가장 큰 이유는 일타쌍피의 장인이란 것이다. 대중적인 재미와 예술적 완성도 모두 A급으로 보장하는 장르 영화 감독이라니, 불가능해 보이지만 이를 가능케 하는 감독이 바로 봉준호다. 필자가 호평한 영화들 중 재밌냐는 질문에 대답하기 난감한 녀석들이 종종 있다. 하지만 <기생충>은 과감하게 오지게 재밌다!!!라고 말할 수 있다. 봉준호 감독님, 제가 좋아하는 영화 함부로 추천할 수 있게 해주셔서 감사합니다.', default, default, default, default, default, sysdate, sysdate, 3, 6);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '코믹스 영화 최초 제76회 베니스국제영화제 황금사자상의 영예를 안은 토드 필립스 감독의 영화 <조커> (2019)는 무의식에 내재되어 있는 트라우마나 콤플렉스를 밖으로 배설해 정화한다는 카타르시스의 정신분석학적 정의를 ‘조커’ 캐릭터로 풀어낸 작품이다. ‘조커’의 기원은 원작에서 공식화된 탄생 이야기가 없었기 때문에 토드 필립스 감독은 본인이 생각하는 다면적인 ‘조커’를 구상할 수 있었을 뿐만 아니라, 불명확성으로 가득한 ‘조커’의 정체성이 자리를 잡고 감정이 정화되는 과정을 설득력 있게 펼쳐낼 수 있었다. 또한, 영화 속 시대적 배경을 코믹스 속 세상에서 벗어나 1970년대부터 1980년대까지 안팎으로 들끓었던 미국의 상황을 고려해 1981년 고담시로 설정했는데, 이는 ‘조커’로 재탄생하기 전 ‘아서 플렉’과 관련된 설정과 맞물리며 이 영화가 제공하고자 한 카타르시스를 더욱더 극적으로 일으킨다.', default, default, default, default, default, sysdate, sysdate, 4, 4);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '베일리야 사랑해', default, default, default, default, default, sysdate, sysdate, 2, 3);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '이 영화의 가장 재미있는 포인트는 관객의 위치다. 늘 계획하는 법을 교육받아온 우리는, 반지하와 마당있는 집 그 사이 어딘가에 아직도 살고있다.', default, default, default,default, default, sysdate, sysdate, 3, 8);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '조커는 DC 코믹스의 대표적인 빌런인 조커에 대한 오리진 영화이지만, 개인적으로는 DC의 캐릭터들과 세계관을 빌려 쓴 심리 스릴러라고 보는게 좀 더 맞는 것 같다. DCEU와는 동떨어진 영화로 제작되며 개봉 전 예고편부터 영화제에서의 반응들까지 여러모로 이슈가 된 이 영화에 대해 나름 기대는 컸다.', default, default, default, default, default, sysdate, sysdate, 4, 10);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '모두가 목을 빼고 기다렸던 마블 시네마틱 유니버스의 초대형 이벤트는 시작부터 최고의 영화가 되긴 어려웠다. 등장 해야하는 히어로들의 수가 너무나도 많기 때문에 아무리 편집을 잘 하더라도 러닝 타임이 140분이 넘는 영화에서 한 순간도 관객의 집중을 잃지 않게 만드는 것은 불가능 했다. 하지만 감독 루소 형제는 자신들의 최대 능력을 발휘해 정말 최대한으로 완성도를 끌어 올렸다. 우리가 마블 영화에서 기대하는 수준의 영화를 만들어 내는 데에는 절대 실패하지 않았다.', default, default, default, default, default, sysdate, sysdate, 2, 11);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '카메라를 멈추면 안 돼! 스핀오프 할리우드 대작전!은 카메라를 멈추면 안 돼! 이후 다시 한번 원테이크 생방송 좀비물을 제작하는 이야기를 다룬다. 제목은 스핀오프라고 돼있지만 사실은 속편이라고 봐도 되는 이 영화는 꽤나 이른 타이밍에 개봉했다는 생각이 들기도 했고, 과연 전편에 이어 다시 한번 나를 놀라게 할 수 있는지 궁금했지만, 안타깝게도 이 영화는 소포머어 징크스를 정말 세게 맞은 듯했다.', default, default, default, default, default, sysdate, sysdate,6, 3);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '카메라를 멈추면 안 돼! 스핀오프 할리우드 대작전!은 카메라를 멈추면 안 돼! 이후 다시 한번 원테이크 생방송 좀비물을 제작하는 이야기를 다룬다. 제목은 스핀오프라고 돼있지만 사실은 속편이라고 봐도 되는 이 영화는 꽤나 이른 타이밍에 개봉했다는 생각이 들기도 했고, 과연 전편에 이어 다시 한번 나를 놀라게 할 수 있는지 궁금했지만, 안타깝게도 이 영화는 소포머어 징크스를 정말 세게 맞은 듯했다.', default, default, default,default, default, sysdate, sysdate, 7, 4);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '베일리베일리베일리 귀여웡', default, default, default, default, default, sysdate, sysdate, 2, 8);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '기생충은 최고의 영화이다.', default, default, default,default, default, sysdate, sysdate, 3, 11);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '조커는 DC 코믹스의 대표적인 빌런인 조커에 대한 오리진 영화이지만, 개인적으로는 DC의 캐릭터들과 세계관을 빌려 쓴 심리 스릴러라고 보는게 좀 더 맞는 것 같다.', default, default, default,default, default, sysdate, sysdate, 4, 10);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '오랜만에 괜찮은 영화를 봤네요 추천드립니다.', default, default, default, default, default, sysdate, sysdate, 18, 3.);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '정말 짜릿한 영화였습니다. 연기나 영상 음악들이 잘 어우러져 정말 재밌게 봤습니다. 추천드립니다.
+생각없이 보기 좋은 영호네요', default, default, default, default, default, sysdate, sysdate, 17, 3);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '따뜻하고 훈훈한 영화입니다.', default, default, default,default, default, sysdate, sysdate, 2, 4);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '''더 위치'' - 공포의 또 다른 얼굴
+인간의 눈과 뇌에는 ''편집'' 기능이 없다. 이는 눈 앞에서 벌어지는 상황에 대해 있는 그대로 받아들이고 이해한다는 의미다. 그러나 영화는 편집을 한다. 화면의 전환으로 만들어진 리듬은 인간의 감각을 자극해 사건에 더 깊게 빠져들게 만든다. 영화에서 편집은 영화 속 인물의 현재 심경을 보여주는 역할을 하기도 하고 관객을 영화 속 인물과 동일시하는 역할도 한다. 그래서 영화에서 편집은 현장 연출만큼 중요한 일이다. 우리에게 익숙한 공포영화들은 빠른 템포로 만들어진다. 이는 관객에게 ''긴장''이라는 감각을 심어주기 위해 빠른 리듬감으로 심장박동이 빨라지게 하기 위해서다. 편집으로 만들어내는 긴장감은 알프레드 히치콕부터 강조됐다. 서스펜스를 극대화하기 위해 빠른 편집과 반복되는 음악은 관객에게 스트레스와 긴장감을 준다(물론 이것이 해소된 다음에 얻게 될 카타르시스를 노린 계산이다).
+
+그런데 최근 몇 편의 공포영화들은 마치 알프레드 히치콕 앞에 반기를 드는 느낌이다. 이들은 편집과 음악의 리듬으로 공포를 주는 기존의 방식을 거부하고 새로운 방식의 공포를 선사한다. 이 공포는 느리고 정적이다. 이 리듬감은 때로 지루하다는 인상도 줄 수 있다. 그런데 느린 공포의 감각이야말로 인간의 시청각에 가장 근접한 상태다. 앞서 말한대로 인간의 눈에는 편집 기능이 없기 때문이다. 느린 리듬의 공포영화들은 휘발성이 강하고 말초적인 공포가 아니라 근원적이고 오래 남는다. 이는 ''공포''의 실체에 도달하면서 그렇게 얻어진 감각을 뇌리에 깊게 새겨둔다는 의미다. 느린 공포영화의 가장 대표적인 작품은 구로사와 기요시의 ''큐어''다. 그저 이야기를 쫓아가는데 충실한 이 영화는 소설책을 읽듯이 따라가다가 덜컥 공포를 안겨준다. 이야기를 다 읽고 봐야 무서운 줄 아는 것이다. 그런데 그 공포는 대단히 깊게 뇌리에 박힌다. 여기서 감독은 영화에 연출적 기교를 시도하지 않는다. 이야기의 공포가 더 깊게 전해져야 하기 때문이다.', default, default, default, default, default, sysdate, sysdate, 13, 4);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '
+영알못 님의 리뷰
+2018.01.15 20:46:20
+ 
+    
+대문호 한스 안데르센의 동화 중에서 ''인어공주'' 이야기를 모르는 사람은 없을 것이다. 모든 이가 아는 그 이야기를 주성치가 자신의 새 영화의 뼈대로 삼아, 자신만의 ''병맛 개그'' 코드를 집어넣은 것이 바로 ''미인어''다.
+
+2013년 ''서유항마편''에 이후 오랜만에 복귀다. 주성치식 ''인어공주'' 이야기인데, 예전 MBC ''무한도전''에서 개그맨 박명수가 과거부터 자주 언급하던 개그 "오호츠크 해 돌고래 떼죽음" 때문에 진짜 오호츠크 해까지 가서 촬영했던 방송분처럼 주성치 또한 코미디 영화에서 환경문제를 끄집어냈다는 점은 다소 의외였다.
+
+과거 ''서유기 시리즈''를 비롯한 90년대 풍미했던 그의 영화들, 한국에서 유명한 ''소림축구'', ''쿵푸허슬''에서 반영해왔던 패러디 개그와 어김없이 망가지는 여자배우들의 모습은 이번 ''미인어''에서도 변함없었다.
+
+하지만 예전 같지 않다는 느낌도 동시에 받았다. 특히, 얼굴과 몸짓 등 슬랩스틱으로 많이 웃겼던 전작들과 달리 ''미인어''는 그런 요소들이 많이 절제되었고, 수준이 떨어지는 CG들이 너무 많이 사용했던 게 매력을 반감시킨 요소가 되었다. 결국, 여주인공 ''산산''의 촌스러운 화장과 옷차림처럼, 주성치의 ''미인어''도 촌스러웠다.
+
+-2017년 2월 16일 ''미인어'' 언론/배급 시사회 관람-
+
+원문링크 : http://www.munhwanews.com/news/articleView.html?idxno=39580', default, default, default, default, default, sysdate, sysdate, 12, 4);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '리가 믿고 있는 건 과연 진실일까?
+30년 전 살인을 저지른 미스미(야쿠쇼 코지). 그는 자신이 일하던 공장 사장을 죽인 혐의로 재판에 넘겨졌다. 강도살인죄였다. 미스미는 사장의 돈을 노리고 우발적으로 살해했다고 자백한다. 혐의가 사실로 밝혀진다면 사형을 면하기 어려운 처지였다. 변호사 시게모리(후쿠야마 마사하루)가 미스미의 변론을 위해 투입된다.
+
+시게모리는 미스미의 형을 감형시키기 위해 치밀한 변호 전략을 세운다. 돈을 훔치기 위해 살해한 게 아니라 살해한 뒤 돈을 훔치려 한 사실을 법정에서 내세워, 강도 살인이 아닌 단순 살인 및 절도 혐의가 적용될 수 있도록 사전에 입을 맞춘 것이다. 또 다른 전략으로는 한 주간지가 보도한 사실을 근거로 사장의 부인 미츠에(사이토 유키)가 남편이 가입한 보험의 보험금을 노리고 그에게 청부 살해를 의뢰한 것으로 짜 맞춘다.
+
+하지만 돌발 변수가 발생한다. 살해된 공장 사장의 딸 시키에(히로세 스즈)가 아버지와 얽힌 어두운 과거를 폭로하면서 법정에서 이를 증언하겠다고 나선 것이다. 이런 상황에서 미스미마저 죽은 공장 사장을 자신이 살해하지 않았다며 자백을 번복하고 나섰다. 이로 인해 양형 판결을 앞둔 이번 사건은 점점 더 미궁 속으로 빠져든다. 죄의 유무부터 다시 다퉈야 할 판이었다.
+
+진실을 외면해온 변호사.. 그를 공포에 떨게 한 것
+
+영화 <세 번째 살인>은 진실 추구보다 재판에서의 승리만을 뒤쫓던 변호사 시게모리가 자신을 해고한 공장 사장에 앙심을 품고 살해, 사형이 거의 확실시되는 미스미의 변호를 맡아 점차 사건의 진실에 접근해간다는 이야기를 그린 작품이다.
+
+극 중 시게모리는 재판에서 이기기 위해서라면 진실보다 의뢰인에게 유리한 방향을 선택하고 전략을 짜는 냉철한 캐릭터로 묘사돼있다. 그가 내세워온 철학은 명확했다. 법정은 진실을 해명하는 장소가 아니라는 게 평소 그의 신념이다.
+
+시게모리의 이러한 성향은 사건 담당 검사와의 대화를 통해서도 드러난다. 그는 검사에게 “검찰이 무턱대고 혐의를 단정한 것 아니냐”고 묻는다. 그러자 검사는 시게모리에게 “당신은 오직 감형 생각밖에 없지 않느냐”며 반문한다. 자신은 변호사니까 당연하다고 답하는 시게모리. 그에게 검사는 “진실을 외면하는 건 범인이 죄와 마주하는 걸 방해하는 것”이라고 일갈한다.
+
+극 중 미스미는 자신의 범죄 행위에 대해 진술을 끊임없이 번복하면서 시게모리는 물론이며 관객들로 하여금 과연 무엇이 진실인지 혼돈 속으로 빠트린다. 어떤 경우에는 자신이 벌인 범행에 대해 깊이 반성하는 듯한 태도를 보이다가도, 또 어떤 경우에는 자신이 죽이지 않았다며 발뺌하거나 그와는 반대로 자신이 죽인 이유를 알고 싶지 않느냐며 반문하곤 했다.
+
+똑같이 사람을 죽였음에도 법의 속성상 그 원인에 따라 형량은 달라지게 마련이다. 가령 원한에 의한 살해와 금전 관계에 의한 살해를 놓고 법의 잣대로 그 경중을 저울질할 경우 결과적으로 사람을 죽인 건 마찬가지임에도 금전 목적의 살해가 더 무겁게 받아들여진다. 원한은 살해를 유발한 만한 동기로 간주되기 때문이다. 하지만 이 모든 것들은 결국 사람이 사람을 판가름해야 하는 상황. 진실조차 명확하지 않은데 누가 누구를 심판하고, 더구나 잣대마저도 모호한 현실은 법체계가 갖는 모순 그 자체일 것이다.', default, default, default, default, default, sysdate, sysdate,8, 5);
+
+INSERT INTO TB_REVIEW (ID, CONTENT, INAPPROPRIATE_COUNT, SPOILER_COUNT, LIKE_COUNT, SPOILER_CHECK, STATUS, MODIFY_DATE, CREATE_DATE, FILM_ID, MEMBER_ID) 
+VALUES (SEQ_REVIEW_ID.NEXTVAL, '우디 앨런의 최고 흥행작
+할리우드 작가 출신이자 현재 자신의 소설을 집필중인 길(오웬 윌슨)은 약혼녀 이네즈(레이첼 맥아담스)와 함께 여행 차 파리에 방문한다. 파리의 로맨틱함에 흠뻑 매료된 길과는 달리, 이네즈에게 파리란 그저 유럽의 흔한 도시 중 하나일 뿐이다. 그리고 적어도 지금 그녀에겐, 비 오는 날의 파리가 주는 정취 보다는 결혼 예물로 할 다이아 반지와 신혼집에 둘 가구의 종류가 훨씬 중요해 보인다.
+
+지나치게 현실적인 약혼녀의 허영과 재수 없는 그녀의 친구 부부에게 치일대로 치여 완전히 지쳐버린 길은 그들과 함께 파티장에 가는 대신, 홀로 파리의 밤거리를 거닐며 기분전환을 하는 쪽을 택하고 발걸음을 옮긴다. 그런데, 낯선 거리를 한참동안 걷던 그에게 이상한 일이 생기기 시작한다. 자정을 알리는 종소리와 함께 어디선가 낡은 푸조 한 대가 나타나 그에게 탑승을 재촉하는 것. 얼떨결에 차에 타게 된 길은 그들과 함께 정체 불명의 파티장으로 들어서게 되는데, 글쎄 그 자리에 스콧 피츠제랄드와 젤다 피츠제랄드가 서 있는 것이 아닌가.
+
+이미 눈치 챘겠지만 <미드나잇 인 파리>는 과거로의 시간 여행을 다룬 타임 슬립 영화다. 전 후 달러 가치가 크게 상승함에 따라 상당수의 미국인 예술가들은 적지 않은 수입으로도 꽤 윤택한 생활을 할 수 있는 프랑스로 모여 정착한다. 그 덕분에 1920년대 파리는 예술가들의 천국이 되었고, 지금까지 인구에 회자되는 수많은 명작들이 그 시기 즈음에 탄생하게 된 것도 바로 이 때문이다.', default, default, default, default, default, sysdate, sysdate,20, 5);
+
+
+
 
 -- RATING REVIEW SAMPLE DATA
 INSERT INTO TB_RATING_REVIEW
@@ -3560,11 +3693,11 @@ VALUES (SEQ_RATING_REVIEW_ID.NEXTVAL,5,1,2,3,5,6,9,1);
 INSERT INTO TB_RATING_REVIEW
 VALUES (SEQ_RATING_REVIEW_ID.NEXTVAL,5,1,2,3,5,6,10,1);
 INSERT INTO TB_RATING_REVIEW
+VALUES (SEQ_RATING_REVIEW_ID.NEXTVAL,5,1,2,3,5,6,10,1);
+INSERT INTO TB_RATING_REVIEW
 VALUES (SEQ_RATING_REVIEW_ID.NEXTVAL,5,1,2,3,5,6,11,1);
 INSERT INTO TB_RATING_REVIEW
-VALUES (SEQ_RATING_REVIEW_ID.NEXTVAL,5,1,2,3,5,6,12,1);
-INSERT INTO TB_RATING_REVIEW
-VALUES (SEQ_RATING_REVIEW_ID.NEXTVAL,5,1,2,3,5,6,13,1);
+VALUES (SEQ_RATING_REVIEW_ID.NEXTVAL,5,1,2,3,5,6,19,1);
 INSERT INTO TB_RATING_REVIEW
 VALUES (SEQ_RATING_REVIEW_ID.NEXTVAL,5,1,2,3,5,6,14,1);
 INSERT INTO TB_RATING_REVIEW
@@ -3801,6 +3934,75 @@ INSERT INTO TB_BOARD
 VALUES(SEQ_BOARD_ID.NEXTVAL, '101010101010번째 제목입니다', '10번째 내용입니다', DEFAULT, NULL, NULL, NULL, SYSDATE, SYSDATE, DEFAULT, 6, NULL);
 INSERT INTO TB_BOARD
 VALUES(SEQ_BOARD_ID.NEXTVAL, '11111111111111번째 제목입니다', '11번째 내용입니다', DEFAULT, NULL, NULL, NULL, SYSDATE, SYSDATE, DEFAULT, 3, NULL);
+
+
+-- lIKE 
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,2,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,6,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,12,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,13,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,18,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,17,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,20,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,25,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,29,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,57,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,49,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,50,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,54,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,67,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,72,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,116,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,144,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,286,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,272,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,311,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,337,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,342,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,353,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,346,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,400,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,372,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,2,8,3);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,2,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,6,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,12,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,20,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,18,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,17,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,13,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,25,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,50,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,49,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,30,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,29,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,57,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,59,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,67,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,68,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,77,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,72,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,116,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,346,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,144,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,351,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,425,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,426,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,442,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,440,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,438,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,430,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,2,3,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,3,20,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,3,22,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,2,8,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,2,5,4);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,20,5);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,18,5);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,17,5);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,50,5);
+INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,2,4,5);
+
 
 
 COMMIT;
