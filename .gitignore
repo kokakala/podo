@@ -34,8 +34,8 @@ factoryConfiguration.json
 .recommenders/
 .metadata/
 Servers/
-apache-tomcat-8.5.45/
-apache-maven-3.6.2/
+apache-maven-3.6.3/
 .settings/
 jspwork/
 *.ucls
+bin/
