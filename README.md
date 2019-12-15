@@ -6,6 +6,10 @@
 
 기존의 영화 정보 사이트와 달리 포스터부터 트리비아까지 사용자가 직접 수정하고 찾아볼 수 있는 서비스입니다.
 
+### TEST 계정
+>ID : test@test.test<br>
+>PW : test
+
 ### Environment
 
 >Server : Apache-Tomcat 8.5.45
