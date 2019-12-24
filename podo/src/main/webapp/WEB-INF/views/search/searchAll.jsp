@@ -191,7 +191,7 @@
 		              </div>
 		
 		              <div class="single-sidebar-widget popular-post-widget">
-		                <h4 class="single-sidebar-widget__title">박스 오피스</h4>
+		                <h4 class="single-sidebar-widget__title">일별 박스 오피스</h4>
 		                <div class="popular-post-list">
 		                  <div class="single-post-list">
 		                  	<table style="width: 100%;">

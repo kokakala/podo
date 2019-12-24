@@ -102,10 +102,10 @@
 			$(function(){
 				IMP.init("imp88684528");
 			});
-			
+			/* 
 			$(document).ready(function(){
 				IMP.init("imp88684528");
-			});
+			}); */
 			
 			function freeJoin(){
 				var email = '${ loginUser.email }';
