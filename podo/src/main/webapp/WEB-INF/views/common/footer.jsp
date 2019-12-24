@@ -2,36 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-<head>
-<style>
-	#footer-wrapper{width: 100%;}
-	.footer-1>a{
-		color: #b5b5b5;
-		margin: 10px;
-	}
-	.footer-2>p{
-		margin: 0;
-		text-align: center;
-	}
-	
-	.db-inquiry-btn{
-		margin-right: 150px;
-	}
-	#caution{color:red}
-
-</style>
-   
-   <script src="resources/bootstrap/vendors/owl-carousel/owl.carousel.min.js"></script>
-   <script src="resources/bootstrap/vendors/nice-select/jquery.nice-select.min.js"></script>
-   <script src="resources/bootstrap/js/jquery.ajaxchimp.min.js"></script>
-   <script src="resources/bootstrap/js/mail-script.js"></script>
-   <script src="resources/bootstrap/js/main.js"></script>
-   
-</head>
+	<head>
+		<script
+			src="resources/bootstrap/vendors/owl-carousel/owl.carousel.min.js"></script>
+		<script
+			src="resources/bootstrap/vendors/nice-select/jquery.nice-select.min.js"></script>
+		<script src="resources/bootstrap/js/jquery.ajaxchimp.min.js"></script>
+		<script src="resources/bootstrap/js/mail-script.js"></script>
+		<script src="resources/bootstrap/js/main.js"></script>
+	</head>
 <body>
 
-	<br><br>
-	
 	<hr>
 	
 	<!--================ Start Footer Area =================-->

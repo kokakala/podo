@@ -22,33 +22,10 @@
 		<link rel="stylesheet" href="resources/bootstrap/vendors/owl-carousel/owl.carousel.min.css">
 		<link rel="stylesheet" href="resources/bootstrap/vendors/nice-select/nice-select.css">
 		<link rel="stylesheet" href="resources/bootstrap/css/style.css">
+		<link rel="stylesheet" href="resources/bootstrap/css/podo.css">
 		
 		<!-- 폰트 -->
 		<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic:700&display=swap" rel="stylesheet">
-		
-		<style>
-			
-			.search-form {
-				display: inline-block;
-				text-align: center;
-			}
-			
-			.owl-carousel .owl-item img {
-				height: 340px;
-				object-fit: cover;
-			}
-			
-			.blog__slide__img {
-				cursor: pointer;
-			}
-			
-			.modal-dialog,
-			.modal-title {
-				color: #495057;
-			}
-			
-		</style>
-		
 	</head>
 	<body>
 		<header class="header_area">

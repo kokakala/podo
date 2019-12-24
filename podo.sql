@@ -58,183 +58,182 @@ CREATE SEQUENCE SEQ_RATING_REVIEW_ID;
 CREATE SEQUENCE SEQ_GENRE_ID;
 
 CREATE TABLE "TB_MEMBER" (
-   "ID"   NUMBER      NOT NULL,
-   "IMAGE"   VARCHAR2(200),
-   "EMAIL"   VARCHAR2(30) NOT NULL,
-   "PWD"   VARCHAR2(1000) NOT NULL,
-   "NICKNAME"   VARCHAR2(30)  NOT NULL,
-   "STATUS"   VARCHAR2(2)   DEFAULT 'Y'   NOT NULL,
-   "ENROLL_DATE"   TIMESTAMP      NOT NULL,
-   "MODIFY_DATE"   TIMESTAMP      NOT NULL,
-   "GOOGLE_ID"   NUMBER      NULL,
-   "KAKAO_ID"   NUMBER      NULL,
-   "AUTHO" NUMBER  DEFAULT 1 NOT NULL,
-   "PREMIUM"  VARCHAR2(2) DEFAULT 'N' NOT NULL
+     "ID"          NUMBER NOT NULL, 
+     "IMAGE"       VARCHAR2(200), 
+     "EMAIL"       VARCHAR2(30) NOT NULL, 
+     "PWD"         VARCHAR2(1000) NOT NULL, 
+     "NICKNAME"    VARCHAR2(30) NOT NULL, 
+     "STATUS"      VARCHAR2(2) DEFAULT 'Y' NOT NULL, 
+     "ENROLL_DATE" TIMESTAMP NOT NULL, 
+     "MODIFY_DATE" TIMESTAMP NOT NULL, 
+     "GOOGLE_ID"   NUMBER, 
+     "KAKAO_ID"    NUMBER, 
+     "AUTHO"       NUMBER DEFAULT 1 NOT NULL, 
+     "PREMIUM"     VARCHAR2(2) DEFAULT 'N' NOT NULL 
 );
 
 CREATE TABLE "TB_PAYMENT" (
-  "IMP_UID" VARCHAR2(20) NOT NULL,
-  "MERCHANT_ID" VARCHAR2(25) NOT NULL,
-  "APPLY_NUM" VARCHAR2(10),
-  "PAID_AMOUNT" NUMBER  NOT NULL,
-  "PAYMENT_DATE"  TIMESTAMP NOT NULL,
-  "MEMBER_ID" NUMBER  NOT NULL
+     "IMP_UID"      VARCHAR2(20) NOT NULL, 
+     "MERCHANT_ID"  VARCHAR2(25) NOT NULL, 
+     "APPLY_NUM"    VARCHAR2(10), 
+     "PAID_AMOUNT"  NUMBER NOT NULL, 
+     "PAYMENT_DATE" TIMESTAMP NOT NULL, 
+     "MEMBER_ID"    NUMBER NOT NULL 
 );
 
 CREATE TABLE "TB_REVIEW" (
-   "ID"   NUMBER      NOT NULL,
-   "CONTENT"   CLOB      NOT NULL,
-   "INAPPROPRIATE_COUNT"   NUMBER   DEFAULT 0   NOT NULL,
-   "SPOILER_COUNT"   NUMBER   DEFAULT 0   NOT NULL,
-   "LIKE_COUNT"   NUMBER   DEFAULT 0   NOT NULL,
-   "SPOILER_CHECK"   VARCHAR2(2)   DEFAULT 'N'   NOT NULL,
-   "STATUS"   VARCHAR2(2)   DEFAULT 'Y'   NOT NULL,
-   "MODIFY_DATE"   TIMESTAMP DEFAULT SYSDATE NOT NULL,
-   "CREATE_DATE"   TIMESTAMP DEFAULT SYSDATE NOT NULL,
-   "FILM_ID"   NUMBER      NOT NULL,
-   "MEMBER_ID"   NUMBER      NOT NULL
+     "ID"                  NUMBER NOT NULL, 
+     "CONTENT"             CLOB NOT NULL, 
+     "INAPPROPRIATE_COUNT" NUMBER DEFAULT 0 NOT NULL, 
+     "SPOILER_COUNT"       NUMBER DEFAULT 0 NOT NULL, 
+     "LIKE_COUNT"          NUMBER DEFAULT 0 NOT NULL, 
+     "SPOILER_CHECK"       VARCHAR2(2) DEFAULT 'N' NOT NULL, 
+     "STATUS"              VARCHAR2(2) DEFAULT 'Y' NOT NULL, 
+     "MODIFY_DATE"         TIMESTAMP  NOT NULL, 
+     "CREATE_DATE"         TIMESTAMP  NOT NULL, 
+     "FILM_ID"             NUMBER NOT NULL, 
+     "MEMBER_ID"           NUMBER NOT NULL 
 );
 
-CREATE TABLE "TB_LIKE" (
-   "ID"   NUMBER      NOT NULL,
-   "TYPE"   NUMBER      NOT NULL,
-   "TARGET_ID"   NUMBER      NOT NULL,
-   "USER_ID"   NUMBER      NOT NULL
+CREATE TABLE "TB_LIKE"(
+     "ID"        NUMBER NOT NULL, 
+     "TYPE"      NUMBER NOT NULL, 
+     "TARGET_ID" NUMBER NOT NULL, 
+     "USER_ID"   NUMBER NOT NULL 
 );
 
 CREATE TABLE "TB_FILM" (
-   "ID"   NUMBER      NOT NULL,
-   "TITLE_KOR"   VARCHAR2(100)      NULL,
-   "TITLE_ENG"   VARCHAR2(100)      NULL,
-   "DIRECTOR"   VARCHAR2(50)      NULL,
-   "RELEASE_YEAR"   NUMBER      NOT NULL,
-   "PRODUCTION_COUNTRY"   VARCHAR2(50)      NOT NULL,
-   "PRODUCTION_STATUS"   VARCHAR2(30)      NOT NULL,
-   "GENRE_ID"   NUMBER      NOT NULL,
-   "POSTER" VARCHAR2(1000)
+     "ID"                 NUMBER NOT NULL, 
+     "TITLE_KOR"          VARCHAR2(100), 
+     "TITLE_ENG"          VARCHAR2(100), 
+     "DIRECTOR"           VARCHAR2(50), 
+     "RELEASE_YEAR"       NUMBER NOT NULL, 
+     "PRODUCTION_COUNTRY" VARCHAR2(50) NOT NULL, 
+     "PRODUCTION_STATUS"  VARCHAR2(30) NOT NULL, 
+     "GENRE_ID"           NUMBER NOT NULL, 
+     "POSTER"             VARCHAR2(1000) 
 );
 
 CREATE TABLE "TB_DETAIL_FILM" (
-   "ID"   NUMBER      NOT NULL,
-   "SYNOPSYS"   CLOB      NULL,
-   "TRIVIA"   CLOB      NULL,
-   "TRAILER"   VARCHAR2(200)      NULL,
-   "FOOTAGE"   VARCHAR2(200)      NULL,
-   "STATUS"   VARCHAR2(2)   DEFAULT 'Y'   NOT NULL,
-   "INSERTDATE" DATE DEFAULT SYSDATE NOT NULL,
-   "MEMBER_ID"   NUMBER      NOT NULL,
-   "FILM_ID"   NUMBER      NOT NULL
+     "ID"         NUMBER NOT NULL, 
+     "SYNOPSYS"   CLOB, 
+     "TRIVIA"     CLOB, 
+     "TRAILER"    VARCHAR2(200), 
+     "FOOTAGE"    VARCHAR2(200), 
+     "STATUS"     VARCHAR2(2) DEFAULT 'Y' NOT NULL, 
+     "INSERTDATE" DATE    NOT NULL, 
+     "MEMBER_ID"  NUMBER  NOT NULL, 
+     "FILM_ID"    NUMBER  NOT NULL 
 );
 
 CREATE TABLE "TB_BOARD" (
-   "ID"   NUMBER      NOT NULL,
-   "TITLE"   VARCHAR2(300)      NOT NULL,
-   "CONTENT"   CLOB      NOT NULL,
-   "VIEW_COUNT"   NUMBER   DEFAULT 0   NOT NULL,
-   "INAPPROPRIATE_COUNT"   NUMBER      NULL,
-   "SPOILER_COUNT"   NUMBER      NULL,
-   "LIKE_COUNT"   NUMBER      NULL,
-   "MODIFY_DATE"   TIMESTAMP      NOT NULL,
-   "CREATE_DATE"   TIMESTAMP      NOT NULL,
-   "STATUS"   VARCHAR2(2)   DEFAULT 'Y'   NOT NULL,
-   "MEMBER_ID"   NUMBER      NOT NULL,
-   "IMAGE_NAME" VARCHAR2(50)
-);
+     "ID"                  NUMBER NOT NULL, 
+     "TITLE"               VARCHAR2(300) NOT NULL, 
+     "CONTENT"             CLOB NOT NULL, 
+     "VIEW_COUNT"          NUMBER DEFAULT 0 NOT NULL, 
+     "INAPPROPRIATE_COUNT" NUMBER, 
+     "SPOILER_COUNT"       NUMBER, 
+     "LIKE_COUNT"          NUMBER, 
+     "MODIFY_DATE"         TIMESTAMP NOT NULL, 
+     "CREATE_DATE"         TIMESTAMP NOT NULL, 
+     "STATUS"              VARCHAR2(2) DEFAULT 'Y' NOT NULL, 
+     "MEMBER_ID"           NUMBER NOT NULL, 
+     "IMAGE_NAME"          VARCHAR2(50) 
+); 
 
-CREATE TABLE "TB_RATING_FILM" (
-   "ID"   NUMBER      NOT NULL,
-   "STAR"   NUMBER      NULL,
-   "SAW"   VARCHAR2(2)   DEFAULT 'N'   NOT NULL,
-   "MEMBER_ID"   NUMBER      NOT NULL,
-   "FILM_ID"   NUMBER      NOT NULL
+CREATE TABLE "TB_RATING_FILM" ( 
+     "ID"        NUMBER                   NOT NULL, 
+     "STAR"      NUMBER, 
+     "SAW"       VARCHAR2(2) DEFAULT 'N'  NOT NULL, 
+     "MEMBER_ID" NUMBER                   NOT NULL, 
+     "FILM_ID"   NUMBER                   NOT NULL
 );
 
 CREATE TABLE "TB_COMMENT" (
-   "ID"   NUMBER      NOT NULL,
-   "TYPE"   NUMBER      NOT NULL,
-   "CONTENT"   CLOB      NOT NULL,
-   "INAPPROPRIATE_COUNT"   NUMBER   DEFAULT 0   NOT NULL,
-   "SPOILER_COUNT"   NUMBER   DEFAULT 0   NOT NULL,
-   "LIKE_COUNT"   NUMBER   DEFAULT 0   NOT NULL,
-   "CREATE_DATE"   TIMESTAMP      NOT NULL,
-   "MODIFY_DATE"   TIMESTAMP      NOT NULL,
-   "STATUS"   VARCHAR2(2)   DEFAULT 'Y'   NOT NULL,
-   "LEVEL"   NUMBER   DEFAULT 0   NOT NULL,
-   "MEMBER_ID"   NUMBER NULL,
-   "BOARD_ID"   NUMBER      NULL,
-   "REVIEW_ID"   NUMBER      NULL
+   "ID"                   NUMBER                  NOT NULL,
+   "TYPE"                 NUMBER                  NOT NULL,
+   "TARGET_ID"            NUMBER                  NOT NULL,
+   "CONTENT"              CLOB                    NOT NULL,
+   "INAPPROPRIATE_COUNT"  NUMBER      DEFAULT 0   NOT NULL,
+   "SPOILER_COUNT"        NUMBER      DEFAULT 0   NOT NULL,
+   "LIKE_COUNT"           NUMBER      DEFAULT 0   NOT NULL,
+   "CREATE_DATE"          TIMESTAMP               NOT NULL,
+   "MODIFY_DATE"          TIMESTAMP               NOT NULL,
+   "STATUS"               VARCHAR2(2) DEFAULT 'Y' NOT NULL,
+   "MEMBER_ID"            NUMBER,
+   "PARENT_ID"            NUMBER
 );
 
 CREATE TABLE "TB_INQUIRY" (
-   "ID"   NUMBER      NOT NULL,
-   "TYPE"   NUMBER      NOT NULL,
-   "CONTENT"   CLOB      NOT NULL,
-   "CREATE_DATE"   TIMESTAMP      NOT NULL,
-   "STATUS"   VARCHAR2(2)   DEFAULT 'Y'   NOT NULL,
-   "USER_ID"   NUMBER      NOT NULL,
-   "ANSWER"   CLOB      NULL,
-   "ANSWER_DATE"   TIMESTAMP      NULL,
-   "ADMIN_ID"   NUMBER      NULL
+     "ID"          NUMBER NOT NULL, 
+     "TYPE"        NUMBER NOT NULL, 
+     "CONTENT"     CLOB NOT NULL, 
+     "CREATE_DATE" TIMESTAMP NOT NULL, 
+     "STATUS"      VARCHAR2(2) DEFAULT 'Y' NOT NULL, 
+     "USER_ID"     NUMBER NOT NULL, 
+     "ANSWER"      CLOB, 
+     "ANSWER_DATE" TIMESTAMP, 
+     "ADMIN_ID"    NUMBER 
 );
 
 CREATE TABLE "TB_NOTICE" (
-   "ID"   NUMBER      NOT NULL,
-   "TITLE"   VARCHAR2(100)      NOT NULL,
-   "CONTENT"   CLOB      NOT NULL,
-   "VIEW_COUNT"   NUMBER   DEFAULT 0   NOT NULL,
-   "CREATE_DATE"   TIMESTAMP      NOT NULL,
-   "MODIFY_DATE"   TIMESTAMP      NOT NULL,
-   "STATUS"   VARCHAR2(2)   DEFAULT 'Y'   NOT NULL,
-   "ADMIN_ID"   NUMBER      NOT NULL,
-   "IMAGE_NAME" VARCHAR2(50)
+     "ID"          NUMBER NOT NULL, 
+     "TITLE"       VARCHAR2(100) NOT NULL, 
+     "CONTENT"     CLOB NOT NULL, 
+     "VIEW_COUNT"  NUMBER DEFAULT 0 NOT NULL, 
+     "CREATE_DATE" TIMESTAMP NOT NULL, 
+     "MODIFY_DATE" TIMESTAMP NOT NULL, 
+     "STATUS"      VARCHAR2(2) DEFAULT 'Y' NOT NULL, 
+     "ADMIN_ID"    NUMBER NOT NULL, 
+     "IMAGE_NAME"  VARCHAR2(50) 
 );
 
 CREATE TABLE "TB_COLLECTION" (
-   "ID"   NUMBER      NOT NULL,
-   "TITLE"   VARCHAR2(100)      NOT NULL,
-   "CONTENT"   CLOB      NULL,
-   "LIKE_COUNT"   NUMBER   DEFAULT 0   NOT NULL,
-   "INAPPROPRIATE_COUNT"   NUMBER   DEFAULT 0   NOT NULL,
-   "SPOILER_COUNT"   NUMBER   DEFAULT 0   NOT NULL,
-   "CREATE_DATE"   TIMESTAMP      NOT NULL,
-   "MODIFY_DATE"   TIMESTAMP      NOT NULL,
-   "STATUS"   VARCHAR2(2)   DEFAULT 'Y'   NOT NULL,
-   "PRIVATE"   VARCHAR2(2)   DEFAULT 'N'   NOT NULL,
-   "MEMBER_ID"   NUMBER      NOT NULL
+     "ID"                  NUMBER NOT NULL, 
+     "TITLE"               VARCHAR2(100) NOT NULL, 
+     "CONTENT"             CLOB, 
+     "LIKE_COUNT"          NUMBER DEFAULT 0 NOT NULL, 
+     "INAPPROPRIATE_COUNT" NUMBER DEFAULT 0 NOT NULL, 
+     "SPOILER_COUNT"       NUMBER DEFAULT 0 NOT NULL, 
+     "CREATE_DATE"         TIMESTAMP NOT NULL, 
+     "MODIFY_DATE"         TIMESTAMP NOT NULL, 
+     "STATUS"              VARCHAR2(2) DEFAULT 'Y' NOT NULL, 
+     "PRIVATE"             VARCHAR2(2) DEFAULT 'N' NOT NULL, 
+     "MEMBER_ID"           NUMBER NOT NULL 
 );
 
 CREATE TABLE "TB_FILM_COLLECTION" (
-   "COLLECTION_ID"   NUMBER      NOT NULL,
-   "FILM_ID"   NUMBER      NOT NULL
+   "COLLECTION_ID"  NUMBER  NOT NULL,
+   "FILM_ID"        NUMBER  NOT NULL
 );
 
 CREATE TABLE "TB_REPORT" (
-   "ID"   NUMBER      NOT NULL,
-   "TYPE"   NUMBER      NOT NULL,
-   "TARGET_ID"   NUMBER      NOT NULL,
-   "CONTENT"   NUMBER      NOT NULL,
-   "REPORT_ID"   NUMBER      NOT NULL,
-   "REPORTED_ID"   NUMBER      NOT NULL
+     "ID"          NUMBER NOT NULL, 
+     "TYPE"        NUMBER NOT NULL, 
+     "TARGET_ID"   NUMBER NOT NULL, 
+     "CONTENT"     NUMBER NOT NULL, 
+     "REPORT_ID"   NUMBER NOT NULL, 
+     "REPORTED_ID" NUMBER NOT NULL 
 );
 
 CREATE TABLE "TB_BLACK_MEMBER" (
-   "ID"   NUMBER      NOT NULL,
-   "BLACKDATE"   TIMESTAMP   DEFAULT SYSDATE   NOT NULL,
-   "TARGET_ID"   NUMBER      NOT NULL
+     "ID"        NUMBER     NOT NULL, 
+     "BLACKDATE" TIMESTAMP  NOT NULL, 
+     "TARGET_ID" NUMBER     NOT NULL 
 );
 
 CREATE TABLE "TB_ACTOR" (
-   "ID"   NUMBER      NOT NULL,
-   "NAME"   VARCHAR2(50)      NOT NULL,
-   "PROFILE_IMG"   VARCHAR2(300)      NOT NULL
+     "ID"          NUMBER         NOT NULL, 
+     "NAME"        VARCHAR2(50)   NOT NULL, 
+     "PROFILE_IMG" VARCHAR2(300)  NOT NULL 
 );
 
 CREATE TABLE "TB_FILM_IMAGE" (
-   "ID"   NUMBER      NOT NULL,
-   "TYPE"   NUMBER      NOT NULL,
-   "CHANGE_NAME"   VARCHAR2(1000),
-   "DFILM_ID"   NUMBER      NOT NULL,
-   "FILM_ID"  NUMBER  NOT NULL
+     "ID"          NUMBER NOT NULL, 
+     "TYPE"        NUMBER NOT NULL, 
+     "CHANGE_NAME" VARCHAR2(1000), 
+     "DFILM_ID"    NUMBER NOT NULL, 
+     "FILM_ID"     NUMBER NOT NULL 
 );
 
 CREATE TABLE "TB_FILM_ACTOR" (
@@ -243,20 +242,20 @@ CREATE TABLE "TB_FILM_ACTOR" (
 );
 
 CREATE TABLE "TB_RATING_REVIEW" (
-   "ID"   NUMBER      NOT NULL,
-   "RATING_SOUND"   NUMBER      NOT NULL,
-   "RATING_VISUAL"   NUMBER      NOT NULL,
-   "RATING_ACTING"   NUMBER      NOT NULL,
-   "RATING_POP"   NUMBER      NOT NULL,
-   "RATING_SCRIPT"   NUMBER      NOT NULL,
-   "RATING_DIRECT"   NUMBER      NOT NULL,
-   "REVIEW_ID"   NUMBER      NOT NULL,
-   "MEMBER_ID"   NUMBER      NOT NULL
+     "ID"            NUMBER NOT NULL, 
+     "RATING_SOUND"  NUMBER NOT NULL, 
+     "RATING_VISUAL" NUMBER NOT NULL, 
+     "RATING_ACTING" NUMBER NOT NULL, 
+     "RATING_POP"    NUMBER NOT NULL, 
+     "RATING_SCRIPT" NUMBER NOT NULL, 
+     "RATING_DIRECT" NUMBER NOT NULL, 
+     "REVIEW_ID"     NUMBER NOT NULL, 
+     "MEMBER_ID"     NUMBER NOT NULL 
 );
 
 CREATE TABLE "TB_GENRE" (
-   "ID"   NUMBER      NOT NULL,
-   "NAME"   VARCHAR2(30)      NOT NULL
+   "ID"     NUMBER        NOT NULL,
+   "NAME"   VARCHAR2(30)  NOT NULL
 );
 
 -- PRIMARY KEY
@@ -303,6 +302,7 @@ ALTER TABLE "TB_RATING_FILM" ADD CONSTRAINT "FK_RF_MEMBER" FOREIGN KEY ("MEMBER_
 ALTER TABLE "TB_RATING_FILM" ADD CONSTRAINT "FK_RF_FILM" FOREIGN KEY ("FILM_ID") REFERENCES "TB_FILM" ("ID");
 ALTER TABLE "TB_DETAIL_FILM" ADD CONSTRAINT "FK_DF_MEMBER" FOREIGN KEY ("MEMBER_ID") REFERENCES "TB_MEMBER" ("ID");
 ALTER TABLE "TB_DETAIL_FILM" ADD CONSTRAINT "FK_DF_FILM" FOREIGN KEY ("FILM_ID") REFERENCES "TB_FILM" ("ID");
+ALTER TABLE "TB_COMMENT" ADD CONSTRAINT "FK_COMMENT" FOREIGN KEY ("PARENT_ID") REFERENCES "TB_COMMENT" ("ID");
 
 DROP VIEW VI_FILM_AVG_STAR;
 -- 영화별 평균 별점 조회 VIEW
@@ -1682,9 +1682,6 @@ VALUES (SEQ_FILM_ID.NEXTVAL, '콜 미 킹', 'Call Me King', 'R.L. 스콧', 2015,
 
 INSERT INTO TB_FILM (ID, TITLE_KOR, TITLE_ENG, DIRECTOR, RELEASE_YEAR, PRODUCTION_COUNTRY, PRODUCTION_STATUS, GENRE_ID, POSTER) 
 VALUES (SEQ_FILM_ID.NEXTVAL, '웨이 오브 더 위키드', 'Way of the Wicked', '케빈 카러웨이', 2014, '미국', '개봉예정', 4, NULL);
-
-INSERT INTO TB_FILM (ID, TITLE_KOR, TITLE_ENG, DIRECTOR, RELEASE_YEAR, PRODUCTION_COUNTRY, PRODUCTION_STATUS, GENRE_ID, POSTER) 
-VALUES (SEQ_FILM_ID.NEXTVAL, '기생충', 'PARASITE', '봉준호', 2019, '한국', '개봉', 1, NULL);
 
 INSERT INTO TB_FILM (ID, TITLE_KOR, TITLE_ENG, DIRECTOR, RELEASE_YEAR, PRODUCTION_COUNTRY, PRODUCTION_STATUS, GENRE_ID, POSTER) 
 VALUES (SEQ_FILM_ID.NEXTVAL, '트리플 엑스 리턴즈', 'xXx: Return of Xander Cage', 'D.J. 카루소', 2016, '미국', '개봉', 2, NULL);
@@ -3438,7 +3435,7 @@ VALUES(SEQ_DFILM_ID.NEXTVAL, '영국 동쪽에 위치한 평화롭고 아름다�
 INSERT INTO TB_DETAIL_FILM
 VALUES(SEQ_DFILM_ID.NEXTVAL, '누군가 당신을 노린다!자신의 일상을 매번 SNS로 공유하는 제시는 졸업식 하루 전날 파티에서 남친의 외도를 발견하고, 낯설지만 같은 경험을 갖고 있는 킴과 급 친해진다. 졸업 선물로 받은 새 휴대폰과 함께 친구들과 향한 클럽, 그곳에서 킴은 제시의 핸드폰과 함께 사라지는데. 추적장치로 킴을 찾아 나선 제시는 어떤 집 앞에 서게 되고… 과연 이곳은 어디이며 무슨 비밀이 있는 걸까?', '한 번 찍히면 벗어날 수 없다! <리커버리>', 'https://www.youtube.com/watch?v=0Oz4pz5HAhY', null, DEFAULT, DEFAULT, 1, 22);
 INSERT INTO TB_DETAIL_FILM
-VALUES(SEQ_DFILM_ID.NEXTVAL, '어느 날 부턴가 의문의 목소리가 엘사를 부르고, 평화로운 아렌델 왕국을 위협한다. 트롤은 모든 것은 과거에서 시작되었음을 알려주며 엘사의 힘의 비밀과 진실을 찾아 떠나야한다고 조언한다. 위험에 빠진 아렌델 왕국을 구해야만 하는 엘사와 안나는 숨겨진 과거의 진실을 찾아 크리스토프, 올라프 그리고 스벤과 함께 위험천만한 놀라운 모험을 떠나게 된다. 자신의 힘을 두려워했던 엘사는 이제 이 모험을 헤쳐나가기에 자신의 힘이 충분하다고 믿어야만 하는데.. 두려움을 깨고 새로운 운명을 만나다!', '영화 초반에 나오는 꼬마 시절 엘사와 안나는 귀여움이 지나치다. 이번 신작에서도 등장한 꼬마 엘사와 꼬마 안나는 아버지가 해주는 마법의 숲 이야기를 초롱초롱한 눈으로 경청한다. 아버지의 이야기가 끝난 후 엘사와 안나는 어머니의 자장가를 들으며 바로 잠에 들지만, 여기에는 숨겨진 비밀이 있다. 이 날이 엘사와 안나가 겨울왕국 전편에서 눈사람을 만들며 놀던 날과 바로 같은 날인 것이다. 전편은 잠에 든 엘사를 안나가 깨우며 눈 사람을 만들자며 졸라대면서 시작되는데, 이번 2편에서는 안나가 눈사람은 이따 만들자라고 말하는 장면이 있어 2편의 초반부와 1편의 초반부가 이어짐을 암시', 'https://www.youtube.com/watch?v=eSEs4B4H-EA', null, DEFAULT, DEFAULT, 1, 980);
+VALUES(SEQ_DFILM_ID.NEXTVAL, '어느 날 부턴가 의문의 목소리가 엘사를 부르고, 평화로운 아렌델 왕국을 위협한다. 트롤은 모든 것은 과거에서 시작되었음을 알려주며 엘사의 힘의 비밀과 진실을 찾아 떠나야한다고 조언한다. 위험에 빠진 아렌델 왕국을 구해야만 하는 엘사와 안나는 숨겨진 과거의 진실을 찾아 크리스토프, 올라프 그리고 스벤과 함께 위험천만한 놀라운 모험을 떠나게 된다. 자신의 힘을 두려워했던 엘사는 이제 이 모험을 헤쳐나가기에 자신의 힘이 충분하다고 믿어야만 하는데.. 두려움을 깨고 새로운 운명을 만나다!', '영화 초반에 나오는 꼬마 시절 엘사와 안나는 귀여움이 지나치다. 이번 신작에서도 등장한 꼬마 엘사와 꼬마 안나는 아버지가 해주는 마법의 숲 이야기를 초롱초롱한 눈으로 경청한다. 아버지의 이야기가 끝난 후 엘사와 안나는 어머니의 자장가를 들으며 바로 잠에 들지만, 여기에는 숨겨진 비밀이 있다. 이 날이 엘사와 안나가 겨울왕국 전편에서 눈사람을 만들며 놀던 날과 바로 같은 날인 것이다. 전편은 잠에 든 엘사를 안나가 깨우며 눈 사람을 만들자며 졸라대면서 시작되는데, 이번 2편에서는 안나가 눈사람은 이따 만들자라고 말하는 장면이 있어 2편의 초반부와 1편의 초반부가 이어짐을 암시', 'https://www.youtube.com/watch?v=eSEs4B4H-EA', null, DEFAULT, DEFAULT, 1, 979);
 INSERT INTO TB_DETAIL_FILM
 VALUES(SEQ_DFILM_ID.NEXTVAL, '로건의 제임스 맨골드 감독이 연출한 2019년작 레이싱 전기영화. 1966년 포드의 CEO였던 헨리 포드 2세의 명령에 따라 당시 르망 24시에서 연속으로 우승한 대회 최강자 페라리를 꺾으려는 포드의 도전사와 그 뒤에 있던 자동차 디자이너와 엔지니어들의 이야기를 그리고 있다.', '싱크로율 100% 도전기 매 영화 놀라운 체중 변화로 메소드 연기의 진수를 보여주는 크리스찬 베일은 <포드 V 페라리>에서 켄 마일스의 역을 맡아 30Kg 이상을 감량했다. 그는 <포드 V 페라리>를 마지막으로 더 이상의 체중 감량이나 증량을 통해 자신을 변화시키지 않을 것이라고 선언했다. 또한 맷 데이먼은 곱슬머리로 유명했던 캐롤 셸비역을 위해 머리를 염색하고 생애 처음으로 파마도 했다.', 'https://www.youtube.com/watch?v=sn7wcMigCCo', null, DEFAULT, DEFAULT, 1, 168);
 INSERT INTO TB_DETAIL_FILM
@@ -3497,7 +3494,7 @@ VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '파라노말다이어리.jpg', 21, 21);
 INSERT INTO TB_FILM_IMAGE
 VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '리커버리.jpg', 22, 22);
 INSERT INTO TB_FILM_IMAGE
-VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '겨울왕국2.jpg', 23, 980);
+VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '겨울왕국2.jpg', 23, 979);
 INSERT INTO TB_FILM_IMAGE
 VALUES(SEQ_FIMAGE_ID.NEXTVAL, 1, '포드V페라리.jpg', 24, 168);
 INSERT INTO TB_FILM_IMAGE
@@ -3981,6 +3978,16 @@ INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1
 INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,1,50,5);
 INSERT INTO TB_LIKE (ID, TYPE, TARGET_ID, USER_ID) VALUES (SEQ_LIKE_ID.NEXTVAL,2,4,5);
 
+-- COMMENT
+INSERT INTO TB_COMMENT VALUES (SEQ_COMMENT_ID.NEXTVAL, 2, 12, '댓글 1', DEFAULT, DEFAULT, DEFAULT, SYSDATE, SYSDATE, DEFAULT, 8, NULL);
+INSERT INTO TB_COMMENT VALUES (SEQ_COMMENT_ID.NEXTVAL, 2, 12, '댓글 1-1', DEFAULT, DEFAULT, DEFAULT, SYSDATE, SYSDATE, DEFAULT, 8, 1);
+INSERT INTO TB_COMMENT VALUES (SEQ_COMMENT_ID.NEXTVAL, 2, 12, '댓글 1-2', DEFAULT, DEFAULT, DEFAULT, SYSDATE, SYSDATE, DEFAULT, 8, 1);
+INSERT INTO TB_COMMENT VALUES (SEQ_COMMENT_ID.NEXTVAL, 2, 12, '댓글 1-1-1', DEFAULT, DEFAULT, DEFAULT, SYSDATE, SYSDATE, DEFAULT, 8, 2);
+INSERT INTO TB_COMMENT VALUES (SEQ_COMMENT_ID.NEXTVAL, 2, 12, '댓글 2', DEFAULT, DEFAULT, DEFAULT, SYSDATE, SYSDATE, DEFAULT, 8, NULL);
+INSERT INTO TB_COMMENT VALUES (SEQ_COMMENT_ID.NEXTVAL, 2, 12, '댓글 2-1', DEFAULT, DEFAULT, DEFAULT, SYSDATE, SYSDATE, DEFAULT, 8, 5);
+INSERT INTO TB_COMMENT VALUES (SEQ_COMMENT_ID.NEXTVAL, 2, 12, '댓글 1-3', DEFAULT, DEFAULT, DEFAULT, SYSDATE, SYSDATE, DEFAULT, 8, 1);
+INSERT INTO TB_COMMENT VALUES (SEQ_COMMENT_ID.NEXTVAL, 2, 12, '댓글 1-1-1-1', DEFAULT, DEFAULT, DEFAULT, SYSDATE, SYSDATE, DEFAULT, 8, 4);
+INSERT INTO TB_COMMENT VALUES (SEQ_COMMENT_ID.NEXTVAL, 2, 12, '댓글 1-1-2', DEFAULT, DEFAULT, DEFAULT, SYSDATE, SYSDATE, DEFAULT, 8, 2);
 
 
 COMMIT;

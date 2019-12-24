@@ -10,6 +10,16 @@
 		</style>
 	</head>
 	<body>
+	
+		<section class="mb-30px">
+			<div class="container">
+				<div class="board-page-banner">
+					<br>
+					<span class="title">마음껏 작성하세요!</span>
+				</div>
+			</div>
+		</section>
+		
 		<div class="container">
 			<table class="table table-hover table-striped table-dark my-5">
 				<thead>
