@@ -35,7 +35,7 @@
 		      
 						<!-- Brand and toggle get grouped for better mobile display -->
 						<a class="navbar-brand logo_h" href="home.do">
-							<img src="resources/bootstrap/img/logo/logo-transparent-text-lg.png" alt="" style="width: 80px; height: 80px; object-fit: cover;">
+							<img src="resources/bootstrap/img/logo/logo-transparent-text-lg.png" alt="" style="width: 80px; height: 80px; object-fit: cover; margin-right: 40px;">
 						</a>
 						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 							<span class="icon-bar"></span>
@@ -43,12 +43,11 @@
 							<span class="icon-bar"></span>
 						</button>
 						
-						<div class="navbar-collapse offset collapse" id="navbarSupportedContent">
-							<ul class="nav navbar-nav menu_nav justify-content-center">
+						<div class="navbar-collapse collapse" id="navbarSupportedContent">
+							<ul class="nav navbar-nav mr-auto justify-content-center">
 								<li class="nav-item"><a class="nav-link" href="film.do?p=1">영화</a></li>
 								<li class="nav-item"><a class="nav-link" href="reviewList.do">리뷰</a>
 								<li class="nav-item"><a class="nav-link" href="rec.do">추천</a>
-	
 								<li class="nav-item"><a class="nav-link" href="blist.do">게시판</a>					
 								<c:choose>
 							       <c:when test="${ loginUser.autho eq 2}">
@@ -64,16 +63,16 @@
 							       </c:otherwise>
 							   </c:choose>
 							</ul>
+							<form method="get" action="skFilm.do" class="form-inline my-2">
+								<c:if test="${ !empty keyword }">
+									<input class="form-control mr-sm-2" id="keywordInput" type="search" placeholder="키워드를 입력해주세요" aria-label="Search" name="keyword" value="${ keyword }">
+								</c:if>
+								<c:if test="${ empty keyword }">
+									<input class="form-control mr-sm-2" id="keywordInput" type="search" placeholder="키워드를 입력해주세요" aria-label="Search" name="keyword">
+								</c:if>
+								<button class="button button--active my-2 my-sm-0" type="submit">검색</button>
+							</form>
 						</div>
-						<form method="get" action="skFilm.do" class="form-inline my-4 my-lg-0">
-							<c:if test="${ !empty keyword }">
-								<input class="form-control mr-sm-2" type="search" placeholder="키워드를 입력해주세요" aria-label="Search" name="keyword" value="${ keyword }">
-							</c:if>
-							<c:if test="${ empty keyword }">
-								<input class="form-control mr-sm-2" type="search" placeholder="키워드를 입력해주세요" aria-label="Search" name="keyword">
-							</c:if>
-							<button class="button button--active my-2 my-sm-0" type="submit">검색</button>
-						</form>
 					</div>
 				</nav>
 			</div>

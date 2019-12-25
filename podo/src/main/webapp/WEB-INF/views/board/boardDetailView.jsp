@@ -22,7 +22,7 @@
 								style="width: 400px;">
 						</div>
 					</c:if>
-					<a href="#"><h4>${ board.title }</h4></a>
+					<h4>${ board.title }</h4>
 					<div class="user_details">
 						<div class="float-left">
 							<a href="#">신고하기</a>
@@ -61,7 +61,7 @@
 					</div>
 				</div>
 	
-				<!-- ><div class="navigation-area">
+				<div class="navigation-area">
 						<div class="row">
 							<div
 								class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
@@ -93,7 +93,6 @@
 							</div>
 						</div>
 					</div>
-					-->
 	
 				<!-- 댓글 -->
 	
@@ -107,7 +106,7 @@
 					</div>
 	
 					<div class="comment-list">
-						<!-- <div class="single-comment justify-content-between d-flex">
+						<div class="single-comment justify-content-between d-flex">
 								<div class="user justify-content-between d-flex">
 									<div class="thumb">
 										<img src="img/blog/c1.jpg" alt="">
@@ -125,11 +124,11 @@
 									<a href="" class="btn-reply text-uppercase" id="">수정</a>
 									<a href="" class="btn-reply text-uppercase" id="">삭제</a>
 								</div>
-							</div> -->
+							</div>
 	
 	
 						<!-- 수정폼 -->
-						<!-- <div class="comment-list left-padding" id="c-modify-form">
+						<div class="comment-list left-padding" id="c-modify-form">
 							<div class="single-comment justify-content-between d-flex">
 								<div class="user justify-content-between d-flex">
 									<div class="thumb">
@@ -147,9 +146,8 @@
 									<a href="" class="btn-reply text-uppercase">완료</a>
 								</div>
 							</div>
-						</div> -->
+						</div>
 					</div>
-	
 				</div>
 	
 	
@@ -172,21 +170,18 @@
 	
 	
 		<div class="form-group row">
-			<div class="btn-group btn-group-lg mx-auto" role="group"
-				aria-label="...">
+			<div class="btn-group btn-group-lg mx-auto" role="group" aria-label="...">
 				<c:if test="${ loginUser.id eq board.memberId }">
-					<a class="button submit_btn"
-						onclick="location.href='bdelete.do?id=${ board.id }';">삭제하기</a>
-					<a href="#" class="button submit_btn"
-						onclick="location.href='bupdateView.do?id=${ board.id }';">수정하기</a>
+					<a class="button submit_btn" onclick="location.href='bdelete.do?id=${ board.id }';">삭제하기</a>
+					<a href="#" class="button submit_btn" onclick="location.href='bupdateView.do?id=${ board.id }';">수정하기</a>
 				</c:if>
 			</div>
 		</div>
 	
 	
 		<!-- 게시판 신고하기 모달 -->
-		<div class="modal fade de_modal" id="boardReport" tabindex="-1"
-			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal fade de_modal" id="boardReport" tabindex="-1"\
+				 role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -198,14 +193,13 @@
 					</div>
 					<div class="modal-body">
 						<form action="bReportModal.do" method="post">
-							<input type="hidden" name="targetId" value="${ b.id }"> <input
-								type="hidden" name="reportId" value="${ loginUser.id }">
+							<input type="hidden" name="targetId" value="${ b.id }">
+							<input type="hidden" name="reportId" value="${ loginUser.id }">
 							<input type="hidden" name="reportedId" value="${ b.memberId }">
 	
 							<div class="form-group">
 								<input class="commentType" type="radio" value="1" name="content">부적절한내용
-								&nbsp; <input class="commentType" type="radio" value="2"
-									name="content">스포일러
+								<input class="commentType" type="radio" value="2"name="content">스포일러
 							</div>
 							<div class="modal-footer">
 								<button type="submit" class="btn btn-primary">신고보내기</button>
@@ -217,173 +211,149 @@
 			</div>
 		</div>
 	
-	
-	
-	
 		<script>
 			
-				// 댓글 작성
-				$(function(){
-					getCommentList();
-					
-					$("#comment-btn").on("click", function(){
-						
-						var content = $(".c-content").val();
-						var boardId = ${board.id};
-						var memberId = "${loginUser.id}";
-						$.ajax({
-							url:"insertComment.do",
-							data:{
-								content:content,
-								boardId:boardId,
-								memberId:memberId},
-							dataType:"json",
-							success:function(data){
-								if(data == "success"){
-									getCommentList();
-									$(".c-content").val("");
-								}else{
-									alert("댓글 작성 실패");
-								}
-							},
-							error:function(){
-								console.log("ajax 통신 실패");
-							}
-						});
-						
-						
-					})
-					
-				});
+			// 댓글 작성
+			$(function(){
+				getCommentList();
 				
-				// 댓글 리스트
-				function getCommentList(){
-					
+				$("#comment-btn").on("click", function(){
+					var content = $(".c-content").val();
+					var boardId = ${board.id};
+					var memberId = "${loginUser.id}";
 					$.ajax({
-						url:"commentsList.do",
-						data:{id:${board.id}},
+						url:"insertComment.do",
+						data:{  content:content,
+										boardId:boardId,
+										memberId:memberId },
 						dataType:"json",
 						success:function(data){
-							
-							console.log(data);
-							
-							$commentarea = $(".comment-list");
-							$commentarea.html("");
-							
-							if(data.length > 0){
-								
-									$.each(data, function(index, value){
-										
-										$commentarea = $(".comment-list");
-										
-										$commentDiv = $("<div class='commentDiv'></div>");
-										
-										$commentlistDiv = $("<div class='commentlistDiv'></div>");
-										
-										$commentcontentDiv = $("<div class='commentcontentDiv'></div>");
-										
-										$ninkName = $("<p class='ninkName'></p>").text(value.nickName);
-										$content = $("<p class='comment'></p>").text(value.content);
-										$date = $("<p class='date'>작성일</p>").text(value.createDate);
-										
-										$updateBtn = $("<a style='width:70px; float:right;' class='btn-reply updateBtn'>수정</a>");
-										$deleteBtn = $("<a style='width:70px; float:right;' class='btn-reply deleteBtn'>삭제</a>");
-										
-										$modifyDiv = $("<div style='display:none;' class='modifyDiv'></div>");
-										$modifyTextarea = $("<textarea class='modifyTextarea'></textarea>");
-										$modifyBtn = $("<button class='modifyBtn'>등록</button>");
-										$hiddenCid = $("<input type='hidden' class='hiddenCid'>").val(value.id);
-										
-										
-										$modifyDiv.append($modifyTextarea).append($modifyBtn).append($hiddenCid);
-										$commentarea.append($commentDiv).append($commentlistDiv).append($deleteBtn).append($updateBtn);
-										$commentlistDiv.append($commentcontentDiv).append($modifyDiv);
-										$commentcontentDiv.append($ninkName).append($content).append($date);
-										
-									});
-									
-								
-							}else{	// 댓글 없을때
-								$commentarea = $(".comment-list");
-								$commentarea.append("<span>등록된 댓글이 없습니다.</span>");
+							if (data == "success") {
+								getCommentList();
+								$(".c-content").val("");
+							} else {
+								alert("댓글 작성 실패");
 							}
-							
 						},
 						error:function(){
 							console.log("ajax 통신 실패");
 						}
 					});
-					
-				}
-				
-				// 댓글 수정
-				 $(document).on("click", ".updateBtn", function(){
-					
-					$(this).parent().children(".commentcontentDiv").toggle();
-					$(this).parent().children(".modifyDiv").next().toggle();
-					
 				});
+			});
 				
-				$(document).on("click",".modifyBtn", function() {
-					
-			         var id = $(this).next().val();
-			         
-			         var content = $(this).prev().val();
+			// 댓글 리스트
+			function getCommentList(){
+				
+				$.ajax({
+					url:"commentsList.do",
+					data:{id:${board.id}},
+					dataType:"json",
+					success:function(data){
+						
+						console.log(data);
+						
+						$commentarea = $(".comment-list");
+						$commentarea.html("");
+						
+						if(data.length > 0){
+							
+								$.each(data, function(index, value){
+									
+									$commentarea = $(".comment-list");
+									
+									$commentDiv = $("<div class='commentDiv'></div>");
+									
+									$commentlistDiv = $("<div class='commentlistDiv'></div>");
+									
+									$commentcontentDiv = $("<div class='commentcontentDiv'></div>");
+									
+									$ninkName = $("<p class='ninkName'></p>").text(value.nickName);
+									$content = $("<p class='comment'></p>").text(value.content);
+									$date = $("<p class='date'>작성일</p>").text(value.createDate);
+									
+									$updateBtn = $("<a style='width:70px; float:right;' class='btn-reply updateBtn'>수정</a>");
+									$deleteBtn = $("<a style='width:70px; float:right;' class='btn-reply deleteBtn'>삭제</a>");
+									
+									$modifyDiv = $("<div style='display:none;' class='modifyDiv'></div>");
+									$modifyTextarea = $("<textarea class='modifyTextarea'></textarea>");
+									$modifyBtn = $("<button class='modifyBtn'>등록</button>");
+									$hiddenCid = $("<input type='hidden' class='hiddenCid'>").val(value.id);
+									
+									
+									$modifyDiv.append($modifyTextarea).append($modifyBtn).append($hiddenCid);
+									$commentarea.append($commentDiv).append($commentlistDiv).append($deleteBtn).append($updateBtn);
+									$commentlistDiv.append($commentcontentDiv).append($modifyDiv);
+									$commentcontentDiv.append($ninkName).append($content).append($date);
+									
+								});
+								
+							
+						} else {	// 댓글 없을때
+							$commentarea = $(".comment-list");
+							$commentarea.append("<span>등록된 댓글이 없습니다.</span>");
+						}
+					},
+					error:function(){
+						console.log("ajax 통신 실패");
+					}
+				});
+			}
+				
+			// 댓글 수정
+			$(document).on("click", ".updateBtn", function(){
+				$(this).parent().children(".commentcontentDiv").toggle();
+				$(this).parent().children(".modifyDiv").next().toggle();
+			});
+			
+			$(document).on("click",".modifyBtn", function() {
+				var id = $(this).next().val();
+        var content = $(this).prev().val();
+
+        $.ajax({
+					url:"updateComment.do",
+          data:{id:id, content:content},
+          success:function(data){
+						if(data == "success"){
+           		getCommentList();
+           	  alert("댓글을 수정하였습니다.");
+						} else {
+							alert("댓글 수정 실패");
+						}
+					},
+          error:function(){
+						console.log("ajax 통신 실패");
+					}
+				});
+			});
+			
+			// 댓글 삭제
+      $(document).on("click", ".deleteBtn", function(){
+    	 var id = $(this).parent().children().eq(2).val();
+         if(confirm("댓글을 삭제하시겠습니까?")){
+            $.ajax({
+							url:"deleteComment.do",
+              data:{id:id},
+              success:function(data){
+							if (data == "success") {
+                getCommentList();
+							} else {
+								alert("댓글 삭제 실패");
+							}
+						},
+						error:function(){
+							console.log("ajax 통신 실패");
+						}
+					}); 
+				}
+      });
 	
-			         $.ajax({
-			            url:"updateComment.do",
-			            data:{id:id,
-			            	  content:content},
-			            	  
-			            success:function(data){
-			               
-			               if(data == "success"){
-			            	   getCommentList();
-			            	   alert("댓글을 수정하였습니다.");
-			               }else{
-			                  alert("댓글 수정 실패");
-			               }
-			            },
-			            error:function(){
-			               console.log("ajax 통신 실패");
-			            }
-			            
-			         });
-			      });
-				
-				
-				// 댓글 삭제
-			      $(document).on("click", ".deleteBtn", function(){
-			         
-			    	 var id = $(this).parent().children().eq(2).val();
-	
-			         if(confirm("댓글을 삭제하시겠습니까?")){
-			            
-			            $.ajax({
-			               url:"deleteComment.do",
-			               data:{id:id},
-			               success:function(data){
-			                  
-			                  if(data == "success"){
-			                	  getCommentList();
-			                  }else{
-			                     alert("댓글 삭제 실패");
-			                  }
-			               },
-			               error:function(){
-			                  console.log("ajax 통신 실패");
-			               }
-			            }); 
-			         }
-			      });
-				
-				
-			      $("#board-image").on("click", function(){
-						console.log("asd");
-						$("#download-image").get(0).click();
-					});
-			</script>
-	
+      $("#board-image").on("click", function(){
+				console.log("test");
+				$("#download-image").get(0).click();
+			});
+		</script>
+		
 		<jsp:include page="../common/footer.jsp" />
 	</body>
 </html>

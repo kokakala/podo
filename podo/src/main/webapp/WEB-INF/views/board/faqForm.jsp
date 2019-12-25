@@ -4,38 +4,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript" src="resources/js/jquery-3.4.1.min.js"></script>
-<style>
-	.faq{
-		width: 900px;
-		margin-right: auto;
-		margin-left: auto;
-	}
-	.faq-q{
-		cursor: pointer;
-		background: gray;
-		font-size: 17px;
-	}
-	.contents{
-		display: none;
-		font-size: 15px;
-	}
-	.moreBtn{
-		width: 10px;
-		height: 10px;
-		float: right;
-	}
-</style>
+	<jsp:include page="../common/header.jsp"/>
+	<style>
+		.faq{
+			width: 900px;
+			margin-right: auto;
+			margin-left: auto;
+		}
+		.faq-q{
+			cursor: pointer;
+			background: gray;
+			font-size: 17px;
+		}
+		.contents{
+			display: none;
+			font-size: 15px;
+		}
+		.moreBtn{
+			width: 10px;
+			height: 10px;
+			float: right;
+		}
+	</style>
 </head>
 <body>
-
-	<jsp:include page="../common/header.jsp"/>
-	
 	<h1 align="center">이용가이드</h1>
-	
-	<br>
 	
 	<div class="faq">
 		<div class="faq-q">

@@ -44,7 +44,7 @@
 					<c:when test="${ empty loginUser }">
 						<div class="row">
 							<div class="container">
-							  <div class="row justify-content-md-center">
+							  <div class="row justify-content-md-center" style="justify-content: center;">
 							  	<a id="rec-login-modal" class="button" href="#" data-toggle="modal">로그인</a>
 							  </div>
 							</div>

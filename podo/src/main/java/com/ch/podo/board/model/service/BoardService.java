@@ -35,27 +35,11 @@ public interface BoardService {
 	int updateBoard(Board b);
 	
 	int updateBoardFile(Image i);
-	
-	
-	// --- 댓글 ---
-	// 댓글 리스트
-	ArrayList<Comment> selectCommentList(int id);
-	
-	// 댓글 작성
-	int insertComment(Comment c);
-	
-	// 댓글 수정
-	int updateComment(int id, String content);
-	
-	// 댓글 삭제
-	int deleteComment(int id);
 
 	// 메인 홈 자유게시판 리스트
 	ArrayList<Board> selectboardListHome();
 	
-	
 	// 게시물 신고
 	int insertInappro(Report r);
-	
 	
 }

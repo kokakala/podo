@@ -16,7 +16,7 @@
 	<hr>
 	
 	<!--================ Start Footer Area =================-->
-	<div id="footer-wrapper">
+	<div class=container>
 		<div class="footer-1" align="center">
 			<a href="termsofuse.do">이용약관 </a> | 
 			<a href="privacyPolicy.do">개인정보취급방침</a> | 
@@ -32,10 +32,7 @@
 		
 		<br>
 		<div class="footer-2">
-			<p>업무 제휴 문의 : kh@podo.com</p>
-			<p>
-			PODO | 서울 강남 제2014-01호 | 대표자 : 최봉운 | 책임자 : 김철환, 임창수, 최유정, 한혜경, 홍윤진
-			</p>
+			<p>csu0414@gmail.com</p>
 			<p>Copyright &copy; 2019 PODO ALL RIGHTS RESERVED.</p>
 			<br>
 		</div>

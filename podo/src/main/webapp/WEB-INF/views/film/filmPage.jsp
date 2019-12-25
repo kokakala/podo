@@ -106,7 +106,7 @@
 				<div class="row">
 					<c:forEach items="${ film }" var="film" varStatus="status">
 						<!-- width * 1.425 -->
-						<div class="podo-film-card col-3">
+						<div class="podo-film-card col-md-3">
 							<input class="hidden-filmId" type="hidden" value="${ film.id }">
 							<div class="poster" onclick="location.href='detailFilm.do?filmId=${ film.id }'">
 								<c:if test="${ not empty film.poster }">

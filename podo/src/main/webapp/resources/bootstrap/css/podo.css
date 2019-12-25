@@ -14,11 +14,14 @@
 	.board-page-banner {
 		height: 400px;
 	}
+	.podo-ad-banner>div {
+		font-size: 12px!important;
+	}
 }
 
 .main-banner {
 	position: relative;
-	background: url(../img/banner/main-banner.png) left center no-repeat;
+	background: url(../img/banner/main-banner.png) center no-repeat;
 	background-size: cover;
 	opacity: 0.85;
 	z-index: 1;
@@ -26,20 +29,20 @@
 
 .film-page-banner {
 	position: relative;
-   background: url(../img/banner/film-page-banner.jpg) left center no-repeat;
+   background: url(../img/banner/film-page-banner.jpg) center no-repeat;
    background-size: cover;
    /* filter: brightness(0.5); */
 }
 
 .rec-page-banner {
 	position: relative;
-	background: url(../img/banner/rec-page-banner.jpg) left center no-repeat;
+	background: url(../img/banner/rec-page-banner.jpg) center no-repeat;
 	background-size: cover;
 }
 
 .board-page-banner {
 	position: relative;
-	background: url(../img/banner/board-page-banner.jpg) left center no-repeat;
+	background: url(../img/banner/board-page-banner.jpg) center no-repeat;
 	background-size: cover;
 }
 
@@ -106,6 +109,11 @@
 	text-align: center;
 }
 
+#keywordInput {
+	border-radius: 0;
+	width: auto;
+}
+
 .owl-carousel .owl-item img {
 	height: 340px;
 	object-fit: cover;
@@ -118,10 +126,6 @@
 .modal-dialog,
 .modal-title {
 	color: #495057;
-}
-
-#footer-wrapper {
-	width: 100%;
 }
 
 .footer-1>a {
@@ -223,10 +227,8 @@ star-input>.input.focus {
 }
 
 .podo-film-card {
-/* 				border: 1px solid; */
 	padding-top: 40px;
 	display: inline-block;
-	width: 241px;
 	height: 620px;
 	text-align: center;
 }

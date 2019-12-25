@@ -1,35 +1,31 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>PoDo_회원가입</title>
-<style>
-	#imgInp{display:none}
-	.idguide{
-		display:none;
-		font-size:12px;
-		top:12px;
-		right:10px;
-	}
-	.idok{color:blue;}
-	.idno{color:red;}
-	
-	.nickguide{
-		display:none;
-		font-size:12px;
-		top:12px;
-		right:10px;
-	}
-	.nickok{color:blue;}
-	.nickno{color:red;}
-</style>
-</head>
+	<head>
+		<jsp:include page="../common/header.jsp"/>
+		<style>
+			#imgInp{display:none}
+			.idguide{
+				display:none;
+				font-size:12px;
+				top:12px;
+				right:10px;
+			}
+			.idok{color:blue;}
+			.idno{color:red;}
+			
+			.nickguide{
+				display:none;
+				font-size:12px;
+				top:12px;
+				right:10px;
+			}
+			.nickok{color:blue;}
+			.nickno{color:red;}
+		</style>
+	</head>
 <body>
 
-	<jsp:include page="../common/header.jsp"/>
-	
 	 <h1 align="center">회원가입</h1>
       
       <br>

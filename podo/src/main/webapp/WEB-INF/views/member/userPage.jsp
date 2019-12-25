@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="../common/header.jsp"/>
+	<jsp:include page="../common/header.jsp"/>
 	<title>회원페이지</title>
 
 <style>

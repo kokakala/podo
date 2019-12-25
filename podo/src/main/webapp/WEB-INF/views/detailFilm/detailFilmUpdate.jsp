@@ -1,130 +1,121 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script type="text/javascript"></script>
-<title>PoDo</title>
-</head>
-<style>
-    body{
-        width:100%;
-        height:1300px;
-    }
-    #body{
-        width:60%;
-        height:100%;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .movie_info2{
-        width:100%;
-        float:left;
-        border:0px solid black;
-    }
-    .movie_poster_cover{
-        width:30%;
-        height:100%;
-        position:relative;
-        float:left;
-        left:20px;
-        border:0px solid blue;
-    }
-    .movie_info_cover{
-        width: 60%;
-        float:right;
-    }
-    
-    #movie_poster{
-        position: relative;
-    }
-    .review{
-        width: 100%;
-        border: 1px solid black;
-        height: 40%;
-    }
-    .cover{
-        border: 0px solid black;
-    }
-    #title_cover{
-        font-size:50px;
-    }
-    .movie_clip{
-        font-size:15px;
-        border: 0px solid black;
-        float:right;
-    }
-    #modify_all{
-        width: 30%;
-        float:right;
-        
-    }
-    #modifyBtn{    
-    	float:right;
-    }
-    #synopsys{
-    	border: 0px solid black;
-    }
-    .textArea{
-    	background-color: rgb(9, 15, 33);
-    	color:grey;
-    }
-    #addActor, .deleteActor, .modifyPoster, #cancel{
-    	cursor:pointer;
-    }
-    #addActor, #cancel{
-    	float:right;
-    }
-    #poster{
-    	border-radius: 10px;
-    	border : 1px solid white;
-    }
-    
-    #actor_cover, #actor_cover1{
-    	border : 0px solid lightgrey;
-    	height: 200px;
-    	width: 100%;
-    	white-space:nowrap;
-    	overflow-x: hidden;
-    }
-    .actor{
-    	width: 33%;
-    	height: 180px;
-    	float:left;
-    	border : 0px solid lightgrey;
-    }
-    .actorImage{
-    	border: 0px solid black;
-    	width:100%;
-    	height:200px;
-    	overflow-x:hidden;
-    }
-    .actor_name{
-    	border : 0px solid lightgrey;
-    	text-align:center;
-    	color:black;
-    }
-    .image_cover{
-    	text-align:center;
-    	width:32%;
-    	float:left;
-    }
-    .check_actor{
-    	cursor:pointer;
-    }
-    #mdfPosterBtn{
-    	display:none;
-    }
-</style>
-<body>
-	<!-- 헤더  -->
-	<jsp:include page="../common/header.jsp"/>
-    
+	<head>
+		<jsp:include page="../common/header.jsp"/>
+		<style>
+		    body{
+		        width:100%;
+		        height:1300px;
+		    }
+		    #body{
+		        width:60%;
+		        height:100%;
+		        margin-left: auto;
+		        margin-right: auto;
+		    }
+		    .movie_info2{
+		        width:100%;
+		        float:left;
+		        border:0px solid black;
+		    }
+		    .movie_poster_cover{
+		        width:30%;
+		        height:100%;
+		        position:relative;
+		        float:left;
+		        left:20px;
+		        border:0px solid blue;
+		    }
+		    .movie_info_cover{
+		        width: 60%;
+		        float:right;
+		    }
+		    
+		    #movie_poster{
+		        position: relative;
+		    }
+		    .review{
+		        width: 100%;
+		        border: 1px solid black;
+		        height: 40%;
+		    }
+		    .cover{
+		        border: 0px solid black;
+		    }
+		    #title_cover{
+		        font-size:50px;
+		    }
+		    .movie_clip{
+		        font-size:15px;
+		        border: 0px solid black;
+		        float:right;
+		    }
+		    #modify_all{
+		        width: 30%;
+		        float:right;
+		        
+		    }
+		    #modifyBtn{    
+		    	float:right;
+		    }
+		    #synopsys{
+		    	border: 0px solid black;
+		    }
+		    .textArea{
+		    	background-color: rgb(9, 15, 33);
+		    	color:grey;
+		    }
+		    #addActor, .deleteActor, .modifyPoster, #cancel{
+		    	cursor:pointer;
+		    }
+		    #addActor, #cancel{
+		    	float:right;
+		    }
+		    #poster{
+		    	border-radius: 10px;
+		    	border : 1px solid white;
+		    }
+		    
+		    #actor_cover, #actor_cover1{
+		    	border : 0px solid lightgrey;
+		    	height: 200px;
+		    	width: 100%;
+		    	white-space:nowrap;
+		    	overflow-x: hidden;
+		    }
+		    .actor{
+		    	width: 33%;
+		    	height: 180px;
+		    	float:left;
+		    	border : 0px solid lightgrey;
+		    }
+		    .actorImage{
+		    	border: 0px solid black;
+		    	width:100%;
+		    	height:200px;
+		    	overflow-x:hidden;
+		    }
+		    .actor_name{
+		    	border : 0px solid lightgrey;
+		    	text-align:center;
+		    	color:black;
+		    }
+		    .image_cover{
+		    	text-align:center;
+		    	width:32%;
+		    	float:left;
+		    }
+		    .check_actor{
+		    	cursor:pointer;
+		    }
+		    #mdfPosterBtn{
+		    	display:none;
+		    }
+		</style>
+	</head>
+	<body>
     <!-- 본문 -->
     <div id="body">
 
@@ -396,7 +387,6 @@
 	    	$(this).children().eq(1).css("border","2px solid purple");	    	
 		});
     </script>   
-    
-</body>
-<jsp:include page="../common/footer.jsp"/>
+	</body>
+	<jsp:include page="../common/footer.jsp"/>
 </html>

@@ -21,7 +21,6 @@ public class BoardServiceImpl implements BoardService {
 //	@Autowired
 //	private DataSourceTransactionManager transactionManager;
 	
-	
 	// 게시판 총 개수
 	@Override
 	public int getBoardCount() {
@@ -75,42 +74,14 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.updateBoardFile(i);
 	}
 	
-	// 댓글
-	@Override
-	public ArrayList<Comment> selectCommentList(int id) {
-		return boardDao.selectCommentList(id);
-	}
-	
-	@Override
-	public int insertComment(Comment c) {
-		return boardDao.insertComment(c);
-	}
-	
-	@Override
-	public int updateComment(int id, String content) {
-		return boardDao.updateComment(id, content);
-	}
-
-	@Override
-	public int deleteComment(int id) {
-		return boardDao.deleteComment(id);
-	}
-	
-	
-	
-	
 	@Override
 	public ArrayList<Board> selectboardListHome() {
-		
 		return boardDao.selectboardListHome();
 	}
 	
-	
-	// 신고
 	@Override
 	public int insertInappro(Report r) {
 		return boardDao.insertInappro(r);
 	}
-	
 
 }

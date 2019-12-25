@@ -3,20 +3,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
-	#useForm{
-		width: 900px;
-		margin-right: auto;
-		margin-left: auto;
-	}
-</style>
-</head>
+	<head>
+		<jsp:include page="../common/header.jsp"/>
+		<style>
+			#useForm{
+				width: 900px;
+				margin-right: auto;
+				margin-left: auto;
+			}
+		</style>
+	</head>
 <body>
-
-	<jsp:include page="../common/header.jsp"/>
 	
 	<div id="useForm">
 
