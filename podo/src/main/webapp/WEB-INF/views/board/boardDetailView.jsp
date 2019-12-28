@@ -244,10 +244,10 @@
 				
 			// 댓글 리스트
 			function getCommentList(){
-				
+				var bid = ${ board.id };
 				$.ajax({
-					url:"commentsList.do",
-					data:{id:${board.id}},
+					url: "commentsList.do",
+					data: { "id" : bid },
 					dataType:"json",
 					success:function(data){
 						

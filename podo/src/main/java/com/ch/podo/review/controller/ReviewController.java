@@ -31,55 +31,35 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class ReviewController {
-	
-	
+
 	@Autowired
 	private ReviewService reviewService;
 
-	// 전체리스트 조회 
+	// 전체리스트 조회
 	@RequestMapping("reviewList.do")
 	public ModelAndView reviewList(ModelAndView mv, PageInfo pi,
-							       @RequestParam(value="currentPage",defaultValue = "1") int currentPage) {
-		
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+
 		int listReviewCount = reviewService.getReviewListCount();
 		pi = Pagination.getPageInfo(currentPage, listReviewCount);
 		ArrayList<Review> list = reviewService.selectReviewList(pi);
-		//System.out.println(pi);
-		mv.addObject("list",list).addObject("pi", pi).setViewName("reviewView/reviewList");
-		
-		//log.info("리뷰리스트 왜 스포일러체크 널인지 : "  + list);
-		
-		return mv;
-		
-	}
-	
-	//글 쓰기 폼 가기
-	@RequestMapping("reviewWriteForm.do")
-	public ModelAndView reviewWriteView(String spoilerCheck,int loginUserId,int filmId, ModelAndView mv,HttpSession session) {
-		
-		Film f = reviewService.selectFilm(filmId);
-		//log.info("f : " + f);
-		
-		//쓴날짜 오기위해 가져오는건데 의미없는듯 r = reviewService.selectReview();
-		
-//		Member m = reviewService.selectMember(loginUserId);
-		Member m=(Member)session.getAttribute("loginUser");
-		//System.out.println("m의값"+m);
-		
-		
-		
-		mv.addObject("f",f).addObject("m", m).setViewName("reviewView/reviewWriteForm");
-		
-		return mv;
-	}
-	
-	// 글 쓰기(별점은 어떻게 가져올지 아직 ..)
-	@RequestMapping("reviewWrite.do")
-	public String reviewWrite(DetailFilm df, ModelAndView mv,Review r,Model model) {
-		//log.info("스포변경전의 r"+r);
-		//log.info("스포 변경 전 : "+ r.getSpoilerCheck());
+		mv.addObject("list", list).addObject("pi", pi).setViewName("review/reviewList");
 
-		if (r.getSpoilerCheck() != null) {// 체크값이 널이 아닐때
+		return mv;
+
+	}
+
+	@RequestMapping("reviewWriteForm.do")
+	public ModelAndView reviewWriteView(int filmId, ModelAndView mv) {
+		Film film = reviewService.selectFilm(filmId);
+		mv.addObject("f", film).setViewName("review/reviewWriteForm");
+		return mv;
+	}
+
+	@RequestMapping("reviewWrite.do")
+	public String reviewWrite(DetailFilm df, ModelAndView mv, Review r, Model model) {
+
+		if (r.getSpoilerCheck() != null) { // 체크값이 널이 아닐때
 			if (r.getSpoilerCheck().equals("0")) {
 
 				r.setSpoilerCheck("Y");
@@ -90,35 +70,18 @@ public class ReviewController {
 			r.setSpoilerCheck("N");
 		}
 
-		//System.out.println("스포 변경 후 : "+ r.getSpoilerCheck());
-		
-
-		//int result = reviewService.reivewInsert(df);
 		int result = reviewService.reviewWrite(r);
 		int result2 = reviewService.reviewRating(r);
-	
-		//mv.addObject("filmId", df.getFilmId()).setViewName("redirect:reviewList.do");
-		//return mv;
-		
-		if( result2>0 && result > 0) { //게시판 작성 성공
-			//log.info("글스기인데 값이 안잡힘 : "+r);
-			
+
+		if (result2 > 0 && result > 0) { // 게시판 작성 성공
 			return "redirect:reviewList.do";
-			
-		}else { // 작성 실패
-			model.addAttribute("msg","게시판 작성 하기실팽");
+		} else { // 작성 실패
+			model.addAttribute("msg", "게시판 작성 하기실팽");
 			return "error/errorPage";
 		}
-		
-		
-		
-		
+
 	}
 
-		
-	
-	
-	
 	// 글삭제 (아직 조건 안걸음 사용자 아이디 비교해서 그사람이 삭제할수있게끔해놓기)
 	@RequestMapping("reviewDelete.do")
 	public String reviewDelete(int id, ModelAndView mv) {
@@ -131,33 +94,29 @@ public class ReviewController {
 		}
 
 	}
-	
-	
-	// 여기서부터 합친기 본
-	
-	//글 리뷰 리스트 조회용
+
+	// 글 리뷰 리스트 조회용
 	@RequestMapping("ratingDetailReview.do")
-	public ModelAndView selectRatingReviewDetailView(String id,ModelAndView mv,HttpSession session,HttpServletRequest request) {
+	public ModelAndView selectRatingReviewDetailView(String id, ModelAndView mv,
+																									 HttpSession session, HttpServletRequest request) {
 
 		Review r = reviewService.selectRatingReviewDetailView(Integer.parseInt(id));
 		r.setContent(r.getContent().replaceAll("(\\r\\n|\\n)", "<br>"));
-		
+
 		if (session.getAttribute("loginUser") != null) {
 			Member m = (Member) session.getAttribute("loginUser");
 			ArrayList<Like> list = reviewService.checkLike(m);
 			for (Like l : list) {
 				if (l.getTargetId() == Integer.parseInt(id)) {
-					// log.info(id);
 					request.setAttribute("likeReivew", l.getTargetId());
 				}
 			}
 		}
-		// log.info("글 리뷰 리스트 조회용여기가 나와야 지금의 시작: " + r);
 		mv.addObject("r", r).setViewName("ratingReview/ratingDetailReview");
 
 		return mv;
 	}
-	
+
 	// 글 수정 폼으로 가게해주는 리퀘스트매핑
 	@RequestMapping("reviewUpdateView.do")
 	public ModelAndView boardUpdateView(String id, ModelAndView mv, HttpSession session) {
@@ -165,117 +124,88 @@ public class ReviewController {
 		Member m = (Member) session.getAttribute("loginUser");
 		Review r = reviewService.selectUpdateReview(Integer.parseInt(id));
 
-		mv.addObject("r",r).addObject("m", m).setViewName("ratingReview/ratingUpdateForm");
+		mv.addObject("r", r).addObject("m", m).setViewName("ratingReview/ratingUpdateForm");
 		return mv;
-		
+
 	}
-	
+
 	// 수정 하는 리퀘스트매핑
 	@RequestMapping("reviewUpdate.do")
-	public ModelAndView reviewUpdate(Review r, ModelAndView mv, HttpSession session ) {
-		//레이팅 6개
-		
-		//System.out.println("스포 업데이트 전 : "+ r.getSpoilerCheck());
-		
-		
-		
-		if(r.getSpoilerCheck()!=null) {//체크값이 널이 아닐때
-			if(r.getSpoilerCheck().equals("N")){
-				
+	public ModelAndView reviewUpdate(Review r, ModelAndView mv, HttpSession session) {
+		if (r.getSpoilerCheck() != null) {
+			if (r.getSpoilerCheck().equals("N")) {
 				r.setSpoilerCheck("Y");
-			}else {
+			} else {
 				r.setSpoilerCheck("N");
 			}
-		}else {
+		} else {
 			r.setSpoilerCheck("N");
 		}
-		
-		//System.out.println("스포 업데이트 후 : "+ r.getSpoilerCheck());
-		/*if (r.getSpoilerCheck().equals("Y")) {
-			r.setSpoilerCheck("N");
-		} else {
-			r.setSpoilerCheck("Y");
-		}*/
-		
+
 		int result = reviewService.reviewUpdate(r);
-		//id, 레이팅6개 점수 뿌리기
 		int result2 = reviewService.reviewUpdateContent(r);
-		//리뷰 내용 수정
-		Member m=(Member)session.getAttribute("loginUser");
-		
-		if(result2 > 0 && result > 0) {
-			mv.addObject("id",r.getId()).setViewName("redirect:ratingDetailReview.do");
-		}else {
+		Member m = (Member) session.getAttribute("loginUser");
+
+		if (result2 > 0 && result > 0) {
+			mv.addObject("id", r.getId()).setViewName("redirect:ratingDetailReview.do");
+		} else {
 			System.out.println(result);
 			System.out.println(result2);
 			mv.addObject("msg", "게시판 수정 실패").setViewName("error/errorPage");
 		}
 		return mv;
 	}
-	
-	
+
 	// 마이페이지 리뷰조회
 	@RequestMapping("myPageSelectReview.do")
-	public ModelAndView myPageSelectReview(String tab, String id, @RequestParam(value="currentPage", defaultValue="1") int currentPage, ModelAndView mv) {
+	public ModelAndView myPageSelectReview(String tab, String id,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, ModelAndView mv) {
 		int listCount = reviewService.myPageReviewListCount(id);
-		
+
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id,pi);
+		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id, pi);
 		mv.addObject("review", reviewList).addObject("reviewPi", pi).addObject("tab", tab).setViewName("member/myPage");
 		return mv;
 	}
-	
+
 	// 유저페이지 리뷰조회
 	@RequestMapping("userPageSelectReview.do")
-	public ModelAndView userPageSelectReview(String tab, String id, @RequestParam(value="currentPage", defaultValue="1") int currentPage, ModelAndView mv) {
+	public ModelAndView userPageSelectReview(String tab, String id,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, ModelAndView mv) {
 		int listCount = reviewService.myPageReviewListCount(id);
-		
+
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		
-		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id,pi);
+
+		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id, pi);
 		mv.addObject("review", reviewList).addObject("reviewPi", pi).addObject("tab", tab).setViewName("member/userPage");
 		return mv;
 	}
 
-	
-	
 	// 관리자 리뷰 리스트 조회
 	@RequestMapping("adRlist.do")
-	public ModelAndView reviewList(ModelAndView mv, 
-								  @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
-		
+	public ModelAndView reviewList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
 		ArrayList<Review> list = reviewService.selectAdReviewList();
-		
 		mv.addObject("list", list).setViewName("admin/reviewListView");
-		
 		return mv;
 	}
-	
-	//전체리스트 메인 페이지
+
+	// 전체리스트 메인 페이지
 	@RequestMapping("reviewListMain.do")
 	public ModelAndView reviewList(ModelAndView mv) {
-		
 
 		ArrayList<Review> list = reviewService.selectReviewListMain();
-		//System.out.println(list);
-		mv.addObject("list",list).setViewName("reviewView/reviewList");
-		
-		// log.info("리뷰리스트 : "  + list);
-		
+		mv.addObject("list", list).setViewName("review/reviewList");
 		return mv;
-		
+
 	}
-	
-	//  리뷰 신고하기
+
+	// 리뷰 신고하기
 	@ResponseBody
 	@RequestMapping("declarationModal.do")
 	public ModelAndView insertDeclaration(Review r, Report rep, ModelAndView mv) {
 
-		// Review r = reviewService.selectReviewReport(reviewNo);
-		//log.info("구하고자하는값은" + rep);
-
 		int result = reviewService.insertDeclaration(rep);
-		//log.info("성공할건가" + result);
 		if (result > 0) { // 성공
 			mv.addObject("id", rep.getTargetId()).setViewName("redirect:ratingDetailReview.do");
 		} else { // 실패
@@ -284,40 +214,28 @@ public class ReviewController {
 
 		return mv;
 	}
-	
 
-//  리뷰 신고하기
+	// 리뷰 신고하기
 	@RequestMapping("declarationModal2.do")
-	public ModelAndView insertDeclaration2(Report rep,ModelAndView mv) {
-		
-		
-		//Review r = reviewService.selectReviewReport(reviewNo);
-		//System.out.println("구하고자하는값은"+rep);
-		
+	public ModelAndView insertDeclaration2(Report rep, ModelAndView mv) {
+
 		int result = reviewService.insertDeclaration(rep);
-		//System.out.println("성공할건가"+result);
-		if(result>0) { // 성공
-			mv.addObject("id",rep.getTargetId()).setViewName("redirect:home.do");
-			
-		}else { // 실패
+		if (result > 0) { // 성공
+			mv.addObject("id", rep.getTargetId()).setViewName("redirect:home.do");
+
+		} else { // 실패
 			mv.addObject("msg", "신고하기 실풰").setViewName("error/errorPage");
 		}
-		
+
 		return mv;
 	}
-	
-	
-
 
 	// 댓글 신고하기
 	@RequestMapping("declarationCommentModal.do")
 	public ModelAndView insertDeclarationComment(Review r, Report rep, ModelAndView mv) {
 
-		// Review r = reviewService.selectReviewReport(reviewNo);
-		//log.info("댓글신고" + rep);
-
 		int result = reviewService.insertDeclarationComment(rep);
-		//log.info("성공할건가" + result);
+		// log.info("성공할건가" + result);
 		if (result > 0) { // 성공
 			mv.addObject("id", rep.getTargetId()).setViewName("redirect:ratingDetailReview.do");
 		} else { // 실패
@@ -326,47 +244,40 @@ public class ReviewController {
 
 		return mv;
 	}
-	
-	
-	// 리부 댓글
-	
+
+	// 리뷰 댓글
 	@ResponseBody
-	@RequestMapping(value="reviewCommentList.do", produces="application/json; charset=UTF-8")
-	public String reviewCommentList(int id ){
+	@RequestMapping(value = "reviewCommentList.do", produces = "application/json; charset=UTF-8")
+	public String reviewCommentList(int id) {
 		int CommentCount = reviewService.getCommentCount();
 		ArrayList<Comment> reviewCommentList = reviewService.selectReviewComment(id);
-		
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 
 		// log.info("댓글" + reviewCommentList);
 		return gson.toJson(reviewCommentList);
- 
+
 	}
-	
-	//댓글 등록
-	
+
+	// 댓글 등록
 	@ResponseBody
 	@RequestMapping("insertReviewComment.do")
 	public String insertReviewComment(Comment c, ModelAndView mv) {
-		
-		int result = reviewService.insertReviewComment(c);
 
-		//log.info("result : " + result);
+		int result = reviewService.insertReviewComment(c);
+		// log.info("result : " + result);
 		if (result > 0) {
 			return "success";
 		} else {
 			return "fail";
 		}
 	}
-	
-	
+
 	// 리뷰 삭제
 	// 글삭제 (아직 조건 안걸음 사용자 아이디 비교해서 그사람이 삭제할수있게끔해놓기)
 	@RequestMapping("deleteReviewComment.do")
 	public String deleteReviewComment(int id, ModelAndView mv) {
 
 		int result = reviewService.deleteReviewComment(id);
-
 		if (result > 0) {
 			return "redirect:ratingDetailReview.do";
 		} else {

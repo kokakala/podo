@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.ch.podo.board.model.vo.PageInfo;
+import com.ch.podo.common.Image;
 import com.ch.podo.common.SearchCondition;
 import com.ch.podo.film.model.vo.Film;
 import com.ch.podo.film.model.vo.Genre;
-import com.ch.podo.image.model.vo.Image;
 
 public interface FilmService {
 

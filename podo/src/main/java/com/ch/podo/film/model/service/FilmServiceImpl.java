@@ -8,11 +8,11 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 
 import com.ch.podo.board.model.vo.PageInfo;
+import com.ch.podo.common.Image;
 import com.ch.podo.common.SearchCondition;
 import com.ch.podo.film.model.dao.FilmDao;
 import com.ch.podo.film.model.vo.Film;
 import com.ch.podo.film.model.vo.Genre;
-import com.ch.podo.image.model.vo.Image;
 
 @Service("filmService")
 public class FilmServiceImpl implements FilmService {

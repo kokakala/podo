@@ -2,9 +2,9 @@ package com.ch.podo.detailFilm.model.service;
 
 import java.util.ArrayList;
 
+import com.ch.podo.common.Image;
 import com.ch.podo.detailFilm.model.vo.Actor;
 import com.ch.podo.detailFilm.model.vo.DetailFilm;
-import com.ch.podo.image.model.vo.Image;
 import com.ch.podo.review.model.dto.Review;
 
 public interface DetailFilmService {

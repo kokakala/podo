@@ -3,10 +3,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script
-			src="resources/bootstrap/vendors/owl-carousel/owl.carousel.min.js"></script>
-		<script
-			src="resources/bootstrap/vendors/nice-select/jquery.nice-select.min.js"></script>
+		<script src="resources/bootstrap/vendors/owl-carousel/owl.carousel.min.js"></script>
+		<script src="resources/bootstrap/vendors/nice-select/jquery.nice-select.min.js"></script>
 		<script src="resources/bootstrap/js/jquery.ajaxchimp.min.js"></script>
 		<script src="resources/bootstrap/js/mail-script.js"></script>
 		<script src="resources/bootstrap/js/main.js"></script>

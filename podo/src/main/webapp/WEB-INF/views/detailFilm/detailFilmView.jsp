@@ -271,7 +271,7 @@
 	        <div class="df_review_list">
 	        <br>
 			    <div>
-		        	<h5>리뷰</h5><a href="reviewWriteForm.do?filmId=${df.filmId}&loginUserId=${loginUser.id}" class="btn" style="background:purple; color:white;">작성하기</a>
+		        	<h5>리뷰</h5><a href="reviewWriteForm.do?filmId=${df.filmId}" class="btn" style="background:purple; color:white;">작성하기</a>
 		    	</div>		<!-- 버튼 -->
 			        <c:forEach items="${ rl }" var="r">
 					<div class="homeReviewArea">

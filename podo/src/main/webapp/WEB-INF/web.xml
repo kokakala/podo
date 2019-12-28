@@ -53,36 +53,71 @@
 
 	<!-- error page -->
 	<error-page>
+		<location>/error/error.do</location>
+	</error-page>
+	<error-page>
 		<exception-type>java.lang.Throwable</exception-type>
-		<location>/error/throwable</location>
+		<location>/error/error.do</location>
 	</error-page>
 	<error-page>
 		<exception-type>java.lang.Exception</exception-type>
-		<location>/error/exception</location>
-	</error-page>
-	<error-page>
-		<error-code>404</error-code>
-		<location>/error/404</location>
-	</error-page>
-	<error-page>
-		<error-code>403</error-code>
-		<location>/error/403</location>
-	</error-page>
-	<error-page>
-		<error-code>500</error-code>
-		<location>/error/500</location>
-	</error-page>
-	<error-page>
-		<error-code>503</error-code>
-		<location>/error/503</location>
+		<location>/error/error.do</location>
 	</error-page>
 	<error-page>
 		<error-code>400</error-code>
-		<location>/error/400</location>
+		<location>/error/400.do</location>
+	</error-page>
+	<error-page>
+		<error-code>401</error-code>
+		<location>/error/401.do</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/error/403.do</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error/404.do</location>
 	</error-page>
 	<error-page>
 		<error-code>405</error-code>
-		<location>/error/405</location>
+		<location>/error/405.do</location>
+	</error-page>
+	<error-page>
+		<error-code>406</error-code>
+		<location>/error/406.do</location>
+	</error-page>
+	<error-page>
+		<error-code>407</error-code>
+		<location>/error/407.do</location>
+	</error-page>
+	<error-page>
+		<error-code>408</error-code>
+		<location>/error/408.do</location>
+	</error-page>
+	<error-page>
+		<error-code>414</error-code>
+		<location>/error/414.do</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error/500.do</location>
+	</error-page>
+	<error-page>
+		<error-code>502</error-code>
+		<location>/error/502.do</location>
+	</error-page>
+	<error-page>
+		<error-code>503</error-code>
+		<location>/error/503.do</location>
+	</error-page>
+	<error-page>
+		<error-code>504</error-code>
+		<location>/error/504.do</location>
+	</error-page>
+	<error-page>
+		<error-code>520</error-code>
+		<location>/error/520.do</location>
 	</error-page>
 
 </web-app>

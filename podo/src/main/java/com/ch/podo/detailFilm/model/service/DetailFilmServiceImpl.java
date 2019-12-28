@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ch.podo.common.Image;
 import com.ch.podo.detailFilm.model.dao.DetailFilmDao;
 import com.ch.podo.detailFilm.model.vo.Actor;
 import com.ch.podo.detailFilm.model.vo.DetailFilm;
-import com.ch.podo.image.model.vo.Image;
 import com.ch.podo.review.model.dto.Review;
 
 @Service("dfService")

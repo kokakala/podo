@@ -1,70 +1,95 @@
 package com.ch.podo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ch.podo.board.model.service.BoardService;
-import com.ch.podo.board.model.vo.Board;
 import com.ch.podo.film.model.service.FilmService;
 import com.ch.podo.film.model.vo.Film;
-import com.ch.podo.like.model.vo.Like;
-import com.ch.podo.member.model.vo.Member;
-import com.ch.podo.review.model.dto.Review;
-import com.ch.podo.review.model.service.ReviewService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class HomeController {
 	
 	@Autowired
 	private FilmService f;
 	
-	@Autowired
-	private ReviewService r;
-	
-	@Autowired
-	private BoardService bs;
-	
 	@RequestMapping("home.do")
 	public ModelAndView home(ModelAndView mv,HttpSession session,HttpServletRequest request)throws Exception {
-		
 		ArrayList<Film> list = f.selectNewFilms();
-		
-		 //System.out.println("창수의:"+list);
-
-		ArrayList<Review> reviewList = r.selectReviewListMain();
-		int listReviewCount = r.getReviewListCount();
-		int getCommentCount = r.getCommentCount();
-		if(session.getAttribute("loginUser")!=null) {
-			Member m=(Member)session.getAttribute("loginUser");
-			ArrayList<Like> listLike=r.checkLike(m);
-			for(int i=0;i<listLike.size();i++) {
-				for(int j=0;j<reviewList.size();j++) {
-					if(listLike.get(i).getTargetId()==reviewList.get(i).getId()) {
-						reviewList.get(i).setLike(m.getId());
-					}
-				}
-			}
-			
-		}
-		
-		//System.out.println("처란의:"+reviewList);
-
-		
-		
-		ArrayList<Board> boardList = bs.selectboardListHome();
-		
-		//System.out.println("윤진의"+boardList);
-
-		mv.addObject("list", list).addObject("reviewList", reviewList).addObject("boardList", boardList).setViewName("home");
-
+		mv.addObject("list", list).setViewName("home");
 		return mv;
 	}
-	
+
+	@RequestMapping(value = "/error/{error_code}.do")
+	public ModelAndView error(HttpServletRequest request, @PathVariable String error_code) {
+		// root-context.xml
+		// web.xml
+		// log.info("error_code : " + error_code);
+		ModelAndView mv = new ModelAndView("error/error");
+		String msg = (String) request.getAttribute("javax.servlet.error.message");
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("STATUS_CODE", request.getAttribute("javax.servlet.error.status_code"));
+		map.put("REQUEST_URI", request.getAttribute("javax.servlet.error.request_uri"));
+		map.put("EXCEPTION_TYPE", request.getAttribute("javax.servlet.error.exception_type"));
+		map.put("EXCEPTION", request.getAttribute("javax.servlet.error.exception"));
+		map.put("SERVLET_NAME", request.getAttribute("javax.servlet.error.servlet_name"));
+		map.put("ERROR_CODE", error_code);
+
+		try {
+			int status_code = Integer.parseInt(error_code);
+			switch (status_code) {
+			// 400: Client Error
+			case 400: msg = "Bad Request"; break;
+			case 401: msg = "Unauthorized"; break;
+			case 403: msg = "Forbidden"; break;
+			case 404: msg = "Not Found"; break;
+			case 405: msg = "Method Not Allowed"; break;
+			case 406: msg = "Not Acceptable"; break;
+			case 407: msg = "Proxy Authentication Required"; break;
+			case 408: msg = "Request Timeout"; break;
+			case 414: msg = "URL Too Long"; break;
+			
+			// 500: Server Error
+			case 500: msg = "Internal Server Error"; break;
+			case 502: msg = "Bad Gateway"; break;
+			case 503: msg = "Service Unavailable"; break;
+			case 504: msg = "Gateway Timeout"; break;
+			case 520: msg = "Unknown Error"; break;
+			default: msg = "Unknown Error"; break;
+			}
+		} catch (NumberFormatException e) {
+			map.replace("ERROR_CODE", "ERROR");
+			msg = "Unknown Error";
+		} finally {
+			map.put("MESSAGE", msg);
+		}
+
+		// logging
+		if (map.isEmpty() == false) {
+			Iterator<Entry<String, Object>> iterator = map.entrySet().iterator();
+			Entry<String, Object> entry = null;
+			while (iterator.hasNext()) {
+				entry = iterator.next();
+				log.info("key : " + entry.getKey() + ", value : " + entry.getValue());
+			}
+		}
+		
+		mv.addObject("error", map);
+		return mv;
+	}
 }

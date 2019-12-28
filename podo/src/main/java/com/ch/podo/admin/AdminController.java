@@ -6,14 +6,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AdminController {
-	
-	@RequestMapping("admin.do")
-	public ModelAndView home(ModelAndView mv)throws Exception {
-		
-		mv.setViewName("admin");
 
+	@RequestMapping("admin.do")
+	public ModelAndView home(ModelAndView mv) throws Exception {
+		mv.setViewName("admin");
 		return mv;
 	}
-	
 
 }

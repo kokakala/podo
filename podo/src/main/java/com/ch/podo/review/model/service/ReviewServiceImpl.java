@@ -24,45 +24,36 @@ public class ReviewServiceImpl implements ReviewService{
 	
 	@Override
 	public int getReviewListCount() {
-		
 		return reviewDao.getReviewListCount();
 	}
 	
 	@Override
 	public ArrayList<Review> selectReviewList(PageInfo pi) {
-		
 		return reviewDao.selectReviewList(pi);
 	}
 
 	@Override
 	public int deleteReview(int id) {
-		
 		return reviewDao.deleteReview(id);
 	}
 	
 	@Override
 	public int reviewWrite(Review r) {
-		
 		return reviewDao.reviewWrite(r);
 	}
 
 	@Override
 	public Film selectFilm(int filmId) {
-		
 		return reviewDao.selectFilm(filmId);
 	}
 
 	@Override
 	public Member selectMember(int loginUserId) {
-		
 		return reviewDao.selectMember(loginUserId);
 	}
 	
-	// 합친거
-	
 	@Override
 	public Review selectRatingReviewDetailView(int id) {
-
 		return reviewDao.selectRatingReviewDetailView(id);
 	}
 
@@ -74,13 +65,11 @@ public class ReviewServiceImpl implements ReviewService{
 
 	@Override
 	public int reviewUpdate(Review r) {
-		
 		return reviewDao.reviewUpdate(r);
 	}
 	
 	@Override
 	public int reviewUpdateContent(Review r) {
-	
 		return reviewDao.reviewUpdateContent(r);
 	}
 
@@ -96,17 +85,13 @@ public class ReviewServiceImpl implements ReviewService{
 
 	@Override
 	public ArrayList<Review> selectReviewListMain() {
-		
 		return reviewDao.selectReviewListMain();
 	}
 
 	@Override
 	public int reviewRating(Review r) {
-		
 		return reviewDao.reviewRating(r);
 	}
-
-
 
 	@Override
 	public ArrayList<Review> selectAdReviewList() {
@@ -125,31 +110,26 @@ public class ReviewServiceImpl implements ReviewService{
 
 	@Override
 	public Review selectReviewReport(int reviewNo) {
-		
 		return reviewDao.selectReviewReport(reviewNo);
 	}
 
 	@Override
 	public ArrayList<Comment> selectReviewComment(int id) {
-		
 		return reviewDao.selectReviewComment(id);
 	}
 
 	@Override
 	public int insertReviewComment(Comment c) {
-		
 		return reviewDao.insertReviewComment(c);
 	}
 
 	@Override
 	public int insertDeclarationComment(Report rep) {
-		
 		return reviewDao.insertDeclarationComment(rep);
 	}
 
 	@Override
 	public int deleteReviewComment(int id) {
-		
 		return reviewDao.deleteReviewComment(id);
 	}
 
@@ -160,24 +140,7 @@ public class ReviewServiceImpl implements ReviewService{
 
 	@Override
 	public int getCommentCount() {
-		
 		return reviewDao.getCommentCount();
 	}
-
-	/*
-	@Override
-	public int reivewInsert(DetailFilm df) {
-		
-		return reviewDao.reivewInsert(df);
-	}*/
-	
-	/*
-	@Override
-	public Review selectReview() {
-		
-		return  reviewDao.selectReview();
-	}*/
-
-
 
 }

@@ -1,4 +1,4 @@
-package com.ch.podo.image.model.vo;
+package com.ch.podo.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

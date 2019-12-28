@@ -1,4 +1,4 @@
-package com.ch.podo.ratingReview.model.vo;
+package com.ch.podo.review.model.dto;
 
 import java.sql.Date;
 

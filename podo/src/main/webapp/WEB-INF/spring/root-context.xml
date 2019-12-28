@@ -56,5 +56,12 @@
 	 	<property name="maxInMemorySize" value="100000000"/>
 	</bean>
 	<!-- Transaction beans End -->
+	
+	<!-- Exception Resolver -->
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+<!-- 		<property name="defaultErrorView" value="/error/error.do"/> -->
+<!-- 		<property name="defaultStatusCode" value="400"/> -->
+		<property name="exceptionAttribute" value="exception"/>
+	</bean>
 
 </beans>

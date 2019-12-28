@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ch.podo.common.Image;
 import com.ch.podo.detailFilm.model.service.DetailFilmService;
 import com.ch.podo.detailFilm.model.vo.Actor;
 import com.ch.podo.detailFilm.model.vo.DetailFilm;
-import com.ch.podo.image.model.vo.Image;
 import com.ch.podo.review.model.dto.Review;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

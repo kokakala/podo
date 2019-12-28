@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ch.podo.board.model.vo.PageInfo;
+import com.ch.podo.common.Image;
 import com.ch.podo.common.Pagination;
 import com.ch.podo.common.PodoRenamePolicy;
 import com.ch.podo.common.SearchCondition;
@@ -29,7 +30,6 @@ import com.ch.podo.detailFilm.model.vo.DetailFilm;
 import com.ch.podo.film.model.service.FilmService;
 import com.ch.podo.film.model.vo.Film;
 import com.ch.podo.film.model.vo.Genre;
-import com.ch.podo.image.model.vo.Image;
 import com.ch.podo.like.model.service.LikeService;
 import com.ch.podo.like.model.vo.Like;
 import com.ch.podo.member.model.vo.Member;
