@@ -6,15 +6,11 @@ import com.ch.podo.comment.model.vo.Comment;
 
 public interface CommentService {
 	
-	// 댓글 리스트
-	ArrayList<Comment> selectCommentList(int id);
+	ArrayList<Comment> selectCommentList(int tid);
 	
-	// 댓글 작성
-	int insertComment(Comment c);
+	int insertComment(Comment comment);
 	
-	// 댓글 수정
-	int updateComment(int id, String content);
+	int updateComment(Comment comment);
 	
-	// 댓글 삭제
-	int deleteComment(int id);
+	int deleteComment(Comment comment);
 }

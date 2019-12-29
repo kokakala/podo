@@ -6,33 +6,9 @@
 <html>
 	<head>
 		<jsp:include page="../common/header.jsp"/>
-		<title>영화 검색</title>
 		<style>
-			
-			#search-film-result {
-				border-collapse: collapse;
-			}
-			
-			#search-film-result td,
-			#search-film-result tr {
-				text-align: center;
-				border: 1px solid;
-			}
-			
-			.card-img {
-				object-fit: cover;
-				height: 420px;
-			}
-			
-			.single-recent-blog-post .thumb {
-		    overflow: hidden;
-		    border-radius: 10px;
-		    border: 1px solid #b3bfdd;
-			}
-			
 			a { color: #c69ce6; }
 			a:hover { color : #d4d4d4; }
-			
 		</style>
 	</head>
 	<body>

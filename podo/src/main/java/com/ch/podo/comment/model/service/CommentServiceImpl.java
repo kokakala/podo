@@ -15,23 +15,23 @@ public class CommentServiceImpl implements CommentService {
 	private CommentDao commentDao;
 
 	@Override
-	public ArrayList<Comment> selectCommentList(int id) {
-		return commentDao.selectCommentList(id);
+	public ArrayList<Comment> selectCommentList(int tid) {
+		return commentDao.selectCommentList(tid);
 	}
 
 	@Override
-	public int insertComment(Comment c) {
-		return commentDao.insertComment(c);
+	public int insertComment(Comment comment) {
+		return commentDao.insertComment(comment);
 	}
 
 	@Override
-	public int updateComment(int id, String content) {
-		return commentDao.updateComment(id, content);
+	public int updateComment(Comment comment) {
+		return commentDao.updateComment(comment);
 	}
 
 	@Override
-	public int deleteComment(int id) {
-		return commentDao.deleteComment(id);
+	public int deleteComment(Comment comment) {
+		return commentDao.deleteComment(comment);
 	}
 
 }

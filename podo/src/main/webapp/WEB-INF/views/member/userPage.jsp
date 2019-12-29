@@ -57,12 +57,10 @@
 	/* Style the tab content */
 	.tabcontent {
 		display: none;
-		/* background-color:rgb(230, 204, 255); */
 		padding: 6px 12px;
 		color:#fff;
 	}
 	ul.tab li.current{
-		/* background-color: rgb(230, 204, 255); */
 		color: rgb(230, 204, 255);
 	}
 	.tabcontent.current {
@@ -71,40 +69,6 @@
 	/* --------------------- 탭메뉴 끝 ---------------------  */
 	#noAnswer{color:red;}
 	
-	/* --------------------- 리뷰_영화 관련---------------------  */
-	.podo-film-card {
-		/*border: 1px solid; */
-/* 		padding-top: 40px; */
-		display: inline-block;
- 		width: 241px;
-/* 		height: 620px; */
-		text-align: center;
-	}
-	
-	.podo-film-card .poster {
-		overflow: hidden;
-		cursor: pointer;
-		border-radius: 10px;
-    	border: 1px solid #b3bfdd;
-	}
-	
-	.podo-film-card .poster img {
-		width: 100%;
-		height: 342px;
-		object-fit: cover;
-	}
-	
-	.podo-film-card .poster img:hover {
-		-moz-transform: scale(1.1);
-	    -webkit-transform: scale(1.1);
-	    -o-transform:scale(1.1);  
-	    transform: scale(1.1);
-		-moz-transition: all 0.3s;
-	    -webkit-transition: all 0.3s;
-	    -o-transition: all 0.3s;
-	    transition: all 0.3s;
-	}
-	/* --------------------- 리뷰_영화 관련 끝---------------------  */
 	a.disabled {
 	  pointer-events: none;
 	  cursor: default;

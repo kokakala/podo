@@ -28,5 +28,5 @@ public class Board {
    private int memberId; 			// 작성자
    private String imageName;		// 변경된 이미지 파일명
    private String nickName;			// 사용자 닉네임
-
+   private String memberImage;
 }

@@ -43,6 +43,9 @@ public class ReviewController {
 		int listReviewCount = reviewService.getReviewListCount();
 		pi = Pagination.getPageInfo(currentPage, listReviewCount);
 		ArrayList<Review> list = reviewService.selectReviewList(pi);
+		for (Review review : list) {
+			review.setContent(review.getContent().replaceAll("(\\r\\n|\\n)", "<br>"));
+		}
 		mv.addObject("list", list).addObject("pi", pi).setViewName("review/reviewList");
 
 		return mv;
@@ -76,8 +79,8 @@ public class ReviewController {
 		if (result2 > 0 && result > 0) { // 게시판 작성 성공
 			return "redirect:reviewList.do";
 		} else { // 작성 실패
-			model.addAttribute("msg", "게시판 작성 하기실팽");
-			return "error/errorPage";
+			model.addAttribute("msg", "게시판 작성 하기 실패");
+			return "error/error.do";
 		}
 
 	}
@@ -90,13 +93,13 @@ public class ReviewController {
 		if (result > 0) {
 			return "redirect:reviewList.do";
 		} else {
-			return "error/errorPage";
+			return "error/error.do";
 		}
 
 	}
 
 	// 글 리뷰 리스트 조회용
-	@RequestMapping("ratingDetailReview.do")
+	@RequestMapping("reviewDetail.do")
 	public ModelAndView selectRatingReviewDetailView(String id, ModelAndView mv,
 																									 HttpSession session, HttpServletRequest request) {
 
@@ -112,19 +115,19 @@ public class ReviewController {
 				}
 			}
 		}
-		mv.addObject("r", r).setViewName("ratingReview/ratingDetailReview");
+		mv.addObject("r", r).setViewName("review/reviewDetail");
 
 		return mv;
 	}
 
 	// 글 수정 폼으로 가게해주는 리퀘스트매핑
-	@RequestMapping("reviewUpdateView.do")
+	@RequestMapping("reviewUpdateForm.do")
 	public ModelAndView boardUpdateView(String id, ModelAndView mv, HttpSession session) {
 
 		Member m = (Member) session.getAttribute("loginUser");
 		Review r = reviewService.selectUpdateReview(Integer.parseInt(id));
 
-		mv.addObject("r", r).addObject("m", m).setViewName("ratingReview/ratingUpdateForm");
+		mv.addObject("r", r).addObject("m", m).setViewName("review/reviewUpdateForm");
 		return mv;
 
 	}
@@ -147,11 +150,11 @@ public class ReviewController {
 		Member m = (Member) session.getAttribute("loginUser");
 
 		if (result2 > 0 && result > 0) {
-			mv.addObject("id", r.getId()).setViewName("redirect:ratingDetailReview.do");
+			mv.addObject("id", r.getId()).setViewName("redirect:reviewDetail.do");
 		} else {
 			System.out.println(result);
 			System.out.println(result2);
-			mv.addObject("msg", "게시판 수정 실패").setViewName("error/errorPage");
+			mv.addObject("msg", "게시판 수정 실패").setViewName("error/error.do");
 		}
 		return mv;
 	}
@@ -207,11 +210,10 @@ public class ReviewController {
 
 		int result = reviewService.insertDeclaration(rep);
 		if (result > 0) { // 성공
-			mv.addObject("id", rep.getTargetId()).setViewName("redirect:ratingDetailReview.do");
+			mv.addObject("id", rep.getTargetId()).setViewName("redirect:reviewDetail.do");
 		} else { // 실패
-			mv.addObject("msg", "신고하기 실풰").setViewName("error/errorPage");
+			mv.addObject("msg", "신고하기 실패").setViewName("error/error.do");
 		}
-
 		return mv;
 	}
 
@@ -222,14 +224,19 @@ public class ReviewController {
 		int result = reviewService.insertDeclaration(rep);
 		if (result > 0) { // 성공
 			mv.addObject("id", rep.getTargetId()).setViewName("redirect:home.do");
-
 		} else { // 실패
-			mv.addObject("msg", "신고하기 실풰").setViewName("error/errorPage");
+			mv.addObject("msg", "신고하기 실패").setViewName("error/error.do");
 		}
 
 		return mv;
 	}
 
+	
+	
+	
+	
+
+	// 리뷰 댓글
 	// 댓글 신고하기
 	@RequestMapping("declarationCommentModal.do")
 	public ModelAndView insertDeclarationComment(Review r, Report rep, ModelAndView mv) {
@@ -237,15 +244,14 @@ public class ReviewController {
 		int result = reviewService.insertDeclarationComment(rep);
 		// log.info("성공할건가" + result);
 		if (result > 0) { // 성공
-			mv.addObject("id", rep.getTargetId()).setViewName("redirect:ratingDetailReview.do");
+			mv.addObject("id", rep.getTargetId()).setViewName("redirect:reviewDetail.do");
 		} else { // 실패
-			mv.addObject("msg", "신고하기 실풰").setViewName("error/errorPage");
+			mv.addObject("msg", "신고하기 실풰").setViewName("error/error.do");
 		}
 
 		return mv;
 	}
-
-	// 리뷰 댓글
+	
 	@ResponseBody
 	@RequestMapping(value = "reviewCommentList.do", produces = "application/json; charset=UTF-8")
 	public String reviewCommentList(int id) {
@@ -279,9 +285,9 @@ public class ReviewController {
 
 		int result = reviewService.deleteReviewComment(id);
 		if (result > 0) {
-			return "redirect:ratingDetailReview.do";
+			return "redirect:reviewDetail.do";
 		} else {
-			return "error/errorPage";
+			return "error/error.do";
 		}
 
 	}
