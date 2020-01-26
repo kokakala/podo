@@ -12,7 +12,7 @@
 				<div class="movie-poster-cover col-lg-4">
 					<div class="movie-poster">
 						<c:if test="${i.changeName ne null}">
-							<img class="poster" src="resources/detailFilmImage/${i.changeName}"">
+							<img class="poster" src="resources/detailFilmImage/${i.changeName}">
 						</c:if>
 						<c:if test="${i.changeName eq null}">
 							<img class="poster" src="resources/detailFilmImage/podoposter.jpg">
@@ -81,7 +81,7 @@
 			</div>
 			
 			<c:forEach items="${ rl }" var="r">
-				<div class="row">
+				<div class="row review-list-card">
 					<div class="col-md-2">
 						<div class="thumbnail">
 							<c:if test="${ not empty r.userImage }">
@@ -127,7 +127,7 @@
 								<input type="hidden" class="likeInp" value="0" />
 							</c:if>
 							<button class="declaration-modal button" data-toggle="modal">REPORT</button>
-							<button class="button" onclick="location.href='ratingDetailReview.do?id=${ r.id }'">MORE</button>
+							<button class="button" onclick="location.href='reviewDetail.do?id=${ r.id }'">MORE</button>
 						</div>
 					
 					</div>
@@ -148,16 +148,17 @@
 
 			function onYouTubePlayerAPIReady() {
 				player = new YT.Player('muteYouTubeVideoPlayer', {
-					width: '640',
+					width: '100%',
 					//videoId : 'x60mB0zXZ38',
 					videoId : trailer1,
 					playerVars : {
 						autoplay : 1, // Auto-play the video on load
-						controls : 0, // Show pause/play buttons in player
+						controls : 1, // Show pause/play buttons in player
+						disablekb: 1,
 						rel : 0,
 
-						start : 75, // 원하는 예고편 시작 지점
-						end : 135, // 원하는 예고편 끝나는 지점
+						// start : 0, // seconds
+						// end : 20, // seconds
 
 						showinfo : 0, // Hide the video title
 						modestbranding : 1, // Hide the Youtube Logo
@@ -166,12 +167,11 @@
 						fs : 0, // Hide the full screen button
 						cc_load_policy : 0, // Hide closed captions
 						iv_load_policy : 3, // Hide the Video Annotations
-						autohide : 1
-					// Hide video controls when playing
+						autohide : 1 // Hide video controls when playing
 					},
 					events : {
 						onReady : function(e) {
-							e.target.mute();
+							e.target.mute(); // mute
 						}
 					}
 				});

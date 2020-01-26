@@ -25,31 +25,28 @@ public class ReportAPIController {
 	@ResponseBody
 	public boolean blind(String targetId, String type, String[] checked) throws Exception {
 
-//		System.out.println(targetId + " " + type);
+		// log.info(targetId + " " + type);
 		log.info("checked : " + checked);
-
+		
 		ArrayList<Report> r = new ArrayList<>();
 		
 		if (targetId != null && type != null) {
 			Report re = new Report();
-			re.setTargetId(Integer.parseInt(targetId));
+			re.setTargetId(targetId);
 			re.setType(Integer.parseInt(type));
 			r.add(re);
 		}
 		
 		if(checked != null) {
 			for (int i = 0; i < checked.length; i+=2) {
-				if (i % 2 == 0) {
+				// if (i % 2 == 0) {
 					Report re = new Report();
-					re.setTargetId(Integer.parseInt(checked[i]));
+					re.setTargetId(checked[i]);
 					re.setType(Integer.parseInt(checked[i+1]));
 					r.add(re);
-				}
+				// }
 			}
 		}
-		
-
-//		System.out.println(r);
 		
 		int result = reportService.blindReport(r);
 		

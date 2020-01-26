@@ -168,18 +168,18 @@ public class BoardController {
 	// ----- 신고 -----
 	@ResponseBody
 	@RequestMapping("bReportModal.do")
-	public ModelAndView inapproCount(Board b, Report r, ModelAndView mv) {
-		
-		int result = boardService.insertInappro(r);
-		
-		if(result > 0) {
-			mv.addObject("id", r.getTargetId()).setViewName("redirect:bdetail.do");
-		}else {
+	public ModelAndView inapproCount(Report report, ModelAndView mv) {
+		log.info("report : " + report);
+		int result = boardService.insertInappro(report);
+
+		if (result > 0) {
+			mv.addObject("id", report.getTargetId()).setViewName("redirect:bdetail.do");
+		} else {
 			mv.addObject("msg", "신고하기 실패").setViewName("");
 		}
-		
+
 		return mv;
-		
+
 	}
 	
 	

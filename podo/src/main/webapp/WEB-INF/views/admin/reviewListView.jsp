@@ -146,7 +146,7 @@
 					<tr>
 						<td>${ r.id }</td>			
 						<td>
-							<a href="ratingDetailReview.do?id=${ r.id }">${ r.titleKor }&nbsp;/ ${ r.titleEng }</a>
+							<a href="reviewDetail.do?id=${ r.id }">${ r.titleKor }&nbsp;/ ${ r.titleEng }</a>
 						</td>
 						<td>${ r.nickName }</td>
 						<td>${ r.likeCount }</td>

@@ -111,8 +111,7 @@
 		        <div class="col-lg-4 sidebar-widgets">
 		            <div class="widget-wrap">
 		            	
-		            	<form action="skFilm.do" method="get">
-			              <div class="single-sidebar-widget newsletter-widget">
+		            	<form action="skFilm.do" method="get" class="single-sidebar-widget newsletter-widget">
 			                <h4 class="single-sidebar-widget__title">결과 내 재검색</h4>
 			                <div class="form-group mt-30">
 			                  <div class="col-autos">
@@ -123,7 +122,6 @@
 			                </div>
 			                <%-- <a class="bbtns d-block mt-20 w-100" style="text-align:center;" href=<c:out value="${ keywordSearchUrl }"/>>재검색</a> --%>
 			                <button class="bbtns d-block mt-20 w-100" onclick="submit">재검색</button>
-			              </div>
 		            	</form>
 		
 		

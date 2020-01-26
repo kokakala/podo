@@ -50,7 +50,20 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<!-- REDIRECT TLS/SSL/HTTPS -->
+	<!-- 
+	<filter>
+    <filter-name>TLS</filter-name>
+    <filter-class>com.ch.podo.common.filter.TLSFilter</filter-class>
+  </filter>
 
+  <filter-mapping>
+    <filter-name>TLS</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+	 -->
+	 
 	<!-- error page -->
 	<error-page>
 		<location>/error/error.do</location>

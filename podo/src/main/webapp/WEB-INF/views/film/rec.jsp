@@ -168,7 +168,7 @@
 						  </footer>
 						</blockquote>
 					  <div class="row justify-content-md-center">
-					  	<a class="button" href="film.do">영화 페이지로</a>
+					  	<a class="button" style="margin: 0 auto;" href="film.do">영화 페이지로</a>
 					  </div>
 					</c:otherwise>
 				</c:choose>

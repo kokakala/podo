@@ -5,13 +5,6 @@
 <html>
 	<head>
 		<jsp:include page="../common/header.jsp"/>
-		<style>
-			#privacy-div{
-				width: 900px;
-				margin-right: auto;
-				margin-left: auto;
-			}
-		</style>
 	</head>
 <body>
 

@@ -10,11 +10,15 @@
 	
 		<div class="container">
 			<div class="row">
-				<div class="col-4">
+				<div class="col-lg-2">
 					<img class="img-fluid" src="resources/detailFilmImage/${r.posterImage }" alt="">
 				</div>
 				
-				<div class="col-8">
+				<div class="col-lg-4">
+					<canvas id="myChart"></canvas>
+				</div>
+				
+				<div class="col-lg-6">
 					<h4>${r.titleKor }</h4>
 					<h2>★ :${r.star }점</h2>
 					
@@ -55,60 +59,6 @@
 			</div>
 			
 			<div class="row">
-				<div class="col-6">
-					<canvas id="myChart"></canvas>
-				</div>
-				<div class="col-6">
-					<form action="vinsert.do" method="post" id="movieform">
-						<table align="center" id="vv">
-							<tr>
-								<td class="alert alert-primary">제목</td>
-								<td><input style="text-align: center" class="button"
-									type="text" name="title" id="vtitle" value="${ r.titleKor }"
-									readonly></td>
-							</tr>
-							<tr>
-								<td class="alert alert-primary">음악</td>
-								<td><input style="text-align: center" class="button"
-									type="text" name="ratingSound" class="insertRating"
-									id="ratingSound" value="${r.ratingSound }" readonly></td>
-							</tr>
-							<tr>
-								<td class="alert alert-primary">영상</td>
-								<td><input style="text-align: center" class="button"
-									type="text" name="ratingVisual" class="insertRating"
-									id="ratingVisual" value="${r.ratingVisual }" readonly></td>
-							</tr>
-							<tr>
-								<td class="alert alert-primary">연기</td>
-								<td><input style="text-align: center" class="button"
-									type="text" name="ratingActing" class="insertRating"
-									id="ratingActing" value="${r.ratingActing }" readonly></td>
-							</tr>
-							<tr>
-								<td class="alert alert-primary">대중성</td>
-								<td><input style="text-align: center" class="button"
-									type="text" name="ratingPop" class="insertRating"
-									id="ratingPop" value="${r.ratingPop }" readonly></td>
-							</tr>
-							<tr>
-								<td class="alert alert-primary">각본</td>
-								<td><input style="text-align: center" class="button"
-									type="text" name="ratingScript" class="insertRating"
-									id="ratingScript" value="${r.ratingScript }" readonly></td>
-							</tr>
-							<tr>
-								<td class="alert alert-primary">연출</td>
-								<td><input style="text-align: center" class="button"
-									type="text" name="ratingDirect" class="insertRating"
-									id="ratingDirect" value="${r.ratingDirect }" readonly></td>
-							</tr>
-						</table>
-					</form>
-				</div>
-			</div>
-		
-			<div class="row">
 				<p>${r.content }</p> 
 			</div>
 		</div>
@@ -141,8 +91,9 @@
 				<!-- 댓글 등록 -->
 			  <table class="table table-striped table-dark">
 				  <tr>
-					  	<td><textarea rows="3" cols="100" id="review-comment"></textarea></td>
-					  	<td><button class="button" id="rBtn">댓글등록</button></td>
+			  		<!-- cols="100" -->
+				  	<td><textarea rows="3" id="review-comment"></textarea></td>
+				  	<td><button class="button" id="rBtn">댓글등록</button></td>
 				  </tr>
 			  </table>
 			  
@@ -346,7 +297,7 @@
 		
 		
 		
-		// 댓글 리스트 가져오는거
+		// 댓글 리스트
 			$(function () {
 				getReplyReviewCommentList();
 			});
@@ -360,7 +311,7 @@
 					data:{ id : rid },
 					dataType:"json",
 					success:function(data){
-						console.log(data);
+						// console.log(data);
 						
 						$tbody = $("#rtb tbody");
 						$tbody.html("");
@@ -371,8 +322,7 @@
 							$.each(data, function(index, value){
 								$tr = $("<tr></tr>");
 								
-								console.log(value.nickName);
-							
+								// console.log(value.nickName);
 								
 								$writerTd = $("<td width='100'></td>").text(value.nickName); 
 								$contentTd = $("<td width='300'></td>").text(value.content);
@@ -406,7 +356,7 @@
 						}
 					},
 					error:function(){
-						console.log("통신실패");
+						// console.log("ajax 실패");
 					}
 					
 				});
@@ -424,7 +374,7 @@
 							alert("댓글이 삭제되었습니다.");
 						},
 						error:function(){
-							console.log(id);
+							// console.log(id);
 							alert("댓글 삭제 실패");
 
 						}
@@ -432,125 +382,89 @@
 				}
 			}
 			
-			
-		// 리뷰 좋아요		
-		$(function() {
-			//var likeReivew = $(".likeInp").val();
-			//console.log("값 : " + likeReivew);
-			
-			$(".likeReviewBtn").on("click", function(){
-				var userId = "${loginUser.id}";
-				var targetId = "${ r.id }";
-				var likeInp = $(".likeInp").val();
-				var status = "";
+			// 리뷰 좋아요		
+			$(function() {
+				//var likeReivew = $(".likeInp").val();
+				//console.log("값 : " + likeReivew);
 				
-				//console.log("버튼클릭시 : " + likeInp);
-				
-				if(likeInp == '0'){
-					status = "like";
-				}else if(likeInp == '1'){
-					status = "nonlike";
-				}
-				//console.log(status);
-				$.ajax({
-						url:"likeReviewClick.do",
-						data:{userId:userId,
-							  targetId:targetId,
-							  status:status},
-						type:"post",
-						success:function(data){
-							//console.log(data);
-							if(status == "like"){ // 좋아요클릭시
-								if(data == 1){
-									$(".likeReviewBtn").removeClass("btn-danger");
-									$(".likeReviewBtn").removeClass("btn-secondary");
-									$(".likeReviewBtn").addClass("btn-danger");
-									$(".likeReviewBtn").text('LIKED');
-									$(".likeInp").val('1');
-								}else{
-									alert("좋아요 실패");
+				$(".likeReviewBtn").on("click", function(){
+					var userId = "${loginUser.id}";
+					var targetId = "${ r.id }";
+					var likeInp = $(".likeInp").val();
+					var status = "";
+					
+					//console.log("버튼클릭시 : " + likeInp);
+					
+					if(likeInp == '0'){
+						status = "like";
+					}else if(likeInp == '1'){
+						status = "nonlike";
+					}
+					//console.log(status);
+					$.ajax({
+							url:"likeReviewClick.do",
+							data:{userId:userId,
+								  targetId:targetId,
+								  status:status},
+							type:"post",
+							success:function(data){
+								//console.log(data);
+								if(status == "like"){ // 좋아요클릭시
+									if(data == 1){
+										$(".likeReviewBtn").removeClass("btn-danger");
+										$(".likeReviewBtn").removeClass("btn-secondary");
+										$(".likeReviewBtn").addClass("btn-danger");
+										$(".likeReviewBtn").text('LIKED');
+										$(".likeInp").val('1');
+									}else{
+										alert("좋아요 실패");
+									}
+								}else if(status == "nonlike"){ // 좋아요 취소
+									if(data >0){
+										$(".likeReviewBtn").removeClass("btn-danger");
+										$(".likeReviewBtn").removeClass("btn-secondary");
+										$(".likeReviewBtn").addClass("btn-secondary");
+										$(".likeReviewBtn").text('LIKE');
+										$(".likeInp").val('0');
+									}else{
+										alert("좋아요 실패");
+									}
 								}
-							}else if(status == "nonlike"){ // 좋아요 취소
-								if(data >0){
-									$(".likeReviewBtn").removeClass("btn-danger");
-									$(".likeReviewBtn").removeClass("btn-secondary");
-									$(".likeReviewBtn").addClass("btn-secondary");
-									$(".likeReviewBtn").text('LIKE');
-									$(".likeInp").val('0');
-								}else{
-									alert("좋아요 실패");
-								}
+								//console.log("에이작스 후 : " + likeInp);
+									
+							},error:function(){
+								// console.log("ajax 실패");
 							}
-							//console.log("에이작스 후 : " + likeInp);
-								
-						},error:function(){
-							console.log("라이크 ajax 통신 실패");
-						}
-					});  
+						});  
+				});
 			});
-			
-		});
-		// 신고하기 모달
 	
 			
-		// 리뷰 신고하기 버튼 클릭 시
-		$(".declaration-modal").on( "click", function() {
-        $(".de_modal").modal();
-        //console.log("${ loginUser.id }");
-    });
-		// 댓글 신고하기 버튼 클릭시
-		$(".comment-modal").on( "click", function() {
-        $(".cm_modal").modal();
-        //console.log("${ loginUser.id }");
-    });
+			// 리뷰 신고하기 버튼 클릭 시
+			$(".declaration-modal").on( "click", function() {
+	        $(".de_modal").modal();
+	        //console.log("${ loginUser.id }");
+	    });
 		
-		
-	/*  신고..에이작스?   $(document).on("click","cm_modal", function() {
-	    	$(".cm_modal").modal(this);
-	    }); */
-	    
-	    
-		// 댓글 삭제
-		
-		$(".delComment button").on( "click", function() {
-			$(function () {
-				deleteReviewComment();
+			// 댓글 신고하기 버튼 클릭시
+			$(".comment-modal").on( "click", function() {
+	        $(".cm_modal").modal();
+	        //console.log("${ loginUser.id }");
+	    });
+			
+			/*
+		    $(document).on("click","cm_modal", function() {
+		    	$(".cm_modal").modal(this);
+		    });
+			*/
+		    
+		    
+			// 댓글 삭제
+			$(".delComment button").on( "click", function() {
+				$(function () {
+					deleteReviewComment();
+				});
 			});
-		});
-		//리뷰 클릭시
-/* 		function reviewClick() {
-			if($("#reviewDe").is(":checked") == true) {
-				$(".reviewType").css("display","inline-block");
-			} else {
-				$(".reviewType").css("display","none");
-			}
-		} */
-	
-		//댓글 클릭시
-	/* 	function commentClick() {
-			if($("#commentDe").is(":checked") == true) {
-				$(".commentType").css("display","inline-block");
-			} else {
-				$(".commentType").css("display","none");
-			}
-		} */
-		/* //자유게시판 클릭시
-		function freeClick() {
-			if($("#freeDe").is(":checked") == true) {
-				$(".freeType").css("display","inline-block");
-			} else {
-				$(".freeType").css("display","none");
-			}
-		}
-		// 컬렉션 신고시
-		function collectionClick() {
-			if($("#collectionDe").is(":checked") == true) {
-				$(".collectionType").css("display","inline-block");
-			} else {
-				$(".collectionType").css("display","none");
-			}
-		} */
-		
 	
 		</script>
 		<jsp:include page="../common/footer.jsp"/>

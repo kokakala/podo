@@ -15,10 +15,10 @@ public class Report {
    
    private int id;         // 신고번호
    private int type;      // 타입	
-   private int targetId;   // 대상번호
+   private String targetId;   // 대상번호
    private int content;   // 신고내용
    private int reportId;   // 신고자번호
-   private int reportedId;   // 신고대상자번호
+   private String reportedId;   // 신고대상자번호
    
    private String reportName;	// 신고자이름
    private String reportedName; // 신고대상자이름

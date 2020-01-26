@@ -188,13 +188,13 @@
 									<div class="row">
 										<div class="col-3 single-recent-blog-post">
 											<div class="thumb podo-film-card">
-												<div class="poster" onclick="location.href='ratingDetailReview.do?id=${list.ratingReviewId}';">
+												<div class="poster" onclick="location.href='reviewDetail.do?id=${list.ratingReviewId}';">
 													<img class='img-fluid' src='resources/detailFilmImage/${list.posterImage}' width='100%' height='100%'>
 												</div>
 											</div>
 										</div>
 										<div class="col-9">
-											<a href="ratingDetailReview.do?id=${list.ratingReviewId}"><h3>${list.titleKor}</h3><br></a>
+											<a href="reviewDetail.do?id=${list.ratingReviewId}"><h3>${list.titleKor}</h3><br></a>
 											<p>${list.content}</p>
 										</div>
 									</div>
@@ -416,7 +416,7 @@
 											<div class="row">
 												<div class="col-3 single-recent-blog-post">
 													<div class="thumb podo-film-card">
-														<div class="poster" onclick="location.href='ratingDetailReview.do?id=${list.rrId}';">										
+														<div class="poster" onclick="location.href='reviewDetail.do?id=${list.rrId}';">										
 															<img class='img-fluid' src='resources/detailFilmImage/${list.changeName}'>
 														</div>
 													</div>
@@ -425,7 +425,7 @@
 													<button class='btn btn-danger likeBtn'>LIKED</button>
                             	<input type="hidden" class="likeInp" value="1"/>
                             	<input type="hidden" class="targetInp" value="${ list.targetId }"/><br><br>
-													<a href="ratingDetailReview.do?id=${list.rrId}"><h3>${list.titleKor}</h3><br></a>
+													<a href="reviewDetail.do?id=${list.rrId}"><h3>${list.titleKor}</h3><br></a>
 													<p>${list.content}</p>
 												</div>
 											</div>
@@ -645,7 +645,7 @@
 									<h3> 문의한 내용이 없습니다.</h3>
 									<br>
 								</div>
-								<p style="font-size:9px" onclick="bye();">회원탈퇴</p>
+								<button class="button" onclick="bye();">회원탈퇴</button>
 							</div>
 						</c:if>
 						
@@ -935,17 +935,17 @@
 		
 		function bye(){
 			console.log("anjdi");
-			if (confirm("진짜루 탈퇴할꼬양?") == true){    //확인
-			    location.href="exit.do?id=${loginUser.id}";
-			}else{   //취소
-			    return;
+			if (confirm("정말 탈퇴하시겠습니까?") == true) {    //확인
+		    location.href="exit.do?id=${loginUser.id}";
+			} else {   //취소
+		    return;
 			}
 
 		}
 	
 		$(function() {
 			var likeUser = $(".likeInp").val();
-			console.log("처음인풋 : " + likeUser);
+			// console.log("처음인풋 : " + likeUser);
 			
 			$(".likeBtn").on("click", function(){
 				var targetId = $(".targetInp").val();
@@ -953,50 +953,49 @@
 				var likeInp = $(".likeInp").val();
 				var status = "";
 				
-				console.log("버튼클릭시 라이크인풋: " + likeInp);
-				console.log("버튼클릭시 타켓인풋 : " + targetId);
+				// console.log("버튼클릭시 라이크인풋: " + likeInp);
+				// console.log("버튼클릭시 타켓인풋 : " + targetId);
 				
-				if(likeInp == '0'){
+				if (likeInp == '0') {
 					status = "like";
-				}else if(likeInp == '1'){
+				} else if (likeInp == '1') {
 					status = "nonlike";
 				}
-				console.log(status);
+				// console.log(status);
 				$.ajax({
-						url:"likeClick.do",
-						data:{userId:userId,
+					url:"likeClick.do",
+					data:{userId:userId,
 							  targetId:targetId,
 							  status:status},
-						type:"post",
-						success:function(data){
-							console.log(data);
-							if(status == "like"){ // 좋아요클릭시
-								if(data == 1){
-									$(".likeBtn").removeClass("btn-danger");
-									$(".likeBtn").removeClass("btn-secondary");
-									$(".likeBtn").addClass("btn-danger");
-									$(".likeBtn").text('LIKED');
-									$(".likeInp").val('1');
-								}else{
-									alert("좋아요 실패");
-								}
-							}else if(status == "nonlike"){ // 좋아요 취소
-								if(data == 1){
-									$(".likeBtn").removeClass("btn-danger");
-									$(".likeBtn").removeClass("btn-secondary");
-									$(".likeBtn").addClass("btn-secondary");
-									$(".likeBtn").text('LIKE');
-									$(".likeInp").val('0');
-								}else{
-									alert("좋아요 실패");
-								}
+					type:"post",
+					success:function(data){
+						// console.log(data);
+						if (status == "like"){ // 좋아요클릭시
+							if (data == 1) {
+								$(".likeBtn").removeClass("btn-danger");
+								$(".likeBtn").removeClass("btn-secondary");
+								$(".likeBtn").addClass("btn-danger");
+								$(".likeBtn").text('LIKED');
+								$(".likeInp").val('1');
+							} else {
+								alert("좋아요 실패");
 							}
-							console.log("에이작스 후 : " + likeInp);
-								
-						},error:function(){
-							console.log("라이크 ajax 통신 실패");
+						} else if (status == "nonlike") { // 좋아요 취소
+							if (data == 1) {
+								$(".likeBtn").removeClass("btn-danger");
+								$(".likeBtn").removeClass("btn-secondary");
+								$(".likeBtn").addClass("btn-secondary");
+								$(".likeBtn").text('LIKE');
+								$(".likeInp").val('0');
+							} else {
+								alert("좋아요 실패");
+							}
 						}
-					});  
+						// console.log("에이작스 후 : " + likeInp);
+					},error:function(){
+						// console.log("라이크 ajax 통신 실패");
+					}
+				});
 			});
 		});
 		// 탭메뉴 관련 
@@ -1012,25 +1011,31 @@
 			 */
 			$("#container ul>li").on("click", function(){
 				var activeTab = $(this).attr('data-tab');
-	            var tabMenu = $(this).text();
-	            var strId = "${loginUser.id}";
-	            
-	            console.log(activeTab);
-	            console.log(tabMenu);
-	            
-	            if(tabMenu == "리뷰"){
-	                location.href="myPageSelectReview.do?id=${loginUser.id}&tab="+ activeTab;
-	             }else if(tabMenu =="좋아한 영화"){
-	            	  location.href="myPageSelectLikeFilm.do?id=${loginUser.id}&tab="+ activeTab;
-	             }else if(tabMenu == "좋아한 리뷰"){
-	            	  location.href="myPageSelectLikeReview.do?id=${loginUser.id}&tab="+ activeTab;
-	             }else if(tabMenu == "좋아한 회원"){
-	            	  location.href="myPageSelectLikeUser.do?id=${loginUser.id}&tab="+ activeTab;
-	             }else if(tabMenu == "문의"){
-	            	  location.href="myPageSelectQuestion.do?id=${loginUser.id}&tab="+ activeTab;
-	             }  
+				var tabMenu = $(this).text();
+				var strId = "${loginUser.id}";
+
+				console.log(activeTab);
+				console.log(tabMenu);
+
+				if (tabMenu == "리뷰") {
+					location.href = "myPageSelectReview.do?id=${loginUser.id}&tab="
+							+ activeTab;
+				} else if (tabMenu == "좋아한 영화") {
+					location.href = "myPageSelectLikeFilm.do?id=${loginUser.id}&tab="
+							+ activeTab;
+				} else if (tabMenu == "좋아한 리뷰") {
+					location.href = "myPageSelectLikeReview.do?id=${loginUser.id}&tab="
+							+ activeTab;
+				} else if (tabMenu == "좋아한 회원") {
+					location.href = "myPageSelectLikeUser.do?id=${loginUser.id}&tab="
+							+ activeTab;
+				} else if (tabMenu == "문의") {
+					location.href = "myPageSelectQuestion.do?id=${loginUser.id}&tab="
+							+ activeTab;
+				}
 			});
-			if("${tab}" != ''){
+			
+			if ("${tab}" != '') {
 				var tab = "${tab}";
 				$('ul.tab li').removeClass('current');
 				$('.tabcontent').removeClass('current');
@@ -1038,7 +1043,7 @@
 				$("." + tab).addClass('current');
 			}
 		});
-		
+
 		/* // 문의하기 답변보기 모달 창
 		$(function(){
 			$("#answerBtn").on("click", function(){
@@ -1053,184 +1058,192 @@
 		}); */
 
 		// 회원정보 수정, 비밀번호 변경 시 알럴트창
-		$(function(){
-			if("${msg.equals('')}"){
+		$(function() {
+			if ("${msg.equals('')}") {
 				alert("${msg}");
 			}
 		});
-		
+
 		// 회원정보 수정 모달창
-		$(function(){
-			$("#update-modal").on("click", function(){
+		$(function() {
+			$("#update-modal").on("click", function() {
 				$('#updateModal').modal('toggle');
 			});
 		});
-		
+
 		// 회원정보 업데이트 버튼 클릭 시 
-		function validate(){
+		function validate() {
 			// 미입력
-			if($("#userNickName").val().length == 0){	
+			if ($("#userNickName").val().length == 0) {
 				alert("닉네임을 입력해주세요.")
 				$("#userNickName").focus();
 				return false;
-			}else{	
+			} else {
 				return true;
 			}
 		}
-		
+
 		// 닉네임 중복 체크
-		$(function(){
-			$("#userNickName").on("keyup", function(){
+		$(function() {
+			$("#userNickName").on("keyup", function() {
 				var nickName = $("#userNickName").val();
-				
-				if(nickName.length < 1){
+
+				if (nickName.length < 1) {
 					$(".nickguide").hide();
 					$("#nickCheck").val(0);
 					return;
 				}
-			
+
 				$.ajax({
-					url:"nickCheck.do",
-					data:{nick:nickName},
-					type:"post",
-					success:function(data){
+					url : "nickCheck.do",
+					data : {
+						nick : nickName
+					},
+					type : "post",
+					success : function(data) {
 						//console.log(data);
-						if(data == "success"){
+						if (data == "success") {
 							$(".nickno").hide();
 							$(".nickok").show();
 							$("#nickCheck").val(1);
-						}else{
+						} else {
 							$(".nickok").hide();
 							$(".nickno").show();
 							$("#nickCheck").val(0);
 						}
-					},error:function(){
+					},
+					error : function() {
 						console.log("닉네임 ajax 통신 실패");
 					}
 				});
 			});
 		});
-		
+
 		// 비밀번호 변경 모달창
-		$(function(){
-			$("#updatePwd-modal").on("click", function(){
+		$(function() {
+			$("#updatePwd-modal").on("click", function() {
 				$('#updatePwdModal').modal('toggle');
 			});
 		});
-		
+
 		// 변경 전 비밀번호 일치 여부
-		$(function(){
-			$("#originPwd").on("keyup", function(){
+		$(function() {
+			$("#originPwd").on("keyup", function() {
 				var originPwd = $("#originPwd").val();
 				var email = "${loginUser.email}";
 				var pwd = "{loginUser.pwd}";
-				
+
 				console.log(originPwd);
 				console.log(email);
-				
-				if(originPwd.length < 1){
+
+				if (originPwd.length < 1) {
 					$(".originguide").hide();
 					$("#originPwdCheck").val(0);
 					return;
 				}
-			
+
 				$.ajax({
-					url:"originPwdCheck.do",
-					data:{originPwd:originPwd,
-							email:email,
-							pwd:pwd},
-					type:"post",
-					success:function(data){
+					url : "originPwdCheck.do",
+					data : {
+						originPwd : originPwd,
+						email : email,
+						pwd : pwd
+					},
+					type : "post",
+					success : function(data) {
 						console.log(data);
-						if(data == "success"){
+						if (data == "success") {
 							$(".orino").hide();
 							$(".oriok").show();
 							$("#originPwdCheck").val(1);
-						}else{
+						} else {
 							$(".oriok").hide();
 							$(".orino").show();
 							$("#originPwdCheck").val(0);
 						}
-					},error:function(){
+					},
+					error : function() {
 						console.log("비밀번호 변경전 ajax 통신 실패");
 					}
 				});
 			});
 		});
-		
+
 		// 비밀번호 변경 버튼 클릭 시 변경 후 비밀번호 일치 여부		
-		function pwdValidate(){
+		function pwdValidate() {
 			// 미입력
-			if($("#updatePwd").val().length == 0 || $("#updatePwd2").val().length == 0 || $("#originPwdCheck").val().length == 0){	
+			if ($("#updatePwd").val().length == 0
+					|| $("#updatePwd2").val().length == 0
+					|| $("#originPwdCheck").val().length == 0) {
 				alert("비밀번호를 입력해주세요.")
 				$("#userNickName").focus();
 				return false;
-				
-			}else if($("#updatePwd").val() != $("#updatePwd2").val()){
+
+			} else if ($("#updatePwd").val() != $("#updatePwd2").val()) {
 				alert("비밀번호가 일치하지 않습니다.");
 				$("#updatePwd").val("");
 				$("#updatePwd2").val("");
 				$("#updatePwd").focus();
 				return false;
-				
-			}else if($("#originPwdCheck").val() == 0){
+
+			} else if ($("#originPwdCheck").val() == 0) {
 				alert("변경 전 비밀번호가 일치하지 않습니다.");
 				$("#originPwd").val("");
 				$("#originPwd").focus();
 				return false;
-				
-			}else{
+
+			} else {
 				return true;
 			}
 		}
-		
-		
+
 		// 문의하기 모달창
-		$(function(){
-			$("#question-modal").on("click", function(){
+		$(function() {
+			$("#question-modal").on("click", function() {
 				$('#questionModal').modal('toggle');
 			});
 		});
-		
+
 		// 문의하기 버튼 클릭 시		
-		function quValidate(){
+		function quValidate() {
 			// 미입력
-			if(!$.trim($("#qucontent").val())){	
+			if (!$.trim($("#qucontent").val())) {
 				alert("문의 내용을 입력해주세요");
 				$("#qucontent").focus();
 				return false;
-			} else{
+			} else {
 				alert("문의 등록 완료");
 				return true;
 			}
 		}
-		
+
 		// 이미지 삭제 버튼 클릭 시
-		function fileReset(){
+		function fileReset() {
 			$("#imgArea input").remove();
-			$("#preview").attr('src','resources/memberProfileImage/podoImage.png');
+			$("#preview").attr('src',
+					'resources/memberProfileImage/podoImage.png');
 			var newInput = "<input type='file' id='imgInp' name='uploadFile'>";
 			$("#imgArea").append(newInput);
 		}
-		
+
 		// 이미지 미리보기
-	    function readURL(input) {
-	        if (input.files && input.files[0]) {
-	            var reader = new FileReader();
-	            reader.onload = function(e) {
-	                $('#preview').attr('src', e.target.result);
-	            }
-	            reader.readAsDataURL(input.files[0]);
-	        }
-	    };
-	    
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					$('#preview').attr('src', e.target.result);
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		};
+
 		// 이미지 변경 될 때 마다 이미지 미리보기 함수 실행
-	    $(document).on("change","#imgInp", function() {
-	        readURL(this);
-	    });
-		
+		$(document).on("change", "#imgInp", function() {
+			readURL(this);
+		});
+
 		// 이미지 버튼 클릭 시 인풋창 열리게 (안보이게 해둠)
-		$("#uploadBtn").on('click', function(e){
+		$("#uploadBtn").on('click', function(e) {
 			e.preventDefault();
 			$("#imgInp").click();
 		});

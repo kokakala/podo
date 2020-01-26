@@ -150,13 +150,13 @@
 									<div class="row">
 										<div class="col-3 single-recent-blog-post">
 											<div class="thumb podo-film-card">
-												<div class="poster" onclick="location.href='ratingDetailReview.do?id=${list.ratingReviewId}';">
+												<div class="poster" onclick="location.href='reviewDetail.do?id=${list.ratingReviewId}';">
 													<img class='img-fluid' src='resources/detailFilmImage/${list.posterImage}' width='100%' height='100%'>
 												</div>
 											</div>
 										</div>
 										<div class="col-9">
-											<a href="ratingDetailReview.do?id=${list.ratingReviewId}"><h3>${list.titleKor}</h3><br></a>
+											<a href="reviewDetail.do?id=${list.ratingReviewId}"><h3>${list.titleKor}</h3><br></a>
 											<p>${list.content}</p>
 										</div>
 									</div>
@@ -374,14 +374,14 @@
 											<div class="row">
 												<div class="col-3 single-recent-blog-post">
 													<div class="thumb podo-film-card">
-														<div class="poster" onclick="location.href='ratingDetailReview.do?id=${list.rrId}';">										
+														<div class="poster" onclick="location.href='reviewDetail.do?id=${list.rrId}';">										
 															<img class='img-fluid' src='resources/detailFilmImage/${list.changeName}'>
 														</div>
 													</div>
 												</div>
 												<div class="col-9">
 													<button class='btn btn-danger likeBtn'>LIKED</button>
-													<a href="ratingDetailReview.do?id=${list.rrId}"><h3>${list.titleKor}</h3><br></a>
+													<a href="reviewDetail.do?id=${list.rrId}"><h3>${list.titleKor}</h3><br></a>
 													<p>${list.content}</p>
 												</div>
 											</div>

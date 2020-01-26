@@ -137,9 +137,9 @@
 					</div>
 					<div class="modal-body">
 						<form action="bReportModal.do" method="post">
-							<input type="hidden" name="targetId" value="${ b.id }">
+							<input type="hidden" name="targetId" value="${ board.id }">
 							<input type="hidden" name="reportId" value="${ loginUser.id }">
-							<input type="hidden" name="reportedId" value="${ b.memberId }">
+							<input type="hidden" name="reportedId" value="${ board.memberId }">
 	
 							<div class="form-group">
 								<input class="commentType" id="boardInap" type="radio" value="1" name="content">

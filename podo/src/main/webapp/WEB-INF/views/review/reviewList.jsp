@@ -9,7 +9,7 @@
 		<div class="container my-5">
 		
 			<c:forEach items="${ list }" var="review">
-				<div class="row my-4">
+				<div class="row my-4 review-list-card">
 				
 					<div class="podo-film-card col-md-4">
 						<div class="poster" onclick="location.href='detailFilm.do?filmId=${ review.filmId }'">
@@ -41,69 +41,71 @@
 					</div>
 					
 				</div>
-				<div class="d-block p-2 bg-dark"></div>
+<!-- 				<div class="d-block p-2 bg-dark"></div> -->
 			</c:forEach>
 			
-		</div>
-	
+			<!-- Pagination -->
+			<div class="row py-4">
+				<div class="col-lg-12">
+					<nav class="blog-pagination justify-content-center d-flex">
+						<ul class="pagination">
 		
-		
-		
-		<!-- Pagination -->
-		<div class="row my-3">
-			<div class="col-lg-12">
-				<nav class="blog-pagination justify-content-center d-flex">
-					<ul class="pagination">
-	
-						<!-- [PREV] -->
-						<c:if test="${ pi.currentPage eq 1 }">
-							<li class="page-item disabled">
-						</c:if>
-						<c:if test="${ pi.currentPage ne 1 }">
-							<li class="page-item">
-						</c:if>
-							<c:url value="reviewList.do" var="before">
-								<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
-							</c:url>
-							<a href=<c:out value="${ before }"/> class="page-link" aria-label="Previous">
-								&lt;
-							</a>
-						</li>
-						
-						<!-- [각 페이지] -->
-						<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
-						
-							<c:if test="${ p eq pi.currentPage }">
-								<li class="page-item disabled"><a href="#" class="page-link">${ p }</a></li>
+							<!-- [PREV] -->
+							<c:if test="${ pi.currentPage eq 1 }">
+								<li class="page-item disabled">
 							</c:if>
-							
-							<c:if test="${ p ne pi.currentPage }">
-								<c:url value="reviewList.do" var="page">
-									<c:param name="currentPage" value="${ p }"/>
+							<c:if test="${ pi.currentPage ne 1 }">
+								<li class="page-item">
+							</c:if>
+								<c:url value="reviewList.do" var="before">
+									<c:param name="currentPage" value="${ pi.currentPage - 1 }"/>
 								</c:url>
-								<li class="page-item"><a href="<c:out value='${ page }'/>" class="page-link">${ p }</a></li>
-							</c:if>
+								<a href=<c:out value="${ before }"/> class="page-link" aria-label="Previous">
+									&lt;
+								</a>
+							</li>
 							
-						</c:forEach>
-	
-						<!-- [NEXT] -->
-						<c:if test="${ pi.currentPage eq pi.maxPage }">
-							<li class="page-item disabled">
-						</c:if>
-						<c:if test="${ pi.currentPage ne pi.maxPage }">
-							<li class="page-item">
-						</c:if>
-							<c:url value="reviewList.do" var="after">
-								<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
-							</c:url>
-							<a href=<c:out value="${ after }&p=${ pi.currentPage + 1 }"/> class="page-link" aria-label="Next">
-								&gt;
-							</a>
-						</li>
-					</ul>
-				</nav>
+							<!-- [각 페이지] -->
+							<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+							
+								<c:if test="${ p eq pi.currentPage }">
+									<li class="page-item disabled"><a href="#" class="page-link">${ p }</a></li>
+								</c:if>
+								
+								<c:if test="${ p ne pi.currentPage }">
+									<c:url value="reviewList.do" var="page">
+										<c:param name="currentPage" value="${ p }"/>
+									</c:url>
+									<li class="page-item"><a href="<c:out value='${ page }'/>" class="page-link">${ p }</a></li>
+								</c:if>
+								
+							</c:forEach>
+		
+							<!-- [NEXT] -->
+							<c:if test="${ pi.currentPage eq pi.maxPage }">
+								<li class="page-item disabled">
+							</c:if>
+							<c:if test="${ pi.currentPage ne pi.maxPage }">
+								<li class="page-item">
+							</c:if>
+								<c:url value="reviewList.do" var="after">
+									<c:param name="currentPage" value="${ pi.currentPage + 1 }"/>
+								</c:url>
+								<a href=<c:out value="${ after }&p=${ pi.currentPage + 1 }"/> class="page-link" aria-label="Next">
+									&gt;
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
 			</div>
-		</div>
+			
+		</div> <!-- container end -->
+	
+		
+
+		
+		
 		
 		<script>
 			$(function() {

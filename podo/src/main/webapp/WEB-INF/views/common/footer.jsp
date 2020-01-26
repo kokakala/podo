@@ -14,7 +14,7 @@
 	<hr>
 	
 	<!--================ Start Footer Area =================-->
-	<div class=container>
+	<div class="footer-container">
 		<div class="footer-1" align="center">
 			<a href="termsofuse.do">이용약관 </a> | 
 			<a href="privacyPolicy.do">개인정보취급방침</a> | 

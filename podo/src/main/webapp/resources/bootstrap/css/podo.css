@@ -17,6 +17,9 @@
 	.podo-ad-banner>div {
 		font-size: 12px!important;
 	}
+	.board-page-banner>.title {
+		font-size: 30px!important;
+	}
 }
 
 .main-banner {
@@ -129,6 +132,10 @@
 	color: #495057;
 }
 
+.footer-1 {
+	padding-top: 140px;
+}
+
 .footer-1>a {
 	color: #b5b5b5;
 	margin: 10px;
@@ -229,7 +236,6 @@ star-input>.input.focus {
 
 .podo-film-card {
 	display: inline-block;
-	margin-bottom: 40px;
 	text-align: center;
 }
 
@@ -286,15 +292,22 @@ star-input>.input.focus {
 
 .video-foreground,
 .video-background iframe {
-	pointer-events: none;
+/* 	pointer-events: none; */
 }
 
 .movie-poster-cover .movie-poster {
 	text-align: center;
 }
+
 .movie-poster-cover .poster {
-	max-width: 100%;
+	width: 100%;
 	max-height: 360px;
+	object-fit: cover;
+	margin: 20px 0;
+}
+
+.video-foreground {
+	margin: 20px 0;
 }
 
 #search-film-result {
@@ -316,4 +329,78 @@ star-input>.input.focus {
    overflow: hidden;
    border-radius: 10px;
    border: 1px solid #b3bfdd;
+}
+
+.card {
+	border: none;
+	border-radius: 1rem;
+	transition: all 0.2s;
+	box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.card *:not(button) {
+	color: #2f2a38;
+}
+
+.card:hover {
+	margin-top: -.25rem;
+	margin-bottom: .25rem;
+	box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
+	transition: all 0.2s;
+}
+
+.card .btn {
+	font-size: 80%;
+	border-radius: 5rem;
+	letter-spacing: .1rem;
+	font-weight: bold;
+	padding: 1rem;
+	opacity: 0.7;
+	transition: all 0.2s;
+	background-color: #a4508b;
+	background-image: linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);
+	border-color: unset;
+}
+
+.card-body:hover .btn {
+	opacity: 1;
+}
+
+#useForm,
+#privacy-div {
+	width: 100%;
+	padding: 20px;
+}
+
+.footer-container {
+	background-image: url(../img/footer.jpg), radial-gradient(at 30% top, rgba(7, 64, 52, 1) 0%, rgba(8, 28, 36, 1) 70%);
+	background-size: cover;
+	height: 450px;
+}
+
+.review-list-card {
+	border-top: 5px solid #ab8fff;
+	background: #292929;
+	margin: 0;
+}
+
+.review-list-card>div {
+	margin: 20px 0;
+}
+
+.review-list-card .button {
+	margin: 0 auto;
+}
+
+button.button {
+  display: block!important;
+}
+
+.pagination-row {
+	padding: 50px;
+}
+
+.single-sidebar-widget {
+	border-top: 3px solid;
+	border-color: deeppink;
 }

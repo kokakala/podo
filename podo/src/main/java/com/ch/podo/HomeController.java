@@ -39,7 +39,7 @@ public class HomeController {
 		// root-context.xml
 		// web.xml
 		// log.info("error_code : " + error_code);
-		ModelAndView mv = new ModelAndView("error/error");
+		ModelAndView mv = new ModelAndView("common/error");
 		String msg = (String) request.getAttribute("javax.servlet.error.message");
 
 		Map<String, Object> map = new HashMap<String, Object>();

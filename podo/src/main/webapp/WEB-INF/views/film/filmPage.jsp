@@ -4,7 +4,6 @@
 <html>
 	<head>
 		<jsp:include page="../common/header.jsp"/>
-		<title>영화 찾기</title>
 	</head>
   <body>
 
@@ -197,17 +196,17 @@
 				</tbody>
 			</table>
 			 -->
-		</div>
-		
-		<c:url var="filmUrl" value="film.do">
-			<c:param name="releaseYear" value="${ param.releaseYear }" />
-			<c:param name="productionCountry" value="${ param.productionCountry }" />
-			<c:param name="genreId" value="${ param.genreId }" />
-			<c:param name="saw" value="${ param.saw }" />
-			<c:param name="order" value="${ param.order }" />
-		</c:url>
+			 
+			 
+			<c:url var="filmUrl" value="film.do">
+				<c:param name="releaseYear" value="${ param.releaseYear }" />
+				<c:param name="productionCountry" value="${ param.productionCountry }" />
+				<c:param name="genreId" value="${ param.genreId }" />
+				<c:param name="saw" value="${ param.saw }" />
+				<c:param name="order" value="${ param.order }" />
+			</c:url>
 			<!-- Pagination -->
-			<div class="row">
+			<div class="row py-4">
 				<div class="col-lg-12">
 					<nav class="blog-pagination justify-content-center d-flex">
 						<ul class="pagination">
@@ -251,7 +250,10 @@
 						</ul>
 					</nav>
 				</div>
-			</div>
+			</div> <!-- Pagination end -->
+			 
+		</div> <!-- container end -->
+		
 
 	<script>
 		

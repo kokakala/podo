@@ -177,7 +177,7 @@ public class FilmController {
 		// log.info("listCount : " + listCount);
 		
 		// page는 최대 3페이지, board는 최대 12개 보여지도록 set
-		PageInfo pi = Pagination.setPageLimit(currentPage, listCount, 5, 12);
+		PageInfo pi = Pagination.setPageLimit(currentPage, listCount, 3, 12);
 		// 선택한 옵션이 있다면 옵션으로 검색된 목록을 대상으로 페이징 처리
 		if (!((sc.getReleaseYear() == null || sc.getReleaseYear().equals("all"))
 				  && (sc.getProductionCountry() == null || sc.getProductionCountry().equals("all"))
