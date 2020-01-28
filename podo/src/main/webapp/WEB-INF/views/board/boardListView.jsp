@@ -21,7 +21,7 @@
 		</section>
 		
 		<div class="container">
-			<table class="table table-hover table-striped table-dark my-5">
+			<table class="table table-hover table-striped table-dark my-5 board-table">
 				<thead>
 				<tr>
 			      <th scope="col">#</th>
@@ -31,32 +31,37 @@
 			      <th scope="col">조회수</th>
 				</tr>
 				</thead>
-				<tr>
-				<c:if test="${ notice.id eq null}">
-					<td></td>
-					<td colspan="4" scope="row" >공지사항이 없습니다.</td>
-				</c:if>
-				<c:if test="${ notice.id ne null}">
-					<td scope="row">${ notice.id }</td>
-						<td scope="row">
-							<a href="ndetail.do?id=${ notice.id }">${ notice.title }</a>					
-						</td>
-						<td scope="row">${ notice.nickName }</td>
-						<td scope="row">${ notice.createDate }</td>
-						<td scope="row">${ notice.viewCount }</td>
-				</c:if>
-				</tr>
-				<c:forEach items="${ list }" var="b">
+				<tbody>
 					<tr>
-						<td scope="row">${ b.id }</td>
-						<td scope="row">
-							<a href="bdetail.do?id=${ b.id }">${ b.title }</a>					
-						</td>
-						<td scope="row">${ b.nickName }</td>
-						<td scope="row">${ b.createDate }</td>
-						<td scope="row">${ b.viewCount }</td>
+					<c:if test="${ notice.id eq null}">
+						<td></td>
+						<td colspan="4" scope="row" >공지사항이 없습니다.</td>
+					</c:if>
+					<c:if test="${ notice.id ne null}">
+						<td scope="row">${ notice.id }</td>
+							<td scope="row">
+								<a href="ndetail.do?id=${ notice.id }">${ notice.title }</a>					
+							</td>
+							<td scope="row">${ notice.nickName }</td>
+							<td scope="row">${ notice.createDate }</td>
+							<td scope="row">${ notice.viewCount }</td>
+					</c:if>
 					</tr>
-				</c:forEach>
+					<c:forEach items="${ list }" var="b">
+						<tr>
+							<td scope="row">${ b.id }</td>
+							<td scope="row">
+								<div><a href="bdetail.do?id=${ b.id }">${ b.title }</a></div>
+								<div class="d-md-none right-cell"><small>${ b.nickName }</small></div>
+								<div class="d-md-none right-cell"><small>${ b.createDate }</small></div>
+								<div class="d-md-none right-cell"><small>${ b.viewCount }</small></div>
+							</td>
+							<td scope="row"><div class="d-none d-md-block">${ b.nickName }</div></td>
+							<td scope="row"><div class="d-none d-md-block">${ b.createDate }</div></td>
+							<td scope="row"><div class="d-none d-md-block">${ b.viewCount }</div></td>
+						</tr>
+					</c:forEach>
+				</tbody>
 			</table>
 			
 			<div class="row">

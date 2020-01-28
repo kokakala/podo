@@ -11,7 +11,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-2">
-					<img class="img-fluid" src="resources/detailFilmImage/${r.posterImage }" alt="">
+					<img class="img-fluid" src="resources/detailFilmImage/${r.posterImage }" alt="poster">
 				</div>
 				
 				<div class="col-lg-4">
@@ -19,20 +19,24 @@
 				</div>
 				
 				<div class="col-lg-6">
-					<h4>${r.titleKor }</h4>
-					<h2>★ :${r.star }점</h2>
+					<h1>${ r.titleKor }</h1>
+					<c:forEach begin="1" end="${ r.star }">
+						&#x2605;
+					</c:forEach>
 					
-					<div class="">
+					<div class="review-user-profile">
 						<c:if test="${ loginUser.id != r.memberId }">
-							<a href="userPage.do?userId=${r.memberId}&loginUserId=${ loginUser.id }"><h5>${r.nickName }님</h5></a>
+							<a href="userPage.do?userId=${r.memberId}&loginUserId=${ loginUser.id }">
+								<span>${r.nickName }</span>
+							</a>
 						</c:if>
 						<c:if test="${ loginUser.id == r.memberId }">
 							<a href="myPage.do?id=${ loginUser.id }"><h5>${r.nickName }님</h5></a>
 						</c:if>
-						<p>${ r.createDate }</p>
+						<span>${ r.createDate }</span>
 					</div>
 				
-					<div class="">
+					<div class="thumbnail py-3">
 						<c:if test="${ loginUser.id == r.memberId }">
 							<img width="42" height="42"
 								<c:if test="${ not empty r.userImage }">
@@ -58,8 +62,8 @@
 				
 			</div>
 			
-			<div class="row">
-				<p>${r.content }</p> 
+			<div class="col detail-film-info">
+				<p class="py-3">${r.content }</p> 
 			</div>
 		</div>
 		
@@ -87,34 +91,19 @@
 			</div>
 			
 			
-			<div class="row">
 				<!-- 댓글 등록 -->
-			  <table class="table table-striped table-dark">
-				  <tr>
-			  		<!-- cols="100" -->
-				  	<td><textarea rows="3" id="review-comment"></textarea></td>
-				  	<td><button class="button" id="rBtn">댓글등록</button></td>
-				  </tr>
-			  </table>
-			  
+				<div class="comment-form">
+					<h4>댓글 작성</h4>
+					<div class="form-group">
+						<input type="hidden" id="reply-parent-id" value="">
+						<textarea id="review-comment" class="form-control mb-10" rows="5" name="message" placeholder="댓글을 입력하세요." onfocus="this.placeholder = ''" onblur="this.placeholder = '댓글을 입력하세요.'" data-toggle="tooltip" data-placement="top" title="" data-original-title="내용을 입력하세요."></textarea>
+					</div>
+					<div class="btn-group mx-auto">
+						<button class="button" id="comment-btn">작성</button>
+					</div>
+				</div>
+				
 			  <!-- 댓글리스트 -->
-				<table class="table table-striped table-dark" id="rtb">
-			 		<thead>
-			  		<tr>
-			  			<td><b id="rCount"></b></td>
-			  		</tr>
-			  		<tr>
-			  			<td>닉네임</td>
-			  			<td>내용</td>
-			  			<td>작성일</td>
-			  			<td width="200"></td>
-			  		</tr>
-			 		</thead>
-			 		<tbody>
-			 		
-			 		</tbody>
-			 	</table>
-			</div>
 			
 		</div>
 		
@@ -191,27 +180,6 @@
 	
 	
 	
-	
-		<!-- 	<input id="commentDe" type="radio" onclick="commentClick();" name="defaultMenu">댓글
-							<p></p>
-									<input class="commentType" type="checkbox" style="display:none;"><p class="commentType" style="display:none;">부적절한내용</p>
-									<input class="commentType" type="checkbox" style="display:none;"><p class="commentType" style="display:none;">스포일러</p>
-							<p></p>
-							<input id="freeDe" type="radio" onclick="freeClick();" name="defaultMenu">자유게시판
-							<p></p>
-									<input class="freeType" type="checkbox" style="display:none;"><p class="freeType" style="display:none;">부적절한내용</p>
-									<input class="freeType" type="checkbox" style="display:none;"><p class="freeType" style="display:none;">스포일러</p>
-							<p></p>						
-							<input id="collectionDe"  type="radio" onclick="collectionClick();" name="defaultMenu">컬렉션
-							<p></p>
-									<input class="collectionType" type="checkbox" style="display:none;"><p class="collectionType" style="display:none;">부적절한내용</p>
-									<input class="collectionType" type="checkbox" style="display:none;"><p class="collectionType" style="display:none;">스포일러</p>
-							<p></p> -->
-	
-	
-	
-	
-	
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 		<script>
 		   var ctx = document.getElementById('myChart');
@@ -258,7 +226,7 @@
              }
 		    });
 		 
-		// 댓글 작성해주는거
+		// write comment
 		$(function(){
 			getReplyReviewCommentList();
 				

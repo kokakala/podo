@@ -54,13 +54,13 @@
 						</a>
 					</div>
 				</div>
-	
+	<!-- 
 				<div class="navigation-area">
 						<div class="row">
 							<div
 								class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
 								<div class="thumbnail">
-<!-- 									<a href="#"><img class="img-fluid" src="img/blog/prev.jpg"alt=""></a> -->
+									<a href="#"><img class="img-fluid" src="img/blog/prev.jpg"alt=""></a>
 								</div>
 								<div class="arrow">
 									<a href="#"><span class="lnr text-white lnr-arrow-left"></span></a>
@@ -80,17 +80,17 @@
 									<a href="#"><span class="lnr text-white lnr-arrow-right"></span></a>
 								</div>
 								<div class="thumbnail">
-<!-- 									<a href="#"><img class="img-fluid" src="img/blog/next.jpg" alt=""></a> -->
+									<a href="#"><img class="img-fluid" src="img/blog/next.jpg" alt=""></a>
 								</div>
 							</div>
 						</div>
 					</div>
 	
-	
+	 -->
 				<!-- 댓글 목록 -->
 				<div class="comments-area" id="comment-area"></div>
 				<div style="text-align: center;">
-					<button class="button">더보기</button>
+<!-- 					<button class="button">더보기</button> -->
 				</div>
 	
 	

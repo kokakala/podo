@@ -26,56 +26,50 @@
 				</div>
 			</div>
 			
-			<h1 class="movie-title">${ df.titleKor }(${ df.titleEng })</h1>
-			<div class="row">
-				<div class="col-md-4">
-					<div>감독</div>
-					<div>${ df.director }</div>
+			
+			<!-- film info start -->
+			<div class="detail-film-info">
+				<h1 class="col">${ df.titleKor }(${ df.titleEng })</h1>
+				
+				<div class="col">
+					<div>감독&nbsp;<span class="info-data">${ df.director }</span></div>
 				</div>
 				
-				<div class="col-md-8">
-					<h5>출연 배우</h5>
+				<div class="col">출연 배우&nbsp;
 					<c:forEach items="${ al }" var="a">
-						<div class="image-cover">
-							<img src="resources/detailFilmImage/actor/${a.profileImage}" style="border-radius: 50%;">
-							<div>${a.actorName}</div>
+						<div class="info-actor">
+							<img class="info-actor-img" src="resources/detailFilmImage/actor/${a.profileImage}">
+							<span class="info-data">${a.actorName}</span>
 						</div>
 					</c:forEach>
 				</div>
+				
+				<div class="col mt-3">시놉시스</div>
+				<div class="col info-data">${ df.synopsys }</div>
+			
+				<div class="col mt-3">트리비아</div>
+				<div class="col info-data">${ df.trivia }</div>
+				
+				<div class="col mt-3">마지막 작성자&nbsp;<span class="info-data">${ df.nickName }</span></div>
+				
+				<c:if test="${ loginUser.autho eq 2 }">
+					<div class="col py-3 text-center justify-content-center">
+						<a href="detailFilmRollback.do?filmId=${df.filmId}" class="button">되돌리기</a>
+					</div>
+				</c:if>
+				<c:if test="${ loginUser.autho ne 2 }">
+					<div class="col py-3 text-center justify-content-center">
+						<a href="detailFilmUpdate.do?filmId=${ df.filmId }" class="button">정보 수정</a>
+					</div>
+				</c:if>
 			</div>
 			
-			<div class="row">
-				<div class="col-md-2">시놉시스</div>
-				<div class="col-md-10 detail-film-synopsys">${ df.synopsys }</div>
-			</div>
+			<!-- film info end -->
 			
-			<div class="row">
-				<div class="col-md-2">트리비아</div>
-				<div class="col-md-10 detail-film-trivia">${ df.trivia }</div>
-			</div>
-			
-			<div class="row">
-				<div class="col-md-2">마지막 작성자</div>
-				<div class="col-md-10">
-					<h4>${ df.nickName }</h4>
-				</div>
-			</div>
-			
-			<c:if test="${ loginUser.autho eq 2 }">
-				<div class="row justify-content-center">
-					<a href="detailFilmRollback.do?filmId=${df.filmId}" class="button">되돌리기</a>
-				</div>
-			</c:if>
-			<c:if test="${ loginUser.autho ne 2 }">
-				<div class="row justify-content-center">
-					<a href="detailFilmUpdate.do?filmId=${ df.filmId }" class="button">정보 수정</a>
-				</div>
-			</c:if>
-			
-			<div class="d-block p-2 bg-dark my-4"></div>
-			<div class="row justify-content-center">
-				<div class="col-md-2"><h4>리뷰</h4></div>
-				<div class="col-md-10" style="text-align: right;">
+<!-- 			<div class="d-block p-2 bg-dark my-4"></div> -->
+			<div class="col d-flex justify-content-between mt-5">
+				<div class="p-2">REVIEW</div>
+				<div class="p-2">
 					<button onclick="location.href='reviewWriteForm.do?filmId=${df.filmId}'" class="button">작성하기</button>
 				</div>
 			</div>
@@ -90,10 +84,10 @@
 							<c:if test="${ empty r.userImage }">
 								<img src="resources/memberProfileImage/podoImage.png">
 							</c:if>
-							<div class="nickNameHome">${ r.nickName }님</div>
-							<div class="starReview">별점 ${ r.star }점</div>
-							<div class="countReview">추천수 ${ r.likeCount }</div>
-							<div>${ r.titleKor }</div>
+							<div class="nickNameHome">${ r.nickName }</div>
+							<c:forEach begin="1" end="${ r.star }">
+								&#x2605;
+							</c:forEach>
 						</div>
 					</div>
 					<div class="df-review-content col-md-10">
