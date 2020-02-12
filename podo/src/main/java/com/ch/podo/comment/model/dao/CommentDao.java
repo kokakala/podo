@@ -1,6 +1,8 @@
 package com.ch.podo.comment.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,11 @@ public class CommentDao {
 	@Autowired
 	SqlSessionTemplate session;
 
-	public ArrayList<Comment> selectCommentList(int tid) {
-		return (ArrayList)session.selectList("commentMapper.selectCommentList", tid);
+	public ArrayList<Comment> selectCommentList(String tid, String type) {
+		Map<String, String> map = new HashMap<>();
+		map.put("tid", tid);
+		map.put("type", type);
+		return (ArrayList)session.selectList("commentMapper.selectCommentList", map);
 	}
 
 	public int insertComment(Comment comment) {

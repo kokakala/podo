@@ -6,119 +6,117 @@
 <html>
 <head>
 	<jsp:include page="../common/header.jsp"/>
-	<title>회원페이지</title>
-
-<style>
-	#imgInp{display:none}
-	.nickguide{
-		display:none;
-		font-size:12px;
-		top:12px;
-		right:10px;
-	}
-	.nickok{color:blue;}
-	.nickno{color:red;}
-	.originguide{
-		display:none;
-		font-size:12px;
-		top:12px;
-		right:10px;
-	}
-	.oriok{color:blue;}
-	.orino{color:red;}
-	.modal-dialog{z-index:2000;}
-	/* --------------------- 탭메뉴시작 ---------------------  */
-	#container {
-		/* width:800px; */
-		margin:0 auto;
-		/* text-align:center */;
-	}
-	.tab {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		overflow: hidden;
-	}
-	/* Float the list items side by side */
-	.tab li {
-		float: left;
-	}
-	/* Style the links inside the list items */
-	.tab li a {
-		display: inline-block;
-		color: #000;
-		text-align: center;
-		text-decoration: none;
-		padding: 14px 16px;
-		font-size: 18px;
-		transition:0.3s;
-		
-	}
-	/* Style the tab content */
-	.tabcontent {
-		display: none;
-		padding: 6px 12px;
-		color:#fff;
-	}
-	ul.tab li.current{
-		color: rgb(230, 204, 255);
-	}
-	.tabcontent.current {
-		display: block;
-	}
-	/* --------------------- 탭메뉴 끝 ---------------------  */
-	#noAnswer{color:red;}
-	
-	a.disabled {
-	  pointer-events: none;
-	  cursor: default;
-	}
-	
-    .actorImage{
-    	border: 0px solid black;
-    	width:100%;
-    	height:200px;
-    	overflow-x:hidden;
-    }
-    .actor_name{
-    	border : 0px solid lightgrey;
-    	text-align:center;
-    	color:black;
-    }
-    .podo-user-card {
-		/*border: 1px solid; */
-		padding-top: 40px;
-		display: inline-block;
-		width: 241px;
-		height: 400px;
-		text-align: center;
+	<style>
+		#imgInp{display:none}
+		.nickguide{
+			display:none;
+			font-size:12px;
+			top:12px;
+			right:10px;
 		}
-		#profile{object-fit: cover;}
-		.t:hover, .image_cover:hover{cursor:pointer;}
-</style>
+		.nickok{color:blue;}
+		.nickno{color:red;}
+		.originguide{
+			display:none;
+			font-size:12px;
+			top:12px;
+			right:10px;
+		}
+		.oriok{color:blue;}
+		.orino{color:red;}
+		.modal-dialog{z-index:2000;}
+		/* --------------------- 탭메뉴시작 ---------------------  */
+		#container {
+			/* width:800px; */
+			margin:0 auto;
+			/* text-align:center */;
+		}
+		.tab {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+		}
+		/* Float the list items side by side */
+		.tab li {
+			float: left;
+		}
+		/* Style the links inside the list items */
+		.tab li a {
+			display: inline-block;
+			color: #000;
+			text-align: center;
+			text-decoration: none;
+			padding: 14px 16px;
+			font-size: 18px;
+			transition:0.3s;
+			
+		}
+		/* Style the tab content */
+		.tabcontent {
+			display: none;
+			padding: 6px 12px;
+			color:#fff;
+		}
+		ul.tab li.current{
+			color: rgb(230, 204, 255);
+		}
+		.tabcontent.current {
+			display: block;
+		}
+		/* --------------------- 탭메뉴 끝 ---------------------  */
+		#noAnswer{color:red;}
+		
+		a.disabled {
+		  pointer-events: none;
+		  cursor: default;
+		}
+		
+	    .actorImage{
+	    	border: 0px solid black;
+	    	width:100%;
+	    	height:200px;
+	    	overflow-x:hidden;
+	    }
+	    .actor_name{
+	    	border : 0px solid lightgrey;
+	    	text-align:center;
+	    	color:black;
+	    }
+	    .podo-user-card {
+			/*border: 1px solid; */
+			padding-top: 40px;
+			display: inline-block;
+			width: 241px;
+			height: 400px;
+			text-align: center;
+			}
+			#profile{object-fit: cover;}
+			.t:hover, .image_cover:hover{cursor:pointer;}
+	</style>
 </head>
 <body>
 
 	<section class="blog-post-area section-margin">
 		<div class="container">
 			<div class="row">
-					<div class="col-4">
+					<div class="col-md-10 d-flex align-items-start flex-column">
 						<div class="user justify-content-between d-flex">
 							<div class="thumb">
 								<c:if test="${ userPageMem.image  != null }">
-									<img src="resources/memberProfileImage/${ userPageMem.image }" width='150' height='150' style="border-radius: 100px;"><br><br>
+									<img src="resources/memberProfileImage/${ userPageMem.image }" id='userpage-profile-image'>
 								</c:if>
 								<c:if test="${ userPageMem.image == null }">
-									<img src="resources/memberProfileImage/podoImage.png" width='150' height='150' style="border-radius: 100px;"><br><br>
+									<img src="resources/memberProfileImage/podoImage.png" id='userpage-profile-image'>
 								</c:if>
 							</div>
 							<div class="desc">
-								<h2>${ userPageMem.nickName }</h2>
+								<h2>${ userPageMem.nickname }</h2>
 								<p class="date">작성리뷰 - ${reviewListCount}개  </p>
 							</div>
 						</div>
 					</div>
-					<div class="col-8">
+					<div class="col-md-2 px-4 d-flex align-items-end flex-column">
 						<c:if test="${ not empty likeUser }">
 	           	<button class='btn btn-danger likeBtn'>LIKED</button>
 	           	<input type="hidden" class="likeInp" value="1"/>
@@ -131,37 +129,37 @@
 			</div>
 							
 			<!------------------------- 탭 메뉴 시작 ----------------------->
-			<div class="col-lg-12">
+			<div class="row">
+			<ul class="tab d-flex justify-content-center">
+					<li class="t tab1 current" data-tab="tab1"><a>리뷰</a></li>
+					<li class="t tab2" data-tab="tab2"><a>좋아한 영화</a></li>
+					<li class="t tab3" data-tab="tab3"><a>좋아한 리뷰</a></li>
+					<li class="t tab4" data-tab="tab4"><a>좋아한 회원</a></li>
+			</ul>
+			</div>
 				<div id="container">
-					<ul class="tab">
-							<li class="t tab1 current" data-tab="tab1"><a>리뷰</a></li>
-							<li class="t tab2" data-tab="tab2"><a>좋아한 영화</a></li>
-							<li class="t tab3" data-tab="tab3"><a>좋아한 리뷰</a></li>
-							<li class="t tab4" data-tab="tab4"><a>좋아한 회원</a></li>
-					</ul>
 			
-					<!-- -------------------- 리뷰 --------------------------->
+					<!-- -------------------- Review --------------------------->
 					<div id="tab1" class="tabcontent current"><br>
 						<c:if test="${ !empty review }">
-						<!-------------------------- 리뷰 탭메뉴 바디 ------------------------>
+						<!-------------------------- Review Tab Menu Body ------------------------>
 						<section class="blog-post-area section-margin mt-4">
 							<div class="container">
 								<c:forEach items="${review}" var="list" >
-									<div class="row">
-										<div class="col-3 single-recent-blog-post">
-											<div class="thumb podo-film-card">
-												<div class="poster" onclick="location.href='reviewDetail.do?id=${list.ratingReviewId}';">
-													<img class='img-fluid' src='resources/detailFilmImage/${list.posterImage}' width='100%' height='100%'>
-												</div>
+									<div class="row my-4 review-list-card">
+										<div class="podo-film-card col-md-4">
+											<div class="poster" onclick="location.href='detailFilm.do?filmId=${list.filmId}';">
+												<img class='img-fluid' src='resources/detailFilmImage/${list.posterImage}' width='100%' height='100%'>
 											</div>
 										</div>
-										<div class="col-9">
-											<a href="reviewDetail.do?id=${list.ratingReviewId}"><h3>${list.titleKor}</h3><br></a>
-											<p>${list.content}</p>
+										<div class="col-md-8">
+											<a href="reviewDetail.do?id=${list.ratingReviewId}">${list.titleKor}</a>
+											<div class="review-list-content">${list.content}</div>
 										</div>
 									</div>
+									
 								</c:forEach>
-								<!-------------------------- 페이징바 시작 ------------------------>
+								<!-------------------------- Pagination start ------------------------>
 									<div class="row">
 										<div class="col-lg-12">
 											<nav class="blog-pagination justify-content-center d-flex">
@@ -254,7 +252,7 @@
 									<div class="row">
 										<c:forEach items="${ likeFilmList }" var="likeFilm" >
 											<!-- width * 1.425 -->
-											<div class="podo-film-card col-3">
+											<div class="podo-film-card col-md-3">
 												<input class="hidden-filmId" type="hidden" value="${ likeFilm.id }">
 												<c:if test="${ not empty likeFilm.changeName }">
 													<div class="poster" onclick="location.href='detailFilm.do?filmId=${likeFilm.targetId}'">
@@ -381,7 +379,7 @@
 												</div>
 												<div class="col-9">
 													<button class='btn btn-danger likeBtn'>LIKED</button>
-													<a href="reviewDetail.do?id=${list.rrId}"><h3>${list.titleKor}</h3><br></a>
+													<a href="reviewDetail.do?id=${list.rrId}">${list.titleKor}<br></a>
 													<p>${list.content}</p>
 												</div>
 											</div>
@@ -481,9 +479,9 @@
 									<div class="row">
 										<c:forEach items="${ likeUserList }" var="likeUserList">
 											<!-- width * 1.425 -->
-											<div class="podo-user-card col-3">
+											<div class="podo-user-card col-lg-3">
 												<input class="hidden-filmId" type="hidden" value="${ likeUserList.id }">
-												<div class="image_cover" onclick="location.href='userPage.do?userId=${likeUserList.id}&loginUserId=${loginUser.id}'">
+												<div class="image_cover" onclick="location.href='userPage.do?userId=${likeUserList.targetId}&loginUserId=${loginUser.id}'">
 														<c:if test="${likeUserList.changeName != null }">
 															<img src="resources/memberProfileImage/${likeUserList.changeName}" id="profile" width='200' height='200' style="border-radius: 100px;">
 														</c:if>
@@ -493,7 +491,7 @@
 														
 												</div>
 												<div style="margin-top: 20px; text-overflow: ellipsis; overflow: hidden;">
-													${ likeUserList.nickName }
+													${ likeUserList.nickname }
 												</div>
 												
 												<div class="row" style="margin-top: 10px;">
@@ -527,7 +525,7 @@
 														</c:url>
 														<li class="page-item">
 															<a href="${ before }" class="page-link" aria-label="Previous">
-																<span aria-hidden="true" style="color:white;">&lgt;
+																<span aria-hidden="true" style="color:white;">&lt;
 																	<!-- <i class="ti-angle-left"></i> -->
 																</span>
 															</a>
@@ -604,8 +602,8 @@
 			//console.log("처음인풋 : " + likeUser);
 			
 			$(".likeBtn").on("click", function(){
-				var targetId = "${userPageMem.id}";
-				var userId = "${loginUser.id}";
+				var targetId = '${ userPageMem.id }';
+				var userId = '${ loginUser.id }';
 				var likeInp = $(".likeInp").val();
 				var status = "";
 				
@@ -649,7 +647,7 @@
 							//console.log("에이작스 후 : " + likeInp);
 								
 						},error:function(){
-							console.log("라이크 ajax 통신 실패");
+							console.log("ajax error");
 						}
 					});  
 			});

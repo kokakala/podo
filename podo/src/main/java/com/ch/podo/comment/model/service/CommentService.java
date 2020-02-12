@@ -6,7 +6,7 @@ import com.ch.podo.comment.model.vo.Comment;
 
 public interface CommentService {
 	
-	ArrayList<Comment> selectCommentList(int tid);
+	ArrayList<Comment> selectCommentList(String tid, String type);
 	
 	int insertComment(Comment comment);
 	

@@ -51,10 +51,13 @@
 						<tr>
 							<td scope="row">${ b.id }</td>
 							<td scope="row">
-								<div><a href="bdetail.do?id=${ b.id }">${ b.title }</a></div>
-								<div class="d-md-none right-cell"><small>${ b.nickName }</small></div>
-								<div class="d-md-none right-cell"><small>${ b.createDate }</small></div>
-								<div class="d-md-none right-cell"><small>${ b.viewCount }</small></div>
+								<div><a href="boardDetail.do?id=${ b.id }">${ b.title }</a></div>
+								<div class="d-md-none right-cell">
+									<small>${ b.nickName }</small>
+									<small>&nbsp;|&nbsp;</small>
+									<small>${ b.createDate }</small>
+								</div>
+<%-- 								<div class="d-md-none right-cell"><small>${ b.viewCount }</small></div> --%>
 							</td>
 							<td scope="row"><div class="d-none d-md-block">${ b.nickName }</div></td>
 							<td scope="row"><div class="d-none d-md-block">${ b.createDate }</div></td>

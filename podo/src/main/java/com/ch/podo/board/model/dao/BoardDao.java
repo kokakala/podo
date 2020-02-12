@@ -26,7 +26,6 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.getBoardCount");
 	}
 	
-	
 	public ArrayList<Board> selectBoardList(PageInfo pi){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());

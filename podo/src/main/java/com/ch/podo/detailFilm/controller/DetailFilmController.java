@@ -37,23 +37,27 @@ public class DetailFilmController {
 	public ModelAndView selectDetailFilm(int filmId, ModelAndView mv) {
 
 		// 영화 상세정보
-		DetailFilm df = dfService.selectDetailFilm(filmId);
+		DetailFilm detailFilm = dfService.selectDetailFilm(filmId);
 		// id, filmId, titleKor, titleEng, director, actor, trailer, synopsys, trivia,
 		// nickName
 		// 영화 상세번호, 영화 번호, 영화 제목, 영화 영어제목, 감독, 배우, 예고편, 시놉시스, 트리비아, 글쓴이 닉네임
-		if (df.getSynopsys() != null) df.setSynopsys(df.getSynopsys().replaceAll("(\\r\\n|\\n)", "<br>"));
-		if (df.getTrivia() != null) df.setTrivia(df.getTrivia().replaceAll("(\\r\\n|\\n)", "<br>"));
+		if (detailFilm.getSynopsys() != null) detailFilm.setSynopsys(detailFilm.getSynopsys().replaceAll("(\\r\\n|\\n)", "<br>"));
+		if (detailFilm.getTrivia() != null) detailFilm.setTrivia(detailFilm.getTrivia().replaceAll("(\\r\\n|\\n)", "<br>"));
 
 		// 포스터 이미지
-		Image i = dfService.selectFilmImage(df.getId());
+		Image image = dfService.selectFilmImage(detailFilm.getId());
 
 		// 배우 리스트
-		ArrayList<Actor> al = dfService.selectActorList(df.getId());
+		ArrayList<Actor> actor = dfService.selectActorList(detailFilm.getId());
 
 		// 리뷰 리스트
-		ArrayList<Review> rl = dfService.selectReivewList(filmId);
+		ArrayList<Review> review = dfService.selectReivewList(filmId);
 
-		mv.addObject("df", df).addObject("rl", rl).addObject("i", i).addObject("al", al).setViewName("film/detailFilmView");
+		mv.addObject("df", detailFilm)
+			.addObject("rl", review)
+			.addObject("i", image)
+			.addObject("al", actor)
+			.setViewName("film/detailFilmView");
 		return mv;
 	}
 
@@ -62,20 +66,23 @@ public class DetailFilmController {
 	public ModelAndView detailFilmUpdateView(int filmId, ModelAndView mv) {
 
 		// 영화 상세정보
-		DetailFilm df = dfService.selectDetailFilm(filmId);
-		log.info("df : " + df);
+		DetailFilm detailFilm = dfService.selectDetailFilm(filmId);
+		log.info("df : " + detailFilm);
 		
 		// 포스터 이미지
-		Image i = null;
+		Image image = null;
 		// 배우 리스트
 		ArrayList<Actor> al = null;
 		
-		if (df != null) {
-			i = dfService.selectFilmImage(df.getId());
-			al = dfService.selectActorList(df.getId());
+		if (detailFilm != null) {
+			image = dfService.selectFilmImage(detailFilm.getId());
+			al = dfService.selectActorList(detailFilm.getId());
 		}
 
-		mv.addObject("df", df).addObject("al", al).addObject("i", i).setViewName("film/detailFilmUpdate");
+		mv.addObject("df", detailFilm)
+			.addObject("al", al)
+			.addObject("i", image)
+			.setViewName("film/detailFilmUpdate");
 
 		return mv;
 	}
@@ -84,10 +91,10 @@ public class DetailFilmController {
 	@ResponseBody
 	@RequestMapping(value = "searchActorList.do", produces = "application/json; charset=UTF-8")
 	public String selectFilmActor(String searchName) {
-		ArrayList<Actor> al = dfService.searchActorList(searchName);
+		ArrayList<Actor> actor = dfService.searchActorList(searchName);
 
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-		return gson.toJson(al);
+		return gson.toJson(actor);
 	}
 
 	// 배우 등록
@@ -97,7 +104,8 @@ public class DetailFilmController {
 		// 배우 등록
 		int result = dfService.addActor(newActorId, id);
 
-		mv.addObject("filmId", filmId).setViewName("redirect:detailFilmUpdate.do");
+		mv.addObject("filmId", filmId)
+			.setViewName("redirect:detailFilmUpdate.do");
 
 		return mv;
 	}
@@ -108,7 +116,9 @@ public class DetailFilmController {
 
 		// 배우 삭제
 		int result = dfService.deleteActor(actorId, id);
-		mv.addObject("filmId", filmId).setViewName("redirect:detailFilmUpdate.do");
+		
+		mv.addObject("filmId", filmId)
+			.setViewName("redirect:detailFilmUpdate.do");
 
 		return mv;
 	}

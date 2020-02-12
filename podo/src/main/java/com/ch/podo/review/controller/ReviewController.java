@@ -60,23 +60,23 @@ public class ReviewController {
 	}
 
 	@RequestMapping("reviewWrite.do")
-	public String reviewWrite(DetailFilm df, ModelAndView mv, Review r, Model model) {
+	public String reviewWrite(DetailFilm df, ModelAndView mv, Review review, Model model) {
 
-		if (r.getSpoilerCheck() != null) { // 체크값이 널이 아닐때
-			if (r.getSpoilerCheck().equals("0")) {
+		if (review.getSpoilerCheck() != null) { // 체크값이 널이 아닐때
+			if (review.getSpoilerCheck().equals("0")) {
 
-				r.setSpoilerCheck("Y");
+				review.setSpoilerCheck("Y");
 			} else {
-				r.setSpoilerCheck("N");
+				review.setSpoilerCheck("N");
 			}
 		} else {
-			r.setSpoilerCheck("N");
+			review.setSpoilerCheck("N");
 		}
 
-		int result = reviewService.reviewWrite(r);
-		int result2 = reviewService.reviewRating(r);
+		int result1 = reviewService.reviewWrite(review);
+		int result2 = reviewService.reviewRating(review);
 
-		if (result2 > 0 && result > 0) { // 게시판 작성 성공
+		if (result1 > 0 && result2 > 0) { // 게시판 작성 성공
 			return "redirect:reviewList.do";
 		} else { // 작성 실패
 			model.addAttribute("msg", "게시판 작성 하기 실패");
@@ -102,20 +102,23 @@ public class ReviewController {
 	@RequestMapping("reviewDetail.do")
 	public ModelAndView selectRatingReviewDetailView(String id, ModelAndView mv,
 																									 HttpSession session, HttpServletRequest request) {
-
-		Review r = reviewService.selectRatingReviewDetailView(Integer.parseInt(id));
-		r.setContent(r.getContent().replaceAll("(\\r\\n|\\n)", "<br>"));
+		
+		Review review = reviewService.selectRatingReviewDetailView(Integer.parseInt(id));
+		review.setContent(review.getContent().replaceAll("(\\r\\n|\\n)", "<br>"));
 
 		if (session.getAttribute("loginUser") != null) {
-			Member m = (Member) session.getAttribute("loginUser");
-			ArrayList<Like> list = reviewService.checkLike(m);
-			for (Like l : list) {
-				if (l.getTargetId() == Integer.parseInt(id)) {
-					request.setAttribute("likeReivew", l.getTargetId());
+			Member member = (Member) session.getAttribute("loginUser");
+			ArrayList<Like> list = reviewService.checkLike(member);
+			for (Like like : list) {
+				if (like.getTargetId() == Integer.parseInt(id)) {
+					request.setAttribute("likeReivew", like.getTargetId());
 				}
 			}
 		}
-		mv.addObject("r", r).setViewName("review/reviewDetail");
+		
+		// log.info(review.toString());
+		mv.addObject("r", review)
+			.setViewName("review/reviewDetail");
 
 		return mv;
 	}
@@ -123,38 +126,43 @@ public class ReviewController {
 	// 글 수정 폼으로 가게해주는 리퀘스트매핑
 	@RequestMapping("reviewUpdateForm.do")
 	public ModelAndView boardUpdateView(String id, ModelAndView mv, HttpSession session) {
+		
+		// log.info("id : " + id);
+		
+		Member member = (Member) session.getAttribute("loginUser");
+		Review review = reviewService.selectUpdateReview(Integer.parseInt(id));
 
-		Member m = (Member) session.getAttribute("loginUser");
-		Review r = reviewService.selectUpdateReview(Integer.parseInt(id));
-
-		mv.addObject("r", r).addObject("m", m).setViewName("review/reviewUpdateForm");
+		mv.addObject("r", review)
+			.addObject("m", member)
+			.setViewName("review/reviewUpdateForm");
+		
 		return mv;
 
 	}
 
 	// 수정 하는 리퀘스트매핑
 	@RequestMapping("reviewUpdate.do")
-	public ModelAndView reviewUpdate(Review r, ModelAndView mv, HttpSession session) {
-		if (r.getSpoilerCheck() != null) {
-			if (r.getSpoilerCheck().equals("N")) {
-				r.setSpoilerCheck("Y");
+	public ModelAndView reviewUpdate(Review review, ModelAndView mv, HttpSession session) {
+		if (review.getSpoilerCheck() != null) {
+			if (review.getSpoilerCheck().equals("N")) {
+				review.setSpoilerCheck("Y");
 			} else {
-				r.setSpoilerCheck("N");
+				review.setSpoilerCheck("N");
 			}
 		} else {
-			r.setSpoilerCheck("N");
+			review.setSpoilerCheck("N");
 		}
 
-		int result = reviewService.reviewUpdate(r);
-		int result2 = reviewService.reviewUpdateContent(r);
-		Member m = (Member) session.getAttribute("loginUser");
+		int result1 = reviewService.reviewUpdate(review);
+		int result2 = reviewService.reviewUpdateContent(review);
+		// Member member = (Member) session.getAttribute("loginUser");
 
-		if (result2 > 0 && result > 0) {
-			mv.addObject("id", r.getId()).setViewName("redirect:reviewDetail.do");
+		if (result1 > 0 && result2 > 0) {
+			mv.addObject("id", review.getId())
+				.setViewName("redirect:reviewDetail.do");
 		} else {
-			System.out.println(result);
-			System.out.println(result2);
-			mv.addObject("msg", "게시판 수정 실패").setViewName("error/error.do");
+			mv.addObject("msg", "게시판 수정 실패")
+				.setViewName("error/error.do");
 		}
 		return mv;
 	}
@@ -231,10 +239,6 @@ public class ReviewController {
 		return mv;
 	}
 
-	
-	
-	
-	
 
 	// 리뷰 댓글
 	// 댓글 신고하기
@@ -255,21 +259,17 @@ public class ReviewController {
 	@ResponseBody
 	@RequestMapping(value = "reviewCommentList.do", produces = "application/json; charset=UTF-8")
 	public String reviewCommentList(int id) {
-		int CommentCount = reviewService.getCommentCount();
 		ArrayList<Comment> reviewCommentList = reviewService.selectReviewComment(id);
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-
-		// log.info("댓글" + reviewCommentList);
 		return gson.toJson(reviewCommentList);
-
 	}
 
 	// 댓글 등록
 	@ResponseBody
 	@RequestMapping("insertReviewComment.do")
-	public String insertReviewComment(Comment c, ModelAndView mv) {
-
-		int result = reviewService.insertReviewComment(c);
+	public String insertReviewComment(Comment comment, HttpServletRequest request) {
+		// log.info("comment : " + comment);
+		int result = reviewService.insertReviewComment(comment);
 		// log.info("result : " + result);
 		if (result > 0) {
 			return "success";
@@ -281,10 +281,11 @@ public class ReviewController {
 	// 리뷰 삭제
 	// 글삭제 (아직 조건 안걸음 사용자 아이디 비교해서 그사람이 삭제할수있게끔해놓기)
 	@RequestMapping("deleteReviewComment.do")
-	public String deleteReviewComment(int id, ModelAndView mv) {
+	public String deleteReviewComment(int id, ModelAndView mv, HttpServletRequest request) {
 
 		int result = reviewService.deleteReviewComment(id);
 		if (result > 0) {
+			request.getSession().setAttribute("msg", "댓글을 성공적으로 삭제했습니다.");
 			return "redirect:reviewDetail.do";
 		} else {
 			return "error/error.do";

@@ -47,11 +47,13 @@
 	
 	
 					<div class="news_d_footer flex-column flex-sm-row">
+						<!-- 
 						<a class="justify-content-sm-center ml-sm-auto mt-sm-0 mt-2" href="" onclick="getCommentList(); return false;">
 							<span class="align-middle mr-2">
 								<i class="ti-themify-favicon"></i>댓글 보기
 							</span>
 						</a>
+						 -->
 					</div>
 				</div>
 	<!-- 
@@ -117,8 +119,8 @@
 		<div class="form-group row">
 			<div class="btn-group btn-group-lg mx-auto" role="group" aria-label="...">
 				<c:if test="${ loginUser.id eq board.memberId }">
-					<a href="bdelete.do?id=${ board.id }" class="button submit_btn">삭제하기</a>
-					<a href="bupdateView.do?id=${ board.id }" class="button submit_btn">수정하기</a>
+					<a href="boardDelete.do?id=${ board.id }" class="button submit_btn">삭제하기</a>
+					<a href="boardUpdateForm.do?id=${ board.id }" class="button submit_btn">수정하기</a>
 				</c:if>
 			</div>
 		</div>
@@ -136,7 +138,7 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form action="bReportModal.do" method="post">
+						<form action="boardReportModal.do" method="post">
 							<input type="hidden" name="targetId" value="${ board.id }">
 							<input type="hidden" name="reportId" value="${ loginUser.id }">
 							<input type="hidden" name="reportedId" value="${ board.memberId }">
@@ -158,38 +160,19 @@
 		</div>
 	
 		<script>
+			const loginMemberId = '${loginUser.id}';
 			
 			// 댓글 작성
 			$(document).on("click", "#comment-btn", function(){
 				var content = $("#comment-content").val();
 				var boardId = ${ board.id };
-				var memberId = '${ loginUser.id }';
 				var parentId = $("#reply-parent-id").val();
 				
-				if (memberId === '' || memberId === undefined) {
+				if (loginMemberId === '' || loginMemberId === undefined) {
 					alert("로그인이 필요합니다.");
 					$('#comment-content').focus();
 				} else {
-					$.ajax({
-						url:"insertComment.do",
-						data:{ type : 2,
-									 targetId : boardId,
-									 content : content,
-									 memberId : memberId,
-									 parentId : parentId },
-						dataType: "text",
-						success: function(data){
-							if (data == "success") {
-								getCommentList();
-								$("#comment-content").val('');
-							} else {
-								alert("댓글 작성 실패");
-							}
-						},
-						error:function(){
-							console.log("ajax 통신 실패");
-						}
-					});
+					insertComment(boardId, '2', content, loginMemberId, parentId);
 				}
 			});
 			
@@ -200,128 +183,35 @@
 			
 			// go to member profile
 			$(document).on("click", ".thumbnail img", function(){
-				var loginMemId = '${ loginUser.id}';
-				var writerMemId = $(this).closest(".user").find(".writerMemId").val();
-				console.log(writerMemId);
-				location.href="userPage.do?loginUserId=" + loginMemId + "&userId=" + writerMemId;
+				var loginUserId = '${ loginUser.id}';
+				var writerUserId = $(this).closest(".user").find(".writerMemId").val();
+				
+				location.href="userPage.do?loginUserId=" + loginUserId + "&userId=" + writerUserId;
 			});
 			
 			// 대댓글 작성 focus
-			$(document).on("click", "#reply-btn", function(){
+			$(document).on("click", "#comment-reply-btn", function(){
 				var pid = $(this).closest(".single-comment").find(".cid").val();
 				$("#comment-content").focus();
 				$("#reply-parent-id").val(pid);
 			});
 			
-			// 댓글 목록 조회
-			function getCommentList(){
-				var bid = ${ board.id };
-				$.ajax({
-					url: "commentsList.do",
-					data: { "tid" : bid },
-					dataType:"json",
-					success:function(data){
-						
-						$commentsArea = $(".comments-area");
-						$commentsArea.html("");
-						$commentsArea.append("<h4>COMMENTS</h4>");
-						
-						if (data.length > 0){
-							
-								$.each(data, function(index, value){
-									// console.log(value);
-									$commentList = $("<div class='comment-list'></div>");
-									if (value.level != 1) {
-										$commentList.css("padding-left", (20 * (value.level - 1)) + 'px');
-									}
-									
-									$single = $("<div class='single-comment justify-content-between d-flex'></div>");
-									$commentList.append($single);
-
-									$thumbnail = $("<div class='thumbnail'></div>").append("<img src='resources/memberProfileImage/" + value.memberImage + "' alt='member-profile'>");
-
-									var member = value.memberId;
-									$cid = $("<input type='hidden' class='cid'>").val(value.id);
-									$writer = $("<input type='hidden' class='writerMemId'>").val(member);
-									$ninkname = $("<h5 class='ninkname'></h5>").text(value.nickname);
-									$date = $("<p class='date'></p>").text(value.createDate);
-
-									var loginMem = '${ loginUser.id}';
-									var parent = value.parentMemberNickname;
-									var $content = '';
-									if (parent != 'undefined' && parent != '' && parent != null) {
-										$content = $("<p class='comment'></p>").html("@" + "<a href='userPage.do?loginUserId=" + loginMem + "&userId=" + value.parentMemberId + "'>" + value.parentMemberNickname + "</a>" + value.content);
-									} else {
-										$content = $("<p class='comment'></p>").html(value.content);
-									}
-									
-// 									$updateBtn = $("<button class='button updateBtn'>수정</button>");
-									$deleteBtn = $("<button class='button deleteBtn'>삭제</button>");
-									$replyBtn = $("<button class='button replyBtn' id='reply-btn'>답글</button>");
-									$btns = $("<div class='reply-btn'></div>");
-									
-									$desc = $("<div class='desc'></div>");
-									$desc.append($cid)
-											 .append($writer)
-											 .append($ninkname)
-											 .append($date)
-											 .append($content)
-											 .append($btns);
-									
-									$user = $("<div class='user justify-content-between d-flex'></div>");
-									$user.append($thumbnail).append($desc);
-
-									if (parseInt(loginMem) === member) {
-										$btns.append($replyBtn)
-// 												 .append($updateBtn)
-												 .append($deleteBtn);
-									} else {
-										$btns.append($replyBtn);
-									}
-									
-									$single.append($user);
-									
-									$commentsArea.append($commentList);									
-								});
-							
-						} else { // 댓글이 없을 때
-							$commentarea = $(".comments-area").append("<span>등록된 댓글이 없습니다.</span>");
-						}
-					},
-					error:function(){
-						console.log("ajax 실패");
-					}
-				});
-			}
-			
 			// 댓글 삭제
-			$(document).on("click", ".deleteBtn", function() {
-				var cid = $(this).closest('.comment-list').find('.cid').val();
+			$(document).on("click", "#comment-delete-btn", function() {
+				var commentId = $(this).closest('.comment-list').find('.cid').val();
 				var boardId = ${ board.id };
 				
 				if (confirm("댓글을 삭제하시겠습니까?")) {
-					$.ajax({
-						url : "deleteComment.do",
-						dataType: "text",
-						data : {
-							id : cid,
-							type : 2,
-							targetId : boardId
-						},
-						success : function(data) {
-							if (data === "success") {
-								getCommentList();
-								alert("댓글을 삭제하였습니다.");
-							} else {
-								alert("댓글 삭제 실패");
-							}
-						},
-						error : function() {
-							console.log("ajax 통신 실패");
-						}
-					});
+					// alert(loginMemberId);
+					deleteComment(commentId, 2, boardId, loginMemberId);
 				}
 			});
+			
+			window.onload = function() {
+				var bid = ${ board.id };
+				var loginUser = '${ loginUser.id }';
+				getCommentList(bid, '2', loginMemberId);
+			};
 
 		</script>
 		

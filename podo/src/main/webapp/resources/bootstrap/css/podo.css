@@ -407,7 +407,7 @@ star-input>.input.focus {
 .review-list-card {
 	border-top: 5px solid #ab8fff;
 	background: #292929;
-	margin: 0;
+	margin: 0 0 20px 0;
 }
 
 .review-list-card>div {
@@ -419,7 +419,7 @@ star-input>.input.focus {
 }
 
 button.button {
-  display: block!important;
+/*   display: block!important; */
 }
 
 .pagination-row {
@@ -521,4 +521,28 @@ button.button {
   width: 50px;
   height: 50px;
   object-fit: cover;
+}
+
+.reply-btn {
+	margin: 10px 0;
+}
+
+.user>.thumbnail {
+	padding: 15px 0px 15px 15px;
+}
+
+.user>.desc {
+	padding: 15px 15px 0px 15px;
+}
+
+.thumbnail>.nickname {
+	text-align: center;
+	padding-top: 7px;
+}
+
+.thumb>#userpage-profile-image {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	object-fit: cover;
 }

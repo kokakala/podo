@@ -24,7 +24,7 @@
 		<result property="type" column="type"/>
 		<result property="targetId" column="target_id"/>
 		<result property="userId" column="user_id"/>
-		<result property="nickName" column="nickname"/>
+		<result property="nickname" column="nickname"/>
 		<result property="changeName" column="image"/>
 	</resultMap>
 	
@@ -128,9 +128,9 @@
 	<select id="myPageSelectLikeUser" resultMap="likeUserResultSet">
 		select l.*, nickname, image
 		from tb_like l
-        join tb_member m on(l.target_id = m.id)
-		where user_id=#{id} and
-		      type=2 
+    join tb_member m on (l.target_id = m.id)
+		where user_id = #{id}
+			and type=2 
 	</select>
 	
 	<select id="myPageLikeReviewListCount" resultType="_int">
@@ -141,20 +141,21 @@
 	</select>
 	
 	<select id="myPageSelectLikeReview" resultMap="likeReviewResultSet">
-		select l.*, r.content, f.title_kor, change_name, rr.id as rId
+		select l.*, r.content, f.title_kor, change_name
 		from tb_like l
-		join tb_review r on(r.id = l.target_id)
-		join tb_film f on(r.film_id = f.id)
-		join tb_detail_film df on(f.id = df.film_id)
-		join tb_film_image i on(df.id = i.dfilm_id)
-        join tb_rating_review rr on(rr.review_id = r.id)
-		where user_id=#{id} and
-		      l.type=3
+		join tb_review r on (r.id = l.target_id)
+		join tb_film f on (r.film_id = f.id)
+		join tb_detail_film df on (f.id = df.film_id)
+		join tb_film_image i on (df.id = i.dfilm_id)
+		where user_id = #{id}
+			and l.type=3
 	</select>
 	
 	
 	<insert id="insertLikeReview">
-		insert into tb_like values (seq_like_id.nextval, 3, #{targetId}, #{userId})
+		insert into tb_like
+		values
+			(seq_like_id.nextval, 3, #{targetId}, #{userId})
 	</insert>
 	
 	<delete id="deleteLikeReview">

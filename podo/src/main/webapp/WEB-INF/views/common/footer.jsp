@@ -8,6 +8,7 @@
 		<script src="resources/bootstrap/js/jquery.ajaxchimp.min.js"></script>
 		<script src="resources/bootstrap/js/mail-script.js"></script>
 		<script src="resources/bootstrap/js/main.js"></script>
+		<script src="resources/bootstrap/js/podo.js"></script>
 	</head>
 <body>
 

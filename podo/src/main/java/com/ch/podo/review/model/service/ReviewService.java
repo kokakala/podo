@@ -58,7 +58,6 @@ public interface ReviewService {
 	// 그래프 점수입력할때
 	int reviewRating(Review r);
 
-
 	// 영화 상세자료, 유저아이디
 	//int reivewInsert(DetailFilm df);
 	
@@ -76,17 +75,16 @@ public interface ReviewService {
 	
 	// 리뷰 댓글 등록
 	int insertReviewComment(Comment c);
+	
 	// 댓글 신고
 	int insertDeclarationComment(Report rep);
-	
 	
 	// 댓글 삭제
 	int deleteReviewComment(int id);
 	
 	// 좋아요 관련 체크
 	ArrayList<Like> checkLike(Member m);
+	
 	// 댓글 갯수 가져오기
 	int getCommentCount();
-	
-	// 
 }

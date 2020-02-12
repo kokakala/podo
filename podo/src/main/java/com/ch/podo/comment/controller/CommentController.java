@@ -24,12 +24,14 @@ public class CommentController {
 	// 댓글 조회
 	@ResponseBody
 	@RequestMapping(value = "commentsList.do", produces = "application/json; charset=UTF-8")
-	public String CommentList(int tid) {
-		ArrayList<Comment> list = commentService.selectCommentList(tid);
+	public String CommentList(String tid, String type) {
+		ArrayList<Comment> list = commentService.selectCommentList(tid, type);
+		// log.info(list.toString());
+		
 		for (Comment comment : list) {
 			comment.setContent(comment.getContent().replaceAll("(\\r\\n|\\n)", "<br>"));
 		}
-		// log.info("comment List : " + list);
+		
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 		return gson.toJson(list);
 	}

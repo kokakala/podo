@@ -4,21 +4,16 @@
 <html>
 	<head>
 		<jsp:include page="../common/header.jsp"/>
-		<title>리뷰 상세 보기</title>
 	</head>
 	<body>
 	
 		<div class="container">
-			<div class="row">
-				<div class="col-lg-2">
-					<img class="img-fluid" src="resources/detailFilmImage/${r.posterImage }" alt="poster">
+			<div class="row movie-poster-cover">
+				<div class="col-md-4 d-flex align-items-start flex-column bd-highlight">
+					<img class="poster" src="resources/detailFilmImage/${r.posterImage }" alt="poster">
 				</div>
 				
-				<div class="col-lg-4">
-					<canvas id="myChart"></canvas>
-				</div>
-				
-				<div class="col-lg-6">
+				<div class="col-md-8 my-3 d-flex align-items-end flex-column">
 					<h1>${ r.titleKor }</h1>
 					<c:forEach begin="1" end="${ r.star }">
 						&#x2605;
@@ -35,7 +30,7 @@
 						</c:if>
 						<span>${ r.createDate }</span>
 					</div>
-				
+					
 					<div class="thumbnail py-3">
 						<c:if test="${ loginUser.id == r.memberId }">
 							<img width="42" height="42"
@@ -58,11 +53,12 @@
 								onclick="location.href='userPage.do?userId=${r.memberId}&loginUserId=${ loginUser.id }'">
 						</c:if>
 					</div>
+					
 				</div>
 				
 			</div>
 			
-			<div class="col detail-film-info">
+			<div class="col my-3 detail-film-info">
 				<p class="py-3">${r.content }</p> 
 			</div>
 		</div>
@@ -81,7 +77,7 @@
 					</c:if>
 					<a class="button declaration-modal btn-reply" href="#" data-toggle="modal">리뷰신고하기</a>
 					<c:if test="${loginUser.id eq r.memberId }">
-						<a class="button" href="reviewUpdateView.do?id=${r.id}">수정하기</a>
+						<a class="button" href="reviewUpdateForm.do?id=${r.id}">수정하기</a>
 					</c:if>
 					<c:if test="${ loginUser.id eq r.memberId }">
 						<button class="button" onclick="location.href='reviewDelete.do?id=${r.id}';">삭제하기</button>
@@ -90,20 +86,22 @@
 	
 			</div>
 			
+		  <!-- 댓글리스트 -->
+			<div class="comments-area" id="comment-area">
+				<h4>COMMENTS</h4>
+			</div>
 			
-				<!-- 댓글 등록 -->
-				<div class="comment-form">
-					<h4>댓글 작성</h4>
-					<div class="form-group">
-						<input type="hidden" id="reply-parent-id" value="">
-						<textarea id="review-comment" class="form-control mb-10" rows="5" name="message" placeholder="댓글을 입력하세요." onfocus="this.placeholder = ''" onblur="this.placeholder = '댓글을 입력하세요.'" data-toggle="tooltip" data-placement="top" title="" data-original-title="내용을 입력하세요."></textarea>
-					</div>
-					<div class="btn-group mx-auto">
-						<button class="button" id="comment-btn">작성</button>
-					</div>
+			<!-- 댓글 등록 -->
+			<div class="comment-form">
+				<h4>댓글 작성</h4>
+				<div class="form-group">
+					<input type="hidden" id="reply-parent-id" value="">
+					<textarea id="review-comment" class="form-control mb-10" rows="5" name="message" placeholder="댓글을 입력하세요." onfocus="this.placeholder = ''" onblur="this.placeholder = '댓글을 입력하세요.'" data-toggle="tooltip" data-placement="top" title="" data-original-title="내용을 입력하세요."></textarea>
 				</div>
-				
-			  <!-- 댓글리스트 -->
+				<div class="btn-group mx-auto">
+					<button class="button" id="review-comment-btn">작성</button>
+				</div>
+			</div>
 			
 		</div>
 		
@@ -178,177 +176,50 @@
 			</div>
 		</div>
 	
-	
-	
-		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 		<script>
-		   var ctx = document.getElementById('myChart');
-		   var chart = new Chart(ctx, {
-		       // The type of chart we want to create
-		       type: 'radar',
-		
-		       // The data for our dataset
-		       data: {
-		           labels: ["음악", "영상", "연기", "대중성", "각본","연출"],
-		           datasets: [{
-		              label: ["${ r.titleKor }"], 
-			            backgroundColor: "rgb(165,102,255)",
-			            pointBackground:"rgba(179,181,198,1)",
-			            pointBorderColor:"#fff",
-			            pointBorderBackgroundColor:"#fff",
-		
-	               data: [
-	            	   ${r.ratingSound},${r.ratingVisual},${r.ratingActing},${r.ratingPop},${r.ratingScript},${r.ratingDirect}
-            	   ]
-		    
-		           }]
-		       },
-		
-		       // Configuration options go here
-            options: {
-              scale: {
-                   angleLines: {
-                       display: false
-                   },
-                   ticks: {
-                       suggestedMin: 0,
-                       suggestedMax: 10,
-                   }
-               },
-               tooltips:{
-                  callbacks: {
-                       label: function(tooltipItem, data) {
-                           
-                           return data.labels[tooltipItem.index]  + " : "+ Math.round(tooltipItem.yLabel * 100) / 100 +"점";
-                       }
-                   }
-               }
-             }
-		    });
-		 
-		// write comment
-		$(function(){
-			getReplyReviewCommentList();
+			const loginMemberId = '${loginUser.id}';
+			
+			$("#review-comment-btn").on("click", function(){
 				
-				setInterval(function(){
-					getReplyReviewCommentList();
-				}, 50000);
+				var content = document.getElementById('review-comment').value;
+				var loginMemberId = '${ loginUser.id }';
+				var reviewId = ${ r.id };
 				
-				
-				$("#rBtn").on("click", function(){
-					
-					var content = $("#review-comment").val();
-					var memberId = ${loginUser.id};
-					var reviewId = ${r.id};
-						
+				if (loginMemberId === '') {
+					alert('로그인 후 이용바랍니다.');
+				} else {
 					$.ajax({
 						url:"insertReviewComment.do",
-						data:{content:content,
-							  memberId:memberId,
-							  reviewId:reviewId,
+						data:{
+							content : content,
+						  memberId : loginMemberId,
+						  targetId : reviewId,
 						},
-						success:function(data){
-							if(data == "success"){
-								//console.log(data);
-								getReplyReviewCommentList();
-								$("#review-comment").val("");
-							}else{
-								console.log(data);
+						success: function(data) {
+							if (data == "success") {
+								// console.log(data);
+								document.getElementById('review-comment').value = '';
+								getCommentList(reviewId, 1, loginMemberId);
+							} else {
+								// console.log(data);
 								alert("댓글 작성 실패");
 							}
-						},error:function(){
-							console.log("ajax 통신 실패");
-						}
-					});
-				});			
-			});
-		
-		
-		
-		// 댓글 리스트
-			$(function () {
-				getReplyReviewCommentList();
-			});
-			
-			function getReplyReviewCommentList(){
-				
-				var rid = ${r.id};
-				
-				$.ajax({
-					url:"reviewCommentList.do",
-					data:{ id : rid },
-					dataType:"json",
-					success:function(data){
-						// console.log(data);
-						
-						$tbody = $("#rtb tbody");
-						$tbody.html("");
-						
-						$("#rCount").text("댓글(" + data.length + ")");
-						
-						if(data.length > 0){
-							$.each(data, function(index, value){
-								$tr = $("<tr></tr>");
-								
-								// console.log(value.nickName);
-								
-								$writerTd = $("<td width='100'></td>").text(value.nickName); 
-								$contentTd = $("<td width='300'></td>").text(value.content);
-								$dateTd = $("<td width='100'></td>").text(value.createDate);
-								$deleteButton = $("<input class='delComment button' type='button' onclick='deleteReviewComment(id);'>").val('삭제')
-								$updateButton = $("<input class='button' type='button'>").val('수정')
-								$deButton = $("<a class='comment-modal btn-reply button' href='#' data-toggle='modal'>댓글신고하기</a>")
-								
-								
-								
-								$tr.append($writerTd);
-								$tr.append($contentTd);
-								$tr.append($dateTd);
-								$tr.append($deleteButton);
-								$tr.append($updateButton);
-								$tr.append($deButton);
-								
-								$tbody.append($tr);
-								
-							});
-							
-						}else{
-							
-							$tr = $("<tr></tr>");
-							
-							$contentTd = $("<td colspan='4'></td>").text("등록된 댓글이 없습니다.");
-							$tr.append($contentTd);
-							
-							$tbody.append($tr);
-							
-						}
-					},
-					error:function(){
-						// console.log("ajax 실패");
-					}
-					
-				});
-			}
-			
-
-			function deleteReviewComment(id){
-				var id = ${r.id};
-				if(confirm("댓글을 삭제하시겠습니까")){
-					$.ajax({
-						type:"post",
-						url:"deleteReviewComment.do",
-						data:{"id":id},
-						success:function(){
-							alert("댓글이 삭제되었습니다.");
 						},
-						error:function(){
-							// console.log(id);
-							alert("댓글 삭제 실패");
-
+						error: function() {
+							// console.log("ajax 통신 실패");
 						}
 					});
 				}
-			}
+				
+			});
+			
+			// 댓글 리스트
+			$(function () {
+				// getReplyReviewCommentList();
+				var reviewId = ${r.id};
+				var loginMemberId = '${loginUser.id}';
+				getCommentList(reviewId, 1, loginMemberId);
+			});
 			
 			// 리뷰 좋아요		
 			$(function() {
@@ -361,79 +232,75 @@
 					var likeInp = $(".likeInp").val();
 					var status = "";
 					
-					//console.log("버튼클릭시 : " + likeInp);
-					
-					if(likeInp == '0'){
+					if (likeInp == '0') {
 						status = "like";
-					}else if(likeInp == '1'){
+					} else if (likeInp == '1') {
 						status = "nonlike";
 					}
-					//console.log(status);
+					
 					$.ajax({
-							url:"likeReviewClick.do",
-							data:{userId:userId,
-								  targetId:targetId,
-								  status:status},
-							type:"post",
-							success:function(data){
-								//console.log(data);
-								if(status == "like"){ // 좋아요클릭시
-									if(data == 1){
-										$(".likeReviewBtn").removeClass("btn-danger");
-										$(".likeReviewBtn").removeClass("btn-secondary");
-										$(".likeReviewBtn").addClass("btn-danger");
-										$(".likeReviewBtn").text('LIKED');
-										$(".likeInp").val('1');
-									}else{
-										alert("좋아요 실패");
-									}
-								}else if(status == "nonlike"){ // 좋아요 취소
-									if(data >0){
-										$(".likeReviewBtn").removeClass("btn-danger");
-										$(".likeReviewBtn").removeClass("btn-secondary");
-										$(".likeReviewBtn").addClass("btn-secondary");
-										$(".likeReviewBtn").text('LIKE');
-										$(".likeInp").val('0');
-									}else{
-										alert("좋아요 실패");
-									}
+							url: "likeReviewClick.do",
+							data: {
+								userId:userId,
+								targetId:targetId,
+								status:status
+							},
+							type: "post",
+							success: function(data) {
+								
+							if (status == "like") { // 좋아요
+								if (data == 1) {
+									$(".likeReviewBtn").removeClass("btn-danger");
+									$(".likeReviewBtn").removeClass("btn-secondary");
+									$(".likeReviewBtn").addClass("btn-danger");
+									$(".likeReviewBtn").text('LIKED');
+									$(".likeInp").val('1');
+								} else {
+									alert("좋아요 실패");
 								}
-								//console.log("에이작스 후 : " + likeInp);
-									
-							},error:function(){
-								// console.log("ajax 실패");
+							} else if (status == "nonlike") { // 좋아요 취소
+								if (data > 0) {
+									$(".likeReviewBtn").removeClass("btn-danger");
+									$(".likeReviewBtn").removeClass("btn-secondary");
+									$(".likeReviewBtn").addClass("btn-secondary");
+									$(".likeReviewBtn").text('LIKE');
+									$(".likeInp").val('0');
+								} else {
+									alert("좋아요 취소 실패");
+								}
 							}
-						});  
+						},
+						error : function() {
+							// console.log("ajax error");
+						}
+					});
 				});
 			});
-	
-			
+
 			// 리뷰 신고하기 버튼 클릭 시
-			$(".declaration-modal").on( "click", function() {
-	        $(".de_modal").modal();
-	        //console.log("${ loginUser.id }");
-	    });
-		
-			// 댓글 신고하기 버튼 클릭시
-			$(".comment-modal").on( "click", function() {
-	        $(".cm_modal").modal();
-	        //console.log("${ loginUser.id }");
-	    });
-			
-			/*
-		    $(document).on("click","cm_modal", function() {
-		    	$(".cm_modal").modal(this);
-		    });
-			*/
-		    
-		    
-			// 댓글 삭제
-			$(".delComment button").on( "click", function() {
-				$(function () {
-					deleteReviewComment();
-				});
+			$(".declaration-modal").on("click", function() {
+				$(".de_modal").modal();
+				//console.log("${ loginUser.id }");
 			});
-	
+
+			// 댓글 신고하기 버튼 클릭시
+			$(".comment-modal").on("click", function() {
+				$(".cm_modal").modal();
+				//console.log("${ loginUser.id }");
+			});
+
+			// 댓글 삭제
+			// $('#comment-delete-btn').on('click', function() {
+			$(document).on('click', '#comment-delete-btn', function() {
+				var commentId = $(this).closest('.comment-list').find('.cid').val();
+				var reviewId = '${r.id}';
+
+				if (confirm("댓글을 삭제하시겠습니까?")) {
+					// alert(loginMemberId);
+					deleteComment(commentId, 1, reviewId, loginMemberId);
+				}
+
+			});
 		</script>
 		<jsp:include page="../common/footer.jsp"/>
 	</body>

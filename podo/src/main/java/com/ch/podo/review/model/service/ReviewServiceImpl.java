@@ -38,8 +38,8 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 	
 	@Override
-	public int reviewWrite(Review r) {
-		return reviewDao.reviewWrite(r);
+	public int reviewWrite(Review review) {
+		return reviewDao.reviewWrite(review);
 	}
 
 	@Override
@@ -62,15 +62,14 @@ public class ReviewServiceImpl implements ReviewService{
 		return reviewDao.selectRatingReviewDetailView(id);
 	}
 
-
 	@Override
-	public int reviewUpdate(Review r) {
-		return reviewDao.reviewUpdate(r);
+	public int reviewUpdate(Review review) {
+		return reviewDao.reviewUpdate(review);
 	}
 	
 	@Override
-	public int reviewUpdateContent(Review r) {
-		return reviewDao.reviewUpdateContent(r);
+	public int reviewUpdateContent(Review review) {
+		return reviewDao.reviewUpdateContent(review);
 	}
 
 	@Override
@@ -89,8 +88,8 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	@Override
-	public int reviewRating(Review r) {
-		return reviewDao.reviewRating(r);
+	public int reviewRating(Review review) {
+		return reviewDao.reviewRating(review);
 	}
 
 	@Override
@@ -99,11 +98,11 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	@Override
-	public int insertDeclaration(Report rep) {
+	public int insertDeclaration(Report report) {
 		
 		int result = 0;
-		result = reviewDao.insertDeclaration(rep);
-		result = reviewDao.updateReviewCount(rep);
+		result = reviewDao.insertDeclaration(report);
+		result = reviewDao.updateReviewCount(report);
 		
 		return result;
 	}
@@ -119,8 +118,8 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	@Override
-	public int insertReviewComment(Comment c) {
-		return reviewDao.insertReviewComment(c);
+	public int insertReviewComment(Comment comment) {
+		return reviewDao.insertReviewComment(comment);
 	}
 
 	@Override
@@ -134,8 +133,8 @@ public class ReviewServiceImpl implements ReviewService{
 	}
 
 	@Override
-	public ArrayList<Like> checkLike(Member m) {
-		return reviewDao.checkLike(m);
+	public ArrayList<Like> checkLike(Member member) {
+		return reviewDao.checkLike(member);
 	}
 
 	@Override

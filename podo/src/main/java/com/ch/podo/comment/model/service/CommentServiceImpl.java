@@ -15,8 +15,8 @@ public class CommentServiceImpl implements CommentService {
 	private CommentDao commentDao;
 
 	@Override
-	public ArrayList<Comment> selectCommentList(int tid) {
-		return commentDao.selectCommentList(tid);
+	public ArrayList<Comment> selectCommentList(String tid, String type) {
+		return commentDao.selectCommentList(tid, type);
 	}
 
 	@Override

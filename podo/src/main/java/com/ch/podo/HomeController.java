@@ -25,11 +25,11 @@ import lombok.extern.slf4j.Slf4j;
 public class HomeController {
 	
 	@Autowired
-	private FilmService f;
+	private FilmService filmService;
 	
 	@RequestMapping("home.do")
-	public ModelAndView home(ModelAndView mv,HttpSession session,HttpServletRequest request)throws Exception {
-		ArrayList<Film> list = f.selectNewFilms();
+	public ModelAndView home(ModelAndView mv,HttpSession session, HttpServletRequest request)throws Exception {
+		ArrayList<Film> list = filmService.selectNewFilms();
 		mv.addObject("list", list).setViewName("home");
 		return mv;
 	}

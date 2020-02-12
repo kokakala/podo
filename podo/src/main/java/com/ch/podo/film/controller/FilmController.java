@@ -386,14 +386,14 @@ public class FilmController {
 	 * @return
 	 * @author Changsu Im
 	 */
-	@RequestMapping("rec.do")
+	@RequestMapping("recommendation.do")
 	public ModelAndView rec(HttpSession session, ModelAndView mv,
 													@RequestParam(value="page", defaultValue = "1") int page) throws Exception {
 		
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		
 		if (loginUser == null) {
-			mv.setViewName("film/rec");
+			mv.setViewName("film/recommendation");
 			return mv;
 		}
 		
@@ -410,7 +410,7 @@ public class FilmController {
 		// 좋아요 누른 영화가 10개 미만일 경우 count만 넘겨줌
 		if (liked < 10) {
 			mv.addObject("count", liked)
-				.setViewName("film/rec");
+				.setViewName("film/recommendation");
 		} else {
 			// 쿼리문으로 추천 영화를 받아서 장르 3개 각각에 ArrayList를 받아줌
 			HashMap<String, ArrayList<Film>> map = new HashMap<>();
@@ -435,7 +435,7 @@ public class FilmController {
 				.addObject("genre3", map.get(genreId.get(2)))
 				.addObject("page", page)
 				.addObject("count", liked)
-				.setViewName("film/rec");
+				.setViewName("film/recommendation");
 		}
 		
 		return mv;

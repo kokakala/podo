@@ -132,7 +132,7 @@
 				
 		</div>
 		
-		<script async src="https://www.youtube.com/iframe_api"></script>
+		<script async="true" src="https://www.youtube.com/iframe_api"></script>
 		<script type="text/javascript">
 			// 예고편 절단
 			var trailer = "${df.trailer}";

@@ -3,133 +3,48 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-<jsp:include page="../common/header.jsp"/>
-<style>
-	#imgInp{display:none}
-	.nickguide{
-		display:none;
-		font-size:12px;
-		top:12px;
-		right:10px;
-	}
-	.nickok{color:blue;}
-	.nickno{color:red;}
-	.originguide{
-		display:none;
-		font-size:12px;
-		top:12px;
-		right:10px;
-	}
-	.oriok{color:blue;}
-	.orino{color:red;}
-	.modal-dialog{z-index:2000;}
-	/* --------------------- 탭메뉴시작 ---------------------  */
-	#container {
-		/* width:800px; */
-		margin:0 auto;
-		/* text-align:center */;
-	}
-	.tab {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		overflow: hidden;
-	}
-	/* Float the list items side by side */
-	.tab li {
-		float: left;
-	}
-	/* Style the links inside the list items */
-	.tab li a {
-		display: inline-block;
-		color: #000;
-		text-align: center;
-		text-decoration: none;
-		padding: 14px 16px;
-		font-size: 18px;
-		transition:0.3s;
-		
-	}
-	/* Style the tab content */
-	.tabcontent {
-		display: none;
-		/* background-color:rgb(230, 204, 255); */
-		padding: 6px 12px;
-		color:#fff;
-	}
-	ul.tab li.current{
-		/* background-color: rgb(230, 204, 255); */
-		color: rgb(230, 204, 255);
-	}
-	.tabcontent.current {
-		display: block;
-	}
-	/* --------------------- 탭메뉴 끝 ---------------------  */
-	#noAnswer{color:red;}
-	
-	/* --------------------- 리뷰_영화 관련---------------------  */
-	.podo-film-card {
-		/*border: 1px solid; */
-/* 		padding-top: 40px; */
-		display: inline-block;
- 		width: 241px;
-/* 		height: 620px; */
-		text-align: center;
-	}
-	
-	.podo-film-card .poster {
-		overflow: hidden;
-		cursor: pointer;
-		border-radius: 10px;
-    	border: 1px solid #b3bfdd;
-	}
-	
-	.podo-film-card .poster img {
-		width: 100%;
-		height: 342px;
-		object-fit: cover;
-	}
-	
-	.podo-film-card .poster img:hover {
-		-moz-transform: scale(1.1);
-	    -webkit-transform: scale(1.1);
-	    -o-transform:scale(1.1);  
-	    transform: scale(1.1);
-		-moz-transition: all 0.3s;
-	    -webkit-transition: all 0.3s;
-	    -o-transition: all 0.3s;
-	    transition: all 0.3s;
-	}
-	/* --------------------- 리뷰_영화 관련 끝---------------------  */
-	a.disabled {
-	  pointer-events: none;
-	  cursor: default;
-	}
-	
-    .actorImage{
-    	border: 0px solid black;
-    	width:100%;
-    	height:200px;
-    	overflow-x:hidden;
-    }
-    .actor_name{
-    	border : 0px solid lightgrey;
-    	text-align:center;
-    	color:black;
-    }
-    .podo-user-card {
-		/*border: 1px solid; */
-		padding-top: 40px;
-		display: inline-block;
-		width: 241px;
-		height: 400px;
-		text-align: center;
-		}
-		#profile{object-fit: cover;}
-		.t:hover, .image_cover:hover{cursor:pointer;}
-</style>
-</head>
+	<head>
+		<jsp:include page="../common/header.jsp"/>
+		<style>
+				/* --------------------- Tab Menu ---------------------  */
+				#container {
+					/* width:800px; */
+					margin:0 auto;
+					/* text-align:center */;
+				}
+				.tab {
+					list-style: none;
+					margin: 0;
+					padding: 0;
+					overflow: hidden;
+				}
+				/* Style the links inside the list items */
+				.tab li a {
+					display: inline-block;
+					color: #000;
+					text-align: center;
+					text-decoration: none;
+					padding: 14px 16px;
+					font-size: 18px;
+					transition: 0.3s;
+					cursor: pointer;
+				}
+				/* Style the tab content */
+				.tabcontent {
+					display: none;
+					/* background-color:rgb(230, 204, 255); */
+					padding: 6px 12px;
+					color:#fff;
+				}
+				ul.tab li.current{
+					/* background-color: rgb(230, 204, 255); */
+					color: rgb(230, 204, 255);
+				}
+				.tabcontent.current {
+					display: block;
+				}
+		</style>
+	</head>
 <body>
 	<c:if test="${ empty loginUser}">
 		<div style="text-align: center; color:white">
@@ -142,24 +57,21 @@
 	<section class="blog-post-area section-margin">
 		<div class="container">
 			<div class="row">
-				<div class="col-4">
-					<h4>마이페이지</h4>
-					<div class="user justify-content-between d-flex">
-						<div class="thumb">
+				<div class="col-sm-8 d-flex align-items-start flex-column">
+					<div class="justify-content-between d-flex">
+						<div class="thumb thumbnail">
 							<c:if test="${ loginUser.image != null }">
-								<img src="resources/memberProfileImage/${ loginUser.image }"  id="profile" width='200' height='200' style="border-radius: 100px;"><br><br>
+								<img src="resources/memberProfileImage/${ loginUser.image }"  id="userpage-profile-image">
 							</c:if>		
 							<c:if test="${ loginUser.image == null }">
-								<img src="resources/memberProfileImage/podoImage.png"  id="profile" width='200' height='200' style="border-radius: 100px;"><br><br>
-							</c:if>									
-						</div>
-						<div class="desc">
-							<h2>${ loginUser.nickName }</h2>
-							<p class="date">작성리뷰 - ${reviewListCount}개  </p>
+								<img src="resources/memberProfileImage/podoImage.png"  id="userpage-profile-image">
+							</c:if>
+							<h2 class="nickname">${ loginUser.nickname }</h2>
+							<h6 class="nickname">작성리뷰 - ${reviewListCount}개  </h6>
 						</div>
 					</div>
 				</div>
-				<div class="col-8">
+				<div class="col-sm-4 px-4 align-items-end flex-column">
 					<a id="update-modal" class="button" href="#" data-toggle="modal">정보수정</a>
 					<a id="updatePwd-modal" class="button" href="#" data-toggle="modal">비밀번호 변경</a>
 					<a id="question-modal" class="button" href="#" data-toggle="modal">문의하기</a>
@@ -168,43 +80,45 @@
 			</div>
 			
 			<!------------------------- 탭 메뉴 시작 ----------------------->
-			<div class="col-lg-12">
-				<div id="container">
-					<ul class="tab">
-							<li class="t tab1 current" data-tab="tab1" ><a>리뷰</a></li>
-							<li class="t tab2" data-tab="tab2" ><a>좋아한 영화</a></li>
-							<li class="t tab3" data-tab="tab3"><a>좋아한 리뷰</a></li>
-							<li class="t tab4" data-tab="tab4"><a>좋아한 회원</a></li>
-							<li class="t tab5" data-tab="tab5"><a>문의</a></li>
-					</ul>
+			<div class="row">
+				<ul class="tab d-flex justify-content-center">
+						<li class="t tab1 current" data-tab="tab1" ><a>리뷰</a></li>
+						<li class="t tab2" data-tab="tab2" ><a>좋아한 영화</a></li>
+						<li class="t tab3" data-tab="tab3"><a>좋아한 리뷰</a></li>
+						<li class="t tab4" data-tab="tab4"><a>좋아한 회원</a></li>
+						<li class="t tab5" data-tab="tab5"><a>문의</a></li>
+				</ul>
+			</div>
 			
-						<!-- -------------------- 리뷰 --------------------------->
+				<div id="container">
+			
+						<!-- -------------------- Review --------------------------->
 						<div id="tab1" class="tabcontent current"><br>
 							<c:if test="${ !empty review }">
-							<!-------------------------- 리뷰 탭메뉴 바디 ------------------------>
+							<!-------------------------- Review Tab Menu Body------------------------>
 							<section class="blog-post-area section-margin mt-4">
 								<div class="container">
 									<c:forEach items="${review}" var="list" >
-									<div class="row">
-										<div class="col-3 single-recent-blog-post">
-											<div class="thumb podo-film-card">
-												<div class="poster" onclick="location.href='reviewDetail.do?id=${list.ratingReviewId}';">
+										<div class="row my-4 review-list-card">
+											<div class="podo-film-card col-md-4">
+												<div class="poster" onclick="location.href='detailFilm.do?filmId=${list.filmId}';">
 													<img class='img-fluid' src='resources/detailFilmImage/${list.posterImage}' width='100%' height='100%'>
 												</div>
 											</div>
+											<div class="col-md-8">
+												<a href="reviewDetail.do?id=${list.ratingReviewId}">${list.titleKor}</a>
+												<div class="review-list-content">${list.content}</div>
+											</div>
 										</div>
-										<div class="col-9">
-											<a href="reviewDetail.do?id=${list.ratingReviewId}"><h3>${list.titleKor}</h3><br></a>
-											<p>${list.content}</p>
-										</div>
-									</div>
+										
+										
 									</c:forEach>
-											<!-------------------------- 페이징바 시작 ------------------------>
+											<!-------------------------- Pagination start ------------------------>
 											<div class="row">
 												<div class="col-lg-12">
 													<nav class="blog-pagination justify-content-center d-flex">
 														<ul class="pagination">
-															<!------ [이전] ------>
+															<!------ [prev] ------>
 															<c:if test="${ reviewPi.currentPage eq 1 }">
 																<li class="page-item">
 																	<a class="page-link disabled" aria-label="Previous">
@@ -229,7 +143,7 @@
 																</li>
 															</c:if>
 															<!-- ------------- -->
-															<!------ [페이지] ----->
+															<!------ [page] ----->
 															<c:forEach begin="${ reviewPi.startPage }" end="${ reviewPi.endPage }" var="p">
 																<c:if test="${ p eq reviewPi.currentPage }">
 																	<li class="page-item disabled"><a class="page-link" >${p}</a></li>
@@ -245,7 +159,7 @@
 																</c:if>
 															</c:forEach>
 															<!-- --------------- -->
-															<!------- [다음] ------->
+															<!------- [next] ------->
 															<c:if test="${ reviewPi.currentPage eq reviewPi.maxPage }">
 																<li class="page-item">
 																	<a class="page-link disabled" aria-label="Next" >
@@ -274,7 +188,7 @@
 													</nav>
 												</div> 
 											</div>
-											<!-------------------------- 페이징바 끝 -------------------------->
+											<!-------------------------- pagination end -------------------------->
 								</div>
 							</section>
 							</c:if>
@@ -285,16 +199,16 @@
 								</div>
 							</c:if>
 						</div>
-						<!-- -------------------- 리뷰끝 -------------------------->
+						<!-- -------------------- review end -------------------------->
 					
-						<!-- -------------------- 라이크_영화----------------------->
+						<!-- -------------------- like-film ----------------------->
 						<div id="tab2" class="tabcontent"><br>
 							<div class="container">
 								<c:if test="${ !empty likeFilmList }">
 									<div class="row">
 										<c:forEach items="${ likeFilmList }" var="likeFilm" >
 											<!-- width * 1.425 -->
-											<div class="podo-film-card col-3">
+											<div class="podo-film-card col-md-4">
 												<input class="hidden-filmId" type="hidden" value="${ likeFilm.id }">
 												<c:if test="${ not empty likeFilm.changeName }">
 													<div class="poster" onclick="location.href='detailFilm.do?filmId=${likeFilm.targetId}'">
@@ -405,32 +319,32 @@
 								</c:if>
 							</div>
 						</div>
-						<!-- -------------------- 라이크_영화 끝--------------------->
+						<!-- -------------------- like-film end--------------------->
 						
-						<!--------------------- 라이크_리뷰 시작 --------------------->
+						<!--------------------- like-review start --------------------->
 						<div id="tab3" class="tabcontent"><br>
 							<c:if test="${ !empty likeReviewList }">
 								<section class="blog-post-area section-margin mt-4">
 									<div class="container">
-										<c:forEach items="${likeReviewList}" var="list" >
+										<c:forEach items="${ likeReviewList }" var="list" >
 											<div class="row">
-												<div class="col-3 single-recent-blog-post">
+												<div class="col-md-4 single-recent-blog-post">
 													<div class="thumb podo-film-card">
-														<div class="poster" onclick="location.href='reviewDetail.do?id=${list.rrId}';">										
-															<img class='img-fluid' src='resources/detailFilmImage/${list.changeName}'>
+														<div class="poster" onclick="location.href='reviewDetail.do?id=${ list.targetId }';">										
+															<img class='img-fluid' src='resources/detailFilmImage/${ list.changeName }'>
 														</div>
 													</div>
 												</div>
-												<div class="col-9">
+												<div class="col-md-8">
 													<button class='btn btn-danger likeBtn'>LIKED</button>
                             	<input type="hidden" class="likeInp" value="1"/>
                             	<input type="hidden" class="targetInp" value="${ list.targetId }"/><br><br>
-													<a href="reviewDetail.do?id=${list.rrId}"><h3>${list.titleKor}</h3><br></a>
-													<p>${list.content}</p>
+													<a href="reviewDetail.do?id=${ list.targetId }">${list.titleKor}<br></a>
+													<p>${ list.content }</p>
 												</div>
 											</div>
 										</c:forEach>
-												<!-------------------------- 페이징바 시작 ------------------------>
+												<!-------------------------- like-review pagination ------------------------>
 												<div class="row">
 													<div class="col-lg-12">
 														<nav class="blog-pagination justify-content-center d-flex">
@@ -453,7 +367,7 @@
 																	</c:url>
 																	<li class="page-item">
 																		<a href="${ before }" class="page-link" aria-label="Previous">
-																			<span aria-hidden="true" style="color:white;">&lgt;
+																			<span aria-hidden="true" style="color:white;">&lt;
 																				<!-- <i class="ti-angle-left"></i> -->
 																			</span>
 																		</a>
@@ -526,7 +440,7 @@
 									<div class="row">
 										<c:forEach items="${ likeUserList }" var="likeUserList">
 											<!-- width * 1.425 -->
-											<div class="podo-user-card col-3">
+											<div class="podo-film-card col-3">
 												<input class="hidden-filmId" type="hidden" value="${ likeUserList.id }">
 												<div class="image_cover" onclick="location.href='userPage.do?userId=${likeUserList.targetId}&loginUserId=${loginUser.id}'">
 														<c:if test="${likeUserList.changeName != null }">
@@ -538,7 +452,7 @@
 														
 												</div>
 												<div style="margin-top: 20px; text-overflow: ellipsis; overflow: hidden;">
-													${ likeUserList.nickName }
+													${ likeUserList.nickname }
 												</div>
 												
 												<div class="row" style="margin-top: 10px;">
@@ -754,7 +668,6 @@
 						<!-------------------------- 문의 끝 ----------------------->
 				</div>
 				<!-------------------------- 탭 메뉴 끝 ------------------------>
-		</div>
 	</section>
   
 	<!-- 정보수정 모달 -->
@@ -772,21 +685,21 @@
 				<div class="modal-body">
 					<form action="updateMember.do" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="id" value="${ loginUser.id }">
-						<input type="hidden" name="pwd" value="${ loginUser.pwd }">
+						<input type="hidden" name="password" value="${ loginUser.password }">
 						<input type="hidden" name="enrollDate" value="${ loginUser.enrollDate }">
 						<input type="hidden" name="modifyDate" value="${ loginUser.modifyDate }">
 						<input type="hidden" name="googleId" value="${ loginUser.googleId}">
 						<input type="hidden" name="kakaoId" value="${ loginUser.kakaoId }">
 						<input type="hidden" name="autho" value="${ loginUser.autho }">
 						<input type="hidden" name="image" value="${ loginUser.image }">
-						<input type="hidden" name="updatePwd" value="">
+						<input type="hidden" name="newPassord" value="">
 						<div class="form-group">
 							<label for="userId">Email address</label>
 							<input type="email" class="form-control" id="userId" name="email" value="${ loginUser.email }" readonly>
 						</div>
 						<div class="form-group">
-							<label for="userNickName">NickName</label>
-							<input type="text" class="form-control" id="userNickName" name="nickName" value="${ loginUser.nickName }">
+							<label for="userNickname">Nickname</label>
+							<input type="text" class="form-control" id="userNickname" name="Nickname" value="${ loginUser.nickname }">
 							<span class="nickguide nickok">사용가능</span>
 							<span class="nickguide nickno">사용불가</span>
 							<input type="hidden" id="nickCheck" value="0"><br>
@@ -831,9 +744,9 @@
 				<div class="modal-body">
 					<form action="updateMember.do" method="post">
 						<input type="hidden" name="id" value="${ loginUser.id }">
-						<input type="hidden" name="pwd" value="${ loginUser.pwd }">
+						<input type="hidden" name="password" value="${ loginUser.password }">
 						<input type="hidden" name="image" value="${ loginUser.image }">
-						<input type="hidden" name="nickName" value="${ loginUser.nickName }">
+						<input type="hidden" name="nickname" value="${ loginUser.nickname }">
 						<input type="hidden" name="enrollDate" value="${ loginUser.enrollDate }">
 						<input type="hidden" name="modifyDate" value="${ loginUser.modifyDate }">
 						<input type="hidden" name="googleId" value="${ loginUser.googleId}">
@@ -849,10 +762,10 @@
 							<span class="originguide oriok">일치</span>
 							<span class="originguide orino">불일치</span>
 							<input type="hidden" id="originPwdCheck" value="0"><br>
-							<label for="updatePwd">변경 후 비밀번호</label>
-							<input type="password" class="form-control" id="updatePwd" name="updatePwd">
-							<label for="updatePwd2">변경 후 비밀번호 확인</label>
-							<input type="password" class="form-control" id="updatePwd2">
+							<label for="newPassword">변경 후 비밀번호</label>
+							<input type="password" class="form-control" id="newPassword" name="newPassword">
+							<label for="newPassword2">변경 후 비밀번호 확인</label>
+							<input type="password" class="form-control" id="newPassword2">
 						</div>
 						<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -934,13 +847,12 @@
 		
 		
 		function bye(){
-			console.log("anjdi");
+			// console.log("test");
 			if (confirm("정말 탈퇴하시겠습니까?") == true) {    //확인
 		    location.href="exit.do?id=${loginUser.id}";
 			} else {   //취소
 		    return;
 			}
-
 		}
 	
 		$(function() {
@@ -1009,13 +921,13 @@
 					$('#' + activeTab).addClass('current');
 				})
 			 */
-			$("#container ul>li").on("click", function(){
+			$(".container ul>li").on("click", function(){
 				var activeTab = $(this).attr('data-tab');
 				var tabMenu = $(this).text();
 				var strId = "${loginUser.id}";
 
-				console.log(activeTab);
-				console.log(tabMenu);
+				// console.log(activeTab);
+				// console.log(tabMenu);
 
 				if (tabMenu == "리뷰") {
 					location.href = "myPageSelectReview.do?id=${loginUser.id}&tab="
@@ -1074,9 +986,9 @@
 		// 회원정보 업데이트 버튼 클릭 시 
 		function validate() {
 			// 미입력
-			if ($("#userNickName").val().length == 0) {
+			if ($("#userNickname").val().length == 0) {
 				alert("닉네임을 입력해주세요.")
-				$("#userNickName").focus();
+				$("#userNickname").focus();
 				return false;
 			} else {
 				return true;
@@ -1085,10 +997,10 @@
 
 		// 닉네임 중복 체크
 		$(function() {
-			$("#userNickName").on("keyup", function() {
-				var nickName = $("#userNickName").val();
+			$("#userNickname").on("keyup", function() {
+				var Nickname = $("#userNickname").val();
 
-				if (nickName.length < 1) {
+				if (Nickname.length < 1) {
 					$(".nickguide").hide();
 					$("#nickCheck").val(0);
 					return;
@@ -1097,7 +1009,7 @@
 				$.ajax({
 					url : "nickCheck.do",
 					data : {
-						nick : nickName
+						nick : Nickname
 					},
 					type : "post",
 					success : function(data) {
@@ -1172,18 +1084,18 @@
 		// 비밀번호 변경 버튼 클릭 시 변경 후 비밀번호 일치 여부		
 		function pwdValidate() {
 			// 미입력
-			if ($("#updatePwd").val().length == 0
-					|| $("#updatePwd2").val().length == 0
+			if ($("#newPassword").val().length == 0
+					|| $("#newPassword2").val().length == 0
 					|| $("#originPwdCheck").val().length == 0) {
 				alert("비밀번호를 입력해주세요.")
-				$("#userNickName").focus();
+				$("#userNickname").focus();
 				return false;
 
-			} else if ($("#updatePwd").val() != $("#updatePwd2").val()) {
+			} else if ($("#newPassword").val() != $("#newPassword2").val()) {
 				alert("비밀번호가 일치하지 않습니다.");
-				$("#updatePwd").val("");
-				$("#updatePwd2").val("");
-				$("#updatePwd").focus();
+				$("#newPassword").val("");
+				$("#newPassword2").val("");
+				$("#newPassword").focus();
 				return false;
 
 			} else if ($("#originPwdCheck").val() == 0) {

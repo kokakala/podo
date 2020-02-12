@@ -4,122 +4,12 @@
 <html>
 	<head>
 		<jsp:include page="../common/header.jsp"/>
-		<style>
-		    body{
-		        width:100%;
-		        height:1300px;
-		    }
-		    #body{
-		        width:60%;
-		        height:100%;
-		        margin-left: auto;
-		        margin-right: auto;
-		    }
-		    .movie_info2{
-		        width:100%;
-		        float:left;
-		        border:0px solid black;
-		    }
-		    .movie_poster_cover{
-		        width:30%;
-		        height:100%;
-		        position:relative;
-		        float:left;
-		        left:20px;
-		        border:0px solid blue;
-		    }
-		    .movie_info_cover{
-		        width: 60%;
-		        float:right;
-		    }
-		    
-		    #movie_poster{
-		        position: relative;
-		    }
-		    .review{
-		        width: 100%;
-		        border: 1px solid black;
-		        height: 40%;
-		    }
-		    .cover{
-		        border: 0px solid black;
-		    }
-		    #title_cover{
-		        font-size:50px;
-		    }
-		    .movie_clip{
-		        font-size:15px;
-		        border: 0px solid black;
-		        float:right;
-		    }
-		    #modify_all{
-		        width: 30%;
-		        float:right;
-		        
-		    }
-		    #modifyBtn{    
-		    	float:right;
-		    }
-		    #synopsys{
-		    	border: 0px solid black;
-		    }
-		    .textArea{
-		    	background-color: rgb(9, 15, 33);
-		    	color:grey;
-		    }
-		    #addActor, .deleteActor, .modifyPoster, #cancel{
-		    	cursor:pointer;
-		    }
-		    #addActor, #cancel{
-		    	float:right;
-		    }
-		    #poster{
-		    	border-radius: 10px;
-		    	border : 1px solid white;
-		    }
-		    
-		    #actor_cover, #actor_cover1{
-		    	border : 0px solid lightgrey;
-		    	height: 200px;
-		    	width: 100%;
-		    	white-space:nowrap;
-		    	overflow-x: hidden;
-		    }
-		    .actor{
-		    	width: 33%;
-		    	height: 180px;
-		    	float:left;
-		    	border : 0px solid lightgrey;
-		    }
-		    .actorImage{
-		    	border: 0px solid black;
-		    	width:100%;
-		    	height:200px;
-		    	overflow-x:hidden;
-		    }
-		    .actor_name{
-		    	border : 0px solid lightgrey;
-		    	text-align:center;
-		    	color:black;
-		    }
-		    .image_cover{
-		    	text-align:center;
-		    	width:32%;
-		    	float:left;
-		    }
-		    .check_actor{
-		    	cursor:pointer;
-		    }
-		    #mdfPosterBtn{
-		    	display:none;
-		    }
-		</style>
 	</head>
 	<body>
     <!-- 본문 -->
-    <div id="body">
-
-        <div class="movie_info2">
+    <div class="container">
+	
+        <div class="movie-info">
         <!-- 왼쪽 영화 포스터 -->
         <!-- 포스터 -->
             <form action="detailFilmInsert.do" method="post" enctype="multipart/form-data">
@@ -132,60 +22,66 @@
             <div class="movie_poster_cover"> 
                 <div id="movie_poster"> 
                		<c:if test="${i.changeName ne null}">
-                    	<img id="poster" src="resources/detailFilmImage/${i.changeName}" style="width:100%; height:100%;">
+                    	<img id="poster" src="resources/detailFilmImage/${i.changeName}">
                     </c:if>
                     <c:if test="${i.changeName eq null}">
-    	                <img id="poster" src="resources/detailFilmImage/podoposter.jpg" style="width:100%; height:100%;">
+    	                <img id="poster" src="resources/detailFilmImage/podoposter.jpg"">
                 	</c:if>
                 </div>
                 <br>
-                <div class="modifyPoster btn" style="background:purple; color:white;"  id="modify_p_Btn">수정하기</div>
-                <div id="cancel" class="btn" style="background:#6c757d; color:white;" onclick="cancel();">취소하기</div>
-                <div id="mdfPosterBtn"><input type="file" id="uploadPBtn" name="uploadPoster"></div>
+                <div class="modifyPoster btn button" id="modify_p_Btn">수정하기</div>
+                <div id="cancel" class="btn button" onclick="cancel();">취소하기</div>
+                <div id="mdfPosterBtn">
+                	<input type="file" id="uploadPBtn" name="uploadPoster">
+               	</div>
             </div>
-            <div class="movie_info_cover">      <!-- 오른쪽 영화 정보 -->
-                <div id="movie_detail_info">
-                	<div class="cover" id="title_cover">
-	                    <span id="movie_title">${ df.titleKor }(${ df.titleEng })</span>
-	                    <textarea class="movie_clip textArea" name="trailer" placeholder="유튜브 링크를 연결해주세요!" rows="2" cols="30" style="border:0px; resize: none;">${ df.trailer }</textarea>
-                	</div>
-                	<br>
-                    <div class="cover" id="sysnobsis_cover">
-   	                	<h5>감독</h5>
-   	                	<div>${ df.director }</div>
-                    </div>
-                    <div class="cover" id="sysnobsis_cover">
-                    <br>
-                    <h5>출연 배우</h5>
-   	               	<div class="actorImage">
-		            	<c:forEach items="${ al }" var="a">
-   		                	<div class="image_cover">
-	   	                		<img src="resources/detailFilmImage/actor/${a.profileImage}" width='150' height='150' style="border-radius: 100px;">
-				                <div class="actorName">${a.actorName}</div>
-				                <div class="deleteActor " onclick="deleteActor('${a.id}');">삭제</div>
-	   	                	</div>	
-					    </c:forEach>   
-   	                </div>
-    	            <br>
-                    <div id="addActor" class="btn" style="background:purple; color:white;">추가하기</div>
-                    </div>
-                    <br>
-                    <div class="cover" id="sysnobsis_cover">
-	                    <h5>시놉시스</h5>
-                    	<div id="synopsys"><textarea id="text_synopsys" class="textArea" name="synopsys" placeholder="정보를 입력해주세요" rows="10" cols="80" style="border:0px; resize: none;">${df.synopsys}</textarea></div>
-                    </div>
-                    <br>
-                    <div class="cover" id="plusInfo_cover">
-                    	<h5>트리비아</h5>
-                    	<div id="trivia"><textarea id="text_trivia" class="textArea" name="trivia" placeholder="정보를 입력해주세요" rows="10" cols="80" style="border:0px; resize: none;">${df.trivia}</textarea></div>
-                    </div>
-                    <br>
-                    <div class="cover">
-                    	<button type="submit" class="btn" style="background:purple; color:white;" id="modifyBtn">내용 저장</button>
-                    </div>	
-                </div>
-            </div>
-            </form>
+					<div class="movie-info-cover">
+						<!-- 오른쪽 영화 정보 -->
+						<div class="container">
+							<div class="row" id="title-cover">
+								<span id="movie-title">${ df.titleKor }(${ df.titleEng })</span>
+								<input type=text class="movie_clip" name="trailer" placeholder="유튜브 링크를 연결해주세요!" value="${ df.trailer }">
+							</div>
+							<br>
+							<div class="row" id="sysnobsis_cover">
+								<h5>감독</h5>
+								<div>${ df.director }</div>
+							</div>
+							<div class="row" id="sysnobsis_cover">
+								<br>
+								<h5>출연 배우</h5>
+								<div class="actorImage">
+									<c:forEach items="${ al }" var="a">
+										<div class="image_cover">
+											<img src="resources/detailFilmImage/actor/${a.profileImage}">
+											<div class="actorName">${a.actorName}</div>
+											<div class="deleteActor" onclick="deleteActor('${a.id}');">삭제</div>
+										</div>
+									</c:forEach>
+								</div>
+							<div id="addActor" class="btn button">추가하기</div>
+						</div>
+						<br>
+						<div class="comment-form" id="sysnobsis_cover">
+							<h5>시놉시스</h5>
+							<div id="synopsys">
+								<textarea id="text_synopsys" class="form-control" name="synopsys" placeholder="정보를 입력해주세요">${df.synopsys}</textarea>
+							</div>
+						</div>
+						<br>
+						<div class="comment-form" id="plusInfo_cover">
+							<h5>트리비아</h5>
+							<div id="trivia">
+								<textarea id="text_trivia" class="form-control" name="trivia" placeholder="정보를 입력해주세요" style="resize: none;">${df.trivia}</textarea>
+							</div>
+						</div>
+						<br>
+						<div class="cover">
+							<button type="submit" class="btn button" id="modifyBtn">저장</button>
+						</div>
+					</div>
+				</div>
+			</form>
         </div>
        
         <!-- actor 모달 -->

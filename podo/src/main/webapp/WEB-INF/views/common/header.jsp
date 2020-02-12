@@ -29,7 +29,7 @@
 							<ul class="nav navbar-nav mr-auto justify-content-center">
 								<li class="nav-item"><a class="nav-link" href="film.do?p=1">영화</a></li>
 								<li class="nav-item"><a class="nav-link" href="reviewList.do">리뷰</a>
-								<li class="nav-item"><a class="nav-link" href="rec.do">추천</a>
+								<li class="nav-item"><a class="nav-link" href="recommendation.do">추천</a>
 								<li class="nav-item"><a class="nav-link" href="blist.do">게시판</a>					
 								<c:choose>
 							       <c:when test="${ loginUser.autho eq 2}">
@@ -80,7 +80,7 @@
 							</div>
 							<div class="form-group">
 								<label for="pwd">비밀번호</label>
-								<input type="password" class="form-control" name="pwd" id="pwd" placeholder="Password">
+								<input type="password" class="form-control" name="password" id="pwd" placeholder="Password">
 							</div>
 							<div class="form-group">
 								<div class="form-check">
@@ -93,7 +93,7 @@
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
 								<button type="submit" id="btn-sign-in" class="btn" style="background:purple; color:white;">로그인</button>
-								<button type="button" class="btn btn-default" id="myBtn"  style="background:#ff79fb; color:white;" onclick="location.href='insertFormMember.do';">가입하기</button>
+								<button type="button" class="btn btn-default" id="myBtn"  style="background:#ff79fb; color:white;" onclick="location.href='signup.do';">가입하기</button>
 							</div>
 						</form>
 					</div>

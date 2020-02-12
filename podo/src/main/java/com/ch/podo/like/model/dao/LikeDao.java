@@ -78,7 +78,6 @@ public class LikeDao {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		ArrayList<Like> list = (ArrayList) sqlSession.selectList("likeMapper.myPageSelectLikeReview", id, rowBounds);
-
 		return list;
 	}
 

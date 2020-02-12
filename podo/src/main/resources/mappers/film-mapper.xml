@@ -2,55 +2,44 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="filmMapper">
-   
-   <resultMap type="Film" id="filmResultSet">
-      <id property="id" column="id"/>
-      <result property="titleKor" column="title_kor"/>
-      <result property="titleEng" column="title_eng"/>
-      <result property="director" column="director"/>
-      <result property="releaseYear" column="release_year"/>
-      <result property="productionCountry" column="production_country"/>
-      <result property="productionStatus" column="production_status"/>
-      <result property="genre" column="name"/>
-      <result property="poster" column="change_name"/>
-   </resultMap>
-   
-   <resultMap type="Film" id="recommendFilm">
-      <id property="id" column="film_id"/>
-      <result property="titleKor" column="title_kor"/>
-      <result property="avgStarRating" column="avg_star"/>
-      <result property="releaseYear" column="release_year"/>
-      <result property="genreId" column="genre_id"/>
-      <result property="genre" column="name"/>
-      <result property="poster" column="change_name"/>
-   </resultMap>
-   
-      <resultMap type="Film" id="manyStar2">
-	      <id property="id" column="id"/>
-	      <result property="titleKor" column="title_kor"/>
-	      <result property="avgStarRating" column="avg_star"/>
-	      <result property="releaseYear" column="release_year"/>
-	      <result property="productionCountry" column="production_country"/>
-          <result property="productionStatus" column="production_status"/>
-	      <result property="genreId" column="genre_id"/>
-	      <result property="genre" column="name"/>
-	      <result property="poster" column="change_name"/>
-	   </resultMap>
-   
-   
-   
-   <select id="getListCount" resultType="_int">
-      select count(*)
-      from tb_film
-   </select>
+
+	<resultMap type="Film" id="filmResultSet">
+		<id property="id" column="id" />
+		<result property="titleKor" column="title_kor" />
+		<result property="titleEng" column="title_eng" />
+		<result property="director" column="director" />
+		<result property="releaseYear" column="release_year" />
+		<result property="productionCountry" column="production_country" />
+		<result property="productionStatus" column="production_status" />
+		<result property="genre" column="name" />
+		<result property="poster" column="poster" />
+		<!-- <result property="poster" column="change_name"/> -->
+	</resultMap>
+
+	<resultMap type="Film" id="recommendFilm">
+		<id property="id" column="film_id" />
+		<result property="titleKor" column="title_kor" />
+		<result property="avgStarRating" column="avg_star" />
+		<result property="releaseYear" column="release_year" />
+		<result property="genreId" column="genre_id" />
+		<result property="genre" column="name" />
+		<!-- oracle view 수정 필요함 -->
+<!-- 		<result property="poster" column="poster" /> -->
+		<result property="poster" column="change_name"/>
+	</resultMap>
+	
+  <select id="getListCount" resultType="_int">
+    select count(*)
+    from tb_film
+  </select>
    
    <select id="selectKeywordFilmListCount" resultType="_int">
       select count(*)
       from (select f.id, max(nvl(df.id, 0)) as dfid
             from tb_film f
             left outer join tb_detail_film df on (df.film_id = f.id)
-          where status = 'Y'
-                or status is null
+          	where status = 'Y'
+               or status is null
             group by f.id
             order by dfid desc) ff
       join tb_film f on (f.id = ff.id)
@@ -91,13 +80,13 @@
          <otherwise>
             select count(*)
             from (select fff.*, NVL(rf.saw, 'N') as saw
-                     from (select f.*, g.name, fas.dfid, fi.change_name, nvl(fas.avg_star, 0) as avg_star
-                           from tb_film f
-                           join tb_genre g on (f.genre_id = g.id)
-                           join vi_film_avg_star fas on (fas.film_id = f.id)
-                           left outer join tb_detail_film df on (df.id = dfid)
-                           left outer join tb_film_image fi on (df.id = fi.dfilm_id)) fff
-                     left outer join tb_rating_film rf on (rf.film_id = fff.id and rf.member_id = #{ userId })) f
+                    from (select f.*, g.name, fas.dfid, fi.change_name, nvl(fas.avg_star, 0) as avg_star
+                            from tb_film f
+                            join tb_genre g on (f.genre_id = g.id)
+                            join vi_film_avg_star fas on (fas.film_id = f.id)
+                            left outer join tb_detail_film df on (df.id = dfid)
+                            left outer join tb_film_image fi on (df.id = fi.dfilm_id)) fff
+                    left outer join tb_rating_film rf on (rf.film_id = fff.id and rf.member_id = #{ userId })) f
          </otherwise>
       </choose>
       <where>
@@ -124,7 +113,59 @@
       <!-- count만 가져오기 때문에 order 따로 해주지 않음 -->
    </select>
    
+   <!-- poster Column Normalization -->
    <select id="selectFilterFilmList" resultMap="filmResultSet">
+      <choose>
+         <when test='userId == "0" or userId == null or saw == "all" or saw == null'>
+            select f.*, g.name, fas.dfid, nvl(fas.avg_star, 0) as avg_star
+            from tb_film f
+            join tb_genre g on (f.genre_id = g.id)
+            join vi_film_avg_star fas on (fas.film_id = f.id)
+         </when>
+         <otherwise>
+            select *
+            from (select fff.*, NVL(rf.saw, 'N') as saw, rf.member_id as mem
+                    from (select f.*, g.name, fas.dfid, nvl(fas.avg_star, 0) as avg_star
+                          from tb_film f
+                          join tb_genre g on (f.genre_id = g.id)
+                          join vi_film_avg_star fas on (fas.film_id = f.id)) fff
+                    left outer join tb_rating_film rf on (rf.film_id = fff.id and rf.member_id = #{ userId })) f
+         </otherwise>
+      </choose>
+      <where>
+         <if test='releaseYear != "all" and releaseYear != null and releaseYear != ""'>
+            f.release_year = #{ releaseYear }
+         </if>
+         <if test='productionCountry != "all" and productionCountry != null and productionCountry != ""'>
+            and f.production_country = #{ productionCountry }
+         </if>
+         <if test='genreId != "0" and genreId != null and genreId != ""'>
+            and f.genre_id = #{ genreId }
+         </if>
+         <if test='saw != "all" and saw != null and saw != "" and userId != "0" and userId != null'>
+            <choose>
+               <when test='saw == "show"'>
+                  and saw = 'Y'
+               </when>
+               <otherwise>
+                  and saw = 'N'
+               </otherwise>
+            </choose>
+         </if>
+      </where>
+      <if test='order != "all" and order != null and order != ""'>
+         <choose>
+            <when test='order == "filmRatingDesc"'>
+               order by avg_star desc
+            </when>
+            <otherwise>
+               
+            </otherwise>
+         </choose>
+      </if>
+   </select>
+   
+   <select id="selectFilterFilmList(deprecated)" resultMap="filmResultSet">
       <choose>
          <when test='userId == "0" or userId == null or saw == "all" or saw == null'>
             select f.*, g.name, fas.dfid, fi.change_name, nvl(fas.avg_star, 0) as avg_star
@@ -295,17 +336,16 @@
       from tb_film
       order by release_year asc
    </select>
-   
-   <select id="selectNewFilms" resultMap="recommendFilm">
-      <![CDATA[
-            select rownum, r.*
-         from (select * from vi_film_avg_star fas
-                    JOIN TB_FILM F ON (fas.FILM_ID = F.ID)
-               where fas.release_year = to_char(sysdate, 'yyyy')
-               order by fas.film_id desc) r
-         where rownum <= 10
-      ]]>
-   </select>
+
+	<select id="selectNewFilms" resultMap="recommendFilm">
+			select rownum, r.*
+			from (select *
+						from vi_film_avg_star fas
+						join tb_film f on (fas.film_id = f.id)
+						<!-- where fas.release_year = to_char(sysdate, 'yyyy') -->
+						order by fas.film_id desc) r
+			where rownum <![CDATA[<=]]> 10
+	</select>
    
    <insert id="insertFilm">
       insert into tb_film
@@ -330,7 +370,7 @@
       </choose>
    </insert>
    
-   <select id="manyStar" resultMap="manyStar2">
+   <select id="manyStar" resultMap="filmResultSet">
          <![CDATA[
    		select rownum,at.*
 		from(select f.*, g.name, fas.dfid, fi.change_name, nvl(fas.avg_star, 0) as avg_star

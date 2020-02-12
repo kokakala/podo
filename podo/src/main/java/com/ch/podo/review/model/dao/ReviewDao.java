@@ -15,24 +15,22 @@ import com.ch.podo.member.model.vo.Member;
 import com.ch.podo.report.model.vo.Report;
 import com.ch.podo.review.model.dto.Review;
 
-
 @Repository("reviewDao")
 public class ReviewDao {
-	
+
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-	
+
 	public int getReviewListCount() {
 		return sqlSession.selectOne("reviewMapper.getReviewListCount");
 	}
-	
-	
+
 	public ArrayList<Review> selectReviewList(PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		
-		ArrayList<Review> list = (ArrayList)sqlSession.selectList("reviewMapper.selectReviewList", null , rowBounds);
-		
+
+		ArrayList<Review> list = (ArrayList) sqlSession.selectList("reviewMapper.selectReviewList", null, rowBounds);
+
 		return list;
 	}
 
@@ -53,48 +51,48 @@ public class ReviewDao {
 		Member m = sqlSession.selectOne("reviewMapper.selectMember", loginUserId);
 		return m;
 	}
-	
+
 	public Review selectRatingReviewDetailView(int id) {
-		return sqlSession.selectOne("reviewMapper.selectRatingReviewDetailView",id);
+		return sqlSession.selectOne("reviewMapper.selectRatingReviewDetailView", id);
 	}
 
 	public int reviewUpdate(Review r) {
-		return sqlSession.update("reviewMapper.reviewUpdate",r);
+		return sqlSession.update("reviewMapper.reviewUpdate", r);
 	}
-	
+
 	public int reviewUpdateContent(Review r) {
-		return sqlSession.update("reviewMapper.reviewUpdateContent",r);
+		return sqlSession.update("reviewMapper.reviewUpdateContent", r);
 	}
-	
+
 	public int myPageReviewListCount(String id) {
 		return sqlSession.selectOne("reviewMapper.myPageReviewListCount", id);
 	}
 
-	public ArrayList<Review> myPageSelectReviewList(String id, PageInfo pi){
-		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+	public ArrayList<Review> myPageSelectReviewList(String id, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 
-		ArrayList<Review> list = (ArrayList)sqlSession.selectList("reviewMapper.myPageSelectReviewList", id, rowBounds);
-		
+		ArrayList<Review> list = (ArrayList) sqlSession.selectList("reviewMapper.myPageSelectReviewList", id, rowBounds);
+
 		return list;
 	}
 
 	public ArrayList<Review> selectReviewListMain() {
-		ArrayList<Review> list = (ArrayList)sqlSession.selectList("reviewMapper.selectReviewListMain");
+		ArrayList<Review> list = (ArrayList) sqlSession.selectList("reviewMapper.selectReviewListMain");
 		return list;
 	}
 
 	public int reviewRating(Review r) {
-		return sqlSession.insert("reviewMapper.reviewRating",r);
+		return sqlSession.insert("reviewMapper.reviewRating", r);
 	}
 
-	public ArrayList<Review> selectAdReviewList(){
-		ArrayList<Review> list = (ArrayList)sqlSession.selectList("reviewMapper.selectReviewList");
+	public ArrayList<Review> selectAdReviewList() {
+		ArrayList<Review> list = (ArrayList) sqlSession.selectList("reviewMapper.selectReviewList");
 		return list;
 	}
 
 	public int insertDeclaration(Report rep) {
-		return sqlSession.insert("reviewMapper.insertDeclaration",rep);
+		return sqlSession.insert("reviewMapper.insertDeclaration", rep);
 	}
 
 	public Review selectReviewReport(int reviewNo) {
@@ -102,11 +100,11 @@ public class ReviewDao {
 	}
 
 	public ArrayList<Comment> selectReviewComment(int id) {
-		return (ArrayList)sqlSession.selectList("reviewMapper.selectReviewComment",id);
+		return (ArrayList) sqlSession.selectList("reviewMapper.selectReviewComment", id);
 	}
 
-	public int insertReviewComment(Comment c) {
-		return sqlSession.insert("reviewMapper.insertReviewComment",c);
+	public int insertReviewComment(Comment comment) {
+		return sqlSession.insert("reviewMapper.insertReviewComment", comment);
 	}
 
 	public int insertDeclarationComment(Report rep) {
@@ -114,11 +112,11 @@ public class ReviewDao {
 	}
 
 	public int deleteReviewComment(int id) {
-		return sqlSession.update("reviewMapper.deleteReviewComment",id);
+		return sqlSession.update("reviewMapper.deleteReviewComment", id);
 	}
 
 	public ArrayList<Like> checkLike(Member m) {
-		return (ArrayList)sqlSession.selectList("reviewMapper.checkLike",m);
+		return (ArrayList) sqlSession.selectList("reviewMapper.checkLike", m);
 	}
 
 	public int updateReviewCount(Report rep) {
@@ -128,5 +126,5 @@ public class ReviewDao {
 	public int getCommentCount() {
 		return sqlSession.selectOne("reviewMapper.getCommentCount");
 	}
-	
+
 }

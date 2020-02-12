@@ -1,7 +1,5 @@
 package com.ch.podo.common.interceptor;
 
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -9,45 +7,63 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.ch.podo.member.model.service.MemberService;
 import com.ch.podo.member.model.vo.Member;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class MemberInterceptor extends HandlerInterceptorAdapter {
 
 	@Autowired
 	private MemberService memberService;
 
-	private Logger logger = LoggerFactory.getLogger(MemberInterceptor.class);
+	// private Logger logger = LoggerFactory.getLogger(MemberInterceptor.class);
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-		HttpSession session = request.getSession();
-
-		Member loginUser = (Member) session.getAttribute("loginUser");
-
+		Member loginUser = (Member) request.getSession().getAttribute("loginUser");
+		
 		response.setContentType("text/html; charset=UTF-8");
-		PrintWriter out = response.getWriter();
+		// PrintWriter 객체를 또 생성하게 되면
+		// getwriter() has already been called for this response
+		// PrintWriter out = response.getWriter();
 
 		if (loginUser == null) {
-			logger.info("로그인하지 않은 상태에서 접근하려고 함");
-			out.println("<script>alert('회원이 아니면 접근 불가능한 서비스입니다.');history.back();</script>");
-			out.flush();
-			return false; // 실행 실패
+			log.info("Member Interceptor");
+			response.getWriter().append("<script>alert('접근 권한이 없습니다.');</script>");
+			// out.println("<script>alert('접근 권한이 없습니다.');history.back();</script>");
+			// out.flush();
+			return false;
 		} else {
 			int bid = loginUser.getId();
 			int result = memberService.prohibitionBoard(bid);
-
+			
 			if (result > 0) { // 블랙리스트 회원일 때
-				logger.info("블랙멤버인 상태에서 접근하려고 함");
-				out.println("<script>alert('블랙멤버는 접근 불가능한 서비스입니다.');history.back();</script>");
-				out.flush();
+				log.info("Black Member Interceptor");
+				response.getWriter().append("<script>alert('블랙멤버는 접근 불가능한 서비스입니다.');history.back();</script>");
+				// out.println("<script>alert('블랙멤버는 접근 불가능한 서비스입니다.');history.back();</script>");
+				// out.flush();
 				return false;
 			}
 			return true;
 		}
 	}
+	
+//	@Override
+//	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+//			@Nullable Exception ex) throws Exception {
+//		Member loginUser = (Member) request.getSession().getAttribute("loginUser");
+//		if (loginUser == null) {
+//			log.info("Member postHandle");
+//			response.getWriter().append("<script>$('#login-modal').trigger('click');</script>");
+//		}
+//	}
+
 
 }

@@ -21,7 +21,6 @@ public class Like {
    private String titleEng; // 영화제목(영문)
    private String changeName;	// 영화 포스터, 멤버 프로필
    private String content;		// 리뷰내용
-   private String nickName;		// 회원 닉네임
+   private String nickname;		// 회원 닉네임
    private String rrId;			// 레이팅리뷰번호
-   private int film_id; // 영화 번호
 }

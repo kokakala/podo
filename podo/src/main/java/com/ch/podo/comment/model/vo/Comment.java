@@ -25,8 +25,8 @@ public class Comment {
 	private Date createDate;		// 최초 작성일
 	private Date modifyDate;		// 최종 수정일
 	private int memberId;				// 작성자 번호
-	private String memberImage;		// 작성자 프로필 사진
 	private String nickname;		// 작성자 닉네임
+	private String memberImage;		// 작성자 프로필 사진
 	private String parentId;		// 상위댓글 번호
 	private int parentMemberId;	// 상위댓글 작성자 번호
 	private String parentMemberNickname;		// 상위댓글 작성자 닉네임

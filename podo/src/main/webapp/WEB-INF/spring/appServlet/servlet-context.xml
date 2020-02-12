@@ -33,7 +33,7 @@
 			
 			<mapping path="/binsertForm.do"/>
 			<mapping path="/bdelete.do"/>
-			<mapping path="/bupdateView.do"/>
+			<mapping path="/bUpdateForm.do**"/>
 			<mapping path="/commentInsert.do"/>
 			<mapping path="/detailFilmInsert.do"/>
 			<mapping path="/detailFilmUpdate.do"/>
@@ -41,8 +41,10 @@
 			<mapping path="/reviewUpdateView.do"/>
 			<mapping path="/reviewDelete.do"/>
 			<mapping path="/insertQuestion.do"/>
+			<mapping path="/insertReviewComment.do"/>
 			<mapping path="/admin.do"/>
 			<mapping path="/mlist.do"/>
+			<mapping path="/myPage.do"/>
 			<mapping path="/blackList.do"/>
 			<mapping path="/rlist.do"/>
 			<mapping path="/rblist.do"/>

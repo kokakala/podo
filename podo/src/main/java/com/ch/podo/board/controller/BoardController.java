@@ -62,8 +62,8 @@ public class BoardController {
 	
 	@RequestMapping("binsertForm.do")
 	public ModelAndView boardInsertView(HttpSession session, ModelAndView mv) {
-		Member m = (Member)session.getAttribute("loginUser");
-		mv.addObject("m", m)
+		Member member = (Member)session.getAttribute("loginUser");
+		mv.addObject("m", member)
 			.setViewName("board/boardInsertForm");
 		return mv;
 	}
@@ -89,7 +89,7 @@ public class BoardController {
 	}
 	
 	// 수정 및 삭제 할 게시글 상세 조회
-	@RequestMapping("bdetail.do")
+	@RequestMapping("boardDetail.do")
 	public ModelAndView boardDetail(int id, ModelAndView mv) {
 		Board board = boardService.selectBoard(id);
 		board.setContent(board.getContent().replaceAll("(\\r\\n|\\n)", "<br>"));
@@ -101,7 +101,7 @@ public class BoardController {
 		
 	}
 
-	@RequestMapping("bupdateView.do")
+	@RequestMapping("boardUpdateForm.do")
 	public ModelAndView boardUpdateView(String id, ModelAndView mv) {
 		Board board = boardService.selectUpdateBoard(Integer.parseInt(id));
 		// log.info("board : " + board);
@@ -112,7 +112,7 @@ public class BoardController {
 		return mv;
 	}
 	
-	@RequestMapping("bupdate.do")
+	@RequestMapping("boardUpdate.do")
 	public ModelAndView boardUpdate(Board board, HttpServletRequest request, ModelAndView mv,
 			@RequestParam(value = "board-upload-file", required = false) MultipartFile file) {
 
@@ -131,15 +131,15 @@ public class BoardController {
 		return mv;
 	}
 	
-	@RequestMapping("bdelete.do")
-	public String boardDelete(int id, HttpServletRequest request, ModelAndView mv, Image i) {
+	@RequestMapping("boardDelete.do")
+	public String boardDelete(int id, HttpServletRequest request, ModelAndView mv, Image image) {
 
-		if (i.getOriginalName() != null) {
+		if (image.getOriginalName() != null) {
 			String root = request.getSession().getServletContext().getRealPath("resources");
 			String savePath = root + "/boardUploadFiles";
-			File f = new File(savePath + "/" + i.getChangeName());
-			if (f.exists()) {
-				f.delete();
+			File file = new File(savePath + "/" + image.getChangeName());
+			if (file.exists()) {
+				file.delete();
 				// log.info("Delete File!");
 				// 수정 전 파일들은 삭제할 수 없음 -> 시간없으니 생략
 			}
@@ -148,6 +148,7 @@ public class BoardController {
 		int result = boardService.deleteBoard(id);
 
 		if (result > 0) {
+			request.getSession().setAttribute("msg", "게시물이 삭제되었습니다.");
 			return "redirect:blist.do";
 		} else {
 			return "redirect:blist.do";
@@ -155,27 +156,21 @@ public class BoardController {
 	}
 	
 
-	// 처란 메인페이지 리스트관련
-	@RequestMapping("boardListHome.do")
-	public ModelAndView selectboardListHome(ModelAndView mv) {
-		ArrayList<Board> list = boardService.selectboardListHome();
-		mv.addObject("list", list).setViewName("board/boardListHome");
-		return mv;
-		
-	}
-	
-	
 	// ----- 신고 -----
-	@ResponseBody
-	@RequestMapping("bReportModal.do")
-	public ModelAndView inapproCount(Report report, ModelAndView mv) {
-		log.info("report : " + report);
-		int result = boardService.insertInappro(report);
+	@RequestMapping("boardReportModal.do")
+	public ModelAndView inapproCount(Report report, ModelAndView mv, HttpServletRequest request) {
+		
+		// log.info("report : " + report);
 
+		int result = boardService.insertInappro(report);
+		// log.info("result : " + result);
+		
 		if (result > 0) {
-			mv.addObject("id", report.getTargetId()).setViewName("redirect:bdetail.do");
+			request.getSession().setAttribute("msg", "정상적으로 신고되었습니다.");
+			mv.addObject("id", report.getTargetId())
+				.setViewName("redirect:bdetail.do");
 		} else {
-			mv.addObject("msg", "신고하기 실패").setViewName("");
+			mv.addObject("msg", "신고하는 도중 실패하였습니다.").setViewName("");
 		}
 
 		return mv;

@@ -41,25 +41,23 @@ public class MemberController {
 	@Autowired
 	private ReviewService reviewService;
 	@Autowired
-	private FilmService filmService;
-	@Autowired
 	private LikeService likeService;
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	// @CookieValue(value="storeIdCookie", required = false) Cookie storeIdCookie
 	@RequestMapping("login.do")
-	public String loginMember(Member mem, HttpSession session, ModelAndView mv,
+	public String loginMember(Member member, HttpSession session, ModelAndView mv,
 																	boolean rememberMe, HttpServletResponse response, HttpServletRequest request) {
 		
-		Member loginUser = memberService.selectLoginMember(mem);
+		Member loginUser = memberService.selectLoginMember(member);
 		// logger.info("loginUser : " + loginUser);
 		// logger.info("rememberMe : " + rememberMe);
 		
-		if (loginUser != null && bcryptPasswordEncoder.matches(mem.getPwd(), loginUser.getPwd())) {
+		if (loginUser != null && bcryptPasswordEncoder.matches(member.getPassword(), loginUser.getPassword())) {
 			if (rememberMe == true) {
-				Cookie storeEmailCookie = new Cookie("email", mem.getEmail());
-				Cookie storePwdCookie = new Cookie("pwd", mem.getPwd());
+				Cookie storeEmailCookie = new Cookie("email", member.getEmail());
+				Cookie storePwdCookie = new Cookie("pwd", member.getPassword());
 				storeEmailCookie.setMaxAge(60 * 60 * 24 * 7);
         storePwdCookie.setMaxAge(60 * 60 * 24 * 7);
         response.addCookie(storeEmailCookie);
@@ -87,147 +85,152 @@ public class MemberController {
 		return "redirect:home.do";
 	}
 	
-	@RequestMapping("insertFormMember.do")
+	@RequestMapping("signup.do")
 	public String insertForm() {
-		return "member/memberInsertForm";
+		return "member/signupForm";
 	}
 	
 	@RequestMapping("insertMember.do")
-	public String insertMember(Member mem, HttpServletRequest request, Model model,
+	public String insertMember(Member member, HttpServletRequest request, Model model,
 							 @RequestParam(value="uploadFile", required=false) MultipartFile file) {
 		
-		if(!file.getOriginalFilename().equals("")) {	// 프로필 사진 등록하는 경우
-			String renameFileName = PodoRenamePolicy.rename(file, request, "/memberProfileImage");
-			mem.setImage(renameFileName);
-		} else {
-			mem.setImage("podoImage.png");
-		}
+		log.info(member.toString());
 		
-		String encPwd = bcryptPasswordEncoder.encode(mem.getPwd());
-		mem.setPwd(encPwd);
+//		if (!file.getOriginalFilename().equals("")) { // 프로필 사진 등록하는 경우
+//			String renameFileName = PodoRenamePolicy.rename(file, request, "/memberProfileImage");
+//			member.setImage(renameFileName);
+//		} else {
+//			member.setImage("podoImage.png");
+//		}
 		
-		int result = memberService.insertMember(mem);
+		String encPassword = bcryptPasswordEncoder.encode(member.getPassword());
+		member.setPassword(encPassword);
 		
-		if(result > 0) {	// 회원가입 성공
+		int result = memberService.insertMember(member);
+
+		if (result > 0) { // 회원가입 성공
 			return "redirect:home.do";
-		}else {
+		} else {
 			model.addAttribute("msg", "회원가입 실패");
 			return "redirect:login.do";
 		}
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("idCheck.do")
 	public String idChechk(String id) {
 		int result = memberService.idCheck(id);
-		
-		if(result > 0) {	// 아이디 존재, 사용불가
+
+		if (result > 0) { // 아이디 존재, 사용불가
 			return "fail";
-		}else { // 사용가능
+		} else { // 사용가능
 			return "success";
 		}
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("nickCheck.do")
 	public String nickCheck(String nick) {
 		int result = memberService.nickCheck(nick);
-		
-		if(result > 0) {	// 닉네임 존재, 사용불가
+
+		if (result > 0) { // 닉네임 존재, 사용불가
 			return "fail";
-		}else {	// 사용가능
+		} else { // 사용가능
 			return "success";
 		}
 	}
-	
+
 	@RequestMapping("myPage.do")
-	public ModelAndView myPage(HttpSession session, ModelAndView mv, String id, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+	public ModelAndView myPage(HttpSession session, ModelAndView mv, String id,
+															@RequestParam(value="currentPage", defaultValue="1") String currentPage) {
 		int reviewListCount = reviewService.myPageReviewListCount(id);
-		PageInfo pi = Pagination.getPageInfo(currentPage, reviewListCount);
-		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id,pi);
+		PageInfo pi = Pagination.getPageInfo(Integer.parseInt(currentPage), reviewListCount);
+		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id, pi);
 		
 		session.setAttribute("reviewListCount", reviewListCount);
-		mv.addObject("review", reviewList).addObject("reviewCount", reviewListCount).addObject("reviewPi", pi).addObject("reviewCount", reviewListCount).setViewName("member/myPage");
+		mv.addObject("review", reviewList)
+			.addObject("reviewCount", reviewListCount)
+			.addObject("reviewPi", pi)
+			.addObject("reviewCount", reviewListCount)
+			.setViewName("member/myPage");
 		
 		return mv;
 	}
-	
+
 	@RequestMapping("updateMember.do")
 	public ModelAndView updateMember(Member mem, HttpSession session, ModelAndView mv, HttpServletRequest request,
-									@RequestParam(value="uploadFile", required=false) MultipartFile file) {
-		
+			@RequestParam(value = "uploadFile", required = false) MultipartFile file) {
+
 		// 정보수정만 한 경우
-		if(mem.getUpdatePwd().equals("")) {
-			
-			if(!file.getOriginalFilename().equals("")) {
+		if (mem.getNewPassword().equals("")) {
+
+			if (!file.getOriginalFilename().equals("")) {
 				String renameFileName = PodoRenamePolicy.rename(file, request, "/memberProfileImage");
 				mem.setImage(renameFileName);
-			}else {
+			} else {
 				mem.setImage(mem.getImage());
 			}
-			
-		  // 비밀번호만 변경 한 경우
-		} else {	// 패스워드 변경을 하면 암호화 된 패스워드를 pwd에 대입
-			String encPwd = bcryptPasswordEncoder.encode(mem.getUpdatePwd());
-			mem.setPwd(encPwd);
-		}	// 정보수정만 한 경우 updatePwd는 null
-		
+
+			// 비밀번호만 변경 한 경우
+		} else { // 패스워드 변경을 하면 암호화 된 패스워드를 Password에 대입
+			String encPassword = bcryptPasswordEncoder.encode(mem.getNewPassword());
+			mem.setPassword(encPassword);
+		} // 정보수정만 한 경우 updatePwd는 null
+
 		int result = memberService.updateMember(mem);
 		mem.setStatus("Y");
-		
-		if(result > 0) {	// 업데이트 성공
+
+		if (result > 0) { // 업데이트 성공
 			session.setAttribute("loginUser", mem);
-			mv.addObject("msg", "회원정보 수정 성공").setViewName("redirect:myPage.do?id="+mem.getId());
-		}else {
+			mv.addObject("msg", "회원정보 수정 성공").setViewName("redirect:myPage.do?id=" + mem.getId());
+		} else {
 			mv.addObject("msg", "회원정보 수정 실패").setViewName("member/mypage");
 		}
 		
 		return mv;
 	}
 	
+	@Deprecated
 	@ResponseBody
 	@RequestMapping("originPwdCheck.do")
 	public String originPwdCheck(String originPwd, String email, String pwd, Member mem) {
-		
+
 		// 비밀번호 암호문 비교를 위해 login객체 재 조회
 		mem.setEmail(email);
 		Member loginUser = memberService.selectLoginMember(mem);
-		
-		if (loginUser != null && bcryptPasswordEncoder.matches(originPwd, loginUser.getPwd())) {	// 비밀번호 일치
+
+		if (loginUser != null && bcryptPasswordEncoder.matches(originPwd, loginUser.getPassword())) { // 비밀번호 일치
 			return "success";
-		}else {
+		} else {
 			return "fail";
 		}
 	}
-	
-	
-	
+
 	// 관리자 회원 리스트 조회
 	@RequestMapping("mlist.do")
-	public ModelAndView memberList(ModelAndView mv, 
-								  @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
-		
+	public ModelAndView memberList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+
 		ArrayList<Member> list = memberService.selectMemberList();
-		
+
 		mv.addObject("list", list)
-		  .setViewName("admin/memberListView");
-		
-		return mv;
-	}	
-	
-	// 관리자 블랙 리스트 조회
-	@RequestMapping("blackList.do")
-	public ModelAndView blackList(ModelAndView mv, 
-								  @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
-		
-		ArrayList<Member> list = memberService.selectBlackList();
-		
-		mv.addObject("list", list)
-		  .setViewName("admin/blackListView");
-		
+			.setViewName("admin/memberListView");
+
 		return mv;
 	}
-	
+
+	// 관리자 블랙 리스트 조회
+	@RequestMapping("blackList.do")
+	public ModelAndView blackList(ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+
+		ArrayList<Member> list = memberService.selectBlackList();
+
+		mv.addObject("list", list)
+			.setViewName("admin/blackListView");
+
+		return mv;
+	}
 	
 	@RequestMapping("userPage.do")
 	public ModelAndView userPage(HttpSession session, ModelAndView mv, String loginUserId, String userId, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
@@ -237,11 +240,18 @@ public class MemberController {
 		Like likeUser = likeService.selectLikeUser(userId,loginUserId);	// 유저페이지 조회 시 라이크 여부
 		PageInfo pi = Pagination.getPageInfo(currentPage, reviewListCount);
 		
-		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(userId,pi);
-		
+		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(userId, pi);
+		// log.info(reviewList.toString());
 		session.setAttribute("reviewListCount", reviewListCount);
 		session.setAttribute("userPageMem", userPageMem);
-		mv.addObject("likeUser", likeUser).addObject("review", reviewList).addObject("reviewCount", reviewListCount).addObject("reviewPi", pi).addObject("reviewCount", reviewListCount).setViewName("member/userPage");
+		
+		mv.addObject("likeUser", likeUser)
+			.addObject("review", reviewList)
+			.addObject("reviewCount", reviewListCount)
+			.addObject("reviewPi", pi)
+			.addObject("reviewCount", reviewListCount)
+			.setViewName("member/userPage");
+		
 		return mv;
 	}
 	
@@ -260,11 +270,11 @@ public class MemberController {
 	@RequestMapping("exit.do")
 	public ModelAndView exit(String id, ModelAndView mv, HttpSession session) {
 		int result = memberService.exit(id);
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			session.removeAttribute("loginUser");
 			mv.setViewName("member/myPage");
-		}else {
+		} else {
 			mv.addObject("msg", "탈퇴실패").setViewName("member/myPage");
 		}
 		return mv;

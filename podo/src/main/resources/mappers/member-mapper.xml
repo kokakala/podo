@@ -7,8 +7,8 @@
 		<id property="id" column="id"/>
 		<result property="image" column="image"/>
 		<result property="email" column="email"/>
-		<result property="pwd" column="pwd"/>
-		<result property="nickName" column="nickname"/>
+		<result property="password" column="pwd"/>
+		<result property="nickname" column="nickname"/>
 		<result property="status" column="status"/>
 		<result property="enrollDate" column="enroll_date"/>
 		<result property="modifyDate" column="modify_date"/>
@@ -23,7 +23,7 @@
 	</resultMap>
 	
 	<insert id="insertMember">
-		insert into tb_member values(seq_member_id.nextval, #{image}, #{email}, #{pwd}, #{nickName}, default, sysdate, sysdate, null, null, default, default)
+		insert into tb_member values(seq_member_id.nextval, #{image}, #{email}, #{password}, #{nickname}, default, sysdate, sysdate, null, null, default, default)
 	</insert>
 	
 	<select id="idCheck" resultType="_int">
@@ -41,7 +41,7 @@
 	<select id="selectLoginMember" resultMap="memberResultSet">
 		select *
 		from tb_member
-		where email=#{email}
+		where email = #{email}
 			and status='Y'
 	</select>
 	
@@ -49,11 +49,11 @@
 		update tb_member 
 		
 		<if test='updatePwd != ""'>	<!-- 비밀번호 변경O -->
-			set pwd=#{pwd}, modify_date=sysdate
+			set pwd=#{password}, modify_date=sysdate
 		</if>
 		
 		<if test='updatePwd == ""'> <!-- 비밀번호 변경X -->
-			set image=#{image}, email=#{email}, nickname=#{nickName}, modify_date=sysdate
+			set image=#{image}, email=#{email}, nickname=#{nickname}, modify_date=sysdate
 		</if>
 		where id=#{id} and status='Y'
 	</update>

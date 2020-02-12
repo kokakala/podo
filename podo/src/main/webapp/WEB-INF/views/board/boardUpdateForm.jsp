@@ -10,7 +10,7 @@
 <body>
 	
 	<div class="container">
-		<form action="bupdate.do" method="post" enctype="multipart/form-data" class="boardInsertForm">
+		<form action="boardUpdate.do" method="post" enctype="multipart/form-data" class="boardInsertForm">
 		
 	  	<input type="hidden" name="id" value=${ board.id }>
 	  	<input type="hidden" name="memberId" value=${ loginUser.id }>

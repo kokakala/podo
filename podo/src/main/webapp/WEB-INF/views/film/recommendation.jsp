@@ -16,7 +16,7 @@
 					<span class="title">영화 추천</span>
 					<br>
 					<c:if test="${ not empty loginUser }">
-						<span class="content">${ loginUser.nickName }님을 위한 포도의 추천 영화</span>
+						<span class="content">${ loginUser.nickname }님을 위한 포도의 추천 영화</span>
 					</c:if>
 					<c:if test="${ empty loginUser }">
 						<span class="content">로그인 해주세요!</span>
@@ -193,7 +193,7 @@
 						$("#more-recommendation").text("목록 다시 불러오기");
 					}
 				} else {
-					location.replace("rec.do");
+					location.replace("recommendation.do");
 				}
 			});
 			
