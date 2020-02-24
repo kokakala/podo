@@ -21,66 +21,61 @@ import lombok.extern.slf4j.Slf4j;
 public class InquiryController {
 	@Autowired
 	private InquiryService inquiryService;
-	
+
 	@RequestMapping("insertQuestion.do")
 	public ModelAndView insertQuestion(Inquiry inq, ModelAndView mv) {
 		String id = String.valueOf(inq.getUserId());
 		int result = inquiryService.insertQuestion(inq);
-		
-		if(result > 0) {	// 업데이트 성공
-			mv.setViewName("redirect:mypage.do?id="+id);
-		}else {
+
+		if (result > 0) { // 업데이트 성공
+			mv.setViewName("redirect:mypage.do?id=" + id);
+		} else {
 			mv.addObject("msg", "문의 등록 실패").setViewName("member/myPage");
 		}
-		
+
 		return mv;
 	}
-	
+
 	@RequestMapping("myPageSelectQuestion.do")
-	public ModelAndView myPageSelectQuestion(String tab, String id, ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
-		
+	public ModelAndView myPageSelectQuestion(String tab, String id, ModelAndView mv,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+
 		log.info("tab : {}", tab);
 		log.info("id : {}", id);
-		
+
 		int listCount = inquiryService.myPageInquiryListCount(id);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
-		
-		ArrayList<Inquiry> inquiryList = inquiryService.myPageSelectInquiryList(id,pi);
+
+		ArrayList<Inquiry> inquiryList = inquiryService.myPageSelectInquiryList(id, pi);
 		mv.addObject("inquiry", inquiryList)
 			.addObject("inquiryPi", pi)
 			.addObject("tab", tab)
 			.setViewName("member/myPage");
-		
+
 		return mv;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("dbInquiryInsert.do")
 	public String dbInquiryInsert(String content, String userId) {
 		int result = inquiryService.dbInquiryInsert(content, userId);
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			return "success";
-		}else {
+		} else {
 			return "fail";
 		}
 	}
-	
-	
-	
+
 	// 관리자 문의 리스트 조회
 	@RequestMapping("inquiryList.do")
 	public ModelAndView selectQuestionList(ModelAndView mv) {
-		
+
 		ArrayList<Inquiry> list = inquiryService.selectInquiryList();
-		
-		mv.addObject("list", list)
-		  .setViewName("admin/inquiryListView");
-		
+
+		mv.addObject("list", list).setViewName("admin/inquiryListView");
+
 		return mv;
 	}
-	
-	
-	
-	
+
 }

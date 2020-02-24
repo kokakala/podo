@@ -172,10 +172,6 @@
 	text-align: center;
 }
 
-.db-inquiry-btn {
-	margin-right: 150px;
-}
-
 #caution {
 	color: red
 }
@@ -396,12 +392,6 @@ star-input>.input.focus {
 	opacity: 1;
 }
 
-#useForm,
-#privacy-div {
-	width: 100%;
-	padding: 20px;
-}
-
 .footer-container {
 	background-image: url(../img/footer.jpg), radial-gradient(at 30% top, rgba(7, 64, 52, 1) 0%, rgba(8, 28, 36, 1) 70%);
 	background-size: cover;
@@ -572,4 +562,14 @@ button.button {
 .nickno,
 .orino {
 	color: #e91e63;
+}
+
+.faq-q {
+	cursor: pointer;
+	background: #3c525d;
+	font-size: 17px;
+}
+
+.faq-q+.contents {
+	display: none;
 }

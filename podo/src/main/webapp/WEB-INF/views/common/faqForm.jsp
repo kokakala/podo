@@ -5,22 +5,6 @@
 <html>
 <head>
 	<jsp:include page="../common/header.jsp"/>
-	<style>
-.faq {
-	width: 100%;
-	padding: 20px;
-}
-
-.faq-q {
-	cursor: pointer;
-	background: gray;
-	font-size: 17px;
-}
-
-.faq-q+.contents {
-	display: none;
-}
-</style>
 </head>
 <body>
 	<h1 align="center">이용가이드</h1>

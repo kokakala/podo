@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.inquiry.model.vo.Inquiry;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings(value = "unchecked")
 @Repository("inquiryDao")
 public class InquiryDao {
@@ -34,6 +37,10 @@ public class InquiryDao {
 	}
 	
 	public int dbInquiryInsert(String content, String userId) {
+		
+		log.info("inquiry content : {}", content);
+		log.info("inquiry userId : {}", userId);
+		
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("content", content);
 		map.put("userId", userId);

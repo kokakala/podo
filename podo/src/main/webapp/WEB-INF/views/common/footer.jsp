@@ -22,10 +22,10 @@
 			<a href="faq.do">이용가이드</a> | 
 
 			<c:if test="${!empty loginUser }">
-			<a href="#" data-toggle="modal" id="db" data-target="#db-inquiry-modal">영화 DB 제보</a>
+				<a href="#" data-toggle="modal" id="db" data-target="#db-inquiry-modal">영화 DB 제보</a>
 			</c:if>
 			<c:if test="${empty loginUser }">
-			<a  href="#" onclick="btn();">영화 DB 제보</a>
+				<a href="#" onclick="needLogin();">영화 DB 제보</a>
 			</c:if>
 		</div>
 		
@@ -42,6 +42,7 @@
 	<div class="modal fade" id="db-inquiry-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
+			
 				<div class="modal-header">
 					<h4 class="modal-title" id="myModalLabel">영화 DB 제보</h4>
 					<button type="button" id="close" class="close" data-dismiss="modal" aria-lable="Close">
@@ -50,73 +51,78 @@
 				</div>
 				
 				<div class="modal-body">
-				<form class="" action="dbInquiryInsert.do" method="post">
-					<div class="form-group">
-						<label for="db-inquiry-cate">분류</label>
-						<input type="text" class="form-control" value="DB제보" readonly>
-					</div>
-					<div class="form-group">
-						<label for="db-inquiry-content">내용</label>
-						<textarea rows="10" cols="15" class="form-control" id="DBcontent" name="content"></textarea>
-					</div>
-					
-					<div class="modal-footer">
-						<div class="db-inquiry-btn">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-						&nbsp;
-						<button type="button" class="btn" id="db-submit-btn" style="background:purple; color:white;" onclick="return DBvalidate();">보내기</button>
+					<form class="" action="dbInquiryInsert.do" method="post">
+						<div class="form-group">
+							<label for="db-inquiry-cate">분류</label>
+							<input type="text" class="form-control" value="DB제보" readonly>
 						</div>
-					</div>
-				</form>
+						<div class="form-group">
+							<label for="db-inquiry-content">내용</label>
+							<textarea rows="10" cols="15" class="form-control" id="DBcontent" name="content"></textarea>
+						</div>
+						
+						<div class="modal-footer">
+							<div class="db-inquiry-btn">
+								<button type="button" class="button" data-dismiss="modal">닫기</button>
+								&nbsp;
+								<button type="button" class="button" id="db-submit-btn" onclick="return DBvalidate();">보내기</button>
+							</div>
+						</div>
+					</form>
 				</div>
+				
 			</div>
 		</div>	
 	</div>
 	
 	<script>
-	$(function(){
-		$("#db").on("click", function(){
-			$('#db-inquiry-modal').modal('toggle');
+	
+		$(function() {
+			$("#db").on("click", function() {
+				$('#db-inquiry-modal').modal('toggle');
+			});
 		});
-	});
-		function btn(){
+
+		function needLogin() {
 			alert("로그인 후 DB 제보가 가능합니다.");
 		}
-		function DBvalidate(){
+
+		function DBvalidate() {
 			var content = $("#DBcontent").val();
 			var userId = "${loginUser.id}";
-			
+
 			// 미입력
-			if($("#DBcontent").val().length == 0){	
+			if ($("#DBcontent").val().length == 0) {
 				alert("내용을 입력해주세요.")
 				$("#DBcontent").focus();
 				return false;
-				
-			}else{	
+
+			} else {
 				$.ajax({
-					url:"dbInquiryInsert.do",
-					data:{content:content,
-						  userId:userId},
-					type:"post",
-					success:function(data){
-						if(data=="success"){
+					url : "dbInquiryInsert.do",
+					data : {
+						content : content,
+						userId : userId
+					},
+					type : "post",
+					success : function(data) {
+						if (data == "success") {
 							alert("DB제보 완료");
 							$('#DBcontent').val('');
 							$(".close").click();
-							
-						}else{
+
+						} else {
 							alert("DB제보 실패");
 						}
-					},error:function(){
+					},
+					error : function() {
 						console.log("DB제보 ajax실패");
 					}
-					
+
 				});
 				return true;
 			}
 		}
-		
-		
 	</script>
 </body>
 </html>
