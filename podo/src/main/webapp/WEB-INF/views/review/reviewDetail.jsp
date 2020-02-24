@@ -87,7 +87,7 @@
 				<h4>댓글 작성</h4>
 				<div class="form-group">
 					<input type="hidden" id="reply-parent-id" value="">
-					<textarea id="review-comment" class="form-control mb-10" rows="5" name="message" placeholder="댓글을 입력하세요." onfocus="this.placeholder = ''" onblur="this.placeholder = '댓글을 입력하세요.'" data-toggle="tooltip" data-placement="top" title="" data-original-title="내용을 입력하세요."></textarea>
+					<textarea id="comment-content" class="form-control mb-10" rows="5" name="message" placeholder="댓글을 입력하세요." onfocus="this.placeholder = ''" onblur="this.placeholder = '댓글을 입력하세요.'" data-toggle="tooltip" data-placement="top" title="" data-original-title="내용을 입력하세요."></textarea>
 				</div>
 				<div class="mx-auto d-flex justify-content-end">
 					<div class="col-auto p-0">
@@ -176,34 +176,15 @@
 			
 			$("#review-comment-btn").on("click", function(){
 				
-				var content = document.getElementById('review-comment').value;
-				var loginMemberId = '${ loginUser.id }';
 				var reviewId = ${ r.id };
+				var content = document.getElementById('comment-content').value;
+				var parentCommentId = $("#reply-parent-id").val();
 				
-				if (loginMemberId === '') {
+				if (loginMemberId === '' || loginMemberId === undefined) {
 					alert('로그인 후 이용바랍니다.');
+					$('#comment-content').focus();
 				} else {
-					$.ajax({
-						url:"insertReviewComment.do",
-						data:{
-							content : content,
-						  memberId : loginMemberId,
-						  targetId : reviewId,
-						},
-						success: function(data) {
-							if (data == "success") {
-								// console.log(data);
-								document.getElementById('review-comment').value = '';
-								getCommentList(reviewId, 1, loginMemberId);
-							} else {
-								// console.log(data);
-								alert("댓글 작성 실패");
-							}
-						},
-						error: function() {
-							// console.log("ajax 통신 실패");
-						}
-					});
+					insertComment(reviewId, '1', content, loginMemberId, parentCommentId);
 				}
 				
 			});
@@ -284,6 +265,13 @@
 			$(".comment-modal").on("click", function() {
 				$(".cm_modal").modal();
 				//console.log("${ loginUser.id }");
+			});
+			
+			// 대댓글 작성 focus
+			$(document).on("click", "#comment-reply-btn", function(){
+				var pid = $(this).closest(".single-comment").find(".cid").val();
+				$("#comment-content").focus();
+				$("#reply-parent-id").val(pid);
 			});
 
 			// 댓글 삭제

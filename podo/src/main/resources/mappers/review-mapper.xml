@@ -281,7 +281,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 	insert into tb_comment
 	 		(id, type, target_id, content, inappropriate_count, spoiler_count, like_count, create_date, modify_date, status, member_id, parent_id)
 	 	values
-	 		(seq_comment_id.nextval, 1, #{targetId}, #{content}, default, default, default, sysdate, sysdate, default, #{memberId}, null)
+	 		(seq_comment_id.nextval, #{ type }, #{targetId}, #{content}, default, default, default, sysdate, sysdate, default, #{memberId}, #{ parentId })
 	 </insert>
 	
 	<!-- 댓글 신고하기 -->

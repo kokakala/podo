@@ -99,6 +99,12 @@
 			<beans:bean id="AdminInterceptor" class="com.ch.podo.common.interceptor.AdminInterceptor"/>
 		</interceptor>
 		
+		<interceptor>
+			<mapping path="/boardUpdateForm.do"/>
+			
+			<beans:bean id="BoardInterceptor" class="com.ch.podo.common.interceptor.BoardInterceptor"/>
+		</interceptor>
+		
 		
 	</interceptors>
 

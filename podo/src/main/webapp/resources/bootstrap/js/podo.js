@@ -1,6 +1,16 @@
 function insertComment(targetId, type, content, loginMemberId, parentCommentId) {
+	// console.log('insertComment');
+	var varURL = '';
+	if (type == 1) {	// review
+		varURL = "insertReviewComment.do";
+	} else if (type == 2) {	// board
+		varURL = "insertComment.do";
+	} else {
+		alert('적절한 대상타입이 아닙니다.');
+	}
+
 	$.ajax({
-		url : "insertComment.do",
+		url : varURL,
 		method: "post",	// GET -> Request header is too large
 		data : {
 			type : type,
@@ -12,16 +22,17 @@ function insertComment(targetId, type, content, loginMemberId, parentCommentId) 
 		dataType : "text",
 		success : function(data) {
 			if (data == "success") {
+				document.getElementById('comment-content').value = '';
 				getCommentList(targetId, type, loginMemberId);
-				$("#comment-content").val('');
 			} else {
-				alert("댓글 작성 실패");
+				alert("server error");
 			}
 		},
 		error : function() {
 			console.log("ajax error");
 		}
 	});
+	
 }
 
 function deleteComment(commentId, type, targetId, loginMemberId) {
@@ -130,7 +141,7 @@ function makeCommentList(index, value, loginMemberId) {
 //	 .append($updateBtn)
 		.append($deleteBtn);
 	} else {
-//		$btns.append($replyBtn);
+		$btns.append($replyBtn);
 	}
 	
 	$single.append($user);

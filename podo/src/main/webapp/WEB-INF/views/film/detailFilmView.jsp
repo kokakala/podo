@@ -110,14 +110,6 @@
 						</c:if>
 						<div>${ review.modifyDate }</div>
 						
-						<c:if test="${ loginUser.id eq review.memberId }">
-							<a href="reviewUpdateView.do?id=${r.id}">수정하기</a>
-						</c:if>
-						<c:if test="${ loginUser.id eq review.memberId }">
-							<a href="reviewDelete.do?id=${review.id}">삭제하기</a>
-						</c:if>
-						
-						
 						<div class="btn-group d-flex justify-content-end">
 							<div class="col-auto">
 								<%-- 
@@ -131,6 +123,12 @@
 								</c:if>
 								<button class="declaration-modal button" data-toggle="modal">신고</button>
 								 --%>
+								<c:if test="${ loginUser.id eq review.memberId }">
+									<a class="button" href="reviewUpdateForm.do?id=${review.id}">수정하기</a>
+								</c:if>
+								<c:if test="${ loginUser.id eq review.memberId }">
+									<a class="button" href="reviewDelete.do?id=${review.id}">삭제하기</a>
+								</c:if>
 								<button class="button" onclick="location.href='reviewDetail.do?id=${ review.id }'">더보기</button>
 							</div>
 						</div>

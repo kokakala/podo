@@ -172,7 +172,7 @@
 				var parentId = $("#reply-parent-id").val();
 				
 				if (loginMemberId === '' || loginMemberId === undefined) {
-					alert("로그인이 필요합니다.");
+					alert("로그인 후 이용바랍니다.");
 					$('#comment-content').focus();
 				} else {
 					insertComment(boardId, '2', content, loginMemberId, parentId);
