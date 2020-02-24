@@ -107,7 +107,9 @@
 							onblur="this.placeholder = '댓글을 입력하세요.'"
 							data-toggle="tooltip" data-placement="top" title="내용을 입력하세요."></textarea>
 					</div>
-					<button class="button" id="comment-btn">작성</button>
+					<div class="d-flex justify-content-end">
+						<button class="button" id="comment-btn">작성</button>
+					</div>
 				</div>
 	
 			</div>
@@ -149,6 +151,7 @@
 								<input class="commentType" id="boardSpoil" type="radio" value="2"name="content">
 								<label for="boardSpoil">스포일러</label>
 							</div>
+							
 							<div class="modal-footer">
 								<button type="submit" class="btn button">신고</button>
 								<button class="btn button" data-dismiss="modal">취소</button>

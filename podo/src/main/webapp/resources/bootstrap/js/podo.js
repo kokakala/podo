@@ -1,6 +1,7 @@
 function insertComment(targetId, type, content, loginMemberId, parentCommentId) {
 	$.ajax({
 		url : "insertComment.do",
+		method: "post",	// GET -> Request header is too large
 		data : {
 			type : type,
 			targetId : targetId,
@@ -87,7 +88,12 @@ function makeCommentList(index, value, loginMemberId) {
 	$commentList.append($single);
 
 	$nickname = $("<h5 class='nickname'></h5>").text(value.nickname);
-	$thumbnail = $("<div class='thumbnail'></div>").append("<img src='resources/memberProfileImage/" + value.memberImage + "' alt='member-profile'>");
+	$thumbnail = '';
+	if (value.memberImage != 'undefined' && value.memberImage != null && value.memberImage != '') {
+		$thumbnail = $("<div class='thumbnail'></div>").append("<img src='resources/memberProfileImage/" + value.memberImage + "' alt='member-profile'>");
+	} else {
+		$thumbnail = $("<div class='thumbnail'></div>").append("<img src='resources/memberProfileImage/podoImage.png' alt='member-profile'>");
+	}
 	$thumbnail.append($nickname);
 
 	var user = value.memberId;
@@ -119,11 +125,12 @@ function makeCommentList(index, value, loginMemberId) {
 	$user.append($thumbnail).append($desc);
 //	alert(loginMemberId);
 	if (parseInt(loginMemberId) === user) {
-		$btns.append($replyBtn)
-//					 .append($updateBtn)
-				 .append($deleteBtn);
+		$btns
+		.append($replyBtn)
+//	 .append($updateBtn)
+		.append($deleteBtn);
 	} else {
-		$btns.append($replyBtn);
+//		$btns.append($replyBtn);
 	}
 	
 	$single.append($user);

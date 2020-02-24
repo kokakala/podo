@@ -925,8 +925,8 @@
 				var tabMenu = $(this).text();
 				var strId = "${loginUser.id}";
 
-				console.log(activeTab);
-				console.log(tabMenu);
+				// console.log(activeTab);
+				// console.log(tabMenu);
 
 				if (tabMenu == "리뷰") {
 					location.href = "myPageSelectReview.do?id=${loginUser.id}&tab=" + activeTab;
@@ -942,7 +942,7 @@
 			});
 			
 			if ('${param.tab}' != '') {
-				console.log('active tab');
+				// console.log('active tab');
 				var tab = '${param.tab}';
 				// tab
 				$('ul.tab li').removeClass('current');
@@ -1022,7 +1022,7 @@
 						}
 					},
 					error : function() {
-						console.log("닉네임 ajax 통신 실패");
+						console.log("ajax error");
 					}
 				});
 			});
@@ -1042,8 +1042,8 @@
 				var email = "${loginUser.email}";
 				var pwd = "{loginUser.pwd}";
 
-				console.log(originPwd);
-				console.log(email);
+				// console.log(originPwd);
+				// console.log(email);
 
 				if (originPwd.length < 1) {
 					$(".originguide").hide();
@@ -1060,7 +1060,7 @@
 					},
 					type : "post",
 					success : function(data) {
-						console.log(data);
+						// console.log(data);
 						if (data == "success") {
 							$(".orino").hide();
 							$(".oriok").show();
@@ -1072,7 +1072,7 @@
 						}
 					},
 					error : function() {
-						console.log("비밀번호 변경전 ajax 통신 실패");
+						console.log("ajax error");
 					}
 				});
 			});

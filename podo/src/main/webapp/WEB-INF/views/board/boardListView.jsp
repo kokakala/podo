@@ -33,19 +33,21 @@
 				</thead>
 				<tbody>
 					<tr>
-					<c:if test="${ notice.id eq null}">
-						<td></td>
-						<td colspan="4" scope="row" >공지사항이 없습니다.</td>
-					</c:if>
-					<c:if test="${ notice.id ne null}">
-						<td scope="row">${ notice.id }</td>
-							<td scope="row">
-								<a href="ndetail.do?id=${ notice.id }">${ notice.title }</a>					
-							</td>
-							<td scope="row">${ notice.nickName }</td>
-							<td scope="row">${ notice.createDate }</td>
-							<td scope="row">${ notice.viewCount }</td>
-					</c:if>
+						<%-- 
+						<c:if test="${ notice.id eq null}">
+							<td></td>
+							<td colspan="4" scope="row" >공지사항이 없습니다.</td>
+						</c:if>
+						<c:if test="${ notice.id ne null}">
+							<td scope="row">${ notice.id }</td>
+								<td scope="row">
+									<a href="ndetail.do?id=${ notice.id }">${ notice.title }</a>					
+								</td>
+								<td scope="row">${ notice.nickName }</td>
+								<td scope="row">${ notice.createDate }</td>
+								<td scope="row">${ notice.viewCount }</td>
+						</c:if>
+						 --%>
 					</tr>
 					<c:forEach items="${ list }" var="b">
 						<tr>

@@ -558,3 +558,18 @@ button.button {
 #mdfPosterBtn {
 	display: none;
 }
+
+.nickguide,
+.originguide {
+	display: none;
+}
+
+.nickok,
+.oriok {
+	color: #4caf50;
+}
+
+.nickno,
+.orino {
+	color: #e91e63;
+}

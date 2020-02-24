@@ -66,11 +66,11 @@ public class BoardController {
 	public ModelAndView insertBoard(HttpServletRequest request, Board board, ModelAndView mv, HttpSession session, 
 																	@RequestParam(value = "board-upload-file", required = false) MultipartFile file) {
 		
-		if (!file.getOriginalFilename().equals("")) {
-			String renameFileName = PodoRenamePolicy.rename(file, request, "/boardUploadFiles");
-			board.setImageName(renameFileName);
-			 log.info("renameFileName : {}", renameFileName);
-		}
+//		if (!file.getOriginalFilename().equals("")) {
+//			String renameFileName = PodoRenamePolicy.rename(file, request, "/boardUploadFiles");
+//			board.setImageName(renameFileName);
+//			 log.info("renameFileName : {}", renameFileName);
+//		}
 		
 		int result = boardService.insertBoard(board);
 		if (result > 0) {
@@ -83,8 +83,8 @@ public class BoardController {
 	
 	// 수정 및 삭제 할 게시글 상세 조회
 	@RequestMapping("boardDetail.do")
-	public ModelAndView boardDetail(int id, ModelAndView mv) {
-		Board board = boardService.selectBoard(id);
+	public ModelAndView boardDetail(String id, ModelAndView mv) {
+		Board board = boardService.selectBoard(Integer.parseInt(id));
 		board.setContent(board.getContent().replaceAll("(\\r\\n|\\n)", "<br>"));
 		// log.info("board : " + board);
 		
@@ -97,7 +97,7 @@ public class BoardController {
 	@RequestMapping("boardUpdateForm.do")
 	public ModelAndView boardUpdateView(String id, ModelAndView mv) {
 		Board board = boardService.selectUpdateBoard(Integer.parseInt(id));
-		// log.info("board : " + board);
+		log.info("board : {}", board);
 
 		mv.addObject("board", board)
 			.setViewName("board/boardUpdateForm");
@@ -108,16 +108,16 @@ public class BoardController {
 	@RequestMapping("boardUpdate.do")
 	public ModelAndView boardUpdate(Board board, HttpServletRequest request, ModelAndView mv,
 			@RequestParam(value = "board-upload-file", required = false) MultipartFile file) {
-
-		if (!file.getOriginalFilename().equals("")) {
-			String renameFileName = PodoRenamePolicy.rename(file, request, "/boardUploadFiles");
-			board.setImageName(renameFileName);
-			// log.info("renameFileName : " + renameFileName);
-		}
-
+		log.info("board : {}", board);
+//		if (!file.getOriginalFilename().equals("")) {
+//			String renameFileName = PodoRenamePolicy.rename(file, request, "/boardUploadFiles");
+//			board.setImageName(renameFileName);
+//			log.info("renameFileName : {}", renameFileName);
+//		}
+		
 		int result = boardService.updateBoard(board);
 		if (result > 0) {
-			mv.addObject("board", board).setViewName("redirect:blist.do?id=" + board.getId());
+			mv.addObject("board", board).setViewName("redirect:boardDetail.do?id=" + board.getId());
 		} else {
 			mv.setViewName("redirect:exception.do");
 		}
@@ -153,15 +153,15 @@ public class BoardController {
 	@RequestMapping("boardReportModal.do")
 	public ModelAndView inapproCount(Report report, ModelAndView mv, HttpServletRequest request) {
 		
-		// log.info("report : " + report);
+		log.info("report : {}", report);
 
 		int result = boardService.insertInappro(report);
-		// log.info("result : " + result);
+		log.info("result : {}", result);
 		
 		if (result > 0) {
 			request.getSession().setAttribute("msg", "정상적으로 신고되었습니다.");
 			mv.addObject("id", report.getTargetId())
-				.setViewName("redirect:bdetail.do");
+				.setViewName("redirect:boardDetail.do");
 		} else {
 			mv.addObject("msg", "신고하는 도중 실패하였습니다.").setViewName("");
 		}

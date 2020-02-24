@@ -75,7 +75,7 @@
 			<div class="col d-flex justify-content-between mt-5 px-0">
 				<div class="pt-4">REVIEW</div>
 				<div class="col-auto pb-3 pr-0">
-					<button onclick="location.href='reviewWriteForm.do?filmId=${df.filmId}'" class="button">작성하기</button>
+					<button onclick="location.href='reviewWriteForm.do?filmId=${df.filmId}'" class="button">리뷰 작성</button>
 				</div>
 			</div>
 			
@@ -118,24 +118,24 @@
 						</c:if>
 						
 						
-						<div class="btn-group d-flex justify-content-between">
-							<div class="col-auto"></div>
+						<div class="btn-group d-flex justify-content-end">
 							<div class="col-auto">
+								<%-- 
 								<c:if test="${ review.like eq loginUser.id }">
-									<button class='button btn-liked-film'>LIKED</button>
+									<button class='button btn-liked-film'>좋아요 취소</button>
 									<input type="hidden" class="likeInp" value="1" />
 								</c:if>
 								<c:if test="${ review.like ne loginUser.id }">
-									<button class='button btn-like-film'>LIKE</button>
+									<button class='button btn-like-film'>좋아요</button>
 									<input type="hidden" class="likeInp" value="0" />
 								</c:if>
-								<button class="declaration-modal button" data-toggle="modal">REPORT</button>
-								<button class="button" onclick="location.href='reviewDetail.do?id=${ review.id }'">MORE</button>
+								<button class="declaration-modal button" data-toggle="modal">신고</button>
+								 --%>
+								<button class="button" onclick="location.href='reviewDetail.do?id=${ review.id }'">더보기</button>
 							</div>
 						</div>
 					
 					</div>
-					
 					
 				</div>
 			</c:forEach>

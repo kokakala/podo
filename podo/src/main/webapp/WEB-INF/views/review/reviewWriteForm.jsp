@@ -2,168 +2,89 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
-<head>
-<jsp:include page="../common/header.jsp" />
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-</head>
-<body>
-	<div id="body">
+	<head>
+		<jsp:include page="../common/header.jsp" />
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+	</head>
+	<body>
 		<section class="blog-post-area section-margin">
 			<div class="container">
 			
-				<div class="row">
-					<div class="main_blog_details">
-						<img class="img-fluid" src="resources/detailFilmImage/${ f.poster }" alt="">
-						<h4 align="center">${ f.titleKor }</h4>
-						<p>장르 : ${ f.genre }</p>
-					</div>
-
-					<div class="user_details">
-						<div class="float-left">
-							<div class="media">
-								<div class="media-body">
-									<h5>${ loginUser.nickName }님이 작성</h5>
-								</div>
-								<div class="d-flex">
-									<img width="42" height="42" src="resources/memberProfileImage/${ loginUser.image }" alt="">
-								</div>
-							</div>
-						</div>
-					</div>
+				<div class="movie_poster_cover d-flex justify-content-center">
+					<c:if test="${ not empty f.poster }">
+						<img id="poster" class="img-fluid rounded img-thumbnail" src="resources/detailFilmImage/${ f.poster }" alt="poster">
+					</c:if>
+					<c:if test="${ empty f.poster }">
+						<img id="poster" class="img-fluid rounded img-thumbnail" src="resources/detailFilmImage/podoposter.jpg" alt="poster">
+					</c:if>
 				</div>
 				
+				<h2 class="lead py-3 text-center">${ f.titleKor }</h2>
+				
+				<%-- 
 				<div class="row">
 					<div class="chart-box">
 						<canvas id="myChart"></canvas>
 					</div>
 				</div>
+				--%>
 				
-				<div class="row">
-					<form action="reviewWrite.do" method="get" id="movieform">
+				<div class="container">
+					<form action="reviewWrite.do" method="post">
 						<input type="hidden" value="${f.id}" name="filmId">
 						<input type="hidden" value="${loginUser.id}" name="memberId">
-						<input type="checkbox" value="0" name="spoilerCheck">스포일러 유무
-						<table>
-							<tr>
-								<td>영화제목</td>
-								<td><input type="text" name="titleKor" id="vtitle" value="${f.titleKor}"></td>
-							</tr>
-							<tr>
-								<td>음악</td>
-								<td><input type="number" name="ratingSound" class="form-control insertRating" id="ratingSound" placeholder="10점까지 입력가능" min="0" max="10" value=""></td>
-							</tr>
-							<tr>
-								<td>영상</td>
-								<td><input type="number" name="ratingVisual" class="form-control insertRating" id="ratingVisual" placeholder="10점까지 입력가능" min="0" max="10"></td>
-							</tr>
-							<tr>
-								<td>연기</td>
-								<td><input type="number" name="ratingActing" class="form-control insertRating" id="ratingActing" placeholder="10점까지 입력가능" min="0" max="10"></td>
-							</tr>
-							<tr>
-								<td>대중성</td>
-								<td><input type="number" name="ratingPop" class="form-control insertRating" id="ratingPop" placeholder="10점까지 입력가능" min="0" max="10"></td>
-							</tr>
-							<tr>
-								<td>각본</td>
-								<td><input type="number" name="ratingScript" class="form-control insertRating" id="ratingScript" placeholder="10점까지 입력가능" min="0" max="10"></td>
-							</tr>
-							<tr>
-								<td>연출</td>
-								<td><input type="number" name="ratingDirect" class="form-control insertRating" id="ratingDirect" placeholder="10점까지 입력가능" min="0" max="10"></td>
-							</tr>
-							<tr>
-								<td>내용</td>
-								<td><textarea class="form-control" rows="4" cols="22" name="content"></textarea></td>
-							</tr>
-							<tr>
-								<td colspan="2" align="center">
-									<button class="button" type="submit" id="ok1">영화평점등록하기</button>
-									<button class="button" type="button" onclick="location.href='reviewList.do';">목록으로</button>
-								</td>
-							</tr>
-						</table>
+						
+						<div class="d-flex justify-content-between">
+							<div class="thumbnail py-3">
+								<c:if test="${ not empty loginUser.image }">
+									<img src="resources/memberProfileImage/${ loginUser.image }" alt="profile">
+								</c:if>
+								<c:if test="${ empty loginUser.image }">
+									<img src="resources/memberProfileImage/podoImage.png" alt="profile">
+								</c:if>
+							</div>
+							
+							<div class="pt-5">
+								<input type="checkbox" value="0" name="spoilerCheck" id="spoilerCheck">
+								<label for="spoilerCheck">스포일러 유무</label><br>
+							</div>
+						</div>
+						
+						<div class="comment-form">
+							<label for="ratingSound">음악</label>
+							<input type="number" name="ratingSound" class="form-control insertRating" id="ratingSound" placeholder="10점까지 입력가능" min="0" max="10" value="">
+							
+							<label for="ratingSound">영상</label>
+							<input type="number" name="ratingVisual" class="form-control insertRating" id="ratingVisual" placeholder="10점까지 입력가능" min="0" max="10">
+							
+							<label for="ratingSound">연기</label>
+							<input type="number" name="ratingActing" class="form-control insertRating" id="ratingActing" placeholder="10점까지 입력가능" min="0" max="10">
+							
+							<label for="ratingSound">대중성</label>
+							<input type="number" name="ratingPop" class="form-control insertRating" id="ratingPop" placeholder="10점까지 입력가능" min="0" max="10">
+							
+							<label for="ratingSound">각본</label>
+							<input type="number" name="ratingScript" class="form-control insertRating" id="ratingScript" placeholder="10점까지 입력가능" min="0" max="10">
+							
+							<label for="ratingSound">연출</label>
+							<input type="number" name="ratingDirect" class="form-control insertRating" id="ratingDirect" placeholder="10점까지 입력가능" min="0" max="10">
+						</div>
+						
+						<div class="comment-form">
+							<label for="reviewContent">내용</label>
+							<textarea id="reviewContent" class="form-control" name="content"></textarea>
+						</div>
+						
+						<div class="btn-group d-flex justify-content-center">
+							<button class="button" type="submit" id="ok1">리뷰 등록</button>
+							<button class="button" type="button" onclick="location.href='reviewList.do';">목록으로</button>
+						</div>
+						
 					</form>
 				</div>
 				
 			</div>
 		</section>
-
-		<script>
-	 
-			var ctx = document.getElementById('myChart');
-			var chart = new Chart(ctx, {
-				// The type of chart we want to create
-				type: 'radar',
-	      // The data for our dataset
-	      data: {
-					labels: ["음악", "영상", "연기", "대중성", "각본","연출"],
-					datasets: [{
-										label: "${f.titleKor}", 
-										backgroundColor: "rgb(165,102,255)",
-										pointBackground:"rgba(179,181,198,1)",
-										pointBorderColor:"#fff",
-										pointBorderBackgroundColor:"#fff",
-										data: [
-											${rr.ratingSound},
-											${rr.ratingVisual},
-											${rr.ratingActing},
-	     	  			 			${rr.ratingPop},
-	     	  			 			${rr.ratingScript},
-	     	  			 			${rr.ratingDirect}
-	     	   					]
-	      					}]},
-				// Configuration options go here
-				options: {
-					scale: {angleLines: {display: false},
-									ticks: {suggestedMin: 0, suggestedMax: 10}},
-					tooltips:{callbacks:
-											{label: function(tooltipItem, data) {
-																return data.labels[tooltipItem.index]  + " : "+ Math.round(tooltipItem.yLabel * 100) / 100 +"점";
-															}
-												}
-										}
-				}
-			});
-	    
-			$('.insertRating').on('input',function(){
-				var ctx = document.getElementById('myChart');
-				var chart = new Chart(ctx, {
-					// The type of chart we want to create
-					type: 'radar',
-					// The data for our dataset
-					data: {labels: ["음악", "영상", "연기", "대중성", "각본","연출"],
-								 datasets: [{
-									 label: "${ rr.titleKor }",
-									 backgroundColor: "rgb(165,102,255)",
-									 pointBackground:"rgba(179,181,198,1)",
-									 pointBorderColor:"#fff",
-									 pointBorderBackgroundColor:"#fff",
-									 data: [
-										 $('#ratingSound').val(),
-										 $('#ratingVisual').val(),
-										 $('#ratingActing').val(),
-										 $('#ratingPop').val(),
-										 $('#ratingScript').val(),
-										 $('#ratingDirect').val()
-										 ]
-									}]},
-					// Configuration options go here
-					options: {
-						scale: {angleLines: {display: false},
-										ticks: {suggestedMin: 0, suggestedMax: 10}},
-										tooltips:{callbacks:
-																{label: function(tooltipItem, data) {
-                          								return data.labels[tooltipItem.index]  + " : "+ Math.round(tooltipItem.yLabel * 100) / 100 +"점";
-	                        							}
-                 								}
-	                						}
-	            			}
-	        });
-				});
-	 
-	   </script>
-
-	</div>
-</body>
+			
+	</body>
 </html>

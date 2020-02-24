@@ -5,7 +5,6 @@
 <html>
 	<head>
 		<jsp:include page="../common/header.jsp"/>
-		<title>게시글 수정하기</title>
 	</head>
 <body>
 	
@@ -13,13 +12,14 @@
 		<form action="boardUpdate.do" method="post" enctype="multipart/form-data" class="boardInsertForm">
 		
 	  	<input type="hidden" name="id" value=${ board.id }>
-	  	<input type="hidden" name="memberId" value=${ loginUser.id }>
-			<input type="hidden" name="imageName" value="${ board.imageName }">
+	  	<%-- <input type="hidden" name="memberId" value=${ loginUser.id }> --%>
+			<%-- <input type="hidden" name="imageName" value="${ board.imageName }"> --%>
 			
-			<div class="form-group row">
-				<label for="" class="col-3 col-form-label">제목</label>
+			<div class="comment-form">
+				<div class="form-group row">
+					<label for="" class="col-3 col-form-label">제목</label>
 		    	<div class="col-9">
-					<input type="text" class="form-control" name="title" value="${ board.title }" required>
+						<input type="text" class="form-control" name="title" value="${ board.title }" required>
 		    	</div>
 		  	</div>
 		  	<div class="form-group row">
@@ -28,14 +28,18 @@
 					<input type="text" class="form-control" name="createDate" value="${ board.modifyDate }" readonly>
 		    	</div>
 		  	</div>
-			<div class="form-group row">
-				<label for="" class="col-3 col-form-label">내용</label>
-				<div class="col-9">
-					<textarea class="form-control" name="content" cols="20" rows="7">${ board.content }</textarea>
+			</div>
+			
+			<div class="comment-form">
+				<div class="form-group row">
+					<label for="" class="col-3 col-form-label">내용</label>
+					<div class="col-9">
+						<textarea class="form-control" name="content" cols="20" rows="7">${ board.content }</textarea>
+					</div>
 				</div>
 			</div>
 			
-			<!-- 파일 -->
+			<%-- 
 			<div class="form-group row">
 				<label for="" class="col-sm-2 col-form-label">첨부파일</label>
 				<input type="file" name="board-upload-file">
@@ -43,15 +47,13 @@
 					<a href="${ pageContext.servletContext.contextPath }/resources/buploadFiles/${ board.imageName }" download="${ board.imageName }">${ board.imageName }</a>
 				</c:if>
 			</div>
+			 --%>
 			
-			<br>
-			
-			<div class="form-group row" id="button">
-				<div class="btn-group mx-auto">
-					<button type="button" class="btn btn-secondary btn-lg" onclick="location.href='blist.do';">취소</button>
-					<button type="submit" class="btn btn-lg btn-primary">수정완료</button>
-				</div>
+			<div class="form-group d-flex justify-content-end" id="button">
+				<button type="button" class="btn button" onclick="location.href='blist.do';">취소</button>
+				<button type="submit" class="btn button">수정완료</button>
 			</div>
+			
 		</form>
 	</div>
 	

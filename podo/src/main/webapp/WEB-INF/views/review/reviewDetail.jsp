@@ -19,23 +19,14 @@
 						&#x2605;
 					</c:forEach>
 					
-					<div class="review-user-profile">
-						<c:if test="${ loginUser.id != r.memberId }">
-							<a href="userPage.do?userId=${r.memberId}&loginUserId=${ loginUser.id }">
-								<span>${r.nickName }</span>
-							</a>
-						</c:if>
-						<c:if test="${ loginUser.id == r.memberId }">
-							<a href="mypage.do?id=${ loginUser.id }"><h5>${r.nickName }님</h5></a>
-						</c:if>
-						<span>${ r.createDate }</span>
-					</div>
+					<span>${ r.createDate }</span>
 					
 					<div class="thumbnail py-3">
 						<c:if test="${ loginUser.id == r.memberId }">
-							<img width="42" height="42"
+							<img 
 								<c:if test="${ not empty r.userImage }">
 									src="resources/memberProfileImage/${ r.userImage }"
+									test
 								</c:if>
 								<c:if test="${ empty r.userImage }">
 									src="resources/memberProfileImage/podoImage.png"
