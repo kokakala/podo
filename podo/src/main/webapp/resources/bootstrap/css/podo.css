@@ -273,7 +273,7 @@ star-input>.input.focus {
 }
 
 .review-list-content,
-.df-review-content>div,
+.df-review-list>.df-review-content,
 .detail-film-synopsys,
 .detail-film-trivia {
 	text-overflow: ellipsis;
@@ -321,6 +321,10 @@ star-input>.input.focus {
 /* 	pointer-events: none; */
 }
 
+.movie-poster-cover {
+	margin: 20px 0;
+}
+
 .movie-poster-cover .movie-poster {
 	text-align: center;
 }
@@ -329,7 +333,6 @@ star-input>.input.focus {
 	width: 100%;
 	max-height: 360px;
 	object-fit: cover;
-	margin: 20px 0;
 }
 
 .video-foreground {
@@ -364,8 +367,8 @@ star-input>.input.focus {
 	box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
 }
 
-.card *:not(button) {
-	color: #c2c2c2;
+.premium-card *:not(button) {
+	color: #212529;
 }
 
 .card:hover {
@@ -373,6 +376,7 @@ star-input>.input.focus {
 	margin-bottom: .25rem;
 	box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
 	transition: all 0.2s;
+	
 }
 
 .card .btn {
@@ -415,7 +419,7 @@ star-input>.input.focus {
 }
 
 .review-list-card .button {
-	margin: 0 auto;
+/* 	margin: 0 auto; */
 }
 
 button.button {
@@ -545,4 +549,12 @@ button.button {
 	height: 150px;
 	border-radius: 50%;
 	object-fit: cover;
+}
+
+#poster {
+	max-height: 660px;
+}
+
+#mdfPosterBtn {
+	display: none;
 }

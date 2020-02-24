@@ -12,9 +12,9 @@ import com.ch.podo.board.model.vo.Board;
 import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.comment.model.vo.Comment;
 import com.ch.podo.common.Image;
-import com.ch.podo.member.model.vo.Member;
 import com.ch.podo.report.model.vo.Report;
 
+@SuppressWarnings(value = "unchecked")
 @Repository("boardDao")
 public class BoardDao {
 	

@@ -19,7 +19,7 @@ public interface DetailFilmService {
 	Image selectFilmImage(int id);
 	
 	// 2. 영화 상세정보 수정 자료 입력 -- (영화 상세 자료, userId)
-	int detailFilmInsert(DetailFilm df, int uId);
+	int detailFilmInsert(DetailFilm df, int userId, String filmImage);
 
 	// 2_1. 영화 상세정보 배우 리스트 출력
 	ArrayList<Actor> selectActorList(int id);
@@ -41,6 +41,9 @@ public interface DetailFilmService {
 	
 	// 2_7. 영화 데이터 롤백 버튼 --(영화 번호)
 	int detailFilmRollback(int filmId);
+	
+	// 3. 영화 상세정보가 이미 등록되어있는지 확인
+	DetailFilm existsDetailFilm(int filmId);
 
 	
 	

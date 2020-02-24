@@ -2,7 +2,6 @@ package com.ch.podo.member.model.service;
 
 import java.util.ArrayList;
 
-import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.member.model.vo.Member;
 import com.ch.podo.member.model.vo.Pay;
 
@@ -50,6 +49,9 @@ public interface MemberService {
 	
 	// 5. 신고회원 블랙리스트로 이동
 	int insertBlackList(String[] result);
+	
+	// 6. 회원가입시 이메일 존재하는지 확인
+	Boolean existsEmail(String email);
 	
 	
 }

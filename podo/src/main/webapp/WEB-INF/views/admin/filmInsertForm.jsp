@@ -39,7 +39,7 @@
 
     <a class="navbar-brand mr-1" href="home.do"><font size="3">Great, Grape!</font>&nbsp;PODO</a>
 
-    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle">
       <i class="fas fa-bars"></i>
     </button>
 
@@ -133,7 +133,7 @@
           <li class="breadcrumb-item active"><ion-icon name="film"></ion-icon>영화 등록하기</li>
         </ol>
 		<form action="finsert.do" method="post" enctype="multipart/form-data">
-			<table align="center">
+			<table>
 				<tr>
 					<td><ion-icon name="done-all"></ion-icon>&nbsp;&nbsp;장르</td>
 					<td>

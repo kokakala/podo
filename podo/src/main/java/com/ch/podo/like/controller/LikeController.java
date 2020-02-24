@@ -3,9 +3,7 @@ package com.ch.podo.like.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,11 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.common.Pagination;
-import com.ch.podo.film.model.vo.Film;
 import com.ch.podo.like.model.service.LikeService;
 import com.ch.podo.like.model.vo.Like;
-import com.ch.podo.member.model.vo.Member;
-import com.ch.podo.review.model.dto.Review;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 
@@ -37,6 +32,7 @@ public class LikeController {
 	@RequestMapping("likeClick.do")
 	public int likeClick(Like like, String status) {
 		
+		log.info("user like : {}", like);
 		int result = 0;
 		
 		if (status.equals("like")) {
@@ -44,6 +40,7 @@ public class LikeController {
 		} else {
 			result = likeService.deleteLikeMem(like);
 		}
+		
 		return result;
 	}
 
@@ -153,12 +150,13 @@ public class LikeController {
 	}
 
 	// 리뷰 좋아요
+	@ResponseBody
 	@RequestMapping("likeReviewClick.do")
 	public void likeReviewClick(Like like, String status, HttpServletResponse response)
 			throws JsonIOException, IOException {
 
 		int result = 0;
-		// log.info("like : " + like);
+		log.info("like : {}", like);
 
 		if (status.equals("like")) {
 			result = likeService.insertLikeReview(like);

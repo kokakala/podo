@@ -13,7 +13,7 @@
 		<div class="container">
 			<div class="card-deck mb-3 text-center">
 			
-				<div class="card shadow-sm">
+				<div class="card premium-card shadow-sm">
 					<div class="card-header">
 						<h4 class="my-0 font-weight-normal">무료 회원</h4>
 					</div>
@@ -32,7 +32,7 @@
 					</div>
 				</div>
 				
-				<div class="card shadow-sm">
+				<div class="card premium-card shadow-sm">
 					<div class="card-header">
 						<h4 class="my-0 font-weight-normal">유료 회원</h4>
 					</div>
@@ -71,7 +71,7 @@
 				if (email != '') {
 					alert('이미 로그인 상태입니다.');
 				} else {
-					location.href='insertFormMember.do';
+					location.href='signup.do';
 				}
 			}
 			

@@ -14,6 +14,9 @@ import com.ch.podo.common.Pagination;
 import com.ch.podo.inquiry.model.service.InquiryService;
 import com.ch.podo.inquiry.model.vo.Inquiry;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class InquiryController {
 	@Autowired
@@ -25,7 +28,7 @@ public class InquiryController {
 		int result = inquiryService.insertQuestion(inq);
 		
 		if(result > 0) {	// 업데이트 성공
-			mv.setViewName("redirect:myPage.do?id="+id);
+			mv.setViewName("redirect:mypage.do?id="+id);
 		}else {
 			mv.addObject("msg", "문의 등록 실패").setViewName("member/myPage");
 		}
@@ -35,11 +38,18 @@ public class InquiryController {
 	
 	@RequestMapping("myPageSelectQuestion.do")
 	public ModelAndView myPageSelectQuestion(String tab, String id, ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		
+		log.info("tab : {}", tab);
+		log.info("id : {}", id);
+		
 		int listCount = inquiryService.myPageInquiryListCount(id);
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 		
 		ArrayList<Inquiry> inquiryList = inquiryService.myPageSelectInquiryList(id,pi);
-		mv.addObject("inquiry", inquiryList).addObject("inquiryPi", pi).addObject("tab", tab).setViewName("member/myPage");
+		mv.addObject("inquiry", inquiryList)
+			.addObject("inquiryPi", pi)
+			.addObject("tab", tab)
+			.setViewName("member/myPage");
 		
 		return mv;
 	}

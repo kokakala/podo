@@ -2,13 +2,8 @@ package com.ch.podo.common.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.ch.podo.member.model.service.MemberService;
@@ -36,7 +31,7 @@ public class MemberInterceptor extends HandlerInterceptorAdapter {
 
 		if (loginUser == null) {
 			log.info("Member Interceptor");
-			response.getWriter().append("<script>alert('접근 권한이 없습니다.');</script>");
+			response.getWriter().append("<script>alert('접근 권한이 없습니다.');location.href='home.do';</script>");
 			// out.println("<script>alert('접근 권한이 없습니다.');history.back();</script>");
 			// out.flush();
 			return false;

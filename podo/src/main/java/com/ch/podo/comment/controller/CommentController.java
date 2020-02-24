@@ -26,7 +26,7 @@ public class CommentController {
 	@RequestMapping(value = "commentsList.do", produces = "application/json; charset=UTF-8")
 	public String CommentList(String tid, String type) {
 		ArrayList<Comment> list = commentService.selectCommentList(tid, type);
-		// log.info(list.toString());
+		 log.info("list : {}", list);
 		
 		for (Comment comment : list) {
 			comment.setContent(comment.getContent().replaceAll("(\\r\\n|\\n)", "<br>"));

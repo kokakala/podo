@@ -15,6 +15,7 @@ import com.ch.podo.common.SearchCondition;
 import com.ch.podo.film.model.vo.Film;
 import com.ch.podo.film.model.vo.Genre;
 
+@SuppressWarnings(value = "unchecked")
 @Repository("filmDao")
 public class FilmDao {
 	

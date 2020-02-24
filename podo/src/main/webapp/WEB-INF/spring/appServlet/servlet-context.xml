@@ -24,7 +24,7 @@
 	<context:component-scan base-package="com.ch.podo" />
 	
 	<!-- interceptor -->
-	<!-- 블랙리스트 회원 게시물 등록, 수정, 삭제, 별점 제한 -->
+	<!-- 만약 기본 네임스페이스가 beans 등으로 mvc가 아니라면 <mvc:interceptors> 로 사용되어야 할 것입니다. -->
 	<interceptors>
 	
 		<beans:bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
@@ -44,7 +44,7 @@
 			<mapping path="/insertReviewComment.do"/>
 			<mapping path="/admin.do"/>
 			<mapping path="/mlist.do"/>
-			<mapping path="/myPage.do"/>
+			<mapping path="/mypage.do"/>
 			<mapping path="/blackList.do"/>
 			<mapping path="/rlist.do"/>
 			<mapping path="/rblist.do"/>
@@ -53,7 +53,6 @@
 			<mapping path="/adRlist.do"/>
 			<mapping path="/inquiryList.do"/>
 			<mapping path="/declarationModal.do"/>
-			<mapping path="/declarationModal2.do"/>
 			<mapping path="/likeReviewClick.do"/>
 			<mapping path="/bReportModal.do"/>
 			
@@ -62,7 +61,16 @@
 
 			<!-- <mapping path="/insertReviewComment.do"/> -->
 			<beans:bean id="MemberInterceptor" class="com.ch.podo.common.interceptor.MemberInterceptor"/>
+			
 		</interceptor>
+		
+		<!-- message -->
+		<!-- /i18n.do?lang=ko -->
+		<!-- 
+		<beans:bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<beans:property name="paramName" value="lang" />
+		</beans:bean>
+		 -->
 		
 		<!-- <interceptor>
 			<mapping path="/login.do"/>

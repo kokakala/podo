@@ -48,11 +48,11 @@
 	<update id="updateMember">
 		update tb_member 
 		
-		<if test='updatePwd != ""'>	<!-- 비밀번호 변경O -->
+		<if test='newPassword != ""'>	<!-- 비밀번호 변경O -->
 			set pwd=#{password}, modify_date=sysdate
 		</if>
 		
-		<if test='updatePwd == ""'> <!-- 비밀번호 변경X -->
+		<if test='newPassword == ""'> <!-- 비밀번호 변경X -->
 			set image=#{image}, email=#{email}, nickname=#{nickname}, modify_date=sysdate
 		</if>
 		where id=#{id} and status='Y'
@@ -102,7 +102,6 @@
 		where target_id = #{bid}
 	</select>
 	
-	
 	<!-- 신고회원 블랙리스트로 추가 -->
 	<insert id="insertBlackList">
 		insert into tb_black_member values(seq_black_id.nextval, SYSTIMESTAMP, #{item})
@@ -130,5 +129,11 @@
 		set status = 'N'
 		where id = #{id}
 	</update>
+	
+	<select id="existsEmail" resultType="boolean">
+		SELECT CASE WHEN count(*) > 0 THEN 1 ELSE 0 END
+		FROM tb_member
+		WHERE email = #{email}
+	</select>
 	
 </mapper>

@@ -1,11 +1,8 @@
 package com.ch.podo.notice.model.service;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.notice.model.dao.NoticeDao;
 import com.ch.podo.notice.model.vo.Notice;
 

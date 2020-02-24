@@ -1,25 +1,21 @@
 package com.ch.podo.board.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ch.podo.board.model.service.BoardService;
 import com.ch.podo.board.model.vo.Board;
 import com.ch.podo.board.model.vo.PageInfo;
-import com.ch.podo.comment.model.vo.Comment;
 import com.ch.podo.common.Image;
 import com.ch.podo.common.Pagination;
 import com.ch.podo.common.PodoRenamePolicy;
@@ -27,9 +23,6 @@ import com.ch.podo.member.model.vo.Member;
 import com.ch.podo.notice.model.service.NoticeService;
 import com.ch.podo.notice.model.vo.Notice;
 import com.ch.podo.report.model.vo.Report;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -76,14 +69,14 @@ public class BoardController {
 		if (!file.getOriginalFilename().equals("")) {
 			String renameFileName = PodoRenamePolicy.rename(file, request, "/boardUploadFiles");
 			board.setImageName(renameFileName);
-			// log.info("renameFileName : " + renameFileName);
+			 log.info("renameFileName : {}", renameFileName);
 		}
 		
 		int result = boardService.insertBoard(board);
 		if (result > 0) {
 			mv.setViewName("redirect:blist.do");
 		} else {
-			mv.setViewName("error/errorPage");
+			mv.setViewName("redirect:exception.do");
 		}
 		return mv;
 	}
@@ -126,7 +119,7 @@ public class BoardController {
 		if (result > 0) {
 			mv.addObject("board", board).setViewName("redirect:blist.do?id=" + board.getId());
 		} else {
-			mv.setViewName("error/errorPage");
+			mv.setViewName("redirect:exception.do");
 		}
 		return mv;
 	}

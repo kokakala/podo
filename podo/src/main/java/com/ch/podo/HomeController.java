@@ -92,4 +92,17 @@ public class HomeController {
 		mv.addObject("error", map);
 		return mv;
 	}
+	
+	@RequestMapping(value = "/exception.do")
+	public ModelAndView exception(HttpServletRequest request, ModelAndView mv) {
+		log.info("exception !!!");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("ERROR_CODE", 999);
+		map.put("MESSAGE", "알 수 없는 오류가 발생했습니다!");
+		mv.addObject("error", map)
+			.setViewName("common/error");
+		
+		return mv;
+	}
 }

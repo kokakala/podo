@@ -1,8 +1,10 @@
 package com.ch.podo.review.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,11 +62,10 @@ public class ReviewController {
 	}
 
 	@RequestMapping("reviewWrite.do")
-	public String reviewWrite(DetailFilm df, ModelAndView mv, Review review, Model model) {
+	public String reviewWrite(DetailFilm df, Review review) {
 
 		if (review.getSpoilerCheck() != null) { // 체크값이 널이 아닐때
 			if (review.getSpoilerCheck().equals("0")) {
-
 				review.setSpoilerCheck("Y");
 			} else {
 				review.setSpoilerCheck("N");
@@ -79,8 +80,7 @@ public class ReviewController {
 		if (result1 > 0 && result2 > 0) { // 게시판 작성 성공
 			return "redirect:reviewList.do";
 		} else { // 작성 실패
-			model.addAttribute("msg", "게시판 작성 하기 실패");
-			return "error/error.do";
+			return "redirect:exception.do";
 		}
 
 	}
@@ -93,15 +93,14 @@ public class ReviewController {
 		if (result > 0) {
 			return "redirect:reviewList.do";
 		} else {
-			return "error/error.do";
+			return "redirect:exception.do";
 		}
 
 	}
 
 	// 글 리뷰 리스트 조회용
 	@RequestMapping("reviewDetail.do")
-	public ModelAndView selectRatingReviewDetailView(String id, ModelAndView mv,
-																									 HttpSession session, HttpServletRequest request) {
+	public ModelAndView selectRatingReviewDetailView(@RequestParam(value = "id") String id, ModelAndView mv, HttpSession session, HttpServletRequest request) {
 		
 		Review review = reviewService.selectRatingReviewDetailView(Integer.parseInt(id));
 		review.setContent(review.getContent().replaceAll("(\\r\\n|\\n)", "<br>"));
@@ -161,8 +160,7 @@ public class ReviewController {
 			mv.addObject("id", review.getId())
 				.setViewName("redirect:reviewDetail.do");
 		} else {
-			mv.addObject("msg", "게시판 수정 실패")
-				.setViewName("error/error.do");
+			mv.setViewName("redirect:exception.do");
 		}
 		return mv;
 	}
@@ -184,11 +182,19 @@ public class ReviewController {
 	public ModelAndView userPageSelectReview(String tab, String id,
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, ModelAndView mv) {
 		int listCount = reviewService.myPageReviewListCount(id);
-
+		log.info("listCount : {}", listCount);
+		log.info("tab : {}", tab);
+		
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount);
 
 		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(id, pi);
-		mv.addObject("review", reviewList).addObject("reviewPi", pi).addObject("tab", tab).setViewName("member/userPage");
+//		log.info("reviewList : {}", reviewList);
+		
+		mv.addObject("review", reviewList)
+			.addObject("reviewPi", pi)
+			.addObject("tab", tab)
+			.setViewName("member/userPage");
+		
 		return mv;
 	}
 
@@ -212,33 +218,26 @@ public class ReviewController {
 	}
 
 	// 리뷰 신고하기
-	@ResponseBody
-	@RequestMapping("declarationModal.do")
-	public ModelAndView insertDeclaration(Review r, Report rep, ModelAndView mv) {
-
-		int result = reviewService.insertDeclaration(rep);
-		if (result > 0) { // 성공
-			mv.addObject("id", rep.getTargetId()).setViewName("redirect:reviewDetail.do");
-		} else { // 실패
-			mv.addObject("msg", "신고하기 실패").setViewName("error/error.do");
+	@RequestMapping(value = "declarationModal.do")
+	public String insertDeclaration(Report report, Model model, HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		
+		log.info("report : {}", report);
+		if (report.getContent() == 0) {
+			response.getWriter().write("<script>alert('신고내용을 선택해주세요!');history.back();</script>");
+			return null;
 		}
-		return mv;
-	}
-
-	// 리뷰 신고하기
-	@RequestMapping("declarationModal2.do")
-	public ModelAndView insertDeclaration2(Report rep, ModelAndView mv) {
-
-		int result = reviewService.insertDeclaration(rep);
+		
+		int result = reviewService.insertDeclaration(report);
+		log.info("result : {}", result);
 		if (result > 0) { // 성공
-			mv.addObject("id", rep.getTargetId()).setViewName("redirect:home.do");
+			model.addAttribute("id", report.getTargetId());
+			request.getSession().setAttribute("msg", "신고가 완료되었습니다.");
+			return "redirect:reviewDetail.do";
 		} else { // 실패
-			mv.addObject("msg", "신고하기 실패").setViewName("error/error.do");
+			return "redirect:exception.do";
 		}
-
-		return mv;
 	}
-
 
 	// 리뷰 댓글
 	// 댓글 신고하기
@@ -246,11 +245,12 @@ public class ReviewController {
 	public ModelAndView insertDeclarationComment(Review r, Report rep, ModelAndView mv) {
 
 		int result = reviewService.insertDeclarationComment(rep);
-		// log.info("성공할건가" + result);
+		log.info("result : {}", result);
+
 		if (result > 0) { // 성공
 			mv.addObject("id", rep.getTargetId()).setViewName("redirect:reviewDetail.do");
 		} else { // 실패
-			mv.addObject("msg", "신고하기 실풰").setViewName("error/error.do");
+			mv.setViewName("redirect:exception.do");
 		}
 
 		return mv;
@@ -288,7 +288,7 @@ public class ReviewController {
 			request.getSession().setAttribute("msg", "댓글을 성공적으로 삭제했습니다.");
 			return "redirect:reviewDetail.do";
 		} else {
-			return "error/error.do";
+			return "redirect:exception.do";
 		}
 
 	}

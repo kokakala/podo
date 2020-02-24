@@ -8,47 +8,61 @@
 	<body>
     <!-- 본문 -->
     <div class="container">
-	
-        <div class="movie-info">
-        <!-- 왼쪽 영화 포스터 -->
-        <!-- 포스터 -->
-            <form action="detailFilmInsert.do" method="post" enctype="multipart/form-data">
-	            <input type="hidden" name="id" value="${df.id}">	<!-- 영화 상세 정보 번호 -->
-	            <input type="hidden" name="filmId" value="${df.filmId}">  <!-- 영화 번호  -->
-	            <input type="hidden" name="actorList" value="${al}">	 <!-- 배우 리스트 -->
-	            
-	            <input type="hidden" id="filmImage" name="filmImage" value="${ i.changeName }">
-	            <input type="hidden" name="uId" value="${ loginUser.id }">
-            <div class="movie_poster_cover"> 
-                <div id="movie_poster"> 
-               		<c:if test="${i.changeName ne null}">
-                    	<img id="poster" src="resources/detailFilmImage/${i.changeName}">
-                    </c:if>
-                    <c:if test="${i.changeName eq null}">
-    	                <img id="poster" src="resources/detailFilmImage/podoposter.jpg"">
-                	</c:if>
-                </div>
-                <br>
-                <div class="modifyPoster btn button" id="modify_p_Btn">수정하기</div>
-                <div id="cancel" class="btn button" onclick="cancel();">취소하기</div>
-                <div id="mdfPosterBtn">
-                	<input type="file" id="uploadPBtn" name="uploadPoster">
-               	</div>
-            </div>
-					<div class="movie-info-cover">
-						<!-- 오른쪽 영화 정보 -->
-						<div class="container">
-							<div class="row" id="title-cover">
-								<span id="movie-title">${ df.titleKor }(${ df.titleEng })</span>
-								<input type=text class="movie_clip" name="trailer" placeholder="유튜브 링크를 연결해주세요!" value="${ df.trailer }">
+
+		<div class="movie-info">
+			<!-- 왼쪽 영화 포스터 -->
+			<!-- 포스터 -->
+			<form action="detailFilmInsert.do" method="post" enctype="multipart/form-data">
+				<!-- 영화 상세 정보 번호 -->
+				<input type="hidden" name="id" value="${df.id}">
+				<input type="hidden" name="filmId" value="${df.filmId}">
+				<input type="hidden" name="actorList" value="${al}">
+				<input type="hidden" id="filmImage" name="filmImage" value="${ i.changeName }">
+				<input type="hidden" name="userId" value="${ loginUser.id }">
+				
+				<!-- poster -->
+				<div class="container">
+					<div class="movie_poster_cover d-flex justify-content-center">
+						<div id="movie_poster">
+							<c:if test="${i.changeName ne null}">
+								<img id="poster" class="img-fluid rounded img-thumbnail" src="resources/detailFilmImage/${i.changeName}">
+							</c:if>
+							<c:if test="${i.changeName eq null}">
+								<img id="poster" class="img-fluid rounded img-thumbnail" src="resources/detailFilmImage/podoposter.jpg">
+							</c:if>
+						</div>
+					</div>
+					
+					<!-- poster edit btn -->
+					<div class="d-flex justify-content-center my-4">
+						<div class="modifyPoster btn button" id="modify_p_Btn">수정하기</div>
+						<div id="cancel" class="btn button" onclick="cancel();">취소하기</div>
+						<div id="mdfPosterBtn">
+							<input type="file" id="uploadPosterFile" name="uploadPosterFile">
+						</div>
+					</div>
+				</div>
+				
+				
+				<div class="movie-info-cover">
+
+					<div class="container">
+						<div class="comment-form">
+							<div id="title-cover">
+								<c:if test="${df.titleKor ne null}">
+									<span id="movie-title">${ df.titleKor }(${ df.titleEng })</span>
+								</c:if>
 							</div>
-							<br>
-							<div class="row" id="sysnobsis_cover">
+						  <input type="text" class="form-control" name="trailer" value="${ df.trailer }" placeholder="유튜브 링크를 연결해주세요! (full URL - https://www.youtube.com/watch?v=5IvQ3fYKnfM)">
+						</div>
+						<%-- 
+							<div class="row">
 								<h5>감독</h5>
 								<div>${ df.director }</div>
 							</div>
-							<div class="row" id="sysnobsis_cover">
-								<br>
+							 --%>
+						<%-- 
+							<div class="row">
 								<h5>출연 배우</h5>
 								<div class="actorImage">
 									<c:forEach items="${ al }" var="a">
@@ -59,32 +73,35 @@
 										</div>
 									</c:forEach>
 								</div>
-							<div id="addActor" class="btn button">추가하기</div>
-						</div>
-						<br>
-						<div class="comment-form" id="sysnobsis_cover">
+								
+								<div id="addActor" class="btn button">추가하기</div>
+							</div>
+							 --%>
+						<div class="comment-form">
 							<h5>시놉시스</h5>
 							<div id="synopsys">
-								<textarea id="text_synopsys" class="form-control" name="synopsys" placeholder="정보를 입력해주세요">${df.synopsys}</textarea>
+								<textarea id="text_synopsys" class="form-control"
+									name="synopsys" placeholder="정보를 입력해주세요">${df.synopsys}</textarea>
 							</div>
 						</div>
-						<br>
-						<div class="comment-form" id="plusInfo_cover">
+
+						<div class="comment-form">
 							<h5>트리비아</h5>
 							<div id="trivia">
-								<textarea id="text_trivia" class="form-control" name="trivia" placeholder="정보를 입력해주세요" style="resize: none;">${df.trivia}</textarea>
+								<textarea class="form-control" name="trivia" placeholder="정보를 입력해주세요">${df.trivia}</textarea>
 							</div>
 						</div>
-						<br>
+
 						<div class="cover">
-							<button type="submit" class="btn button" id="modifyBtn">저장</button>
+							<button type="submit" class="btn button">저장</button>
 						</div>
+
 					</div>
 				</div>
 			</form>
-        </div>
-       
-        <!-- actor 모달 -->
+		</div>
+
+		<!-- actor 모달 -->
 		<hr style="margin: 0;">
 		<div class="modal fade" id="actor-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -246,33 +263,33 @@
 	    	location.href='deleteActor.do?id=${df.id}&filmId=${df.filmId}&actorId='+actorId;
 	    }
 	    
-		// 포스터 변경 버튼
-		$('#modify_p_Btn').on('click',function(e){
-			e.preventDefault();
-			$("#uploadPBtn").click();
-		});
-	    
+			// 포스터 변경 버튼
+			$('#modify_p_Btn').on('click',function(e){
+				e.preventDefault();
+				$("#uploadPosterFile").click();
+			});
+		    
 	    // 포스터 변경전 미리보기 
 	    function readURL(input){
 	    	if (input.files && input.files[0]) {
-	            var reader = new FileReader();
-	            reader.onload = function(e) {
-	                $('#poster').attr('src', e.target.result);
-	            }
-	            reader.readAsDataURL(input.files[0]);
+	        var reader = new FileReader();
+	        reader.onload = function(e) {
+	          $('#poster').attr('src', e.target.result);
 	        }
+	        reader.readAsDataURL(input.files[0]);
+	      }
 	    }
-	    
-		// 이미지 변경 될 때마다 이미지 미리보기
-		$(document).on("change","#uploadPBtn",function(){
-			readURL(this);
-		});
+		  
+			// 이미지 변경 될 때마다 이미지 미리보기
+			$(document).on("change","#uploadPosterFile",function(){
+				readURL(this);
+			});
 	    
 	    // 이미지 삭제 = 완성
 	    function cancel(){
 	    	$("#mdfPosterBtn input").remove();
-	    	$("#poster").attr('src','resources/detailFilmImage/${i.changeName}').css({'width':'100%','height':'100%'});
-	    	var newInput = "<input type='file' id='uploadPBtn' name='uploadPoster'>";
+	    	$("#poster").attr('src','resources/detailFilmImage/podoposter.jpg');
+	    	var newInput = "<input type='file' id='uploadPosterFile' name='uploadPosterFile'>";
 	    	$("#mdfPosterBtn").append(newInput);
 	    }
 	    
@@ -281,7 +298,7 @@
 	    	console.log('클릭');
 	    	$(this).parent().children('.check_actor').children('.actor_profile').css("border","none");
 	    	$(this).children().eq(1).css("border","2px solid purple");	    	
-		});
+			});
     </script>   
 	</body>
 	<jsp:include page="../common/footer.jsp"/>

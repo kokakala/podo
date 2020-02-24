@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="detailFilmmapper"> 
+<mapper namespace="detailFilmMapper"> 
 	
 	<resultMap id="detailFilmResultSet" type="DetailFilm">
 		<id property="id" column="id"/>
@@ -55,16 +55,23 @@
 	<!-- 입력 날짜 최신순 기준으로 rownum 1번, status='Y'인 정보 출력 -->
 	<select id="selectDetailFilm" resultMap="detailFilmResultSet">
 		select rownum, m.*
-		from (select df.id, df.film_id, title_kor, title_eng, director, a.name, trailer, synopsys, trivia, nickname
+		from (select df.id, f.id as film_id, title_kor, title_eng, director, a.name, trailer, synopsys, trivia, nickname
 		      from tb_film f
-		      left join tb_detail_film df on(df.film_id = f.id)
-		      left join tb_film_actor fa on(df.id = fa.dfilm_id)
-		      left join tb_actor a on(fa.actor_id = a.id)
-              left join tb_member m on(df.member_id = m.id)
+		      left join tb_detail_film df on (df.film_id = f.id)
+		      left join tb_film_actor fa on (df.id = fa.dfilm_id)
+		      left join tb_actor a on (fa.actor_id = a.id)
+		      left join tb_member m on (df.member_id = m.id)
 		      where f.id = #{filmId}
-		      and (df.status='Y' or df.status is null)
 		      order by df.insertdate desc) m
 		where rownum = 1
+	</select>
+	
+	<select id="existsDetailFilm" resultMap="detailFilmResultSet">
+		select *
+		from tb_film f
+		inner join tb_detail_film df on (df.film_id = f.id)
+		left join tb_member m on (df.member_id = m.id)
+		where f.id = #{filmId}
 	</select>
 	
 	<!-- 영화에 달린 리뷰들 보기 -->
@@ -78,11 +85,9 @@
 		order by r.id desc
 	</select>
 	
-	<!-- 영화 정보 수정 [시놉시스], [추가 정보], [예고편 링크] 수정하는 부분 insert로 DB에 추가 회원 번호/세션 정보/ 는 어떻게 알지? -->
-	<!-- 입력날짜 최신순 입력 -->
 	<insert id="insertDetailFilm" parameterType="hashMap">
 		insert into tb_detail_film
-		values(seq_dfilm_id.nextval, #{df.synopsys}, #{df.trivia}, #{df.trailer}, null, 'Y', sysdate, #{uId}, #{df.filmId})
+		values (seq_dfilm_id.nextval, #{df.synopsys}, #{df.trivia}, #{df.trailer}, null, 'Y', sysdate, #{userId}, #{df.filmId})
 	</insert>
 	
 	<insert id="filmImageInsert" parameterType="hashMap">

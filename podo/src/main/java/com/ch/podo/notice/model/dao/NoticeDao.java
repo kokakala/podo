@@ -1,13 +1,9 @@
 package com.ch.podo.notice.model.dao;
 
-import java.util.ArrayList;
-
-import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.notice.model.vo.Notice;
 
 @Repository("noticeDao")

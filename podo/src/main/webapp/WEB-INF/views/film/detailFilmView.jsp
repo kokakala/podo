@@ -21,7 +21,12 @@
 				</div>
 				<div class="video-background col-lg-8">
 					<div class="video-foreground">
-						<div id="muteYouTubeVideoPlayer"></div>
+						<c:if test="${df.trailer ne null}">
+							<div id="muteYouTubeVideoPlayer"></div>
+						</c:if>
+						<c:if test="${df.trailer eq null}">
+							<div>영화 정보를 수정해서 트레일러를 입력해주세요!</div>
+						</c:if>
 					</div>
 				</div>
 			</div>
@@ -67,61 +72,66 @@
 			<!-- film info end -->
 			
 <!-- 			<div class="d-block p-2 bg-dark my-4"></div> -->
-			<div class="col d-flex justify-content-between mt-5">
-				<div class="p-2">REVIEW</div>
-				<div class="p-2">
+			<div class="col d-flex justify-content-between mt-5 px-0">
+				<div class="pt-4">REVIEW</div>
+				<div class="col-auto pb-3 pr-0">
 					<button onclick="location.href='reviewWriteForm.do?filmId=${df.filmId}'" class="button">작성하기</button>
 				</div>
 			</div>
 			
-			<c:forEach items="${ rl }" var="r">
+			<c:forEach items="${ reviews }" var="review">
 				<div class="row review-list-card">
 					<div class="col-md-2">
 						<div class="thumbnail">
-							<c:if test="${ not empty r.userImage }">
-								<img src="resources/memberProfileImage/${ r.userImage }">
-							</c:if>
-							<c:if test="${ empty r.userImage }">
-								<img src="resources/memberProfileImage/podoImage.png">
-							</c:if>
-							<div class="nickNameHome">${ r.nickName }</div>
-							<c:forEach begin="1" end="${ r.star }">
+							<a href="userPage.do?userId=${ review.memberId }&loginUserId=${ loginUser.id }">
+								<c:if test="${ not empty review.userImage }">
+									<img src="resources/memberProfileImage/${ review.userImage }">
+								</c:if>
+								<c:if test="${ empty review.userImage }">
+									<img src="resources/memberProfileImage/podoImage.png">
+								</c:if>
+							</a>
+							<div class="nickNameHome">${ review.nickName }</div>
+							<c:forEach begin="1" end="${ review.star }">
 								&#x2605;
 							</c:forEach>
 						</div>
 					</div>
-					<div class="df-review-content col-md-10">
+					<div class="df-review-container col-md-10">
 					
-						<c:if test="${ r.spoilerCheck eq 'Y' }">
+						<c:if test="${ review.spoilerCheck eq 'Y' }">
 							<div class="contentKorea df-r-spoContent">
 								<div class="df-r-spoilerCheck">해당 내용은 스포일러를 포함하고 있습니다.</div>
-								<div class="df-r-content">${ r.content }</div>
+								<div class="df-r-content">${ review.content }</div>
 							</div>
 						</c:if>
-						<c:if test="${ r.spoilerCheck eq 'N' }">
-							<div>${ r.content }</div>
+						<c:if test="${ review.spoilerCheck eq 'N' }">
+							<div class="df-review-content">${ review.content }</div>
 						</c:if>
-						<div>${ r.modifyDate }</div>
+						<div>${ review.modifyDate }</div>
 						
-						<c:if test="${ loginUser.id eq r.memberId }">
+						<c:if test="${ loginUser.id eq review.memberId }">
 							<a href="reviewUpdateView.do?id=${r.id}">수정하기</a>
 						</c:if>
-						<c:if test="${ loginUser.id eq r.memberId }">
-							<a href="reviewDelete.do?id=${r.id}">삭제하기</a>
+						<c:if test="${ loginUser.id eq review.memberId }">
+							<a href="reviewDelete.do?id=${review.id}">삭제하기</a>
 						</c:if>
 						
 						
-						<div class="btn-group">
-							<c:if test="${ r.like eq loginUser.id }">
-								<button class='button btn-liked-film'>LIKED</button>
-								<input type="hidden" class="likeInp" value="1" />
-							</c:if>
-							<c:if test="${ r.like ne loginUser.id }">
-								<button class='button btn-like-film'>LIKE</button>
-								<input type="hidden" class="likeInp" value="0" />
-							</c:if>
-							<button class="declaration-modal button" data-toggle="modal">REPORT</button>
-							<button class="button" onclick="location.href='reviewDetail.do?id=${ r.id }'">MORE</button>
+						<div class="btn-group d-flex justify-content-between">
+							<div class="col-auto"></div>
+							<div class="col-auto">
+								<c:if test="${ review.like eq loginUser.id }">
+									<button class='button btn-liked-film'>LIKED</button>
+									<input type="hidden" class="likeInp" value="1" />
+								</c:if>
+								<c:if test="${ review.like ne loginUser.id }">
+									<button class='button btn-like-film'>LIKE</button>
+									<input type="hidden" class="likeInp" value="0" />
+								</c:if>
+								<button class="declaration-modal button" data-toggle="modal">REPORT</button>
+								<button class="button" onclick="location.href='reviewDetail.do?id=${ review.id }'">MORE</button>
+							</div>
 						</div>
 					
 					</div>

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.ch.podo.board.model.dao.BoardDao;
 import com.ch.podo.board.model.vo.Board;
 import com.ch.podo.board.model.vo.PageInfo;
-import com.ch.podo.comment.model.vo.Comment;
 import com.ch.podo.common.Image;
 import com.ch.podo.report.model.vo.Report;
 

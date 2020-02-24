@@ -21,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.common.Pagination;
 import com.ch.podo.common.PodoRenamePolicy;
-import com.ch.podo.film.model.service.FilmService;
 import com.ch.podo.like.model.service.LikeService;
 import com.ch.podo.like.model.vo.Like;
 import com.ch.podo.member.model.service.MemberService;
@@ -47,15 +46,17 @@ public class MemberController {
 	
 	// @CookieValue(value="storeIdCookie", required = false) Cookie storeIdCookie
 	@RequestMapping("login.do")
-	public String loginMember(Member member, HttpSession session, ModelAndView mv,
-																	boolean rememberMe, HttpServletResponse response, HttpServletRequest request) {
-		
+	public String loginMember(Member member, HttpSession session, ModelAndView mv, HttpServletResponse response, HttpServletRequest request,
+//																@RequestParam("rememberMe") String rememberMe) {
+																	@RequestParam(defaultValue = "false") boolean rememberMe) {
+		log.info("rememberMe : {}", rememberMe);
 		Member loginUser = memberService.selectLoginMember(member);
-		// logger.info("loginUser : " + loginUser);
-		// logger.info("rememberMe : " + rememberMe);
+		log.info("loginUser : {}", loginUser);
+		// log.info("rememberMe : " + rememberMe);
 		
 		if (loginUser != null && bcryptPasswordEncoder.matches(member.getPassword(), loginUser.getPassword())) {
-			if (rememberMe == true) {
+//			if (rememberMe == "on") {
+			if (rememberMe) {
 				Cookie storeEmailCookie = new Cookie("email", member.getEmail());
 				Cookie storePwdCookie = new Cookie("pwd", member.getPassword());
 				storeEmailCookie.setMaxAge(60 * 60 * 24 * 7);
@@ -102,6 +103,13 @@ public class MemberController {
 //		} else {
 //			member.setImage("podoImage.png");
 //		}
+		Boolean existsEmail = memberService.existsEmail(member.getEmail());
+		log.info("existsEmail : {}", existsEmail);
+		
+		if (existsEmail) {
+			request.getSession().setAttribute("msg", "이미 존재하는 이메일입니다.");
+			return "redirect:home.do";
+		}
 		
 		String encPassword = bcryptPasswordEncoder.encode(member.getPassword());
 		member.setPassword(encPassword);
@@ -140,7 +148,7 @@ public class MemberController {
 		}
 	}
 
-	@RequestMapping("myPage.do")
+	@RequestMapping("mypage.do")
 	public ModelAndView myPage(HttpSession session, ModelAndView mv, String id,
 															@RequestParam(value="currentPage", defaultValue="1") String currentPage) {
 		int reviewListCount = reviewService.myPageReviewListCount(id);
@@ -158,7 +166,7 @@ public class MemberController {
 	}
 
 	@RequestMapping("updateMember.do")
-	public ModelAndView updateMember(Member mem, HttpSession session, ModelAndView mv, HttpServletRequest request,
+	public String updateMember(Member mem, HttpSession session, ModelAndView mv, HttpServletRequest request,
 			@RequestParam(value = "uploadFile", required = false) MultipartFile file) {
 
 		// 정보수정만 한 경우
@@ -182,12 +190,12 @@ public class MemberController {
 
 		if (result > 0) { // 업데이트 성공
 			session.setAttribute("loginUser", mem);
-			mv.addObject("msg", "회원정보 수정 성공").setViewName("redirect:myPage.do?id=" + mem.getId());
+			session.setAttribute("msg", "비밀번호 변경 성공");
+			return "redirect:mypage.do?id=" + mem.getId();
 		} else {
-			mv.addObject("msg", "회원정보 수정 실패").setViewName("member/mypage");
+			session.setAttribute("msg", "비밀번호 변경 실패");
+			return "member/mypage";
 		}
-		
-		return mv;
 	}
 	
 	@Deprecated
@@ -237,7 +245,8 @@ public class MemberController {
 		// loginUserId = 로그인 한 회원 , userId = 유저페이지 조회할 유저
 		Member userPageMem = memberService.selectUserPageMem(userId); // 유저페이지 조회 될 해당 유저 객체
 		int reviewListCount = reviewService.myPageReviewListCount(userId);	
-		Like likeUser = likeService.selectLikeUser(userId,loginUserId);	// 유저페이지 조회 시 라이크 여부
+		Like likeUser = likeService.selectLikeUser(userId, loginUserId);	// 유저페이지 조회 시 라이크 여부
+		
 		PageInfo pi = Pagination.getPageInfo(currentPage, reviewListCount);
 		
 		ArrayList<Review> reviewList = reviewService.myPageSelectReviewList(userId, pi);

@@ -33,7 +33,7 @@
 
     <a class="navbar-brand mr-1" href="home.do"><font size="3">Great, Grape!</font>&nbsp;PODO</a>
 
-    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle">
       <i class="fas fa-bars"></i>
     </button>
 
@@ -88,7 +88,6 @@
           <a class="dropdown-item" href="rlist.do">신고회원관리</a>
           <a class="dropdown-item" href="rblist.do">신고게시글관리</a>
         </div>
-      </li>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

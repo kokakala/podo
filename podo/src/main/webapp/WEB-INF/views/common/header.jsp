@@ -38,7 +38,7 @@
 							       </c:when>
 							       <c:when test="${ loginUser ne null }">
 							       		<li class="nav-item"><a id="logout" class="nav-link" href="logout.do">로그아웃</a>
-										<li class="nav-item"><a id="logout" class="nav-link" href="myPage.do?id=${ loginUser.id }">마이페이지</a>
+										<li class="nav-item"><a id="logout" class="nav-link" href="mypage.do?id=${ loginUser.id }">마이페이지</a>
 							       </c:when>
 							       <c:otherwise>
 							       		<li class="nav-item"><a id="login-modal" class="nav-link" href="#" data-toggle="modal">로그인</a>

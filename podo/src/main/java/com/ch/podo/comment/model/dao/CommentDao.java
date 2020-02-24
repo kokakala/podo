@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ch.podo.comment.model.vo.Comment;
 
+@SuppressWarnings(value = "unchecked")
 @Repository("commentDao")
 public class CommentDao {
 	

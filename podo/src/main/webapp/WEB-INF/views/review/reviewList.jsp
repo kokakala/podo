@@ -31,13 +31,13 @@
 							<div class="review-list-content">${ review.content }</div>
 						</c:if>
 						
-						<div>
+						<div class="d-flex justify-content-between py-2">
 							${ review.nickName }
-						</div>
-						<div>
 							<small>${ review.createDate }</small>
 						</div>
-						<button class="button" onclick="location.href='reviewDetail.do?id=${ review.id }';">더보기</button>
+						<div class="d-flex justify-content-end">
+							<button class="button" onclick="location.href='reviewDetail.do?id=${ review.id }';">더보기</button>
+						</div>
 					</div>
 					
 				</div>

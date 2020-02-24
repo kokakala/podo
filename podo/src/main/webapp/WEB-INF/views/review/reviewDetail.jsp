@@ -26,7 +26,7 @@
 							</a>
 						</c:if>
 						<c:if test="${ loginUser.id == r.memberId }">
-							<a href="myPage.do?id=${ loginUser.id }"><h5>${r.nickName }님</h5></a>
+							<a href="mypage.do?id=${ loginUser.id }"><h5>${r.nickName }님</h5></a>
 						</c:if>
 						<span>${ r.createDate }</span>
 					</div>
@@ -40,7 +40,7 @@
 								<c:if test="${ empty r.userImage }">
 									src="resources/memberProfileImage/podoImage.png"
 								</c:if>
-								onclick="location.href='myPage.do?id=${ loginUser.id }'">
+								onclick="location.href='mypage.do?id=${ loginUser.id }'">
 						</c:if>
 						<c:if test="${ loginUser.id != r.memberId }">
 							<img width="42" height="42"
@@ -98,8 +98,10 @@
 					<input type="hidden" id="reply-parent-id" value="">
 					<textarea id="review-comment" class="form-control mb-10" rows="5" name="message" placeholder="댓글을 입력하세요." onfocus="this.placeholder = ''" onblur="this.placeholder = '댓글을 입력하세요.'" data-toggle="tooltip" data-placement="top" title="" data-original-title="내용을 입력하세요."></textarea>
 				</div>
-				<div class="btn-group mx-auto">
-					<button class="button" id="review-comment-btn">작성</button>
+				<div class="mx-auto d-flex justify-content-end">
+					<div class="col-auto p-0">
+						<button class="button" id="review-comment-btn">작성</button>
+					</div>
 				</div>
 			</div>
 			
@@ -127,8 +129,10 @@
 						<div class="eu">
 							
 							<p></p>
-								<input class="reviewType" type="radio" value="1" name="content">부적절한내용
-								<input class="reviewType" type="radio" value="2" name="content">스포일러
+								<input id="inappropriateReport" class="reviewType" type="radio" value="1" name="content">
+								<label for="inappropriateReport">부적절한내용</label>
+								<input id="spoilerReport" class="reviewType" type="radio" value="2" name="content">
+								<label for="spoilerReport">스포일러</label>
 							<p></p>
 						</div>
 						<div class="modal-footer">
@@ -227,10 +231,12 @@
 				//console.log("값 : " + likeReivew);
 				
 				$(".likeReviewBtn").on("click", function(){
-					var userId = "${loginUser.id}";
+					const loginMemberId = "${loginUser.id}";
 					var targetId = "${ r.id }";
 					var likeInp = $(".likeInp").val();
 					var status = "";
+					
+					if (loginMemberId == '') alert('로그인 후 이용바랍니다.');
 					
 					if (likeInp == '0') {
 						status = "like";
@@ -241,9 +247,9 @@
 					$.ajax({
 							url: "likeReviewClick.do",
 							data: {
-								userId:userId,
-								targetId:targetId,
-								status:status
+								userId : loginMemberId,
+								targetId : targetId,
+								status : status
 							},
 							type: "post",
 							success: function(data) {

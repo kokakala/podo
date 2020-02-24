@@ -15,6 +15,7 @@ import com.ch.podo.member.model.vo.Member;
 import com.ch.podo.report.model.vo.Report;
 import com.ch.podo.review.model.dto.Review;
 
+@SuppressWarnings(value = "unchecked")
 @Repository("reviewDao")
 public class ReviewDao {
 

@@ -1,8 +1,5 @@
 package com.ch.podo.notice.model.service;
 
-import java.util.ArrayList;
-
-import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.notice.model.vo.Notice;
 
 public interface NoticeService {

@@ -104,7 +104,7 @@ CREATE TABLE "TB_LIKE"(
 
 CREATE TABLE "TB_FILM" (
      "ID"                 NUMBER NOT NULL, 
-     "TITLE_KOR"          VARCHAR2(100), 
+     "TITLE_KOR"          VARCHAR2(300), 
      "TITLE_ENG"          VARCHAR2(100), 
      "DIRECTOR"           VARCHAR2(50), 
      "RELEASE_YEAR"       NUMBER NOT NULL, 

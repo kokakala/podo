@@ -31,15 +31,20 @@ public class DetailFilmServiceImpl implements DetailFilmService{
 
 	// 영화 상세정보 추가 입력
 	@Override
-	public int detailFilmInsert(DetailFilm df, int uId) {
-
-		return dfDao.detailFilmInsert(df, uId);
+	public int detailFilmInsert(DetailFilm df, int userId, String filmImage) {
+		int result1 = dfDao.detailFilmInsert(df, userId);
+		int result2 = dfDao.filmImageInsert(filmImage, df.getId(), df.getFilmId());
+		if (result1 > 0 &&
+				result2 > 0) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 	
 	// 영화 상세정보 추가 입력, 포스터
 	@Override
 	public int filmImageInsert(String filmImage, int id, int filmId) {
-		
 		return dfDao.filmImageInsert(filmImage, id, filmId);
 	}
 	
@@ -58,37 +63,36 @@ public class DetailFilmServiceImpl implements DetailFilmService{
 	// 영화 상세정보 배우 리스트
 	@Override
 	public ArrayList<Actor> selectActorList(int id) {
-		
 		return dfDao.selectActorList(id);
 	}
 
 	// 배우 검색 리스트 출력
 	@Override
 	public ArrayList<Actor> searchActorList(String searchName) {
-		
 		return dfDao.searchActorList(searchName);
 	}
 
 	// 배우 등록
 	@Override
 	public int addActor(int newActorId, int id) {
-		
 		return dfDao.addActor(newActorId, id);
 	}
 
 	// 배우 삭제
 	@Override
 	public int deleteActor(int actorId, int id) {
-		
 		return dfDao.deleteActor(actorId, id);
 	}
 	
 	// 위키 영화 배우 수정 입력
 	@Override
 	public int actorInsert(String actorIdList) {
-		
 		return dfDao.actorInsert(actorIdList);
 	}
-	
+
+	@Override
+	public DetailFilm existsDetailFilm(int filmId) {
+		return dfDao.existsDetailFilm(filmId);
+	}
 
 }

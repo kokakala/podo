@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.like.model.vo.Like;
 
+@SuppressWarnings(value = "unchecked")
 @Repository("likeDao")
 public class LikeDao {
 
@@ -31,7 +32,7 @@ public class LikeDao {
 	}
 
 	public Like selectLikeUser(String userId, String loginUserId) {
-		HashMap map = new HashMap();
+		HashMap<String, Object> map = new HashMap<>();
 		map.put("userId", userId);
 		map.put("loginUserId", loginUserId);
 
@@ -83,23 +84,15 @@ public class LikeDao {
 
 	public int insertLikeReview(Like like) {
 		return sqlSession.insert("likeMapper.insertLikeReview", like);
-
 	}
 
 	public int deleteLikeReview(Like like) {
-
 		return sqlSession.insert("likeMapper.deleteLikeReview", like);
 	}
 
-
-
-
 	/*
 	public int updateLikeCount(Like like) {
-		
 		return sqlSession.update("reviewMapper.updateLikeCount", like);
 	}*/
-
-	
 
 }

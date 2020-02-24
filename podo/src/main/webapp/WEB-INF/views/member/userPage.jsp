@@ -605,76 +605,81 @@
 				var targetId = '${ userPageMem.id }';
 				var userId = '${ loginUser.id }';
 				var likeInp = $(".likeInp").val();
-				var status = "";
+				var status = "${likeUser}";
 				
 				//console.log("버튼클릭시 : " + likeInp);
 				
-				if(likeInp == '0'){
+				if (likeInp == '0') {
 					status = "like";
-				}else if(likeInp == '1'){
+				} else if (likeInp == '1') {
 					status = "nonlike";
 				}
 				//console.log(status);
 				$.ajax({
-						url:"likeClick.do",
-						data:{userId:userId,
-							  targetId:targetId,
-							  status:status},
-						type:"post",
-						success:function(data){
-							//console.log(data);
-							if(status == "like"){ // 좋아요클릭시
-								if(data == 1){
-									$(".likeBtn").removeClass("btn-danger");
-									$(".likeBtn").removeClass("btn-secondary");
-									$(".likeBtn").addClass("btn-danger");
-									$(".likeBtn").text('LIKED');
-									$(".likeInp").val('1');
-								}else{
-									alert("좋아요 실패");
-								}
-							}else if(status == "nonlike"){ // 좋아요 취소
-								if(data == 1){
-									$(".likeBtn").removeClass("btn-danger");
-									$(".likeBtn").removeClass("btn-secondary");
-									$(".likeBtn").addClass("btn-secondary");
-									$(".likeBtn").text('LIKE');
-									$(".likeInp").val('0');
-								}else{
-									alert("좋아요 실패");
-								}
+					url : "likeClick.do",
+					data : {
+						userId : userId,
+						targetId : targetId,
+						status : status
+					},
+					type : "post",
+					success : function(data) {
+						//console.log(data);
+						if (status == "like") { // 좋아요클릭시
+							if (data == 1) {
+								$(".likeBtn").removeClass("btn-danger");
+								$(".likeBtn").removeClass("btn-secondary");
+								$(".likeBtn").addClass("btn-danger");
+								$(".likeBtn").text('LIKED');
+								$(".likeInp").val('1');
+							} else {
+								alert("좋아요 실패");
 							}
-							//console.log("에이작스 후 : " + likeInp);
-								
-						},error:function(){
-							console.log("ajax error");
+						} else if (status == "nonlike") { // 좋아요 취소
+							if (data == 1) {
+								$(".likeBtn").removeClass("btn-danger");
+								$(".likeBtn").removeClass("btn-secondary");
+								$(".likeBtn").addClass("btn-secondary");
+								$(".likeBtn").text('LIKE');
+								$(".likeInp").val('0');
+							} else {
+								alert("좋아요 실패");
+							}
 						}
-					});  
+						//console.log("에이작스 후 : " + likeInp);
+
+					},
+					error : function() {
+						console.log("ajax error");
+					}
+				});
 			});
-			
-			$("#container ul>li").on("click", function(){
-				var activeTab = $(this).attr('data-tab');
-	            var tabMenu = $(this).text();
-	            
-	            if(tabMenu == "리뷰"){
-	                location.href="userPageSelectReview.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab="+ activeTab;
-	             }else if(tabMenu =="좋아한 영화"){
-	            	  location.href="userPageSelectLikeFilm.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab="+ activeTab;
-	             }else if(tabMenu == "좋아한 리뷰"){
-	            	  location.href="userPageSelectLikeReview.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab="+ activeTab;
-	             }else if(tabMenu == "좋아한 회원"){
-	            	  location.href="userPageSelectLikeUser.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab="+ activeTab;
-	             }
-			});
-			if("${tab}" != ''){
-				var tab = "${tab}";
+
+			$(".container>.row>ul>li")
+					.on(
+							"click",
+							function() {
+								var activeTab = $(this).attr('data-tab');
+								var tabMenu = $(this).text();
+
+								if (tabMenu == "리뷰") {
+									location.href = "userPageSelectReview.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab=" + activeTab;
+								} else if (tabMenu == "좋아한 영화") {
+									location.href = "userPageSelectLikeFilm.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab=" + activeTab;
+								} else if (tabMenu == "좋아한 리뷰") {
+									location.href = "userPageSelectLikeReview.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab=" + activeTab;
+								} else if (tabMenu == "좋아한 회원") {
+									location.href = "userPageSelectLikeUser.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab=" + activeTab;
+								}
+							});
+			if ('${tab}' != '') {
+				var tab = '${tab}';
 				$('ul.tab li').removeClass('current');
 				$('.tabcontent').removeClass('current');
 				$("#" + tab).addClass('current');
 				$("." + tab).addClass('current');
 			}
 		});
-
 	</script>
 	<jsp:include page="../common/footer.jsp"/>
 </body>

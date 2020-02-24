@@ -66,14 +66,15 @@ public class FilmController {
 	 * @throws Exception 
 	 * @throws OpenAPIFault 
 	 */
+	@SuppressWarnings(value = "unchecked")
 	@RequestMapping("skFilm.do")
 	public ModelAndView searchKeywordFilm(HttpServletRequest request, ModelAndView mv,
 																				String keyword, String skeyword,
 																				@RequestParam(value="p", defaultValue = "1") int currentPage)
 																						throws OpenAPIFault, Exception {
-		// log.info("keyword : " + keyword);
-		// log.info("skeyword : " + skeyword);
-		// log.info("currentPage : " + currentPage);
+		 log.info("keyword : {}", keyword);
+		 log.info("skeyword : {}", skeyword);
+		 log.info("currentPage : {}", currentPage);
 		
 		int filmCount = filmService.selectKeywordFilmListCount(keyword, skeyword);
 		// page는 최대 3페이지, board는 최대 6개 보여지도록 set
@@ -88,7 +89,7 @@ public class FilmController {
 		Calendar cal = new GregorianCalendar(Locale.KOREA);
 		cal.add(Calendar.DATE, -1); // 오늘날짜로부터 -1
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		// log.info("yesterday : " + sdf.format(cal.getTime()));
+		 log.info("yesterday : {}", sdf.format(cal.getTime()));
 		String targetDt = request.getParameter("targetDt") == null ? sdf.format(cal.getTime()):request.getParameter("targetDt");
 		// 결과  ROW 수
 		String itemPerPage = request.getParameter("itemPerPage") == null ? "10":request.getParameter("itemPerPage");
@@ -110,7 +111,7 @@ public class FilmController {
 		ObjectMapper mapper = new ObjectMapper();
 		HashMap<String, Object> dailyResult = mapper.readValue(dailyResponse, HashMap.class);
 		mv.addObject("dailyResult", dailyResult);
-		// log.info("dailyResult : " + dailyResult);
+		 log.info("dailyResult {}: ", dailyResult);
 		
 		// KOBIS 오픈 API Rest Client를 통해 코드 서비스 호출 (boolean isJson, String comCode)
 		String codeResponse = kobisOpenAPIRestService.getComCodeList(true, "0105000000");
@@ -166,7 +167,7 @@ public class FilmController {
 		if (loginUser != null) {
 			sc.setUserId(loginUser.getId());
 		}
-		// log.info("sc : " + sc);
+		 log.info("sc : {}", sc);
 		
 		// 필터 목록 조회
 		ArrayList<String> release = filmService.selectAllReleaseYearList();
@@ -174,7 +175,7 @@ public class FilmController {
 		ArrayList<Genre> genre = filmService.selectAllGenreList();
 		
 		int listCount = filmService.selectFilterFilmListCount(sc);
-		// log.info("listCount : " + listCount);
+		 log.info("listCount : {}", listCount);
 		
 		// page는 최대 3페이지, board는 최대 12개 보여지도록 set
 		PageInfo pi = Pagination.setPageLimit(currentPage, listCount, 3, 12);
@@ -185,12 +186,12 @@ public class FilmController {
 		 	    && (sc.getSaw() == null || sc.getSaw().equals("all"))
 		 	    && (sc.getOrder() == null || sc.getOrder().equals("all")))) {
 			pi = Pagination.setNewPageLimit(currentPage, listCount, pi);
-			// log.info("new pi : " + pi);
+			 log.info("new pi : {}", pi);
 		}
 		// 옵션으로 검색된 영화 목록
 		ArrayList<Film> filmList = filmService.selectFilterFilmList(sc, pi);
-		// log.info("filmList : " + filmList);
-		// log.info("filmList.size() : " + filmList.size());
+		 log.info("filmList : {}", filmList);
+		 log.info("filmList.size() : {}", filmList.size());
 		
 		// 사용자가 좋아요한 영화 목록
 		HashMap<Integer, Like> likeMap = new HashMap<>();
@@ -278,7 +279,7 @@ public class FilmController {
 											 String fid, @RequestParam("flag") int flag)
 			throws JsonIOException, IOException {
 		Member loginUser = (Member)session.getAttribute("loginUser");
-		// log.info("loginUser : " + loginUser);
+		 log.info("loginUser : {}", loginUser);
 		
 		if (loginUser == null) {
 			return 0;
@@ -289,10 +290,10 @@ public class FilmController {
 		like.setUserId(loginUser.getId());
 		
 		if (flag > 0) {
-			// log.info("like insert 실행");
+			 log.info("like insert 실행");
 			return likeService.insertLikeFilm(like);
 		} else {
-			// log.info("like delete 실행");
+			 log.info("like delete 실행");
 			return likeService.deleteLikeFilm(like);
 		}
 		
@@ -550,7 +551,7 @@ public class FilmController {
 		if (result > 0) {
 			mv.setViewName("redirect:flist.do");
 		} else {
-			mv.setViewName("error/errorPage");
+			mv.setViewName("redirect:exception.do");
 		}
 		
 		return mv;

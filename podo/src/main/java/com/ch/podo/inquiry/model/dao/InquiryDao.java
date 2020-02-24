@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.inquiry.model.vo.Inquiry;
 
+@SuppressWarnings(value = "unchecked")
 @Repository("inquiryDao")
 public class InquiryDao {
 
@@ -33,7 +34,7 @@ public class InquiryDao {
 	}
 	
 	public int dbInquiryInsert(String content, String userId) {
-		HashMap map = new HashMap();
+		HashMap<String, Object> map = new HashMap<>();
 		map.put("content", content);
 		map.put("userId", userId);
 		

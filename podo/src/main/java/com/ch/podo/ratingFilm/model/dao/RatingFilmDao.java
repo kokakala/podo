@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ch.podo.ratingFilm.model.vo.RatingFilm;
 
+@SuppressWarnings(value = "unchecked")
 @Repository("ratingFilmDao")
 public class RatingFilmDao {
 	
