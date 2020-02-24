@@ -1,18 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
-
+	
 <head>
-
-<style>
-	td {
-		padding: 10px;
-		}
-</style>
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -31,6 +23,11 @@
   <!-- Custom styles for this template-->
   <link href="<c:url value="/resources/adBootstrap/css/sb-admin.css"/>" rel="stylesheet">
 
+	<style>
+		td {
+			padding: 10px;
+		}
+	</style>
 </head>
 
 <body id="page-top">
@@ -185,13 +182,13 @@
 					<td>
 						<div class="form-check">
 						  <input class="form-check-input" type="radio" id="released" name="productionStatus" value="개봉" required checked>
-						  <label class="form-check-label" for="exampleRadios1">
+						  <label class="form-check-label" for="released">
 						    개봉
 						  </label>
 						</div>
 						<div class="form-check">
 						  <input class="form-check-input" type="radio" id="releasing" name="productionStatus" value="개봉예정" required>
-						  <label class="form-check-label" for="exampleRadios2">
+						  <label class="form-check-label" for="releasing">
 						    개봉예정
 						  </label>
 						</div>

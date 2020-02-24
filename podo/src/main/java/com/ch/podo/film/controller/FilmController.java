@@ -190,7 +190,7 @@ public class FilmController {
 		}
 		// 옵션으로 검색된 영화 목록
 		ArrayList<Film> filmList = filmService.selectFilterFilmList(sc, pi);
-		 log.info("filmList : {}", filmList);
+//		 log.info("filmList : {}", filmList);
 		 log.info("filmList.size() : {}", filmList.size());
 		
 		// 사용자가 좋아요한 영화 목록
@@ -533,20 +533,20 @@ public class FilmController {
 	public ModelAndView finsert(ModelAndView mv, Film film, DetailFilm df, Image img,
 															HttpServletRequest request, HttpSession session,
 															@RequestParam(value = "uploadFile", required = false) MultipartFile file) {
-		// log.info("film : " + film);
-		// log.info("file : " + file);
+		log.info("film : {}", film);
+		log.info("file : {}", file);
 		
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		
 		if (!file.getOriginalFilename().equals("")) {
 			String renameFileName = PodoRenamePolicy.rename(file, request, "/detailFilmImage");
 			img.setChangeName(renameFileName);
-			// log.info("renameFileName : " + renameFileName);
+			 log.info("renameFileName : {}", renameFileName);
 		}
-		// log.info("img : " + img);
+		log.info("img : {}", img);
 		
 		int result = filmService.insertFilm(film, loginUser.getId(), img);
-		// log.info("result : " + result);
+		log.info("result : {}", result);
 		
 		if (result > 0) {
 			mv.setViewName("redirect:flist.do");

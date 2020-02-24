@@ -37,11 +37,17 @@ public class DetailFilmController {
 		DetailFilm detailFilm = dfService.selectDetailFilm(filmId);
 		log.info("detail film : {}", detailFilm);
 		
-		// id, filmId, titleKor, titleEng, director, actor, trailer, synopsys, trivia,
-		// nickName
-		// 영화 상세번호, 영화 번호, 영화 제목, 영화 영어제목, 감독, 배우, 예고편, 시놉시스, 트리비아, 글쓴이 닉네임
-		if (detailFilm.getSynopsys() != null) detailFilm.setSynopsys(detailFilm.getSynopsys().replaceAll("(\\r\\n|\\n)", "<br>"));
-		if (detailFilm.getTrivia() != null) detailFilm.setTrivia(detailFilm.getTrivia().replaceAll("(\\r\\n|\\n)", "<br>"));
+		if (detailFilm.getSynopsys() != null) {
+			detailFilm.setSynopsys(
+				detailFilm.getSynopsys().replaceAll("(\\r\\n|\\n)", "<br>")
+			);
+		}
+		
+		if (detailFilm.getTrivia() != null) {
+			detailFilm.setTrivia(
+				detailFilm.getTrivia().replaceAll("(\\r\\n|\\n)", "<br>")
+			);
+		}
 
 		// 포스터 이미지
 		Image image = dfService.selectFilmImage(detailFilm.getId());
@@ -184,10 +190,16 @@ public class DetailFilmController {
 	@RequestMapping("detailFilmRollback.do")
 	public ModelAndView detailFilmRollback(int filmId, ModelAndView mv) {
 		// Detail_film 번호
-//		int result = dfService.detailFilmRollback(filmId);
-
-		DetailFilm df = dfService.selectDetailFilm(filmId);
-		mv.addObject("filmId", df.getFilmId()).setViewName("redirect:detailFilm.do");
+		int result = dfService.detailFilmRollback(filmId);
+		if (result > 0) {
+			DetailFilm detailFilm = dfService.selectDetailFilm(filmId);
+			mv.addObject("filmId", detailFilm.getFilmId())
+				.addObject("df", detailFilm)
+				.setViewName("redirect:detailFilm.do");
+		} else {
+			mv.setViewName("redirect:exception.do");
+		}
+		
 
 		return mv;
 	}

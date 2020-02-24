@@ -62,6 +62,7 @@
 		      left join tb_actor a on (fa.actor_id = a.id)
 		      left join tb_member m on (df.member_id = m.id)
 		      where f.id = #{filmId}
+		      	and df.status = 'Y'
 		      order by df.insertdate desc) m
 		where rownum = 1
 	</select>
@@ -106,21 +107,19 @@
 		where rownum = 1
 	</select>
 	
-	<!-- 되돌리기 버튼 작업 중 -->
-	<!-- 관리자가 [되돌리기] 버튼을 누르면 update로 status 'N'으로 수정  -->
 	<update id="updateDetailFilm">
 		update tb_detail_film
-		set status='N'
-		where id = (select  m.id
-		            from (select df.id, df.film_id, title_kor, title_eng, director, a.name, trailer, synopsys, trivia
-		                  from tb_film f
-		               	  left join tb_detail_film df on(df.film_id = f.id)
-		                  left join tb_film_actor fa on(df.id = fa.dfilm_id)
-		                  left join tb_actor a on(fa.actor_id = a.id)
-		                  where f.id = #{filmid}
-		                  and df.status='Y'
-		                  order by df.insertdate desc) m
-		            where rownum = 1)
+			 set status = 'N'
+		 where id = (select  m.id
+ 		             from (select df.id, df.film_id, title_kor, title_eng, director, a.name, trailer, synopsys, trivia
+ 		                   from tb_film f
+ 		                	  left join tb_detail_film df on(df.film_id = f.id)
+ 		                   left join tb_film_actor fa on(df.id = fa.dfilm_id)
+ 		                   left join tb_actor a on(fa.actor_id = a.id)
+ 		                   where f.id = #{filmid}
+ 		                   	and df.status = 'Y'
+ 		                   order by df.insertdate desc) m
+ 		             where rownum = 1)
 	</update>
 	
 	<!-- 콜렉션 mapping 값 -->

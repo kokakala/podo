@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -15,20 +14,22 @@
   <meta name="description" content="">
   <meta name="author" content="">
   
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
- <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-  <title>AdminPage</title>
-  <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+  <title>포도관리자</title>
+  <!-- favicon -->
+	<link rel="icon" href="resources/bootstrap/img/favicon.png" type="image/png">
 
-  <!-- Custom fonts for this template-->
-  <link href="<c:url value="/resources/adBootstrap/vendor/fontawesome-free/css/all.min.css"/>" rel="stylesheet" type="text/css">
+	<!-- admin -->
+	<script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+	<!-- Custom fonts for this template-->
+	<link href="resources/adBootstrap/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<!-- Page level plugin CSS-->
+	<link href="resources/adBootstrap/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+	<!-- Custom styles for this template-->
+	<link href="resources/adBootstrap/css/sb-admin.css" rel="stylesheet">
 
-  <!-- Page level plugin CSS-->
-  <link href="<c:url value="/resources/adBootstrap/vendor/datatables/dataTables.bootstrap4.css"/>" rel="stylesheet">
-
-  <!-- Custom styles for this template-->
-  <link href="<c:url value="/resources/adBootstrap/css/sb-admin.css"/>" rel="stylesheet">
 
 </head>
 
@@ -130,10 +131,11 @@
         <div class="card mb-3">
           <div class="card-header">
             <i class="fas fa-table"></i>
-            	회원문의목록</div>
+            	회원문의목록
+         	</div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <table class="table table-bordered" id="dataTable">
                 <thead align="center">                
                   <tr>
                     <th>No</th>
@@ -145,42 +147,42 @@
                   </tr>
                 </thead>
                 <tbody align="center">
-					<c:forEach items="${ list }" var="q">
-						<tr>
-							<td>${ q.id }</td>
-							<td>
-								<c:choose>
-								    <c:when test="${ q.type == 1}">
-										일반
-								    </c:when>
-								    <c:when test="${ q.type == 2}">
-										DB제보
-								    </c:when>
-								</c:choose>
-							</td>
-							<td>${ q.nickname }</td>
-							<td>${ q.createDate }</td>
-							<td>
-								<c:choose>
-								    <c:when test="${ q.answer == null }">
-								    	<button type="button" class="btn btn-danger inquiry-modal" data-toggle="modal" data-target="#answerModal" data-id="">답변미등록</button>									
-								    </c:when>
-								    <c:when test="${ q.answer != null}">
-								    
-										<button type="button" class="btn btn-success" data-toggle="modal" data-target="#" data-id="">답변완료</button>
-								    </c:when>
-								</c:choose>
-							</td>
+								<c:forEach items="${ list }" var="q">
+									<tr>
+										<td>${ q.id }</td>
+										<td>
+											<c:choose>
+											    <c:when test="${ q.type == 1}">
+													일반
+											    </c:when>
+											    <c:when test="${ q.type == 2}">
+													DB제보
+											    </c:when>
+											</c:choose>
+										</td>
+										<td>${ q.nickname }</td>
+										<td>${ q.createDate }</td>
+										<td>
+										<c:choose>
+										    <c:when test="${ q.answer == null }">
+										    	<button type="button" class="btn btn-danger inquiry-modal" data-toggle="modal" data-target="#answerModal" data-id="">답변미등록</button>									
+										    </c:when>
+										    <c:when test="${ q.answer != null}">
+										    
+												<button type="button" class="btn btn-success" data-toggle="modal" data-target="#" data-id="">답변완료</button>
+										    </c:when>
+										</c:choose>
+									</td>
 					
-							<td>${ q.answerDate }</td>
-						</tr>
-					</c:forEach>
-                </tbody>
+									<td>${ q.answerDate }</td>
+								</tr>
+							</c:forEach>
+							</tbody>
               </table>
             </div>
           </div>
-          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-        </div>
+         <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+       </div>
 
       </div>
       <!-- /.container-fluid -->
