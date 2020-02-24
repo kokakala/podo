@@ -32,7 +32,8 @@ public class DetailFilmController {
 
 	@RequestMapping("detailFilm.do")
 	public ModelAndView selectDetailFilm(int filmId, ModelAndView mv) {
-
+		
+		log.info("film id : {}", filmId);
 		// 영화 상세정보
 		DetailFilm detailFilm = dfService.selectDetailFilm(filmId);
 		log.info("detail film : {}", detailFilm);

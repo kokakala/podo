@@ -51,9 +51,20 @@
 		<result property="profileImage" column="profile_img"/>
 	</resultMap>
 		
-	<!-- 영화 상세 정보 보기  -->
-	<!-- 입력 날짜 최신순 기준으로 rownum 1번, status='Y'인 정보 출력 -->
 	<select id="selectDetailFilm" resultMap="detailFilmResultSet">
+		select rownum, m.*
+		from (select df.id, f.id as film_id, title_kor, title_eng, director, a.name, trailer, synopsys, trivia, nickname
+		      from tb_film f
+		      left join tb_detail_film df on (df.film_id = f.id)
+		      left join tb_film_actor fa on (df.id = fa.dfilm_id)
+		      left join tb_actor a on (fa.actor_id = a.id)
+		      left join tb_member m on (df.member_id = m.id)
+		      where f.id = #{filmId}
+		      order by df.insertdate desc) m
+		where rownum = 1
+	</select>
+	
+	<select id="selectYesDetailFilm" resultMap="detailFilmResultSet">
 		select rownum, m.*
 		from (select df.id, f.id as film_id, title_kor, title_eng, director, a.name, trailer, synopsys, trivia, nickname
 		      from tb_film f
