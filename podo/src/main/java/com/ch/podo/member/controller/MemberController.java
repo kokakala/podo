@@ -51,11 +51,8 @@ public class MemberController {
 																	@RequestParam(defaultValue = "false") boolean rememberMe) {
 		log.info("rememberMe : {}", rememberMe);
 		Member loginUser = memberService.selectLoginMember(member);
-		log.info("loginUser : {}", loginUser);
-		// log.info("rememberMe : " + rememberMe);
 		
 		if (loginUser != null && bcryptPasswordEncoder.matches(member.getPassword(), loginUser.getPassword())) {
-//			if (rememberMe == "on") {
 			if (rememberMe) {
 				Cookie storeEmailCookie = new Cookie("email", member.getEmail());
 				Cookie storePwdCookie = new Cookie("pwd", member.getPassword());
@@ -67,7 +64,6 @@ public class MemberController {
 				Cookie[] cookies = request.getCookies();
 				for (int i = 0; i < cookies.length; i++) {
 					if (cookies[i].getName().equals("email") || cookies[i].getName().equals("pwd")) {
-						// logger.info("cookies[" + i + "].name : " + cookies[i].getName());
 						cookies[i].setMaxAge(0);
 						response.addCookie(cookies[i]);
 					}

@@ -171,9 +171,9 @@
 		                  	<table style="width: 100%;">
 		                  		<thead>
 		                  			<tr style="border-bottom: 2px solid white;">
-		                  				<th style="text-align: center;">순위</th>
-		                  				<th style="text-align: center;">영화명</th>
-		                  				<th style="text-align: center;">누적관객수</th>
+		                  				<th style="text-align:center;min-width:33px;">순위</th>
+		                  				<th style="text-align:center;min-width:150px;">영화명</th>
+		                  				<th style="text-align:center;min-width:105px;">누적관객수</th>
 		                  			</tr>
 		                  		</thead>
 		                  		<tbody>

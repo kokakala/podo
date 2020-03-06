@@ -26,7 +26,7 @@ public class CommentController {
 	@RequestMapping(value = "commentsList.do", produces = "application/json; charset=UTF-8")
 	public String CommentList(String tid, String type) {
 		ArrayList<Comment> list = commentService.selectCommentList(tid, type);
-		 log.info("list : {}", list);
+		// log.info("list : {}", list);
 		
 		for (Comment comment : list) {
 			comment.setContent(comment.getContent().replaceAll("(\\r\\n|\\n)", "<br>"));
@@ -40,9 +40,8 @@ public class CommentController {
 	@ResponseBody
 	@RequestMapping("insertComment.do")
 	public String insertComment(Comment comment) {
-		// log.info("comment : " + comment);
 		if ("".equals(comment.getParentId())) comment.setParentId(null);
-		// log.info("comment : " + comment);
+		log.info("comment : " + comment);
 		int result = commentService.insertComment(comment);
 		
 		if (result > 0) {

@@ -47,10 +47,10 @@
 							</ul>
 							<form method="get" action="skFilm.do" class="form-inline my-2">
 								<c:if test="${ !empty keyword }">
-									<input class="form-control mr-sm-2" id="keywordInput" type="search" placeholder="키워드를 입력해주세요" aria-label="Search" name="keyword" value="${ keyword }">
+									<input class="form-control mr-sm-2" id="keywordInput" type="search" placeholder="키워드를 입력해주세요" aria-label="Search" name="keyword" maxlength="150" value="${ keyword }">
 								</c:if>
 								<c:if test="${ empty keyword }">
-									<input class="form-control mr-sm-2" id="keywordInput" type="search" placeholder="키워드를 입력해주세요" aria-label="Search" name="keyword">
+									<input class="form-control mr-sm-2" id="keywordInput" type="search" placeholder="키워드를 입력해주세요" aria-label="Search" name="keyword" maxlength="150">
 								</c:if>
 								<button class="button button--active my-2 my-sm-0" type="submit">검색</button>
 							</form>
@@ -91,9 +91,9 @@
 								</div>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-								<button type="submit" id="btn-sign-in" class="btn" style="background:purple; color:white;">로그인</button>
-								<button type="button" class="btn btn-default" id="myBtn"  style="background:#ff79fb; color:white;" onclick="location.href='signup.do';">가입하기</button>
+								<button type="button" class="button" data-dismiss="modal">취소</button>
+								<button type="submit" id="btn-sign-in" class="button">로그인</button>
+								<button type="button" id="myBtn" class="button" onclick="location.href='signup.do';">가입하기</button>
 							</div>
 						</form>
 					</div>

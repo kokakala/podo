@@ -40,7 +40,7 @@
 					<div>감독&nbsp;<span class="info-data">${ df.director }</span></div>
 				</div>
 				
-				<div class="col">출연 배우&nbsp;
+				<div class="col">배우&nbsp;
 					<c:forEach items="${ al }" var="a">
 						<div class="info-actor">
 							<img class="info-actor-img" src="resources/detailFilmImage/actor/${a.profileImage}">

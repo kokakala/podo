@@ -174,11 +174,16 @@
 		<script>
 			const loginMemberId = '${loginUser.id}';
 			
+			// 댓글 작성
 			$("#review-comment-btn").on("click", function(){
-				
 				var reviewId = ${ r.id };
 				var content = document.getElementById('comment-content').value;
 				var parentCommentId = $("#reply-parent-id").val();
+				
+				if (content.length > 150) {
+					alert("150자 이상 작성할 수 없습니다.");
+					return false;
+				}
 				
 				if (loginMemberId === '' || loginMemberId === undefined) {
 					alert('로그인 후 이용바랍니다.');

@@ -31,9 +31,7 @@
 		
 		<br>
 		<div class="footer-2">
-			<p>csu0414@gmail.com</p>
 			<p>Copyright &copy; 2019 PODO ALL RIGHTS RESERVED.</p>
-			<br>
 		</div>
 		
 	</div>

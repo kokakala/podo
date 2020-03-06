@@ -44,57 +44,10 @@
 					</div>
 	
 					<p>${ board.content }</p>
-	
-	
-					<div class="news_d_footer flex-column flex-sm-row">
-						<!-- 
-						<a class="justify-content-sm-center ml-sm-auto mt-sm-0 mt-2" href="" onclick="getCommentList(); return false;">
-							<span class="align-middle mr-2">
-								<i class="ti-themify-favicon"></i>댓글 보기
-							</span>
-						</a>
-						 -->
-					</div>
 				</div>
-	<!-- 
-				<div class="navigation-area">
-						<div class="row">
-							<div
-								class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
-								<div class="thumbnail">
-									<a href="#"><img class="img-fluid" src="img/blog/prev.jpg"alt=""></a>
-								</div>
-								<div class="arrow">
-									<a href="#"><span class="lnr text-white lnr-arrow-left"></span></a>
-								</div>
-								<div class="detials">
-									<p>이전 게시물</p>
-									<a href="#"><h4>A Discount Toner</h4></a>
-								</div>
-							</div>
-							<div
-								class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
-								<div class="detials">
-									<p>다음 게시물</p>
-									<a href="#"><h4>Cartridge Is Better</h4></a>
-								</div>
-								<div class="arrow">
-									<a href="#"><span class="lnr text-white lnr-arrow-right"></span></a>
-								</div>
-								<div class="thumbnail">
-									<a href="#"><img class="img-fluid" src="img/blog/next.jpg" alt=""></a>
-								</div>
-							</div>
-						</div>
-					</div>
-	
-	 -->
+				
 				<!-- 댓글 목록 -->
 				<div class="comments-area" id="comment-area"></div>
-				<div style="text-align: center;">
-<!-- 					<button class="button">더보기</button> -->
-				</div>
-	
 	
 				<!-- 댓글 작성 -->
 				<div class="comment-form">
@@ -116,8 +69,6 @@
 		</div>
 		<!--================ End Blog Post Area =================-->
 	
-	
-	
 		<div class="form-group row">
 			<div class="btn-group btn-group-lg mx-auto" role="group" aria-label="...">
 				<c:if test="${ loginUser.id eq board.memberId }">
@@ -126,7 +77,6 @@
 				</c:if>
 			</div>
 		</div>
-	
 	
 		<!-- 게시판 신고하기 모달 -->
 		<div class="modal fade de_modal" id="boardReport" tabindex="-1"
@@ -170,6 +120,11 @@
 				var content = $("#comment-content").val();
 				var boardId = ${ board.id };
 				var parentId = $("#reply-parent-id").val();
+				
+				if (content.length > 150) {
+					alert("150자 이상 작성할 수 없습니다.");
+					return false;
+				}
 				
 				if (loginMemberId === '' || loginMemberId === undefined) {
 					alert("로그인 후 이용바랍니다.");

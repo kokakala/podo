@@ -658,7 +658,7 @@
 					dataType : "json",
 					success : function(data) {
 						// console.log(data);
-						if (data === 414) {
+						if (data === 1) {
 							// jQuery 1.6 이후 부터 라디오버튼과 체크박스를 다루기 위해서는 .prop() 함수를 사용해야 한다.
 							$($this).closest(".star-input").find("[name*=star-input]")
 																						 .prop("checked", false)

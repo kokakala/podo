@@ -63,15 +63,7 @@ public class BoardController {
 	
 	// 게시판 작성
 	@RequestMapping("binsert.do")
-	public ModelAndView insertBoard(HttpServletRequest request, Board board, ModelAndView mv, HttpSession session, 
-																	@RequestParam(value = "board-upload-file", required = false) MultipartFile file) {
-		
-//		if (!file.getOriginalFilename().equals("")) {
-//			String renameFileName = PodoRenamePolicy.rename(file, request, "/boardUploadFiles");
-//			board.setImageName(renameFileName);
-//			 log.info("renameFileName : {}", renameFileName);
-//		}
-		
+	public ModelAndView insertBoard(HttpServletRequest request, Board board, ModelAndView mv, HttpSession session) {
 		int result = boardService.insertBoard(board);
 		if (result > 0) {
 			mv.setViewName("redirect:blist.do");
@@ -86,7 +78,6 @@ public class BoardController {
 	public ModelAndView boardDetail(String id, ModelAndView mv) {
 		Board board = boardService.selectBoard(Integer.parseInt(id));
 		board.setContent(board.getContent().replaceAll("(\\r\\n|\\n)", "<br>"));
-		// log.info("board : " + board);
 		
 		mv.addObject("board", board)
 			.setViewName("board/boardDetailView");
@@ -106,14 +97,8 @@ public class BoardController {
 	}
 	
 	@RequestMapping("boardUpdate.do")
-	public ModelAndView boardUpdate(Board board, HttpServletRequest request, ModelAndView mv,
-			@RequestParam(value = "board-upload-file", required = false) MultipartFile file) {
+	public ModelAndView boardUpdate(Board board, HttpServletRequest request, ModelAndView mv) {
 		log.info("board : {}", board);
-//		if (!file.getOriginalFilename().equals("")) {
-//			String renameFileName = PodoRenamePolicy.rename(file, request, "/boardUploadFiles");
-//			board.setImageName(renameFileName);
-//			log.info("renameFileName : {}", renameFileName);
-//		}
 		
 		int result = boardService.updateBoard(board);
 		if (result > 0) {
@@ -133,8 +118,6 @@ public class BoardController {
 			File file = new File(savePath + "/" + image.getChangeName());
 			if (file.exists()) {
 				file.delete();
-				// log.info("Delete File!");
-				// 수정 전 파일들은 삭제할 수 없음 -> 시간없으니 생략
 			}
 		}
 		
@@ -148,8 +131,6 @@ public class BoardController {
 		}
 	}
 	
-
-	// ----- 신고 -----
 	@RequestMapping("boardReportModal.do")
 	public ModelAndView inapproCount(Report report, ModelAndView mv, HttpServletRequest request) {
 		
@@ -170,8 +151,4 @@ public class BoardController {
 
 	}
 	
-	
-	// ----- 좋아요 -----
-	
-
 }

@@ -167,7 +167,7 @@ public class FilmController {
 		if (loginUser != null) {
 			sc.setUserId(loginUser.getId());
 		}
-		 log.info("sc : {}", sc);
+		log.info("sc : {}", sc);
 		
 		// 필터 목록 조회
 		ArrayList<String> release = filmService.selectAllReleaseYearList();
@@ -368,7 +368,7 @@ public class FilmController {
 			// log.info("rate same update 실행");
 			int result = ratingFilmService.updateSameRateFilm(rate);
 			if (result > 0) {
-				return 414;
+				return 1;
 			} else {
 				return 0;
 			}
@@ -536,43 +536,33 @@ public class FilmController {
 		log.info("film : {}", film);
 		log.info("file : {}", file);
 		
-		Member loginUser = (Member)session.getAttribute("loginUser");
-		
+		Member loginUser = (Member) session.getAttribute("loginUser");
+
 		if (!file.getOriginalFilename().equals("")) {
 			String renameFileName = PodoRenamePolicy.rename(file, request, "/detailFilmImage");
 			img.setChangeName(renameFileName);
-			 log.info("renameFileName : {}", renameFileName);
+			log.info("renameFileName : {}", renameFileName);
 		}
 		log.info("img : {}", img);
-		
+
 		int result = filmService.insertFilm(film, loginUser.getId(), img);
 		log.info("result : {}", result);
-		
+
 		if (result > 0) {
 			mv.setViewName("redirect:flist.do");
 		} else {
 			mv.setViewName("redirect:exception.do");
 		}
-		
+
 		return mv;
 	}
-	
 	
 	// 관리자 메인 별점 top3 영화
 	@RequestMapping("manyStar.do")
 	public ModelAndView starTop3(ModelAndView mv) {
-		
 		ArrayList<Film> list = filmService.manyStar();
-		
-		// System.out.println(list);
-		
 		mv.addObject("list", list).setViewName("admin/admin");
-		
 		return mv;
 	}
-	 
-	
-	
-	
 	
 }
