@@ -33,9 +33,13 @@ target/
 factoryConfiguration.json
 .recommenders/
 .metadata/
-Servers/
-apache-maven-3.6.3/
 .settings/
-jspwork/
 *.ucls
 bin/
+
+# environments
+jspwork/
+Servers/
+apache-maven-3.6.3/
+properties/
+.properties

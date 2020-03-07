@@ -26,7 +26,8 @@
 			</c:if>
 			<c:if test="${empty loginUser }">
 				<a href="#" onclick="needLogin();">영화 DB 제보</a>
-			</c:if>
+			</c:if> |
+			<a href="https://markruler.com">Mark Ruler</a>
 		</div>
 		
 		<br>

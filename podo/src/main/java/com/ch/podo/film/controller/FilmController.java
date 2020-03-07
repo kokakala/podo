@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,6 +58,9 @@ public class FilmController {
 
 	@Autowired
 	private RatingFilmService ratingFilmService;
+	
+	@Value("${kobis.key}")
+	private String key;
 	
 	/**
 	 * 키워드 검색
@@ -103,7 +107,8 @@ public class FilmController {
 		Calendar cal = new GregorianCalendar(Locale.KOREA);
 		cal.add(Calendar.DATE, -1); // 오늘날짜로부터 -1
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		 log.info("yesterday : {}", sdf.format(cal.getTime()));
+		log.info("yesterday : {}", sdf.format(cal.getTime()));
+		log.info("key : {}", key);
 		String targetDt = request.getParameter("targetDt") == null ? sdf.format(cal.getTime()):request.getParameter("targetDt");
 		// 결과  ROW 수
 		String itemPerPage = request.getParameter("itemPerPage") == null ? "10":request.getParameter("itemPerPage");
@@ -114,7 +119,6 @@ public class FilmController {
 		// "0105000000" 로서 조회된 지역코드
 		String wideAreaCd = request.getParameter("wideAreaCd") == null ? "":request.getParameter("wideAreaCd");
 		// 키로 서비스 객체 생성
-		String key = "734ea4839ec968cbcd71b13515f7c5ee";
 		KobisOpenAPIRestService kobisOpenAPIRestService = new KobisOpenAPIRestService(key);
 		
 		// 일일 박스오피스 서비스 호출
