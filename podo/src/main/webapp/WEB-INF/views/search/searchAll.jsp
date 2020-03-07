@@ -24,14 +24,16 @@
 			            <div class="col-md-6">
 			              <div class="single-recent-blog-post card-view">
 			                <div class="thumb">
-					            	<c:choose>
-					            		<c:when test="${ not empty f.poster }">
-							              <img class="card-img rounded-0" src="resources/detailFilmImage/${ f.poster }" alt="">
-					            		</c:when>
-					            		<c:otherwise>
-							              <img class="card-img rounded-0" src="resources/detailFilmImage/podoposter.jpg" alt="">
-					            		</c:otherwise>
-					            	</c:choose>
+			                	<a href="detailFilm.do?filmId=${f.id}">
+						            	<c:choose>
+						            		<c:when test="${ not empty f.poster }">
+								              <img class="card-img rounded-0" src="resources/detailFilmImage/${ f.poster }" alt="">
+						            		</c:when>
+						            		<c:otherwise>
+								              <img class="card-img rounded-0" src="resources/detailFilmImage/podoposter.jpg" alt="">
+						            		</c:otherwise>
+						            	</c:choose>
+					            	</a>
 			                  <ul class="thumb-info">
 			                    <li><a href="detailFilm.do?filmId=${f.id}"><i class="ti-user"></i>${ f.director }</a></li>
 			                    <li><a href="detailFilm.do?filmId=${f.id}"><i class="ti-themify-favicon"></i>${ f.releaseYear }</a></li>
@@ -42,7 +44,6 @@
 			                    <h3>${ f.titleKor }</h3>
 			                  </a>
 			                  <p>${ f.titleEng } / ${ f.productionCountry } / ${ f.genre }</p>
-			                  <a class="button" href="detailFilm.do?filmId=${f.id}">더보기<i class="ti-arrow-right"></i></a>
 			                </div>
 			              </div>
 			            </div>
@@ -126,7 +127,20 @@
 		                  			<tr id="loadingBoxOffice">
 		                  				<td colspan="3">
 		                  					<div style="text-align:center;font-size:13px;">
-		                  						<img src="resources/asterisk/img/loadingBoxOffice.gif" class="img-fluid" alt="loading-data">
+																	<div class="lds-spinner my-4">
+																	  <div></div>
+																	  <div></div>
+																	  <div></div>
+																	  <div></div>
+																	  <div></div>
+																	  <div></div>
+																	  <div></div>
+																	  <div></div>
+																	  <div></div>
+																	  <div></div>
+																	  <div></div>
+																	  <div></div>
+																	</div>
 		                  						<p>영화진흥위원회에서 데이터를 가져오는 중입니다.</p>
 		                  					</div>
 		                  				</td>
@@ -165,6 +179,7 @@
 		                      </c:if>
 		                    </a>
 		                  </li>
+		                  <!--
 		                  <li>
 		                    <a href="reviewList.do" class="d-flex justify-content-between">
 		                      <p>리뷰</p>
@@ -176,6 +191,8 @@
 		                      </c:if>
 		                    </a>
 		                  </li>
+		                  -->
+		                  <!--
 		                  <li>
 		                    <a href="blist.do" class="d-flex justify-content-between">
 		                      <p>자유게시판</p>
@@ -187,6 +204,7 @@
 		                      </c:if>
 		                    </a>
 		                  </li>
+		                  -->
 		                </ul>
 		              </div>
 		

@@ -101,12 +101,11 @@
 					
 						<c:if test="${ review.spoilerCheck eq 'Y' }">
 							<div class="contentKorea df-r-spoContent">
-								<div class="df-r-spoilerCheck">해당 내용은 스포일러를 포함하고 있습니다.</div>
-								<div class="df-r-content">${ review.content }</div>
+								<div class="review-spoiler-check">해당 내용은 스포일러를 포함하고 있습니다.</div>
 							</div>
 						</c:if>
 						<c:if test="${ review.spoilerCheck eq 'N' }">
-							<div class="df-review-content">${ review.content }</div>
+							<div class="review-content">${ review.content }</div>
 						</c:if>
 						<div>${ review.modifyDate }</div>
 						

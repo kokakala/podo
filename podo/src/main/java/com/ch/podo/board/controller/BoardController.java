@@ -135,6 +135,9 @@ public class BoardController {
 	public ModelAndView inapproCount(Report report, ModelAndView mv, HttpServletRequest request) {
 		
 		log.info("report : {}", report);
+		if (report.getReportId() == null) {
+			log.info("login");
+		}
 
 		int result = boardService.insertInappro(report);
 		log.info("result : {}", result);

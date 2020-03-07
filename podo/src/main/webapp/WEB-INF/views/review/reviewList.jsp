@@ -24,11 +24,10 @@
 						<c:if test="${ review.spoilerCheck eq 'Y' }">
 							<div class="df-r-spoContent">
 								<div class="review-spoiler-check">해당 내용은 스포일러를 포함하고 있습니다.</div>
-								<div class="df-r-content review-list-content">${ review.content }</div>
 							</div>
 						</c:if>
 						<c:if test="${ review.spoilerCheck eq 'N' }">
-							<div class="review-list-content">${ review.content }</div>
+							<div class="review-content">${ review.content }</div>
 						</c:if>
 						
 						<div class="d-flex justify-content-between py-2">
@@ -102,16 +101,12 @@
 			
 		</div> <!-- container end -->
 	
-		
-
-		
-		
-		
 		<script>
 			$(function() {
 				$(".nav").children("li").eq(1).addClass("active");
 			});
-
+			
+			/* 
 			$(document).on("click", ".df-r-spoContent", function() {
 				if (confirm("정말 확인하시겠습니까??") == true) {
 					$(this).children(".df-r-spoilerCheck").css("display", "none");
@@ -120,6 +115,7 @@
 					return;
 				}
 			});
+			 */
 		</script>
 		
 	 	<jsp:include page="../common/footer.jsp"/> 

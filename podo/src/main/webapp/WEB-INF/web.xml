@@ -77,7 +77,12 @@
 	    <filter-name>xssEscapeServletFilter</filter-name>
 	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
-
+	
+	<!--
+		웹 폰트 이슈와 다른 WAS에서도 적용될 수 있게 웹 서버에 적용했습니다.
+		아래 필터는 톰캣 서버에만 적용할 때입니다.
+	-->
+	<!--
 	<filter>
 		<filter-name>CorsFilter</filter-name>
 		<filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
@@ -110,6 +115,7 @@
 		<filter-name>CorsFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	-->
 
 	<!-- REDIRECT TLS/SSL/HTTPS -->
 	<!-- 

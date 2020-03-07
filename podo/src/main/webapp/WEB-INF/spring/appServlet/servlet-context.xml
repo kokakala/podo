@@ -51,7 +51,7 @@
 			<mapping path="/inquiryList.do"/>
 			<mapping path="/declarationModal.do"/>
 			<mapping path="/likeReviewClick.do"/>
-			<mapping path="/bReportModal.do"/>
+			<mapping path="/boardReportModal.do"/>
 			
 			<!-- exclude-mapping은 항상 mapping 아래에 두어야 오류가 나지 않는다. -->
 			<exclude-mapping path="/home.do"/>
