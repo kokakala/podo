@@ -123,7 +123,7 @@ public class FilmController {
 		// Json 라이브러리(jackson-databind)를 통해 Handling
 		ObjectMapper mapper = new ObjectMapper();
 		HashMap<String, Object> dailyResult = mapper.readValue(dailyResponse, HashMap.class);
-		log.info("dailyResult {}: ", dailyResult);
+		// log.info("dailyResult {}: ", dailyResult);
 		return dailyResult;
 		
 		// KOBIS 오픈 API Rest Client를 통해 코드 서비스 호출 (boolean isJson, String comCode)

@@ -3,11 +3,11 @@
 <html>
 	<head>
 		<jsp:include page="../common/header.jsp"/>
-		<link rel="stylesheet" type="text/css" href="resources/bootstrap/css/login.css">
-		<link rel="stylesheet" type="text/css" href="resources/bootstrap/css/util.css">
-		<link rel="stylesheet" type="text/css" href="resources/bootstrap/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" href="resources/bootstrap/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-		<link rel="stylesheet" type="text/css" href="resources/bootstrap/fonts/iconic/css/material-design-iconic-font.min.css">
+		<link rel="stylesheet" type="text/css" href="resources/asterisk/css/login.css">
+		<link rel="stylesheet" type="text/css" href="resources/asterisk/css/util.css">
+		<link rel="stylesheet" type="text/css" href="resources/asterisk/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="resources/asterisk/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+		<link rel="stylesheet" type="text/css" href="resources/asterisk/fonts/iconic/css/material-design-iconic-font.min.css">
 	</head>
 <body>
 	
@@ -15,7 +15,7 @@
 	
 	<div class="limiter">
 		<div class="container-login100">
-			<div class="login100-more" style="background-image: url('resources/bootstrap/img/banner/main-banner.png');"></div>
+			<div class="login100-more" style="background-image: url('resources/asterisk/img/banner/main-banner.png');"></div>
 
 			<div class="wrap-login100 p-l-50 p-r-50 p-t-72 p-b-50">
 				<form class="login100-form validate-form" action="insertMember.do" method="post" enctype="multipart/form-data">
@@ -86,7 +86,7 @@
 		</div>
 	</div>
 	
-	<script src="resources/bootstrap/js/login.js"></script>
+	<script src="resources/asterisk/js/login.js"></script>
 	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

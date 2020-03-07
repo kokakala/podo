@@ -5,24 +5,7 @@
 <html lang="en">
 	
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>AdminPage</title>
-  <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
-
-  <!-- Custom fonts for this template-->
-  <link href="<c:url value="/resources/adBootstrap/vendor/fontawesome-free/css/all.min.css"/>" rel="stylesheet" type="text/css">
-
-  <!-- Page level plugin CSS-->
-  <link href="<c:url value="/resources/adBootstrap/vendor/datatables/dataTables.bootstrap4.css"/>" rel="stylesheet">
-
-  <!-- Custom styles for this template-->
-  <link href="<c:url value="/resources/adBootstrap/css/sb-admin.css"/>" rel="stylesheet">
-
+	<jsp:include page="../common/admin-header.jsp"/>
 	<style>
 		td {
 			padding: 10px;
@@ -246,25 +229,7 @@
     </div>
   </div>
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="<c:url value="/resources/adBootstrap/vendor/jquery/jquery.min.js" />"></script>
-  <script src="<c:url value="/resources/adBootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js" />"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="<c:url value="/resources/adBootstrap/vendor/jquery-easing/jquery.easing.min.js" />"></script>
-
-  <!-- Page level plugin JavaScript-->
-  <script src="<c:url value="/resources/adBootstrap/vendor/chart.js/Chart.min.js" />"></script>
-  <script src="<c:url value="/resources/adBootstrap/vendor/datatables/jquery.dataTables.js" />"></script>
-  <script src="<c:url value="/resources/adBootstrap/vendor/datatables/dataTables.bootstrap4.js" />"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="<c:url value="/resources/adBootstrap/js/sb-admin.min.js" />"></script>
-
-  <!-- Demo scripts for this page-->
-  <script src="<c:url value="/resources/adBootstrap/js/demo/datatables-demo.js" />"></script>
-  <script src="<c:url value="/resources/adBootstrap/js/demo/chart-area-demo.js" />"></script>
-		
+	<jsp:include page="../common/admin-footer.jsp"/>
 	<script>
 		
 		// Author : 혜경한

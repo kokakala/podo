@@ -5,7 +5,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<link rel="icon" href="resources/bootstrap/img/favicon.png" type="image/png">
+		<link rel="icon" href="resources/asterisk/img/favicon.png" type="image/png">
 		<title>포도포도</title>
 		<style type="text/css">
 			#index-logo {
@@ -20,6 +20,6 @@
 		</style>
 	</head>
 	<body style="background: #090f21;">
-		<img id="index-logo" src="resources/bootstrap/img/logo/logo.png" onclick="location.href='home.do'"/>
+		<img id="index-logo" src="resources/asterisk/img/logo/logo.png" onclick="location.href='home.do'"/>
 	</body>
 </html>

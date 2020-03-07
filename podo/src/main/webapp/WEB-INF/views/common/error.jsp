@@ -7,9 +7,9 @@
 		<title>포도포도</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<link rel="icon" href="<c:url value="/resources/bootstrap/img/favicon.png"/>" type="image/png">
+		<link rel="icon" href="<c:url value="/resources/asterisk/img/favicon.png"/>" type="image/png">
 		<link href="https://fonts.googleapis.com/css?family=Montserrat:700,900" rel="stylesheet">
-		<link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/error.css"/>">
+		<link rel="stylesheet" href="<c:url value="/resources/asterisk/css/error.css"/>">
 	</head>
 	<body>
 		<div id="notfound">

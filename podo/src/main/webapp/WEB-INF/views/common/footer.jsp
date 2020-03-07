@@ -3,12 +3,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="resources/bootstrap/vendors/owl-carousel/owl.carousel.min.js"></script>
-		<script src="resources/bootstrap/vendors/nice-select/jquery.nice-select.min.js"></script>
-		<script src="resources/bootstrap/js/jquery.ajaxchimp.min.js"></script>
-		<script src="resources/bootstrap/js/mail-script.js"></script>
-		<script src="resources/bootstrap/js/main.js"></script>
-		<script src="resources/bootstrap/js/podo.js"></script>
+		<script src="resources/asterisk/vendors/owl-carousel/owl.carousel.min.js"></script>
+		<script src="resources/asterisk/vendors/nice-select/jquery.nice-select.min.js"></script>
+		<script src="resources/asterisk/js/jquery.ajaxchimp.min.js"></script>
+		<script src="resources/asterisk/js/mail-script.js"></script>
+		<script src="resources/asterisk/js/main.js"></script>
+		<script src="resources/asterisk/js/podo.js"></script>
 	</head>
 <body>
 

@@ -59,7 +59,7 @@
 			          	<h2>검색결과가 없습니다.</h2>
 		          	</c:if>
 			          <c:if test="${ pi.listCount ne 0 }">
-			            <div class="col-lg-12">
+			            <div class="col-lg-12 my-5">
 		                <nav class="blog-pagination justify-content-center d-flex">
 	                    <ul class="pagination">
 	                   		
@@ -179,7 +179,7 @@
 		                  			<tr id="loadingBoxOffice">
 		                  				<td colspan="3">
 		                  					<div style="text-align:center;font-size:13px;">
-		                  						<img src="resources/bootstrap/img/loadingBoxOffice.gif" class="img-fluid" alt="loading-data">
+		                  						<img src="resources/asterisk/img/loadingBoxOffice.gif" class="img-fluid" alt="loading-data">
 		                  						<p>영화진흥위원회에서 데이터를 가져오는 중입니다.</p>
 		                  					</div>
 		                  				</td>
@@ -225,7 +225,7 @@
 						var arr = data.boxOfficeResult.dailyBoxOfficeList;
 						$.each(arr, function(index, value) {
 							var $tdRank = $("<td style='text-align: center;'></td>").text(value.rank);
-							var $tdTitle = $("<td style='text-align: center; font-size: 1vw;'></td>").text(value.movieNm);
+							var $tdTitle = $("<td style='text-align: center; font-size: 14px;'></td>").text(value.movieNm);
 							var $tdAudiAcc = $("<td style='text-align: right;'></td>").text(Number(value.audiAcc).toLocaleString().split(/\s/).join(',') + "명"); // \s : whitespace
 							var $tr = $("<tr style='border-bottom: 1px solid rgba(144, 144, 144, 0.29);'></tr>").append($tdRank).append($tdTitle).append($tdAudiAcc);
 							$("#dailyBoxOffice").append($tr);

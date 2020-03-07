@@ -1,40 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
- <script src="http://code.jquery.com/jquery-latest.min.js"></script>
- 
-  <title>AdminPage</title>
+	<jsp:include page="../common/admin-header.jsp"/>
   <style>
-	
-	td .unblind { color:red ; }
-	
+		td .unblind { color:red ; }
   </style>
-  
-  
-  <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
-
-  <!-- Custom fonts for this template-->
-  <link href="<c:url value="/resources/adBootstrap/vendor/fontawesome-free/css/all.min.css"/>" rel="stylesheet" type="text/css">
-
-  <!-- Page level plugin CSS-->
-  <link href="<c:url value="/resources/adBootstrap/vendor/datatables/dataTables.bootstrap4.css"/>" rel="stylesheet">
-
-  <!-- Custom styles for this template-->
-  <link href="<c:url value="/resources/adBootstrap/css/sb-admin.css"/>" rel="stylesheet">
-
 </head>
 
 <body id="page-top">
@@ -239,10 +213,8 @@
     </div>
   </div>
   
-  
-  
-    <!-- 블라인드처리 ajax -->
-
+	<jsp:include page="../common/admin-footer.jsp"/>
+  <!-- 블라인드처리 ajax -->
 	<script>
 		$(function() {
 			$('.btn_blind').click(function() {
@@ -279,66 +251,8 @@
 				});
 			});
 			
-			
-/* 			var $checkboxTarget = $('.checkbox_target');
-			var checkedIds = [];
-			
-			$('#btn_multi_blind').click(function() {
-				
-				$checkboxTarget.each(function() {
-					var $this = $(this);
-					if ($this.is(':checked')) {
-						checkedIds.push($this.closest("tr").find(".target-id").text());
-						checkedIds.push($this.closest("tr").find("input[type=hidden]").val());
-					}
-				});
-				console.log(checkedIds);
-				
-				$.ajax({
-					url: '/podo/v1/reportList/blind.do',
-					type: 'post',
-					data: {checked:checkedIds},
-				    traditional : true,
-					success: function(data){
-						console.log(data);
-						
-		 				if (data) {
-							//location.reload();
-						} else {
-							alert('blind에 실패했습니다.');
-						}
-					},
-					error: function(){
-						console.log("아이디 ajax 통신 실패");
-					}
-				});
-			}); */
 		});
 	</script>
-  
- 
- 
-  
-
-  <!-- Bootstrap core JavaScript-->
-  <script src="<c:url value="/resources/adBootstrap/vendor/jquery/jquery.min.js" />"></script>
-  <script src="<c:url value="/resources/adBootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js" />"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="<c:url value="/resources/adBootstrap/vendor/jquery-easing/jquery.easing.min.js" />"></script>
-
-  <!-- Page level plugin JavaScript-->
-  <script src="<c:url value="/resources/adBootstrap/vendor/chart.js/Chart.min.js" />"></script>
-  <script src="<c:url value="/resources/adBootstrap/vendor/datatables/jquery.dataTables.js" />"></script>
-  <script src="<c:url value="/resources/adBootstrap/vendor/datatables/dataTables.bootstrap4.js" />"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="<c:url value="/resources/adBootstrap/js/sb-admin.min.js" />"></script>
-
-  <!-- Demo scripts for this page-->
-  <script src="<c:url value="/resources/adBootstrap/js/demo/datatables-demo.js" />"></script>
-  <script src="<c:url value="/resources/adBootstrap/js/demo/chart-area-demo.js" />"></script>
-
 </body>
 
 </html>
