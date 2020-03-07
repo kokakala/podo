@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -17,7 +16,7 @@
 		  <section class="blog-post-area section-margin">
 		    <div class="container">
 		      <div class="row">
-		        <div class="col-lg-8">
+		        <div class="col-xl-8">
 		        
 		        	<!-- 검색된 컨텐츠 -->
 		          <div class="row">
@@ -108,7 +107,7 @@
 		        </div>
 		
 		        <!-- Start Blog Post Siddebar -->
-		        <div class="col-lg-4 sidebar-widgets">
+		        <div class="col-xl-4 sidebar-widgets">
 		            <div class="widget-wrap">
 		            	
 		            	<form action="skFilm.do" method="get" class="single-sidebar-widget newsletter-widget">
@@ -173,19 +172,18 @@
 		                  			<tr style="border-bottom: 2px solid white;">
 		                  				<th style="text-align:center;min-width:33px;">순위</th>
 		                  				<th style="text-align:center;min-width:150px;">영화명</th>
-		                  				<th style="text-align:center;min-width:105px;">누적관객수</th>
+		                  				<th style="text-align:right;min-width:105px;">누적관객수</th>
 		                  			</tr>
 		                  		</thead>
-		                  		<tbody>
-		                  			<c:if test="${ not empty dailyResult.boxOfficeResult.dailyBoxOfficeList }">
-		                  			<c:forEach items="${ dailyResult.boxOfficeResult.dailyBoxOfficeList }" var="boxoffice">
-			                  			<tr style="border-bottom: 1px solid rgba(144, 144, 144, 0.29);">
-			                  				<td style="text-align: center;"><c:out value="${ boxoffice.rank }"/></td>
-			                  				<td style="text-align: center;"><a href="skFilm.do?keyword=<c:out value="${ boxoffice.movieNm }"/>"><c:out value="${ boxoffice.movieNm }"/></a></td>
-			                  				<td style="text-align: right;"><fmt:formatNumber type="number" maxFractionDigits="3" value="${ boxoffice.audiAcc }"/>명</td>
-			                  			</tr>
-		                  			</c:forEach>
-		                  			</c:if>
+		                  		<tbody id="dailyBoxOffice">
+		                  			<tr id="loadingBoxOffice">
+		                  				<td colspan="3">
+		                  					<div style="text-align:center;font-size:13px;">
+		                  						<img src="resources/bootstrap/img/loadingBoxOffice.gif" class="img-fluid" alt="loading-data">
+		                  						<p>영화진흥위원회에서 데이터를 가져오는 중입니다.</p>
+		                  					</div>
+		                  				</td>
+		                  			</tr>
 		                  		</tbody>
 		                  	</table>
 		                  </div>
@@ -217,5 +215,33 @@
 		  </section>
 		  <!--================ End Blog Post Area =================-->
 	  <jsp:include page="../common/footer.jsp"/>
+	  <script>
+	  	$(document).ready(function(){
+	  		$("#loadingBoxOffice").hide();
+				$.ajax({
+					type : "get",
+					url : "getDailyBoxOffice.do",
+					success : function(data) {
+						var arr = data.boxOfficeResult.dailyBoxOfficeList;
+						$.each(arr, function(index, value) {
+							var $tdRank = $("<td style='text-align: center;'></td>").text(value.rank);
+							var $tdTitle = $("<td style='text-align: center; font-size: 1vw;'></td>").text(value.movieNm);
+							var $tdAudiAcc = $("<td style='text-align: right;'></td>").text(Number(value.audiAcc).toLocaleString().split(/\s/).join(',') + "명"); // \s : whitespace
+							var $tr = $("<tr style='border-bottom: 1px solid rgba(144, 144, 144, 0.29);'></tr>").append($tdRank).append($tdTitle).append($tdAudiAcc);
+							$("#dailyBoxOffice").append($tr);
+						});
+					},
+					error : function() {
+						console.error("ajax error");
+					}
+				});
+	  	})
+	  	.ajaxStart(function(){
+	  		$('#loadingBoxOffice').show();
+	  	})
+	  	.ajaxStop(function(){
+	  		$('#loadingBoxOffice').hide();
+	  	});
+			</script>
 	</body>
 </html>

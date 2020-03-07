@@ -10,8 +10,8 @@
 	</head>
 	<body>
 		<div class="container">
-<!-- 			<form action="binsert.do" method="post" enctype="multipart/form-data"> -->
-			<form action="binsert.do" method="post">
+			<form action="binsert.do" method="post" enctype="multipart/form-data">
+<!-- 			<form action="binsert.do" method="post"> -->
 				
 		  	<input type="hidden" name="memberId" value=${ loginUser.id }>
 				
@@ -40,14 +40,14 @@
 						</div>
 					</div>
 		  	</div>
-				
+				<!-- 
 				<div class="form-group row">
 					<label for="" class="col-md-4 col-form-label">첨부파일</label>
 					<div class="col-md-8" id="board-file-area">
 						<input type="file" id="board-upload-file" name="board-upload-file">
 					</div>
 				</div>
-				 
+				 --> 
 				<div class="btn-group d-flex justify-content-end" id="button">
 					<button type="button" class="btn button" onclick="location.href='blist.do';">취소</button>
 					<button type="submit" class="btn button">작성하기</button>

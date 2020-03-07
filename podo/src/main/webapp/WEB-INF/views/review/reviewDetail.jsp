@@ -127,8 +127,8 @@
 							<p></p>
 						</div>
 						<div class="modal-footer">
-							<button  type="submit" class="btn btn-primary">신고보내기</button>
-							<button  class="btn btn-primary" data-dismiss="modal">Close</button>
+							<button class="button" type="submit">신고보내기</button>
+							<button class="button" data-dismiss="modal">Close</button>
 						</div>
 						</form>
 					</div>

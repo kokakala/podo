@@ -36,7 +36,6 @@
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 	
-	<!-- 인코딩 필터 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -45,10 +44,28 @@
 			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
-	
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>multipartFilter</filter-name>
+		<filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
+		<init-param>
+			<param-name>multipartResolverBeanName</param-name>
+			<param-value>multipartResolver</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>multipartFilter</filter-name>
+		<url-pattern>/binsert.do</url-pattern>
+		<url-pattern>/boardUpdate.do</url-pattern>
+		<url-pattern>/ninsert.do</url-pattern>
+		<url-pattern>/nupdate.do</url-pattern>
+		<url-pattern>/finsert.do</url-pattern>
+		<url-pattern>/detailFilmInsert.do</url-pattern>
+		<url-pattern>/insertMember.do</url-pattern>
 	</filter-mapping>
 	
 	<!-- xssEscapeServletFilter는 CharacterEncodingFilter 뒤에 위치해야 한다. -->
@@ -60,7 +77,16 @@
 	    <filter-name>xssEscapeServletFilter</filter-name>
 	    <url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
+	<filter>
+		<filter-name>CorsFilter</filter-name>
+		<filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CorsFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<!-- REDIRECT TLS/SSL/HTTPS -->
 	<!-- 
 	<filter>
@@ -73,7 +99,8 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 	 -->
-	 
+	
+	<!-- TODO: spring에서 처리해보기 -->
 	<!-- error page -->
 	<error-page>
 		<location>/error/error.do</location>

@@ -60,7 +60,7 @@
 							<form action="reviewUpdate.do" method="post" id="movieform" class="pb-4 mb-4">
 				      	<input type="hidden" name="id" value="${r.id}">
 				      	<input type="hidden" name="ratingReviewId" value="${r.ratingReviewId }">
-				      	<input type="checkbox" id="spoilerCheck" name="spoilerCheck" value="${r.spoilerCheck }">
+				      	<input type="checkbox" id="spoilerCheck" name="spoilerCheck">
 				      	<label for="spoilerCheck">스포일러 유무</label>
 								<div class="comment-form">
 									<textarea class="form-control" rows="3" cols="75" name="content" id="content">${ r.content }</textarea>
@@ -75,6 +75,16 @@
 				</div>
 			</div>
 		</section>
-			
+		
+		<script>
+			$(document).ready(function() {
+				var spoilerChecked = "${ r.spoilerCheck }";
+				if (spoilerChecked === "Y") {
+					$("#spoilerCheck").attr("checked", true);
+				} else {
+					$("#spoilerCheck").attr("checked", false);
+				}
+			})
+		</script>
 	</body>
 </html>

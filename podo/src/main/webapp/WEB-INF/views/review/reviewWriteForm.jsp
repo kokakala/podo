@@ -52,22 +52,22 @@
 						
 						<div class="comment-form">
 							<label for="ratingSound">음악</label>
-							<input type="number" name="ratingSound" class="form-control insertRating" id="ratingSound" placeholder="10점까지 입력가능" min="0" max="10" value="">
+							<input type="number" name="ratingSound" class="form-control insertRating" id="ratingSound" placeholder="10점까지 입력가능" min="0" max="10" required>
 							
 							<label for="ratingSound">영상</label>
-							<input type="number" name="ratingVisual" class="form-control insertRating" id="ratingVisual" placeholder="10점까지 입력가능" min="0" max="10">
+							<input type="number" name="ratingVisual" class="form-control insertRating" id="ratingVisual" placeholder="10점까지 입력가능" min="0" max="10" required>
 							
 							<label for="ratingSound">연기</label>
-							<input type="number" name="ratingActing" class="form-control insertRating" id="ratingActing" placeholder="10점까지 입력가능" min="0" max="10">
+							<input type="number" name="ratingActing" class="form-control insertRating" id="ratingActing" placeholder="10점까지 입력가능" min="0" max="10" required>
 							
 							<label for="ratingSound">대중성</label>
-							<input type="number" name="ratingPop" class="form-control insertRating" id="ratingPop" placeholder="10점까지 입력가능" min="0" max="10">
+							<input type="number" name="ratingPop" class="form-control insertRating" id="ratingPop" placeholder="10점까지 입력가능" min="0" max="10" required>
 							
 							<label for="ratingSound">각본</label>
-							<input type="number" name="ratingScript" class="form-control insertRating" id="ratingScript" placeholder="10점까지 입력가능" min="0" max="10">
+							<input type="number" name="ratingScript" class="form-control insertRating" id="ratingScript" placeholder="10점까지 입력가능" min="0" max="10" required>
 							
 							<label for="ratingSound">연출</label>
-							<input type="number" name="ratingDirect" class="form-control insertRating" id="ratingDirect" placeholder="10점까지 입력가능" min="0" max="10">
+							<input type="number" name="ratingDirect" class="form-control insertRating" id="ratingDirect" placeholder="10점까지 입력가능" min="0" max="10" required>
 						</div>
 						
 						<div class="comment-form">

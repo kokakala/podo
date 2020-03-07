@@ -35,6 +35,8 @@ import com.ch.podo.like.model.vo.Like;
 import com.ch.podo.member.model.vo.Member;
 import com.ch.podo.ratingFilm.model.service.RatingFilmService;
 import com.ch.podo.ratingFilm.model.vo.RatingFilm;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -79,10 +81,21 @@ public class FilmController {
 		int filmCount = filmService.selectKeywordFilmListCount(keyword, skeyword);
 		// page는 최대 3페이지, board는 최대 6개 보여지도록 set
 		PageInfo pi = Pagination.setPageLimit(currentPage, filmCount, 3, 6);
-		// log.info("pi : " + pi);
-
 		ArrayList<Film> list = filmService.selectKeywordFilmList(keyword, skeyword, pi);
 		
+		mv.addObject("filmCount", filmCount)
+			.addObject("pi", pi)
+			.addObject("list", list)
+			.addObject("keyword", keyword)
+			.addObject("skeyword", skeyword)
+			.setViewName("search/searchAll");
+		
+		return mv;
+	}
+
+	@ResponseBody
+	@RequestMapping("getDailyBoxOffice.do")
+	public Object getDailyBoxOffice(HttpServletRequest request) throws OpenAPIFault, Exception {
 		// http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=734ea4839ec968cbcd71b13515f7c5ee&targetDt=20191201
 		// http://www.kobis.or.kr/kobisopenapi/homepg/board/findTutorial.do
 		// 조회일자
@@ -110,22 +123,13 @@ public class FilmController {
 		// Json 라이브러리(jackson-databind)를 통해 Handling
 		ObjectMapper mapper = new ObjectMapper();
 		HashMap<String, Object> dailyResult = mapper.readValue(dailyResponse, HashMap.class);
-		mv.addObject("dailyResult", dailyResult);
-		 log.info("dailyResult {}: ", dailyResult);
+		log.info("dailyResult {}: ", dailyResult);
+		return dailyResult;
 		
 		// KOBIS 오픈 API Rest Client를 통해 코드 서비스 호출 (boolean isJson, String comCode)
-		String codeResponse = kobisOpenAPIRestService.getComCodeList(true, "0105000000");
-		HashMap<String, Object> codeResult = mapper.readValue(codeResponse, HashMap.class);
-		mv.addObject("codeResult", codeResult);
-		
-		mv.addObject("filmCount", filmCount)
-			.addObject("pi", pi)
-			.addObject("list", list)
-			.addObject("keyword", keyword)
-			.addObject("skeyword", skeyword)
-			.setViewName("search/searchAll");
-		
-		return mv;
+		// String codeResponse = kobisOpenAPIRestService.getComCodeList(true, "0105000000");
+		// HashMap<String, Object> codeResult = mapper.readValue(codeResponse, HashMap.class);
+		// model.addObject("codeResult", codeResult);
 	}
 	
 	/**

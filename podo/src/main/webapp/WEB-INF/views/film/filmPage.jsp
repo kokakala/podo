@@ -259,480 +259,288 @@
 		  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6"><path d="M12 6H0l6-6z"/></svg>
 		  <span class="screen-reader-text">Back to top</span>
 		</a>
-
-	<script>
-		
-		$(function(){
-			$(".nav").children("li").eq(0).addClass("active");
-		});
-
-		// URL 파라미터 값을 가져오기 위한 메서드
-		$.urlParam = function(name) {
-			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-			if (results == null) {
-				return null;
-			} else {
-				return results[1] || 0;
-			}
-		}
-
-		$(function() {
-			// 관람유무 조건 유지
-			if ($.urlParam("saw") === "show") {
-				$("select[name=saw] option[value=show]").attr("selected", true);
-			} else if ($.urlParam("saw") === "hide") {
-				$("select[name=saw] option[value=hide]").attr("selected", true);
-			} else {
-				$("select[name=saw] option[value=all]").attr("selected", true);
-			}
-
-			// 부가옵션 조건 유지
-			if ($.urlParam("order") === "filmRatingDesc") {
-				$("select[name=order] option[value=filmRatingDesc]").attr("selected", true);
-			} else if ($.urlParam("order") === "reviewCountDesc") {
-				$("select[name=order] option[value=reviewCountDesc]").attr("selected", true);
-			} else {
-				$("select[name=order] option[value=all]").attr("selected", true);
-			}
-		});
-
-		/* nice-select 라이브러리 */
-		$(document).ready(function() {
-			$('select').niceSelect();
-		});
-
-		/* 영화 검색목록 불러오기 Synchronous 통신 */
-		$(document).on("click", "li.option", function() {
-					// 연도별, 국가별 데이터도 같이 가져와야하기 때문에 $(this)가 무엇인지 고민해봐야하고 이벤트도 같이 걸어줘야함
-					// 먼저 selected 클래스가 걸려있는 data-value 값을 가져옴
-					// var releaseYear = $("select[name=releaseYear]").val();
-					var releaseYear = $("li[data-display=연도별]").parent().find(".selected").attr("data-value");
-					var productionCountry = $("li[data-display=국가별]").parent().find(".selected").attr("data-value");
-					var genreId = $("li[data-display=장르별]").parent().find(".selected").attr("data-value");
-					var saw = $("li[data-display=관람유무]").parent().find(".selected").attr("data-value");
-					var order = $("li[data-display=정렬]").parent().find(".selected").attr("data-value");
-
-					// 만약 지금 클릭한 것이라면 selected 클래스가 추가되기 전이므로 $(this) 의 data-value 값을 가져옴
-					if ($(this).siblings('li[data-display=장르별]').length
-							|| $(this).attr("data-display") === "장르별") {
-						// console.log($(this));
-						genreId = $(this).attr("data-value");
-						$("select[name=genreId] option").attr("selected", false);
-						$("select[name=genreId] option[value=" + genreId + "]").attr("selected", true);
-					} else if ($(this).siblings('li[data-display=연도별]').length
-							|| $(this).attr("data-display") === "연도별") {
-						releaseYear = $(this).attr("data-value");
-						$("select[name=releaseYear] option").attr("selected", false);
-						$("select[name=releaseYear] option[value=" + releaseYear + "]").attr("selected", true);
-					} else if ($(this).siblings('li[data-display=국가별]').length
-							|| $(this).attr("data-display") === "국가별") {
-						productionCountry = $(this).attr("data-value");
-						$("select[name=productionCountry] option").attr("selected", false);
-						$("select[name=productionCountry] option[value=" + productionCountry + "]").attr("selected", true);
-					} else if ($(this).siblings('li[data-display=관람]').length
-							|| $(this).attr("data-display") === "관람") {
-						saw = $(this).attr("data-value");
-						$("select[name=saw] option").attr("selected", false);
-						$("select[name=saw] option[value=" + saw + "]").attr("selected", true);
-					} else if ($(this).siblings('li[data-display=정렬]').length
-							|| $(this).attr("data-display") === "정렬") {
-						order = $(this).attr("data-value");
-						$("select[name=order] option").attr("selected", false);
-						$("select[name=order] option[value=" + order + "]").attr("selected", true);
-					} else {
-						console.log("선택된 것이 없다?");
-					}
-
-					$("#search-film-form").submit();
-
-					/* 
-					location.href = 'film.do?releaseYear=' + releaseYear 
-												+ '&productionCountry=' + productionCountry
-												+ '&genreId=' + genreId;
-					 */
-				});
-
-		// 페이징 처리를 위해 AJAX 대신 동기적으로 처리
-		/* 영화 검색목록 불러오기 AJAX */
-		/*
-		// $("select[name=releaseYear], select[name=productionCountry], select[name=genre]").on("change", function(){
-		$(document).on("click", "li.option", function() {
+	
+		<jsp:include page="../common/footer.jsp"/>
+		<script>
 			
-			// 연도별, 국가별 데이터도 같이 가져와야하기 때문에 $(this)가 무엇인지 고민해봐야하고 이벤트도 같이 걸어줘야함
-			// 먼저 selected 클래스가 걸려있는 data-value 값을 가져옴
-			// var releaseYear = $("select[name=releaseYear]").val();
-			var releaseYear = $("li[data-display=연도별]").parent().find(".selected").attr("data-value");
-			var productionCountry = $("li[data-display=국가별]").parent().find(".selected").attr("data-value");
-			var genreId = $("li[data-display=장르별]").parent().find(".selected").attr("data-value");
-			
-			// 만약 지금 클릭한 것이라면 selected 클래스가 추가되기 전이므로 $(this) 의 data-value 값을 가져옴
-			if ($(this).siblings('li[data-display=장르별]').length || $(this).attr("data-display") === "장르별") {
-				console.log($(this));
-				genreId = $(this).attr("data-value");
-			} else if ($(this).siblings('li[data-display=연도별]').length || $(this).attr("data-display") === "연도별") {
-				releaseYear = $(this).attr("data-value");
-			} else if ($(this).siblings('li[data-display=국가별]').length || $(this).attr("data-display") === "국가별") {
-				productionCountry = $(this).attr("data-value");
-			} else {
-				console.log("선택된 것이 없다?");
+			$(function(){
+				$(".nav").children("li").eq(0).addClass("active");
+			});
+	
+			// URL 파라미터 값을 가져오기 위한 메서드
+			$.urlParam = function(name) {
+				var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+				if (results == null) {
+					return null;
+				} else {
+					return results[1] || 0;
+				}
 			}
-			
-			// 필터 검색 AJAX
-			$.ajax({
-				url:"sfFilm.do",
-				data:{ releaseYear : releaseYear,
-						   productionCountry : productionCountry,
-						   genreId : genreId },
-				success:function(data){
-					
-					$tbody = $("#search-film-result tbody");
-					$tbody.html("");
-					
-					$("#film-count").text("검색결과(" + data.film.length + ")");
-					
-					if (data.film.length > 0){
-						
-						var like = data.like;
-						var rate = data.rate;
-						
-						var i=1;
-						var j=1;
-						
-						// 가져온 데이터를 $.each 메서드로 동적 생성
-						$.each(data.film, function(index, value){
-							$tr = $("<tr></tr>");
-							
-							$korTd = $("<td width='100'></td>").text(value.titleKor);
-							$idTd = $("<td id='film-id-td' style='display: none;'></td>").text(value.id);
-							$engTd = $("<td></td>").text(value.titleEng);
-							$directorTd = $("<td></td>").text(value.director);
-							$releaseTd = $("<td></td>").text(value.releaseYear);
-							$countryTd = $("<td></td>").text(value.productionCountry);
-							$genreTd = $("<td></td>").text(value.genre);
-							$posterTd = $("<td></td>").html("<img src='resources/detailFilmImage/podoposter.jpg' style='width: 107px; height: 152px; object-fit: cover;'>");
-							
-							// 좋아요한 영화인지 검사
-							if (like[value.id] != null) {
-								$likeTd = $("<td></td>").html("<button class='btn btn-danger btn-liked-film'>LIKED</button>");
-							} else {
-								$likeTd = $("<td></td>").html("<button class='btn btn-secondary btn-like-film'>LIKE</button>");
-							}
-							
-							
-							var star1 = "style='width: 30px; z-index: 5;'";
-							var star2 = "style='width: 60px; z-index: 4;'";
-							var star3 = "style='width: 90px; z-index: 3;'";
-							var star4 = "style='width: 120px; z-index: 2;'";
-							var star5 = "style='width: 150px; z-index: 1;'";
-							
-							var	str = "<span class='star-input'>"
-											+ "<span class='input'>"
-											+ "<input type='radio' name='star-input" + j + "' value='1' id='p" + i + "'>"
-		    							+ "<label for='p" + i + "' " + star1 + ">1</label>";
-		    							i++;
-					    							
-			    				str += "<input type='radio' name='star-input" + j + "' value='2' id='p" + i +"'>"
-		    							+ "<label for='p" + i + "' " + star2 + ">2</label>";
-		    							i++;
-			    						
-			    				str	+= "<input type='radio' name='star-input" + j + "' value='3' id='p"+ i + "'>"
-		    							+ "<label for='p" + i + "' " + star3 + ">3</label>";
-		    							i++;
-			    							
-									str += "<input type='radio' name='star-input" + j + "' value='4' id='p" + i + "'>"
-								    	+ "<label for='p" + i + "' " + star4 + ">4</label>";
-								    	i++;
-									    	
-									str	+= "<input type='radio' name='star-input" + j + "' value='5' id='p" + i + "'>"
-								    	+ "<label for='p" + i + "' " + star5 + ">5</label>"
-								  		+ "</span>"
-									  	+ "<output for='star-input'><b style='display: none;'>0</b></output>"
-											+ "</span>";
-											i++;
-											j++;
-											
-							$starTd = $("<td></td>").html(str);
-
-							if (rate[value.id] != null) {
-								var star = parseInt(rate[value.id].star);
-								var $rated = $($starTd).find("input");
-								var $checked = $($rated).eq(star - 1);
-								$($checked).prop("checked", true);
-								$($checked).parent().siblings("output").find("b").text(star);
-							}
-							
-							$tr.append($korTd);
-							$tr.append($idTd);
-							$tr.append($engTd);
-							$tr.append($directorTd);
-							$tr.append($releaseTd);
-							$tr.append($countryTd);
-							$tr.append($genreTd);
-							$tr.append($posterTd);
-							$tr.append($likeTd);
-							$tr.append($starTd);
-							
-							$tbody.append($tr);
-						
-						});
-						
-					} else {
-						
-						$tr = $("<tr></tr>");
-						
-						$contentTd = $("<td colspan='9'></td>").text("검색된 결과가 없습니다.");
-						$tr.append($contentTd);
-						
-						$tbody.append($tr);
-					}
-					
-				},
-				error:function(){
-					console.log("ajax 통신 실패");
+	
+			$(function() {
+				// 관람유무 조건 유지
+				if ($.urlParam("saw") === "show") {
+					$("select[name=saw] option[value=show]").attr("selected", true);
+				} else if ($.urlParam("saw") === "hide") {
+					$("select[name=saw] option[value=hide]").attr("selected", true);
+				} else {
+					$("select[name=saw] option[value=all]").attr("selected", true);
+				}
+	
+				// 부가옵션 조건 유지
+				if ($.urlParam("order") === "filmRatingDesc") {
+					$("select[name=order] option[value=filmRatingDesc]").attr("selected", true);
+				} else if ($.urlParam("order") === "reviewCountDesc") {
+					$("select[name=order] option[value=reviewCountDesc]").attr("selected", true);
+				} else {
+					$("select[name=order] option[value=all]").attr("selected", true);
 				}
 			});
-			
-		});
-		 */
-		
-		$(document).ready(function(){
-			$('[data-toggle="tooltip"]').tooltip();
-			$('[data-toggle="tooltip"]').click(function () {
-			 $(this).tooltip('toggle');
+	
+			/* nice-select 라이브러리 */
+			$(document).ready(function() {
+				$('select').niceSelect();
 			});
-	  });
-		
-		/* 좋아요 AJAX */
-		$(document).on("click", ".btn-like-film, .btn-liked-film", function() {
-					// 영화 ID 찾기
-					// var fid = $(this).closest("tr").find("td").eq(1).text();
-					var fid = $(this).closest(".row").siblings("input[type=hidden]").val();
-					var $this = $(this)[0];
-					// console.log(fid);
-
-					// flag
-					if ($($this).hasClass("btn-like-film")) {
-						var likeFlag = 1;
-					} else {
-						var likeFlag = 0;
-					}
-					
-
-					$.ajax({
-						url : "likeFilm.do",
-						data : {
-							"fid" : fid,
-							"flag" : likeFlag
-						},
-						type : "post",
-						dataType : "json",
-						success : function(data) {
-							// 이미 'LIKE'라면 'LIKED' 버튼이 보여짐
-							if (data == 0) {
-								alert("로그인 해주세요!");
-							} else if (data > 0 && $($this).hasClass("btn-like-film")) {
-								$($this).closest("div").find("button")
-												.removeClass("btn-secondary")
-												.removeClass("btn-like-film")
-												.addClass("btn-danger")
-												.addClass("btn-block")
-												.addClass("btn-liked-film")
-												.attr({"data-original-title":"좋아요 취소"})
-												.html("<img src='resources/common/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
-												.blur();
-								$(".tooltip-inner").html("좋아요 취소");
-							} else {
-								$($this).closest("div").find("button")
-												.removeClass("btn-danger")
-												.removeClass("btn-liked-film")
-												.addClass("btn-secondary")
-												.addClass("btn-block")
-												.addClass("btn-like-film")
-												.attr({"data-original-title":"좋아요"})
-												.html("<img src='resources/common/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
-												.blur();
-								$(".tooltip-inner").html("좋아요");
-							}
-						},
-						error : function() {
-							// console.log("통신 실패!");
-						}
-					});
-				});
-		
-		/* 봤어요 AJAX */
-		$(document).on("click", ".btn-see-film, .btn-saw-film", function() {
-					// 영화 ID 찾기
-					var fid = $(this).closest(".row").siblings("input[type=hidden]").val();
-					var $this = $(this)[0];
-
-					// flag
-					if ($($this).hasClass("btn-see-film")) {
-						var sawFlag = 1;
-					} else {
-						var sawFlag = 0;
-					}
-
-					$.ajax({
-						url : "sawFilm.do",
-						data : {
-							"fid" : fid,
-							"flag" : sawFlag
-						},
-						type : "post",
-						dataType : "json",
-						success : function(data) {
-							// 이미 'SEE'라면 'SAW' 버튼이 보여짐
-							if (data == 0) {
-								alert("로그인 해주세요!");
-							} else if (data > 0 && $($this).hasClass("btn-see-film")) {
-								$($this).closest("div").find("button")
-												.removeClass("btn-secondary")
-												.removeClass("btn-see-film")
-												.addClass("btn-danger")
-												.addClass("btn-block")
-												.addClass("btn-saw-film")
-												.attr({"data-original-title":"봤어요 취소"})
-												.html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
-												.blur();
-								$(".tooltip-inner").html("봤어요 취소");
-							} else {
-								$($this).closest("div").find("button")
-												.removeClass("btn-danger")
-												.removeClass("btn-saw-film")
-												.addClass("btn-secondary")
-												.addClass("btn-block")
-												.addClass("btn-see-film")
-												.attr({"data-original-title":"봤어요"})
-												.html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
-												.blur();
-								$(".tooltip-inner").html("봤어요");
-
-								$($this).closest(".row").siblings(".star-area").find("[name*=star-input]")
-																															 .prop("checked", false)
-																														   .trigger("blur");
-								$($this).closest(".row").siblings(".star-area").find("b").text("0");
-							}
-						},
-						error : function() {
-							// console.log("통신 실패!");
-						}
-					});
-				});
-
-		$(function() {
-			$(document)
-			// 별 위에 마우스가 올라가면 'output b' 안에 숫자도 변경
-			.on(
-					"mouseover",
-					".star-input label",
-					function() {
-						$(this).parent().siblings("output").find("b").text($(this).text());
-					})
-			// 별 위에서 마우스가 나올 때 체크된 것이 있으면 고정
-			.on(
-					"mouseleave",
-					".star-input>.input",
-					function() {
-						var $checked = $(this).closest(".star-input").find(":checked");
-						
-						if ($checked.length === 0) {
-							$(this).siblings("output").find("b").text("0");
+	
+	
+			// 페이징 처리를 위해 AJAX 대신 동기적으로 처리
+			/* 영화 검색목록 불러오기 Synchronous 통신 */
+			$(document).on("click", "li.option", function() {
+						// 연도별, 국가별 데이터도 같이 가져와야하기 때문에 $(this)가 무엇인지 고민해봐야하고 이벤트도 같이 걸어줘야함
+						// 먼저 selected 클래스가 걸려있는 data-value 값을 가져옴
+						var releaseYear = $("li[data-display=연도별]").parent().find(".selected").attr("data-value");
+						var productionCountry = $("li[data-display=국가별]").parent().find(".selected").attr("data-value");
+						var genreId = $("li[data-display=장르별]").parent().find(".selected").attr("data-value");
+						var saw = $("li[data-display=관람유무]").parent().find(".selected").attr("data-value");
+						var order = $("li[data-display=정렬]").parent().find(".selected").attr("data-value");
+	
+						// 만약 지금 처음 클릭한 것이라면 selected 클래스가 추가되기 전이므로 $(this) 의 data-value 값을 가져옴
+						if ($(this).siblings('li[data-display=장르별]').length
+								|| $(this).attr("data-display") === "장르별") {
+							// console.log($(this));
+							genreId = $(this).attr("data-value");
+							$("select[name=genreId] option").attr("selected", false);
+							$("select[name=genreId] option[value=" + genreId + "]").attr("selected", true);
+						} else if ($(this).siblings('li[data-display=연도별]').length
+								|| $(this).attr("data-display") === "연도별") {
+							releaseYear = $(this).attr("data-value");
+							$("select[name=releaseYear] option").attr("selected", false);
+							$("select[name=releaseYear] option[value=" + releaseYear + "]").attr("selected", true);
+						} else if ($(this).siblings('li[data-display=국가별]').length
+								|| $(this).attr("data-display") === "국가별") {
+							productionCountry = $(this).attr("data-value");
+							$("select[name=productionCountry] option").attr("selected", false);
+							$("select[name=productionCountry] option[value=" + productionCountry + "]").attr("selected", true);
+						} else if ($(this).siblings('li[data-display=관람]').length
+								|| $(this).attr("data-display") === "관람") {
+							saw = $(this).attr("data-value");
+							$("select[name=saw] option").attr("selected", false);
+							$("select[name=saw] option[value=" + saw + "]").attr("selected", true);
+						} else if ($(this).siblings('li[data-display=정렬]').length
+								|| $(this).attr("data-display") === "정렬") {
+							order = $(this).attr("data-value");
+							$("select[name=order] option").attr("selected", false);
+							$("select[name=order] option[value=" + order + "]").attr("selected", true);
 						} else {
-							$(this).siblings("output").find("b").text($checked.next().text());
+							console.log("선택된 것이 없습니다.");
 						}
-					})
-			// 별을 클릭했을 때 DB에 별점을 기록하기 위한 AJAX
-			.on("click", ".star-input label", function() {
-				var $this = $(this);
-				var $fid = $(this).closest("div").siblings(":hidden").val();
-				var $star = $(this).text();
-
+						$("#search-film-form").submit();
+					});
+			
+			$(document).ready(function(){
+				$('[data-toggle="tooltip"]').tooltip();
+				$('[data-toggle="tooltip"]').click(function () {
+				 $(this).tooltip('toggle');
+				});
+		  });
+			
+			/* 좋아요 AJAX */
+			$(document).on("click", ".btn-like-film, .btn-liked-film", function() {
+				// 영화 ID 찾기
+				// var fid = $(this).closest("tr").find("td").eq(1).text();
+				var fid = $(this).closest(".row").siblings("input[type=hidden]").val();
+				var $this = $(this)[0];
+				// console.log(fid);
+	
+				// flag
+				if ($($this).hasClass("btn-like-film")) {
+					var likeFlag = 1;
+				} else {
+					var likeFlag = 0;
+				}
+	
 				$.ajax({
-					url : "rateFilm.do",
+					url : "likeFilm.do",
 					data : {
-						"fid" : $fid,
-						"star" : $star
+						"fid" : fid,
+						"flag" : likeFlag
 					},
 					type : "post",
 					dataType : "json",
 					success : function(data) {
-						// console.log(data);
-						if (data === 1) {
-							// jQuery 1.6 이후 부터 라디오버튼과 체크박스를 다루기 위해서는 .prop() 함수를 사용해야 한다.
-							$($this).closest(".star-input").find("[name*=star-input]")
-																						 .prop("checked", false)
-																					   .trigger("blur");
-							$($this).parent().siblings("output").find("b").text("0");
+						// 이미 'LIKE'라면 'LIKED' 버튼이 보여짐
+						if (data == 0) {
+							alert("로그인 해주세요!");
+						} else if (data > 0 && $($this).hasClass("btn-like-film")) {
+							$($this).closest("div").find("button")
+											.removeClass("btn-secondary")
+											.removeClass("btn-like-film")
+											.addClass("btn-danger")
+											.addClass("btn-block")
+											.addClass("btn-liked-film")
+											.attr({"data-original-title":"좋아요 취소"})
+											.html("<img src='resources/common/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
+											.blur();
+							$(".tooltip-inner").html("좋아요 취소");
 						} else {
-							$this.closest(".podo-film-card")
-									 .find(".btn-see-film")
-									 .removeClass("btn-secondary")
-									 .removeClass("btn-see-film")
-									 .addClass("btn-danger")
-									 .addClass("btn-block")
-									 .addClass("btn-saw-film")
-									 .attr({"data-original-title":"봤어요 취소"})
-									 .html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>");
+							$($this).closest("div").find("button")
+											.removeClass("btn-danger")
+											.removeClass("btn-liked-film")
+											.addClass("btn-secondary")
+											.addClass("btn-block")
+											.addClass("btn-like-film")
+											.attr({"data-original-title":"좋아요"})
+											.html("<img src='resources/common/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
+											.blur();
+							$(".tooltip-inner").html("좋아요");
 						}
 					},
 					error : function() {
-						// 비회원일 경우 별점 checked false
-						alert("로그인 해주세요!");
-						
-						// jQuery 1.6 이후 부터 라디오버튼과 체크박스를 다루기 위해서는 .prop() 함수를 사용해야 한다.
-						$($this).closest(".star-input").find("[name*=star-input]")
-																					 .prop("checked", false)
-																					 .trigger("blur");
-						$($this).parent().siblings("output").find("b").text("0");
+						// console.log("통신 실패!");
 					}
 				});
 			});
-		});
-		
-		// How to add a sticky back-to-top button to your website
-		// https://getflywheel.com/layout/sticky-back-to-top-button-tutorial/
-		// Set a variable for our button element.
-		const scrollToTopButton = document.getElementById('js-top');
-		
-		// Let's set up a function that shows our scroll-to-top button if we scroll beyond the height of the initial window.
-		const scrollFunc = () => {
-		  // Get the current scroll value
-		  let y = window.scrollY;
-		  
-		  // If the scroll value is greater than the window height, let's add a class to the scroll-to-top button to show it!
-		  if (y > 0) {
-		    scrollToTopButton.className = "top-link show";
-		  } else {
-		    scrollToTopButton.className = "top-link hide";
-		  }
-		};
-		
-		window.addEventListener("scroll", scrollFunc);
-		
-		const scrollToTop = () => {
-		  // Let's set a variable for the number of pixels we are from the top of the document.
-		  const c = document.documentElement.scrollTop || document.body.scrollTop;
-		  
-		  // If that number is greater than 0, we'll scroll back to 0, or the top of the document.
-		  // We'll also animate that scroll with requestAnimationFrame:
-		  // https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
-		  if (c > 0) {
-		    window.requestAnimationFrame(scrollToTop);
-		    // ScrollTo takes an x and a y coordinate.
-		    // Increase the '10' value to get a smoother/slower scroll!
-		    window.scrollTo(0, c - c / 10);
-		  }
-		};
-		
-		// When the button is clicked, run our ScrolltoTop function above!
-		scrollToTopButton.onclick = function(e) {
-		  e.preventDefault();
-		  scrollToTop();
-		}
-
-	</script>
+			
+			/* 봤어요 AJAX */
+			$(document).on("click", ".btn-see-film, .btn-saw-film", function() {
+						// 영화 ID 찾기
+						var fid = $(this).closest(".row").siblings("input[type=hidden]").val();
+						var $this = $(this)[0];
 	
-		<jsp:include page="../common/footer.jsp"/>
+						// flag
+						if ($($this).hasClass("btn-see-film")) {
+							var sawFlag = 1;
+						} else {
+							var sawFlag = 0;
+						}
+	
+						$.ajax({
+							url : "sawFilm.do",
+							data : {
+								"fid" : fid,
+								"flag" : sawFlag
+							},
+							type : "post",
+							dataType : "json",
+							success : function(data) {
+								// 이미 'SEE'라면 'SAW' 버튼이 보여짐
+								if (data == 0) {
+									alert("로그인 해주세요!");
+								} else if (data > 0 && $($this).hasClass("btn-see-film")) {
+									$($this).closest("div").find("button")
+													.removeClass("btn-secondary")
+													.removeClass("btn-see-film")
+													.addClass("btn-danger")
+													.addClass("btn-block")
+													.addClass("btn-saw-film")
+													.attr({"data-original-title":"봤어요 취소"})
+													.html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
+													.blur();
+									$(".tooltip-inner").html("봤어요 취소");
+								} else {
+									$($this).closest("div").find("button")
+													.removeClass("btn-danger")
+													.removeClass("btn-saw-film")
+													.addClass("btn-secondary")
+													.addClass("btn-block")
+													.addClass("btn-see-film")
+													.attr({"data-original-title":"봤어요"})
+													.html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
+													.blur();
+									$(".tooltip-inner").html("봤어요");
+	
+									$($this).closest(".row").siblings(".star-area").find("[name*=star-input]")
+																																 .prop("checked", false)
+																															   .trigger("blur");
+									$($this).closest(".row").siblings(".star-area").find("b").text("0");
+								}
+							},
+							error : function() {
+								// console.log("통신 실패!");
+							}
+						});
+					});
+	
+			$(function() {
+				$(document)
+				// 별 위에 마우스가 올라가면 'output b' 안에 숫자도 변경
+				.on(
+						"mouseover",
+						".star-input label",
+						function() {
+							$(this).parent().siblings("output").find("b").text($(this).text());
+						})
+				// 별 위에서 마우스가 나올 때 체크된 것이 있으면 고정
+				.on(
+						"mouseleave",
+						".star-input>.input",
+						function() {
+							var $checked = $(this).closest(".star-input").find(":checked");
+							
+							if ($checked.length === 0) {
+								$(this).siblings("output").find("b").text("0");
+							} else {
+								$(this).siblings("output").find("b").text($checked.next().text());
+							}
+						})
+				// 별을 클릭했을 때 DB에 별점을 기록하기 위한 AJAX
+				.on("click", ".star-input label", function() {
+					var $this = $(this);
+					var $fid = $(this).closest("div").siblings(":hidden").val();
+					var $star = $(this).text();
+	
+					$.ajax({
+						url : "rateFilm.do",
+						data : {
+							"fid" : $fid,
+							"star" : $star
+						},
+						type : "post",
+						dataType : "json",
+						success : function(data) {
+							// console.log(data);
+							if (data === 1) {
+								// jQuery 1.6 이후 부터 라디오버튼과 체크박스를 다루기 위해서는 .prop() 함수를 사용해야 한다.
+								$($this).closest(".star-input").find("[name*=star-input]")
+																							 .prop("checked", false)
+																						   .trigger("blur");
+								$($this).parent().siblings("output").find("b").text("0");
+							} else {
+								$this.closest(".podo-film-card")
+										 .find(".btn-see-film")
+										 .removeClass("btn-secondary")
+										 .removeClass("btn-see-film")
+										 .addClass("btn-danger")
+										 .addClass("btn-block")
+										 .addClass("btn-saw-film")
+										 .attr({"data-original-title":"봤어요 취소"})
+										 .html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>");
+							}
+						},
+						error : function() {
+							// 비회원일 경우 별점 checked false
+							alert("로그인 해주세요!");
+							
+							// jQuery 1.6 이후 부터 라디오버튼과 체크박스를 다루기 위해서는 .prop() 함수를 사용해야 한다.
+							$($this).closest(".star-input").find("[name*=star-input]")
+																						 .prop("checked", false)
+																						 .trigger("blur");
+							$($this).parent().siblings("output").find("b").text("0");
+						}
+					});
+				});
+			});
+	
+		</script>
 	</body>
 </html>

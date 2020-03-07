@@ -18,7 +18,6 @@ import com.ch.podo.board.model.vo.Board;
 import com.ch.podo.board.model.vo.PageInfo;
 import com.ch.podo.common.Image;
 import com.ch.podo.common.Pagination;
-import com.ch.podo.common.PodoRenamePolicy;
 import com.ch.podo.member.model.vo.Member;
 import com.ch.podo.notice.model.service.NoticeService;
 import com.ch.podo.notice.model.vo.Notice;
@@ -63,7 +62,8 @@ public class BoardController {
 	
 	// 게시판 작성
 	@RequestMapping("binsert.do")
-	public ModelAndView insertBoard(HttpServletRequest request, Board board, ModelAndView mv, HttpSession session) {
+	public ModelAndView insertBoard(HttpServletRequest request, Board board, ModelAndView mv, HttpSession session,
+																	@RequestParam(value = "uploadFile", required = false) MultipartFile file) {
 		int result = boardService.insertBoard(board);
 		if (result > 0) {
 			mv.setViewName("redirect:blist.do");
@@ -110,7 +110,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping("boardDelete.do")
-	public String boardDelete(int id, HttpServletRequest request, ModelAndView mv, Image image) {
+	public String boardDelete(String id, HttpServletRequest request, ModelAndView mv, Image image) {
 
 		if (image.getOriginalName() != null) {
 			String root = request.getSession().getServletContext().getRealPath("resources");
@@ -121,7 +121,7 @@ public class BoardController {
 			}
 		}
 		
-		int result = boardService.deleteBoard(id);
+		int result = boardService.deleteBoard(Integer.parseInt(id));
 
 		if (result > 0) {
 			request.getSession().setAttribute("msg", "게시물이 삭제되었습니다.");

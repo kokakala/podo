@@ -141,24 +141,18 @@ public class ReviewController {
 
 	// 수정 하는 리퀘스트매핑
 	@RequestMapping("reviewUpdate.do")
-	public ModelAndView reviewUpdate(Review review, ModelAndView mv, HttpSession session) {
-		if (review.getSpoilerCheck() != null) {
-			if (review.getSpoilerCheck().equals("N")) {
-				review.setSpoilerCheck("Y");
-			} else {
-				review.setSpoilerCheck("N");
-			}
-		} else {
+	public ModelAndView reviewUpdate(Review review, Boolean spoilerCheck, ModelAndView mv, HttpSession session) {
+		log.info("spoilerCheck : {}", spoilerCheck);
+		if (spoilerCheck == null || spoilerCheck == false) {
 			review.setSpoilerCheck("N");
+		} else {
+			review.setSpoilerCheck("Y");
 		}
 
 		int result1 = reviewService.reviewUpdate(review);
 		int result2 = reviewService.reviewUpdateContent(review);
-		// Member member = (Member) session.getAttribute("loginUser");
-
 		if (result1 > 0 && result2 > 0) {
-			mv.addObject("id", review.getId())
-				.setViewName("redirect:reviewDetail.do");
+			mv.addObject("id", review.getId()).setViewName("redirect:reviewDetail.do");
 		} else {
 			mv.setViewName("redirect:exception.do");
 		}

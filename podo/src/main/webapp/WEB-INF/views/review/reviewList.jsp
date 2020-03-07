@@ -23,7 +23,7 @@
 						
 						<c:if test="${ review.spoilerCheck eq 'Y' }">
 							<div class="df-r-spoContent">
-								<div class="df-r-spoilerCheck">해당 내용은 스포일러를 포함하고 있습니다.</div>
+								<div class="review-spoiler-check">해당 내용은 스포일러를 포함하고 있습니다.</div>
 								<div class="df-r-content review-list-content">${ review.content }</div>
 							</div>
 						</c:if>

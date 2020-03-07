@@ -545,12 +545,10 @@ button.button {
 	max-height: 660px;
 }
 
-#mdfPosterBtn {
-	display: none;
-}
-
 .nickguide,
-.originguide {
+.originguide,
+.faq-q+.contents,
+#mdfPosterBtn {
 	display: none;
 }
 
@@ -560,7 +558,8 @@ button.button {
 }
 
 .nickno,
-.orino {
+.orino,
+.review-spoiler-check {
 	color: #e91e63;
 }
 
@@ -568,8 +567,4 @@ button.button {
 	cursor: pointer;
 	background: #3c525d;
 	font-size: 17px;
-}
-
-.faq-q+.contents {
-	display: none;
 }
