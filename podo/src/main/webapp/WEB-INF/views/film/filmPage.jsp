@@ -37,7 +37,6 @@
 			<div style="display: inline-block;">
 				<form action="film.do" method="get" id="search-film-form">
 					<!-- 연도별 -->
-<%-- 					<input type="hidden" name="p" value="${ pi.currentPage }"> --%>
 					<select name="releaseYear">
 						<option value="all" data-display="연도별">연도별</option>
 						<c:forEach items="${ release }" var="release">
@@ -48,11 +47,6 @@
 								<option value="${ release }">${ release }</option>
 							</c:if>
 						</c:forEach>
-						<%-- 
-						<c:forEach begin="2010" end="2019" step="1" var="yyyy">
-							<option value="${ yyyy }">${ yyyy }</option>
-						</c:forEach>
-						 --%>
 					</select>
 					
 					<!-- 국가별 -->
@@ -125,24 +119,24 @@
 								<div class="col">
 									<c:if test="${ not empty like[film.id] }">
 										<button class='btn btn-danger btn-block btn-liked-film' data-toggle="tooltip" data-placement="bottom" title="좋아요 취소">
-											<img src="resources/common/img/like.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
+											<img src="resources/asterisk/img/like.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
 										</button>
 									</c:if>
 									<c:if test="${ empty like[film.id] }">
 										<button class='btn btn-secondary btn-block btn-like-film' data-toggle="tooltip" data-placement="bottom" title="좋아요">
-											<img src="resources/common/img/like.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
+											<img src="resources/asterisk/img/like.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
 										</button>
 									</c:if>
 								</div>
 								<div class="col">
 									<c:if test="${ rate[film.id].saw eq 'Y' }">
 										<button class='btn btn-danger btn-block btn-saw-film' data-toggle="tooltip" data-placement="bottom" title="봤어요 취소">
-											<img src="resources/common/img/see.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
+											<img src="resources/asterisk/img/see.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
 										</button>
 									</c:if>
 									<c:if test="${ rate[film.id].saw eq 'N' or empty rate[film.id].saw }">
 										<button class='btn btn-secondary btn-block btn-see-film' data-toggle="tooltip" data-placement="bottom" title="봤어요">
-											<img src="resources/common/img/see.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
+											<img src="resources/asterisk/img/see.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
 										</button>
 									</c:if>
 								</div>
@@ -308,6 +302,7 @@
 			$(document).on("click", "li.option", function() {
 						// 연도별, 국가별 데이터도 같이 가져와야하기 때문에 $(this)가 무엇인지 고민해봐야하고 이벤트도 같이 걸어줘야함
 						// 먼저 selected 클래스가 걸려있는 data-value 값을 가져옴
+						// https://api.jquery.com/prop/
 						var releaseYear = $("li[data-display=연도별]").parent().find(".selected").attr("data-value");
 						var productionCountry = $("li[data-display=국가별]").parent().find(".selected").attr("data-value");
 						var genreId = $("li[data-display=장르별]").parent().find(".selected").attr("data-value");
@@ -319,28 +314,28 @@
 								|| $(this).attr("data-display") === "장르별") {
 							// console.log($(this));
 							genreId = $(this).attr("data-value");
-							$("select[name=genreId] option").attr("selected", false);
-							$("select[name=genreId] option[value=" + genreId + "]").attr("selected", true);
+							$("select[name=genreId] option").prop("selected", false);
+							$("select[name=genreId] option[value=" + genreId + "]").prop("selected", true);
 						} else if ($(this).siblings('li[data-display=연도별]').length
 								|| $(this).attr("data-display") === "연도별") {
 							releaseYear = $(this).attr("data-value");
-							$("select[name=releaseYear] option").attr("selected", false);
-							$("select[name=releaseYear] option[value=" + releaseYear + "]").attr("selected", true);
+							$("select[name=releaseYear] option").prop("selected", false);
+							$("select[name=releaseYear] option[value=" + releaseYear + "]").prop("selected", true);
 						} else if ($(this).siblings('li[data-display=국가별]').length
 								|| $(this).attr("data-display") === "국가별") {
 							productionCountry = $(this).attr("data-value");
-							$("select[name=productionCountry] option").attr("selected", false);
-							$("select[name=productionCountry] option[value=" + productionCountry + "]").attr("selected", true);
+							$("select[name=productionCountry] option").prop("selected", false);
+							$("select[name=productionCountry] option[value=" + productionCountry + "]").prop("selected", true);
 						} else if ($(this).siblings('li[data-display=관람]').length
 								|| $(this).attr("data-display") === "관람") {
 							saw = $(this).attr("data-value");
-							$("select[name=saw] option").attr("selected", false);
-							$("select[name=saw] option[value=" + saw + "]").attr("selected", true);
+							$("select[name=saw] option").prop("selected", false);
+							$("select[name=saw] option[value=" + saw + "]").prop("selected", true);
 						} else if ($(this).siblings('li[data-display=정렬]').length
 								|| $(this).attr("data-display") === "정렬") {
 							order = $(this).attr("data-value");
-							$("select[name=order] option").attr("selected", false);
-							$("select[name=order] option[value=" + order + "]").attr("selected", true);
+							$("select[name=order] option").prop("selected", false);
+							$("select[name=order] option[value=" + order + "]").prop("selected", true);
 						} else {
 							console.log("선택된 것이 없습니다.");
 						}
@@ -389,7 +384,7 @@
 											.addClass("btn-block")
 											.addClass("btn-liked-film")
 											.attr({"data-original-title":"좋아요 취소"})
-											.html("<img src='resources/common/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
+											.html("<img src='resources/asterisk/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
 											.blur();
 							$(".tooltip-inner").html("좋아요 취소");
 						} else {
@@ -400,7 +395,7 @@
 											.addClass("btn-block")
 											.addClass("btn-like-film")
 											.attr({"data-original-title":"좋아요"})
-											.html("<img src='resources/common/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
+											.html("<img src='resources/asterisk/img/like.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
 											.blur();
 							$(".tooltip-inner").html("좋아요");
 						}
@@ -444,7 +439,7 @@
 													.addClass("btn-block")
 													.addClass("btn-saw-film")
 													.attr({"data-original-title":"봤어요 취소"})
-													.html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
+													.html("<img src='resources/asterisk/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
 													.blur();
 									$(".tooltip-inner").html("봤어요 취소");
 								} else {
@@ -455,7 +450,7 @@
 													.addClass("btn-block")
 													.addClass("btn-see-film")
 													.attr({"data-original-title":"봤어요"})
-													.html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
+													.html("<img src='resources/asterisk/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>")
 													.blur();
 									$(".tooltip-inner").html("봤어요");
 	
@@ -524,7 +519,7 @@
 										 .addClass("btn-block")
 										 .addClass("btn-saw-film")
 										 .attr({"data-original-title":"봤어요 취소"})
-										 .html("<img src='resources/common/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>");
+										 .html("<img src='resources/asterisk/img/see.png' style='width: 35px; height: 35px; display: block; margin: 0 auto;'>");
 							}
 						},
 						error : function() {

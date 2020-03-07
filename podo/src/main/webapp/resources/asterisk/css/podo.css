@@ -192,7 +192,7 @@
 .star-input>.input>input:checked+label {
 	display: inline-block;
 	vertical-align: middle;
-	background: url('../../common/img/rating-star.png') no-repeat;
+	background: url('../../asterisk/img/rating-star.png') no-repeat;
 }
 
 .star-input {

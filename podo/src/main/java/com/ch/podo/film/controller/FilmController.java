@@ -68,20 +68,20 @@ public class FilmController {
 	 * @throws Exception 
 	 * @throws OpenAPIFault 
 	 */
-	@SuppressWarnings(value = "unchecked")
 	@RequestMapping("skFilm.do")
 	public ModelAndView searchKeywordFilm(HttpServletRequest request, ModelAndView mv,
 																				String keyword, String skeyword,
 																				@RequestParam(value="p", defaultValue = "1") int currentPage)
 																						throws OpenAPIFault, Exception {
-		 log.info("keyword : {}", keyword);
-		 log.info("skeyword : {}", skeyword);
-		 log.info("currentPage : {}", currentPage);
+		log.info("keyword : {}", keyword);
+		log.info("skeyword : {}", skeyword);
+		log.info("currentPage : {}", currentPage);
 		
 		int filmCount = filmService.selectKeywordFilmListCount(keyword, skeyword);
 		// page는 최대 3페이지, board는 최대 6개 보여지도록 set
 		PageInfo pi = Pagination.setPageLimit(currentPage, filmCount, 3, 6);
 		ArrayList<Film> list = filmService.selectKeywordFilmList(keyword, skeyword, pi);
+		log.info("pi.listCoubt() : {}", pi.getListCount());
 		
 		mv.addObject("filmCount", filmCount)
 			.addObject("pi", pi)
@@ -93,6 +93,7 @@ public class FilmController {
 		return mv;
 	}
 
+	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping("getDailyBoxOffice.do")
 	public Object getDailyBoxOffice(HttpServletRequest request) throws OpenAPIFault, Exception {
@@ -179,7 +180,7 @@ public class FilmController {
 		ArrayList<Genre> genre = filmService.selectAllGenreList();
 		
 		int listCount = filmService.selectFilterFilmListCount(sc);
-		 log.info("listCount : {}", listCount);
+		log.info("listCount : {}", listCount);
 		
 		// page는 최대 3페이지, board는 최대 12개 보여지도록 set
 		PageInfo pi = Pagination.setPageLimit(currentPage, listCount, 3, 12);
@@ -190,7 +191,7 @@ public class FilmController {
 		 	    && (sc.getSaw() == null || sc.getSaw().equals("all"))
 		 	    && (sc.getOrder() == null || sc.getOrder().equals("all")))) {
 			pi = Pagination.setNewPageLimit(currentPage, listCount, pi);
-			 log.info("new pi : {}", pi);
+			log.info("new pi : {}", pi);
 		}
 		// 옵션으로 검색된 영화 목록
 		ArrayList<Film> filmList = filmService.selectFilterFilmList(sc, pi);

@@ -109,6 +109,33 @@
 		        <!-- Start Blog Post Siddebar -->
 		        <div class="col-xl-4 sidebar-widgets">
 		            <div class="widget-wrap">
+		
+		              <div class="single-sidebar-widget popular-post-widget">
+		                <h4 class="single-sidebar-widget__title">일별 박스 오피스</h4>
+		                <div class="popular-post-list">
+		                  <div class="single-post-list">
+		                  	<table style="width: 100%;">
+		                  		<thead>
+		                  			<tr style="border-bottom: 2px solid white;">
+		                  				<th style="text-align:center;min-width:33px;">순위</th>
+		                  				<th style="text-align:center;min-width:150px;">영화명</th>
+		                  				<th style="text-align:right;min-width:105px;">누적관객수</th>
+		                  			</tr>
+		                  		</thead>
+		                  		<tbody id="dailyBoxOffice">
+		                  			<tr id="loadingBoxOffice">
+		                  				<td colspan="3">
+		                  					<div style="text-align:center;font-size:13px;">
+		                  						<img src="resources/asterisk/img/loadingBoxOffice.gif" class="img-fluid" alt="loading-data">
+		                  						<p>영화진흥위원회에서 데이터를 가져오는 중입니다.</p>
+		                  					</div>
+		                  				</td>
+		                  			</tr>
+		                  		</tbody>
+		                  	</table>
+		                  </div>
+		                </div>
+		              </div>
 		            	
 		            	<form action="skFilm.do" method="get" class="single-sidebar-widget newsletter-widget">
 			                <h4 class="single-sidebar-widget__title">결과 내 재검색</h4>
@@ -161,33 +188,6 @@
 		                    </a>
 		                  </li>
 		                </ul>
-		              </div>
-		
-		              <div class="single-sidebar-widget popular-post-widget">
-		                <h4 class="single-sidebar-widget__title">일별 박스 오피스</h4>
-		                <div class="popular-post-list">
-		                  <div class="single-post-list">
-		                  	<table style="width: 100%;">
-		                  		<thead>
-		                  			<tr style="border-bottom: 2px solid white;">
-		                  				<th style="text-align:center;min-width:33px;">순위</th>
-		                  				<th style="text-align:center;min-width:150px;">영화명</th>
-		                  				<th style="text-align:right;min-width:105px;">누적관객수</th>
-		                  			</tr>
-		                  		</thead>
-		                  		<tbody id="dailyBoxOffice">
-		                  			<tr id="loadingBoxOffice">
-		                  				<td colspan="3">
-		                  					<div style="text-align:center;font-size:13px;">
-		                  						<img src="resources/asterisk/img/loadingBoxOffice.gif" class="img-fluid" alt="loading-data">
-		                  						<p>영화진흥위원회에서 데이터를 가져오는 중입니다.</p>
-		                  					</div>
-		                  				</td>
-		                  			</tr>
-		                  		</tbody>
-		                  	</table>
-		                  </div>
-		                </div>
 		              </div>
 		
 		                <div class="single-sidebar-widget tag_cloud_widget">
