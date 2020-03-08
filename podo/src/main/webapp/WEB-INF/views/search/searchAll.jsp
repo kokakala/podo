@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -57,7 +58,7 @@
 		          <!-- Pagination -->
 		          <div class="row">
 		          	<c:if test="${ pi.listCount eq 0 }">
-			          	<h2>검색결과가 없습니다.</h2>
+			          	<h2><spring:message code="placeholder.not.found"/> "${ keyword }"</h2>
 		          	</c:if>
 			          <c:if test="${ pi.listCount ne 0 }">
 			            <div class="col-lg-12 my-5">
@@ -112,15 +113,15 @@
 		            <div class="widget-wrap">
 		
 		              <div class="single-sidebar-widget popular-post-widget">
-		                <h4 class="single-sidebar-widget__title">일별 박스 오피스</h4>
+		                <h4 class="single-sidebar-widget__title"><spring:message code="label.boxoffice.daily"/></h4>
 		                <div class="popular-post-list">
 		                  <div class="single-post-list">
 		                  	<table style="width: 100%;">
 		                  		<thead>
 		                  			<tr style="border-bottom: 2px solid white;">
-		                  				<th style="text-align:center;min-width:33px;">순위</th>
-		                  				<th style="text-align:center;min-width:150px;">영화명</th>
-		                  				<th style="text-align:right;min-width:105px;">누적관객수</th>
+		                  				<th style="text-align:center;min-width:33px;"><spring:message code="label.boxoffice.rank"/></th>
+		                  				<th style="text-align:center;min-width:150px;"><spring:message code="label.boxoffice.title"/></th>
+		                  				<th style="text-align:right;min-width:105px;"><spring:message code="label.boxoffice.aud"/></th>
 		                  			</tr>
 		                  		</thead>
 		                  		<tbody id="dailyBoxOffice">
@@ -152,25 +153,25 @@
 		              </div>
 		            	
 		            	<form action="skFilm.do" method="get" class="single-sidebar-widget newsletter-widget">
-			                <h4 class="single-sidebar-widget__title">결과 내 재검색</h4>
+			                <h4 class="single-sidebar-widget__title"><spring:message code="label.search.again"/></h4>
 			                <div class="form-group mt-30">
 			                  <div class="col-autos">
 			                  	<input type="hidden" name="keyword" value="${ keyword }">
-			                    <input type="search" class="form-control" id="inlineFormInputGroup" placeholder="키워드를 입력해주세요" name="skeyword"
-			                    	onfocus="this.placeholder = ''" onblur="this.placeholder = '키워드를 입력해주세요'">
+			                    <input type="search" class="form-control" id="inlineFormInputGroup" placeholder="<spring:message code="placeholder.search"/>" name="skeyword"
+			                    	onfocus="this.placeholder = ''" onblur="this.placeholder = '<spring:message code="placeholder.search"/>'">
 			                  </div>
 			                </div>
 			                <%-- <a class="bbtns d-block mt-20 w-100" style="text-align:center;" href=<c:out value="${ keywordSearchUrl }"/>>재검색</a> --%>
-			                <button class="bbtns d-block mt-20 w-100" onclick="submit">재검색</button>
+			                <button class="bbtns d-block mt-20 w-100" onclick="submit"><spring:message code="button.search"/></button>
 		            	</form>
 		
 		
 		              <div class="single-sidebar-widget post-category-widget">
-		                <h4 class="single-sidebar-widget__title">카테고리</h4>
+		                <h4 class="single-sidebar-widget__title"><spring:message code="label.category"/></h4>
 		                <ul class="cat-list mt-20">
 		                  <li>
 		                    <a href="<c:out value="${ keywordSearchUrl }&p=1"/>" class="d-flex justify-content-between">
-		                      <p>영화</p>
+		                      <p><spring:message code="nav.menu.movie"/></p>
 		                      <c:if test="${ filmCount lt 10 }">
 			                      <p>(0${ filmCount })</p>
 		                      </c:if>
@@ -209,7 +210,7 @@
 		              </div>
 		
 		                <div class="single-sidebar-widget tag_cloud_widget">
-		                  <h4 class="single-sidebar-widget__title">인기 키워드</h4>
+		                  <h4 class="single-sidebar-widget__title"><spring:message code="label.keyword.hot"/></h4>
 		                  <ul class="list">
 		                    <li>
 		                        <a href="skFilm.do?keyword=조커">#조커</a>

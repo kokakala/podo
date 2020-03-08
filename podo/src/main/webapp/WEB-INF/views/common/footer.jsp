@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -17,15 +18,15 @@
 	<!--================ Start Footer Area =================-->
 	<div class="footer-container">
 		<div class="footer-1" align="center">
-			<a href="termsofuse.do">이용약관 </a> | 
-			<a href="privacyPolicy.do">개인정보취급방침</a> | 
-			<a href="faq.do">이용가이드</a> | 
+			<a href="termsofuse.do"><spring:message code="footer.terms.service"/></a> | 
+			<a href="privacyPolicy.do"><spring:message code="footer.privacy.policy"/></a> | 
+			<a href="faq.do"><spring:message code="footer.guide"/></a> | 
 
 			<c:if test="${!empty loginUser }">
-				<a href="#" data-toggle="modal" id="db" data-target="#db-inquiry-modal">영화 DB 제보</a>
+				<a href="#" data-toggle="modal" id="db" data-target="#db-inquiry-modal"><spring:message code="footer.db.report"/></a>
 			</c:if>
 			<c:if test="${empty loginUser }">
-				<a href="#" onclick="needLogin();">영화 DB 제보</a>
+				<a href="#" onclick="needLogin();"><spring:message code="footer.db.report"/></a>
 			</c:if> |
 			<a href="https://markruler.com">Mark Ruler</a>
 		</div>
@@ -43,7 +44,7 @@
 			<div class="modal-content">
 			
 				<div class="modal-header">
-					<h4 class="modal-title" id="myModalLabel">영화 DB 제보</h4>
+					<h4 class="modal-title" id="myModalLabel"><spring:message code="footer.db.report"/></h4>
 					<button type="button" id="close" class="close" data-dismiss="modal" aria-lable="Close">
 					<span aria-hidden="true">&times;</span>
 					</button>
@@ -52,19 +53,19 @@
 				<div class="modal-body">
 					<form class="" action="dbInquiryInsert.do" method="post">
 						<div class="form-group">
-							<label for="db-inquiry-cate">분류</label>
+							<label for="db-inquiry-cate"><spring:message code="footer.modal.category"/></label>
 							<input type="text" class="form-control" value="DB제보" readonly>
 						</div>
 						<div class="form-group">
-							<label for="db-inquiry-content">내용</label>
+							<label for="db-inquiry-content"><spring:message code="footer.modal.content"/></label>
 							<textarea rows="10" cols="15" class="form-control" id="DBcontent" name="content"></textarea>
 						</div>
 						
 						<div class="modal-footer">
 							<div class="db-inquiry-btn">
-								<button type="button" class="button" data-dismiss="modal">닫기</button>
+								<button type="button" class="button" data-dismiss="modal"><spring:message code="footer.modal.cancel"/></button>
 								&nbsp;
-								<button type="button" class="button" id="db-submit-btn" onclick="return DBvalidate();">보내기</button>
+								<button type="button" class="button" id="db-submit-btn" onclick="return DBvalidate();"><spring:message code="footer.modal.send"/></button>
 							</div>
 						</div>
 					</form>

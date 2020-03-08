@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -11,7 +12,7 @@
 			<div class="container">
 				<div class="film-page-banner">
 					<br>
-					<span class="title">영화 찾기</span>
+					<span class="title"><spring:message code="label.movie.search"/></span>
 					<br>
 					<span class="content">다양한 필터를 적용해</span>
 					<br>
@@ -25,7 +26,7 @@
 	    <div class="container" style="background-color: black; background-clip: content-box; margin-bottom: 30px;">
 	    	<div class="podo-ad-banner" onclick="location.href='premium.do'">
 	    		<div>
-		      	무료로 가입하시고 단돈 1,100원에 광고를 제거해보세요!
+		      	<spring:message code="placeholder.advertisement" />
 	    		</div>
 	    	</div>
 	    </div>
@@ -38,7 +39,7 @@
 				<form action="film.do" method="get" id="search-film-form">
 					<!-- 연도별 -->
 					<select name="releaseYear">
-						<option value="all" data-display="연도별">연도별</option>
+						<option value="all" data-display="<spring:message code="select.release" />"><spring:message code="select.release" /></option>
 						<c:forEach items="${ release }" var="release">
 							<c:if test="${ sc.releaseYear eq release }">
 								<option value="${ release }" selected>${ release }</option>
@@ -51,7 +52,7 @@
 					
 					<!-- 국가별 -->
 					<select name="productionCountry">
-						<option value="all" data-display="국가별">국가별</option>
+						<option value="all" data-display="<spring:message code="select.country" />"><spring:message code="select.country" /></option>
 						<c:forEach items="${ country }" var="country">
 							<c:if test="${ sc.productionCountry eq country }">
 							<option value="${ country }" selected>${ country }</option>
@@ -64,7 +65,7 @@
 					
 					<!-- 장르별 -->
 					<select name="genreId">
-						<option value="0" data-display="장르별">장르별</option>
+						<option value="0" data-display="<spring:message code="select.genre" />"><spring:message code="select.genre" /></option>
 						<c:forEach items="${ genre }" var="genre">
 							<c:if test="${ sc.genreId eq genre.id }">
 								<option value="${ genre.id }" selected>${ genre.name }</option>
@@ -77,14 +78,14 @@
 					
 					<!-- 장르별 -->
 					<select name="saw">
-						<option value="all" data-display="관람">관람</option>
+						<option value="all" data-display="<spring:message code="select.watched" />"><spring:message code="select.watched" /></option>
 						<option value="show">본 영화</option>
 						<option value="hide">안 본 영화</option>
 					</select>
 					
 					<!-- 부가옵션 -->
 					<select name="order">
-						<option value="all" data-display="정렬">모두</option>
+						<option value="all" data-display="<spring:message code="select.sort" />"><spring:message code="select.sort" /></option>
 						<option value="filmRatingDesc">평가 높은 순</option>
 						<option value="reviewCountDesc">리뷰 많은 순</option>
 					</select>
@@ -118,24 +119,24 @@
 							<div class="row" style="margin-top: 10px;">
 								<div class="col">
 									<c:if test="${ not empty like[film.id] }">
-										<button class='btn btn-danger btn-block btn-liked-film' data-toggle="tooltip" data-placement="bottom" title="좋아요 취소">
+										<button class='btn btn-danger btn-block btn-liked-film' data-toggle="tooltip" data-placement="bottom" title="<spring:message code="tooltip.liked" />">
 											<img src="resources/asterisk/img/like.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
 										</button>
 									</c:if>
 									<c:if test="${ empty like[film.id] }">
-										<button class='btn btn-secondary btn-block btn-like-film' data-toggle="tooltip" data-placement="bottom" title="좋아요">
+										<button class='btn btn-secondary btn-block btn-like-film' data-toggle="tooltip" data-placement="bottom" title="<spring:message code="tooltip.like" />">
 											<img src="resources/asterisk/img/like.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
 										</button>
 									</c:if>
 								</div>
 								<div class="col">
 									<c:if test="${ rate[film.id].saw eq 'Y' }">
-										<button class='btn btn-danger btn-block btn-saw-film' data-toggle="tooltip" data-placement="bottom" title="봤어요 취소">
+										<button class='btn btn-danger btn-block btn-saw-film' data-toggle="tooltip" data-placement="bottom" title="<spring:message code="tooltip.wish" />">
 											<img src="resources/asterisk/img/see.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
 										</button>
 									</c:if>
 									<c:if test="${ rate[film.id].saw eq 'N' or empty rate[film.id].saw }">
-										<button class='btn btn-secondary btn-block btn-see-film' data-toggle="tooltip" data-placement="bottom" title="봤어요">
+										<button class='btn btn-secondary btn-block btn-see-film' data-toggle="tooltip" data-placement="bottom" title="<spring:message code="tooltip.watched" />">
 											<img src="resources/asterisk/img/see.png" style="width: 35px; height: 35px; display: block; margin: 0 auto;">
 										</button>
 									</c:if>
@@ -164,33 +165,10 @@
 			</c:if>
 			<c:if test="${ pi.listCount eq 0 }">
 				<div style="text-align: center;">
-					<h3>검색된 영화가 없습니다.</h3>
+					<h3><spring:message code="placeholder.not.found"/></h3>
 					<br>
 				</div>
 			</c:if>
-			
-			<!-- 
-			<table id="search-film-result" style="width: 100%;">
-				<thead>
-					<tr>
-						<th colspan="9"><b id="film-count"></b></th>
-					</tr>
-					<tr>
-						<th colspan="2">제목</th>
-						<th>감독</th>
-						<th>개봉연도</th>
-						<th>국가</th>
-						<th>장르</th>	
-						<th>포스터</th>
-						<th>좋아요</th>
-						<th>별점</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-			 -->
-			 
 			 
 			<c:url var="filmUrl" value="film.do">
 				<c:param name="releaseYear" value="${ param.releaseYear }" />

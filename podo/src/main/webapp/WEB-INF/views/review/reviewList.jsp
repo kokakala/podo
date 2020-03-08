@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -35,7 +36,7 @@
 							<small>${ review.createDate }</small>
 						</div>
 						<div class="d-flex justify-content-end">
-							<button class="button" onclick="location.href='reviewDetail.do?id=${ review.id }';">더보기</button>
+							<button class="button" onclick="location.href='reviewDetail.do?id=${ review.id }';"><spring:message code="button.more"/></button>
 						</div>
 					</div>
 					

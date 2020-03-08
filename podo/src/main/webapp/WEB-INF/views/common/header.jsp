@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -14,7 +15,6 @@
 			<div class="main_menu">
 				<nav class="navbar navbar-expand-lg navbar-light">
 					<div class="container box_1620">
-		      
 						<!-- Brand and toggle get grouped for better mobile display -->
 						<a class="navbar-brand logo_h" href="home.do">
 							<img src="resources/asterisk/img/logo/logo-transparent-text-lg.png" alt="" style="width: 80px; height: 80px; object-fit: cover; margin-right: 40px;">
@@ -27,32 +27,32 @@
 						
 						<div class="navbar-collapse collapse" id="navbarSupportedContent">
 							<ul class="nav navbar-nav mr-auto justify-content-center">
-								<li class="nav-item"><a class="nav-link" href="film.do?p=1">영화</a></li>
-								<li class="nav-item"><a class="nav-link" href="reviewList.do">리뷰</a>
-								<li class="nav-item"><a class="nav-link" href="recommendation.do">추천</a>
-								<li class="nav-item"><a class="nav-link" href="blist.do">게시판</a>					
+								<li class="nav-item"><a class="nav-link" href="film.do?p=1"><spring:message code="nav.menu.movie" /></a></li>
+								<li class="nav-item"><a class="nav-link" href="reviewList.do"><spring:message code="nav.menu.review" /></a>
+								<li class="nav-item"><a class="nav-link" href="recommendation.do"><spring:message code="nav.menu.recommend" /></a>
+								<li class="nav-item"><a class="nav-link" href="blist.do"><spring:message code="nav.menu.board" /></a>					
 								<c:choose>
-							       <c:when test="${ loginUser.autho eq 2}">
-							       		<li class="nav-item"><a id="logout" class="nav-link" href="logout.do">로그아웃</a>
-										<li class="nav-item"><a id="logout" class="nav-link" href="manyStar.do">관리자</a>
-							       </c:when>
-							       <c:when test="${ loginUser ne null }">
-							       		<li class="nav-item"><a id="logout" class="nav-link" href="logout.do">로그아웃</a>
-										<li class="nav-item"><a id="logout" class="nav-link" href="mypage.do?id=${ loginUser.id }">마이페이지</a>
-							       </c:when>
-							       <c:otherwise>
-							       		<li class="nav-item"><a id="login-modal" class="nav-link" href="#" data-toggle="modal">로그인</a>
-							       </c:otherwise>
+						       <c:when test="${ loginUser.autho eq 2}">
+						       		<li class="nav-item"><a id="logout" class="nav-link" href="logout.do"><spring:message code="nav.menu.logout" /></a>
+									<li class="nav-item"><a id="logout" class="nav-link" href="manyStar.do"><spring:message code="nav.menu.admin" /></a>
+						       </c:when>
+						       <c:when test="${ loginUser ne null }">
+						       		<li class="nav-item"><a id="logout" class="nav-link" href="logout.do"><spring:message code="nav.menu.logout" /></a>
+									<li class="nav-item"><a id="logout" class="nav-link" href="mypage.do?id=${ loginUser.id }"><spring:message code="nav.menu.mypage" /></a>
+						       </c:when>
+						       <c:otherwise>
+						       		<li class="nav-item"><a id="login-modal" class="nav-link" href="#" data-toggle="modal"><spring:message code="nav.menu.login" /></a>
+						       </c:otherwise>
 							   </c:choose>
 							</ul>
 							<form method="get" action="skFilm.do" class="form-inline my-2">
 								<c:if test="${ !empty keyword }">
-									<input class="form-control mr-sm-2" id="keywordInput" type="search" placeholder="키워드를 입력해주세요" aria-label="Search" name="keyword" maxlength="150" value="${ keyword }">
+									<input class="form-control mr-sm-2" id="keywordInput" type="search" placeholder="<spring:message code="placeholder.search" />" aria-label="Search" name="keyword" maxlength="150" value="${ keyword }">
 								</c:if>
 								<c:if test="${ empty keyword }">
-									<input class="form-control mr-sm-2" id="keywordInput" type="search" placeholder="키워드를 입력해주세요" aria-label="Search" name="keyword" maxlength="150">
+									<input class="form-control mr-sm-2" id="keywordInput" type="search" placeholder="<spring:message code="placeholder.search" />" aria-label="Search" name="keyword" maxlength="150">
 								</c:if>
-								<button class="button button--active my-2 my-sm-0" type="submit">검색</button>
+								<button class="button button--active my-2 my-sm-0" type="submit"><spring:message code="button.search" /></button>
 							</form>
 						</div>
 					</div>
@@ -66,7 +66,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">로그인</h5>
+						<h5 class="modal-title" id="exampleModalLabel"><spring:message code="nav.menu.login" /></h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -75,25 +75,25 @@
 					<div class="modal-body">
 						<form class="" action="login.do" method="post">
 							<div class="form-group">
-								<label for="email">이메일</label>
+								<label for="email"><spring:message code="label.email" /></label>
 								<input type="email" class="form-control" name="email" id="email" placeholder="email@address.com">
 							</div>
 							<div class="form-group">
-								<label for="pwd">비밀번호</label>
+								<label for="pwd"><spring:message code="label.password" /></label>
 								<input type="password" class="form-control" name="password" id="pwd" placeholder="Password">
 							</div>
 							<div class="form-group">
 								<div class="form-check">
 									<input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
 									<label class="form-check-label" for="rememberMe">
-								  		로그인 정보 기억하기
+								  		<spring:message code="label.remember.me" />
 									</label>
 								</div>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="button" data-dismiss="modal">취소</button>
-								<button type="submit" id="btn-sign-in" class="button">로그인</button>
-								<button type="button" id="myBtn" class="button" onclick="location.href='signup.do';">가입하기</button>
+								<button type="button" class="button" data-dismiss="modal"><spring:message code="button.cancel" /></button>
+								<button type="submit" id="btn-sign-in" class="button"><spring:message code="nav.menu.login" /></button>
+								<button type="button" id="myBtn" class="button" onclick="location.href='signup.do';"><spring:message code="button.signup" /></button>
 							</div>
 						</form>
 					</div>

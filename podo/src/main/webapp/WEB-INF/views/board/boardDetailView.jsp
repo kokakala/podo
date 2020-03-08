@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -26,7 +27,7 @@
 					<div class="user_details">
 						<div class="float-left">
 							<button type="button" class="button" data-toggle="modal" data-target="#boardReport">
-							  신고하기
+							  <spring:message code="button.report"/>
 							</button>
 						</div>
 						<div class="float-right mt-sm-0 mt-3">
@@ -42,7 +43,6 @@
 							</div>
 						</div>
 					</div>
-	
 					<p>${ board.content }</p>
 				</div>
 				
@@ -51,17 +51,17 @@
 	
 				<!-- 댓글 작성 -->
 				<div class="comment-form">
-					<h4>댓글 작성</h4>
+					<h4><spring:message code="label.comment.write"/></h4>
 					<div class="form-group">
 						<input type="hidden" id="reply-parent-id" value="">
 						<textarea id="comment-content" class="form-control mb-10"
-							rows="5" name="message" placeholder="댓글을 입력하세요."
+							rows="5" name="message" placeholder="<spring:message code="placeholder.enter.comment"/>"
 							onfocus="this.placeholder = ''"
-							onblur="this.placeholder = '댓글을 입력하세요.'"
-							data-toggle="tooltip" data-placement="top" title="내용을 입력하세요."></textarea>
+							onblur="this.placeholder = '<spring:message code="placeholder.enter.comment"/>'"
+							data-toggle="tooltip" data-placement="top" title="<spring:message code="placeholder.enter.content"/>"></textarea>
 					</div>
 					<div class="d-flex justify-content-end">
-						<button class="button" id="comment-btn">작성</button>
+						<button class="button" id="comment-btn"><spring:message code="button.write"/></button>
 					</div>
 				</div>
 	
@@ -72,8 +72,8 @@
 		<div class="form-group row">
 			<div class="btn-group btn-group-lg mx-auto" role="group" aria-label="...">
 				<c:if test="${ loginUser.id eq board.memberId }">
-					<a href="boardDelete.do?id=${ board.id }" class="button submit_btn">삭제하기</a>
-					<a href="boardUpdateForm.do?id=${ board.id }" class="button submit_btn">수정하기</a>
+					<a href="boardDelete.do?id=${ board.id }" class="button submit_btn"><spring:message code="button.delete"/></a>
+					<a href="boardUpdateForm.do?id=${ board.id }" class="button submit_btn"><spring:message code="button.edit"/></a>
 				</c:if>
 			</div>
 		</div>
@@ -84,7 +84,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title" id="myModalLabel">게시글 신고</h4>
+						<h4 class="modal-title" id="myModalLabel"><spring:message code="button.report"/></h4>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -103,8 +103,8 @@
 							</div>
 							
 							<div class="modal-footer">
-								<button type="submit" class="btn button">신고</button>
-								<button class="btn button" data-dismiss="modal">취소</button>
+								<button type="submit" class="btn button"><spring:message code="button.report"/></button>
+								<button class="btn button" data-dismiss="modal"><spring:message code="button.cancel"/></button>
 							</div>
 						</form>
 					</div>

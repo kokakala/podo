@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 	<head>
 		<jsp:include page="common/header.jsp"/>
@@ -24,7 +25,7 @@
 	    <div class="container" style="background-color: black; background-clip: content-box; margin-bottom: 30px;">
 	    	<div class="podo-ad-banner" onclick="location.href='premium.do'">
 	    		<div>
-		      	무료로 가입하시고 단돈 1,100원에 광고를 제거해보세요!
+		      	<spring:message code="placeholder.advertisement" />
 	    		</div>
 	    	</div>
 	    </div>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -59,19 +60,19 @@
 			<div class="row my-2">
 				<div class="btn-group mx-auto">
 					<c:if test="${ not empty likeReivew }">
-						<button class='button likeReviewBtn'>LIKED</button>
+						<button class='button likeReviewBtn'><spring:message code="tooltip.liked"/></button>
 						<input type="hidden" class="likeInp" value="1" />
 					</c:if>
 					<c:if test="${ empty likeReivew }">
-						<button class='button likeReviewBtn'>LIKE</button>
+						<button class='button likeReviewBtn'><spring:message code="tooltip.like"/></button>
 						<input type="hidden" class="likeInp" value="0" />
 					</c:if>
-					<a class="button declaration-modal btn-reply" href="#" data-toggle="modal">리뷰신고하기</a>
+					<a class="button declaration-modal btn-reply" href="#" data-toggle="modal"><spring:message code="button.report"/></a>
 					<c:if test="${loginUser.id eq r.memberId }">
-						<a class="button" href="reviewUpdateForm.do?id=${r.id}">수정하기</a>
+						<a class="button" href="reviewUpdateForm.do?id=${r.id}"><spring:message code="button.edit"/></a>
 					</c:if>
 					<c:if test="${ loginUser.id eq r.memberId }">
-						<button class="button" onclick="location.href='reviewDelete.do?id=${r.id}';">삭제하기</button>
+						<button class="button" onclick="location.href='reviewDelete.do?id=${r.id}';"><spring:message code="button.delete"/></button>
 					</c:if>
 				</div>
 	
@@ -84,14 +85,16 @@
 			
 			<!-- 댓글 등록 -->
 			<div class="comment-form">
-				<h4>댓글 작성</h4>
+				<h4><spring:message code="label.comment.write"/></h4>
 				<div class="form-group">
 					<input type="hidden" id="reply-parent-id" value="">
-					<textarea id="comment-content" class="form-control mb-10" rows="5" name="message" placeholder="댓글을 입력하세요." onfocus="this.placeholder = ''" onblur="this.placeholder = '댓글을 입력하세요.'" data-toggle="tooltip" data-placement="top" title="" data-original-title="내용을 입력하세요."></textarea>
+					<textarea id="comment-content" class="form-control mb-10" rows="5" name="message" placeholder="<spring:message code="placeholder.enter.comment"/>"
+									onfocus="this.placeholder = ''" onblur="this.placeholder = '<spring:message code="placeholder.enter.comment"/>'"
+									data-toggle="tooltip" data-placement="top" title="" data-original-title="<spring:message code="placeholder.enter.content"/>"></textarea>
 				</div>
 				<div class="mx-auto d-flex justify-content-end">
 					<div class="col-auto p-0">
-						<button class="button" id="review-comment-btn">작성</button>
+						<button class="button" id="review-comment-btn"><spring:message code="button.write"/></button>
 					</div>
 				</div>
 			</div>
@@ -127,8 +130,8 @@
 							<p></p>
 						</div>
 						<div class="modal-footer">
-							<button class="button" type="submit">신고보내기</button>
-							<button class="button" data-dismiss="modal">Close</button>
+							<button class="button" type="submit"><spring:message code="button.report"/></button>
+							<button class="button" data-dismiss="modal"><spring:message code="button.cancel"/></button>
 						</div>
 						</form>
 					</div>
@@ -148,12 +151,11 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						신고하기
+						<spring:message code="label.report"/>
 						<form action="declarationCommentModal.do" method="post">
 							<input type="hidden" name="reportId" value="${ loginUser.id }">
 							<input type="hidden" name="targetId" value="${ r.id }">
 							<input type="hidden" name="reportedId" value="${ r.memberId }">
-							
 						<div class="eu">
 							
 							<p></p>
@@ -162,8 +164,8 @@
 							<p></p>
 						</div>
 						<div class="modal-footer">
-							<button  type="submit" class="btn btn-primary">신고보내기</button>
-							<button  class="btn btn-primary" data-dismiss="modal">Close</button>
+							<button  type="submit" class="btn btn-primary"><spring:message code="button.report"/></button>
+							<button  class="btn btn-primary" data-dismiss="modal"><spring:message code="button.cancel"/></button>
 						</div>
 						</form>
 					</div>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -15,7 +16,7 @@
 			<div class="container">
 				<div class="board-page-banner">
 					<br>
-					<span class="title">마음껏 작성하세요!</span>
+					<span class="title"><spring:message code="label.board.free"/></span>
 				</div>
 			</div>
 		</section>
@@ -25,30 +26,13 @@
 				<thead>
 				<tr>
 			      <th scope="col">#</th>
-			      <th scope="col">제목</th>
-			      <th scope="col">작성자</th>
-			      <th scope="col">작성일</th>
-			      <th scope="col">조회수</th>
+			      <th scope="col"><spring:message code="label.board.title"/></th>
+			      <th scope="col"><spring:message code="label.board.writer"/></th>
+			      <th scope="col"><spring:message code="label.board.date"/></th>
+			      <th scope="col"><spring:message code="label.board.view"/></th>
 				</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<%-- 
-						<c:if test="${ notice.id eq null}">
-							<td></td>
-							<td colspan="4" scope="row" >공지사항이 없습니다.</td>
-						</c:if>
-						<c:if test="${ notice.id ne null}">
-							<td scope="row">${ notice.id }</td>
-								<td scope="row">
-									<a href="ndetail.do?id=${ notice.id }">${ notice.title }</a>					
-								</td>
-								<td scope="row">${ notice.nickName }</td>
-								<td scope="row">${ notice.createDate }</td>
-								<td scope="row">${ notice.viewCount }</td>
-						</c:if>
-						 --%>
-					</tr>
 					<c:forEach items="${ list }" var="b">
 						<tr>
 							<td scope="row">${ b.id }</td>
@@ -74,7 +58,7 @@
 				<button class="button mx-auto" onclick="location.href='ninsertForm.do';">공지사항</button>
 			</c:if>
 			<c:if test="${loginUser.autho == 1 }">
-				<button class="button mx-auto" onclick="location.href='binsertForm.do';">작성하기</button>
+				<button class="button mx-auto" onclick="location.href='binsertForm.do';"><spring:message code="button.write"/></button>
 			</c:if>
 			</div>
 			

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -13,7 +14,7 @@
 			<div class="container">
 				<div class="rec-page-banner">
 					<br>
-					<span class="title">영화 추천</span>
+					<span class="title"><spring:message code="label.movie.recommend"/></span>
 					<br>
 					<c:if test="${ not empty loginUser }">
 						<span class="content">${ loginUser.nickname }님을 위한 포도의 추천 영화</span>
@@ -30,7 +31,7 @@
 	    <div class="container" style="background-color: black; background-clip: content-box; margin-bottom: 30px;">
 	    	<div class="podo-ad-banner" onclick="location.href='premium.do'">
 	    		<div>
-		      	무료로 가입하시고 단돈 1,100원에 광고를 제거해보세요!
+		      	<spring:message code="placeholder.advertisement"/>
 	    		</div>
 	    	</div>
 	    </div>
@@ -45,7 +46,7 @@
 						<div class="row">
 							<div class="container">
 							  <div class="row justify-content-md-center" style="justify-content: center;">
-							  	<a id="rec-login-modal" class="button" href="#" data-toggle="modal">로그인</a>
+							  	<a id="rec-login-modal" class="button" href="#" data-toggle="modal"><spring:message code="nav.menu.login"/></a>
 							  </div>
 							</div>
 						</div>
@@ -141,21 +142,6 @@
 				        </div>
 				      </div>
 	   	  		</section>
-	   	  		
-						<!-- [더보기] -->
-						<!-- 
-						<div class="row">
-							<div class="col-lg-12">
-								<nav class="blog-pagination justify-content-center d-flex">
-									<ul class="pagination">
-										<li class="page-item">
-											<a class="page-link" id="more-recommendation">더보기</a>
-										</li>
-									</ul>
-								</nav>
-							</div>
-						</div>
-						 -->
 					</c:when>
 					<c:otherwise>
 						<blockquote class="blockquote text-center my-5">
@@ -168,7 +154,7 @@
 						  </footer>
 						</blockquote>
 					  <div class="row justify-content-md-center">
-					  	<a class="button" style="margin: 0 auto;" href="film.do">영화 페이지로</a>
+					  	<a class="button" style="margin: 0 auto;" href="film.do"><spring:message code="nav.menu.movie"/></a>
 					  </div>
 					</c:otherwise>
 				</c:choose>

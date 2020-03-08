@@ -79,17 +79,16 @@
 			
 			<beans:bean id="BoardInterceptor" class="com.ch.podo.common.interceptor.BoardInterceptor"/>
 		</interceptor>
-		
-		<!-- message -->
-		<!-- /i18n.do?lang=ko -->
-		<!-- 
-		<beans:bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-			<beans:property name="paramName" value="lang" />
-		</beans:bean>
-		 -->
-		
-	</interceptors>
+		</interceptors>
 
-	
-	
+		<!-- XML 방식 => 어노테이션 방식 (MessageConfig)
+		<beans:bean id="messageSource"
+			class="org.springframework.context.support.ResourceBundleMessageSource">
+			<beans:property name="basenames">
+				<beans:list>
+					<beans:value>messages</beans:value>
+				</beans:list>
+			</beans:property>
+		</beans:bean>		
+		 -->
 </beans:beans>
