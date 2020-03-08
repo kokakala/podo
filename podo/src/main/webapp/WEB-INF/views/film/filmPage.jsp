@@ -33,13 +33,13 @@
     </c:if>
     <!--================Advertisement end =================-->
 		
-		<!-- =================필터================= -->
+		<!-- ================= filter start ================= -->
 		<div class="container" style="margin-bottom: 40px; text-align: center;">
 			<div style="display: inline-block;">
 				<form action="film.do" method="get" id="search-film-form">
 					<!-- 연도별 -->
 					<select name="releaseYear">
-						<option value="all" data-display="<spring:message code="select.release" />"><spring:message code="select.release" /></option>
+						<option value="all" data-display="연도별"><spring:message code="select.release" /></option>
 						<c:forEach items="${ release }" var="release">
 							<c:if test="${ sc.releaseYear eq release }">
 								<option value="${ release }" selected>${ release }</option>
@@ -52,7 +52,7 @@
 					
 					<!-- 국가별 -->
 					<select name="productionCountry">
-						<option value="all" data-display="<spring:message code="select.country" />"><spring:message code="select.country" /></option>
+						<option value="all" data-display="국가별"><spring:message code="select.country" /></option>
 						<c:forEach items="${ country }" var="country">
 							<c:if test="${ sc.productionCountry eq country }">
 							<option value="${ country }" selected>${ country }</option>
@@ -65,7 +65,7 @@
 					
 					<!-- 장르별 -->
 					<select name="genreId">
-						<option value="0" data-display="<spring:message code="select.genre" />"><spring:message code="select.genre" /></option>
+						<option value="0" data-display="장르별"><spring:message code="select.genre" /></option>
 						<c:forEach items="${ genre }" var="genre">
 							<c:if test="${ sc.genreId eq genre.id }">
 								<option value="${ genre.id }" selected>${ genre.name }</option>
@@ -76,16 +76,16 @@
 						</c:forEach>
 					</select>
 					
-					<!-- 장르별 -->
+					<!-- 관람유무 -->
 					<select name="saw">
-						<option value="all" data-display="<spring:message code="select.watched" />"><spring:message code="select.watched" /></option>
+						<option value="all" data-display="관람"><spring:message code="select.watched" /></option>
 						<option value="show">본 영화</option>
 						<option value="hide">안 본 영화</option>
 					</select>
 					
-					<!-- 부가옵션 -->
+					<!-- 정렬 -->
 					<select name="order">
-						<option value="all" data-display="<spring:message code="select.sort" />"><spring:message code="select.sort" /></option>
+						<option value="all" data-display="정렬"><spring:message code="select.sort" /></option>
 						<option value="filmRatingDesc">평가 높은 순</option>
 						<option value="reviewCountDesc">리뷰 많은 순</option>
 					</select>
@@ -93,7 +93,7 @@
 				
 			</div>
 		</div>
-		<!-- =================필터================= -->
+		<!-- ================= filter end ================= -->
 		
 		<div class="container">
 			<c:if test="${ pi.listCount ne 0 }">
@@ -278,47 +278,47 @@
 			// 페이징 처리를 위해 AJAX 대신 동기적으로 처리
 			/* 영화 검색목록 불러오기 Synchronous 통신 */
 			$(document).on("click", "li.option", function() {
-						// 연도별, 국가별 데이터도 같이 가져와야하기 때문에 $(this)가 무엇인지 고민해봐야하고 이벤트도 같이 걸어줘야함
-						// 먼저 selected 클래스가 걸려있는 data-value 값을 가져옴
-						// https://api.jquery.com/prop/
-						var releaseYear = $("li[data-display=연도별]").parent().find(".selected").attr("data-value");
-						var productionCountry = $("li[data-display=국가별]").parent().find(".selected").attr("data-value");
-						var genreId = $("li[data-display=장르별]").parent().find(".selected").attr("data-value");
-						var saw = $("li[data-display=관람유무]").parent().find(".selected").attr("data-value");
-						var order = $("li[data-display=정렬]").parent().find(".selected").attr("data-value");
-	
-						// 만약 지금 처음 클릭한 것이라면 selected 클래스가 추가되기 전이므로 $(this) 의 data-value 값을 가져옴
-						if ($(this).siblings('li[data-display=장르별]').length
-								|| $(this).attr("data-display") === "장르별") {
-							// console.log($(this));
-							genreId = $(this).attr("data-value");
-							$("select[name=genreId] option").prop("selected", false);
-							$("select[name=genreId] option[value=" + genreId + "]").prop("selected", true);
-						} else if ($(this).siblings('li[data-display=연도별]').length
-								|| $(this).attr("data-display") === "연도별") {
-							releaseYear = $(this).attr("data-value");
-							$("select[name=releaseYear] option").prop("selected", false);
-							$("select[name=releaseYear] option[value=" + releaseYear + "]").prop("selected", true);
-						} else if ($(this).siblings('li[data-display=국가별]').length
-								|| $(this).attr("data-display") === "국가별") {
-							productionCountry = $(this).attr("data-value");
-							$("select[name=productionCountry] option").prop("selected", false);
-							$("select[name=productionCountry] option[value=" + productionCountry + "]").prop("selected", true);
-						} else if ($(this).siblings('li[data-display=관람]').length
-								|| $(this).attr("data-display") === "관람") {
-							saw = $(this).attr("data-value");
-							$("select[name=saw] option").prop("selected", false);
-							$("select[name=saw] option[value=" + saw + "]").prop("selected", true);
-						} else if ($(this).siblings('li[data-display=정렬]').length
-								|| $(this).attr("data-display") === "정렬") {
-							order = $(this).attr("data-value");
-							$("select[name=order] option").prop("selected", false);
-							$("select[name=order] option[value=" + order + "]").prop("selected", true);
-						} else {
-							console.log("선택된 것이 없습니다.");
-						}
-						$("#search-film-form").submit();
-					});
+				// 연도별, 국가별 데이터도 같이 가져와야하기 때문에 $(this)가 무엇인지 고민해봐야하고 이벤트도 같이 걸어줘야함
+				// 먼저 selected 클래스가 걸려있는 data-value 값을 가져옴
+				// https://api.jquery.com/prop/
+				var releaseYear = $("li[data-display=연도별]").parent().find(".selected").attr("data-value");
+				var productionCountry = $("li[data-display=국가별]").parent().find(".selected").attr("data-value");
+				var genreId = $("li[data-display=장르별]").parent().find(".selected").attr("data-value");
+				var saw = $("li[data-display=관람]").parent().find(".selected").attr("data-value");
+				var order = $("li[data-display=정렬]").parent().find(".selected").attr("data-value");
+
+				// 만약 지금 처음 클릭한 것이라면 selected 클래스가 추가되기 전이므로 $(this) 의 data-value 값을 가져옴
+				if ($(this).siblings('li[data-display=장르별]').length
+						|| $(this).attr("data-display") === "장르별") {
+					// console.log($(this));
+					genreId = $(this).attr("data-value");
+					$("select[name=genreId] option").prop("selected", false);
+					$("select[name=genreId] option[value=" + genreId + "]").prop("selected", true);
+				} else if ($(this).siblings('li[data-display=연도별]').length
+						|| $(this).attr("data-display") === "연도별") {
+					releaseYear = $(this).attr("data-value");
+					$("select[name=releaseYear] option").prop("selected", false);
+					$("select[name=releaseYear] option[value=" + releaseYear + "]").prop("selected", true);
+				} else if ($(this).siblings('li[data-display=국가별]').length
+						|| $(this).attr("data-display") === "국가별") {
+					productionCountry = $(this).attr("data-value");
+					$("select[name=productionCountry] option").prop("selected", false);
+					$("select[name=productionCountry] option[value=" + productionCountry + "]").prop("selected", true);
+				} else if ($(this).siblings('li[data-display=관람]').length
+						|| $(this).attr("data-display") === "관람") {
+					saw = $(this).attr("data-value");
+					$("select[name=saw] option").prop("selected", false);
+					$("select[name=saw] option[value=" + saw + "]").prop("selected", true);
+				} else if ($(this).siblings('li[data-display=정렬]').length
+						|| $(this).attr("data-display") === "정렬") {
+					order = $(this).attr("data-value");
+					$("select[name=order] option").prop("selected", false);
+					$("select[name=order] option[value=" + order + "]").prop("selected", true);
+				} else {
+					console.log("선택된 것이 없습니다.");
+				}
+				$("#search-film-form").submit();
+			});
 			
 			$(document).ready(function(){
 				$('[data-toggle="tooltip"]').tooltip();

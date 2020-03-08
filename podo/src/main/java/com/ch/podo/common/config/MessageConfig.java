@@ -1,5 +1,7 @@
 package com.ch.podo.common.config;
 
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +14,8 @@ public class MessageConfig {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setDefaultEncoding("UTF-8");
 		messageSource.setBasename("classpath:/messages/message");
-		// messageSource.setCacheSeconds(10);
-		// messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
+		messageSource.setCacheSeconds(10);
+		messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
 		return messageSource;
 	}
 }
