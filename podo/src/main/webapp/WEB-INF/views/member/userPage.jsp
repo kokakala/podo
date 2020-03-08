@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
@@ -7,92 +6,44 @@
 <head>
 	<jsp:include page="../common/header.jsp"/>
 	<style>
-		#imgInp{display:none}
-		.nickguide{
-			display:none;
-			font-size:12px;
-			top:12px;
-			right:10px;
+		.modal-dialog {
+			z-index: 5;
 		}
-		.nickok{color:blue;}
-		.nickno{color:red;}
-		.originguide{
-			display:none;
-			font-size:12px;
-			top:12px;
-			right:10px;
+		
+		#noAnswer {
+			color: red;
 		}
-		.oriok{color:blue;}
-		.orino{color:red;}
-		.modal-dialog{z-index:2000;}
-		/* --------------------- 탭메뉴시작 ---------------------  */
-		#container {
-			/* width:800px; */
-			margin:0 auto;
-			/* text-align:center */;
-		}
-		.tab {
-			list-style: none;
-			margin: 0;
-			padding: 0;
-			overflow: hidden;
-		}
-		/* Float the list items side by side */
-		.tab li {
-			float: left;
-		}
-		/* Style the links inside the list items */
-		.tab li a {
-			display: inline-block;
-			color: #000;
-			text-align: center;
-			text-decoration: none;
-			padding: 14px 16px;
-			font-size: 18px;
-			transition:0.3s;
-			
-		}
-		/* Style the tab content */
-		.tabcontent {
-			display: none;
-			padding: 6px 12px;
-			color:#fff;
-		}
-		ul.tab li.current{
-			color: rgb(230, 204, 255);
-		}
-		.tabcontent.current {
-			display: block;
-		}
-		/* --------------------- 탭메뉴 끝 ---------------------  */
-		#noAnswer{color:red;}
 		
 		a.disabled {
-		  pointer-events: none;
-		  cursor: default;
+			pointer-events: none;
+			cursor: default;
 		}
 		
-	    .actorImage{
-	    	border: 0px solid black;
-	    	width:100%;
-	    	height:200px;
-	    	overflow-x:hidden;
-	    }
-	    .actor_name{
-	    	border : 0px solid lightgrey;
-	    	text-align:center;
-	    	color:black;
-	    }
-	    .podo-user-card {
+		.actorImage {
+			border: 0px solid black;
+			width: 100%;
+			height: 200px;
+			overflow-x: hidden;
+		}
+		
+		.actor_name {
+			border: 0px solid lightgrey;
+			text-align: center;
+			color: black;
+		}
+		
+		.podo-user-card {
 			/*border: 1px solid; */
 			padding-top: 40px;
 			display: inline-block;
 			width: 241px;
 			height: 400px;
 			text-align: center;
-			}
-			#profile{object-fit: cover;}
-			.t:hover, .image_cover:hover{cursor:pointer;}
+		}
+		
+		.t:hover, .image_cover:hover {
+			cursor: pointer;
+		}
 	</style>
 </head>
 <body>
@@ -119,11 +70,11 @@
 					<div class="col-md-2 px-4 d-flex align-items-end flex-column">
 						<c:if test="${ not empty likeUser }">
 	           	<button class='btn btn-danger likeBtn'>LIKED</button>
-	           	<input type="hidden" class="likeInp" value="1"/>
+	           	<input type="hidden" class="likeInp" value="0"/>
            </c:if>
            <c:if test="${ empty likeUser }">
               <button class='btn btn-secondary likeBtn'>LIKE</button>
-              <input type="hidden" class="likeInp" value="0"/>
+              <input type="hidden" class="likeInp" value="1"/>
            </c:if>
 					</div>
 			</div>
@@ -595,56 +546,39 @@
   
 
 	<script>
-		// 탭메뉴 관련 
-		
 		$(function() {
-			//var likeUser = $(".likeInp").val();
-			//console.log("처음인풋 : " + likeUser);
-			
 			$(".likeBtn").on("click", function(){
 				var targetId = '${ userPageMem.id }';
 				var userId = '${ loginUser.id }';
-				var likeInp = $(".likeInp").val();
-				var status = "${likeUser}";
+				var flag = $(".likeInp").val();
+				// var status = "${likeUser}";
 				
-				//console.log("버튼클릭시 : " + likeInp);
-				
-				if (likeInp == '0') {
-					status = "like";
-				} else if (likeInp == '1') {
-					status = "nonlike";
-				}
 				//console.log(status);
 				$.ajax({
-					url : "likeClick.do",
+					url : "likeMember.do",
 					data : {
 						userId : userId,
 						targetId : targetId,
-						status : status
+						flag : flag
 					},
 					type : "post",
 					success : function(data) {
 						//console.log(data);
-						if (status == "like") { // 좋아요클릭시
-							if (data == 1) {
-								$(".likeBtn").removeClass("btn-danger");
+						if (data == 1) {
+							if (flag == "1") { // 좋아요
 								$(".likeBtn").removeClass("btn-secondary");
 								$(".likeBtn").addClass("btn-danger");
 								$(".likeBtn").text('LIKED');
-								$(".likeInp").val('1');
-							} else {
-								alert("좋아요 실패");
-							}
-						} else if (status == "nonlike") { // 좋아요 취소
-							if (data == 1) {
+								$(".likeInp").val('0');
+							} else if (flag == "0") { // 좋아요 취소
 								$(".likeBtn").removeClass("btn-danger");
-								$(".likeBtn").removeClass("btn-secondary");
 								$(".likeBtn").addClass("btn-secondary");
 								$(".likeBtn").text('LIKE');
-								$(".likeInp").val('0');
-							} else {
-								alert("좋아요 실패");
+								$(".likeInp").val('1');
 							}
+						}
+						else {
+							alert("좋아요 실패");
 						}
 						//console.log("에이작스 후 : " + likeInp);
 
@@ -655,23 +589,21 @@
 				});
 			});
 
-			$(".container>.row>ul>li")
-					.on(
-							"click",
-							function() {
-								var activeTab = $(this).attr('data-tab');
-								var tabMenu = $(this).text();
+			$(".container>.row>ul>li").on("click", function() {
+				var activeTab = $(this).attr('data-tab');
+				var tabMenu = $(this).text();
 
-								if (tabMenu == "리뷰") {
-									location.href = "userPageSelectReview.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab=" + activeTab;
-								} else if (tabMenu == "좋아한 영화") {
-									location.href = "userPageSelectLikeFilm.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab=" + activeTab;
-								} else if (tabMenu == "좋아한 리뷰") {
-									location.href = "userPageSelectLikeReview.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab=" + activeTab;
-								} else if (tabMenu == "좋아한 회원") {
-									location.href = "userPageSelectLikeUser.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab=" + activeTab;
-								}
-							});
+				if (tabMenu == "리뷰") {
+					location.href = "userPageSelectReview.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab=" + activeTab;
+				} else if (tabMenu == "좋아한 영화") {
+					location.href = "userPageSelectLikeFilm.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab=" + activeTab;
+				} else if (tabMenu == "좋아한 리뷰") {
+					location.href = "userPageSelectLikeReview.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab=" + activeTab;
+				} else if (tabMenu == "좋아한 회원") {
+					location.href = "userPageSelectLikeUser.do?loginUserId=${loginUser.id}&id=${userPageMem.id}&tab=" + activeTab;
+				}
+			});
+			
 			if ('${tab}' != '') {
 				var tab = '${tab}';
 				$('ul.tab li').removeClass('current');

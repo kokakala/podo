@@ -2,7 +2,8 @@
 <html>
 <head>
 	
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+	<title>포도포도</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <meta name="description" content="">
@@ -15,7 +16,5 @@
   <link href="resources/asterisk/vendors/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="resources/asterisk/vendors/datatables/dataTables.bootstrap4.css" rel="stylesheet">
   <link href="resources/asterisk/css/sb-admin.css" rel="stylesheet">
-
-	<title>포도포도</title>
 </head>
 </html>

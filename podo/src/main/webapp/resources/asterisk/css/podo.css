@@ -19,7 +19,8 @@
 	.podo-ad-banner>div {
 		font-size: 12px!important;
 	}
-	.board-page-banner>.title {
+	.board-page-banner>.title,
+	.review-page-banner>.title {
 		font-size: 30px!important;
 	}
 }
@@ -60,8 +61,8 @@
 
 .film-page-banner {
 	position: relative;
-   background: url(../img/banner/film-page-banner.jpg) center no-repeat;
-   background-size: cover;
+  background: url(../img/banner/film-page-banner.jpg) center no-repeat;
+  background-size: cover;
 }
 
 .review-page-banner {
@@ -557,7 +558,8 @@ button.button {
 .nickguide,
 .originguide,
 .faq-q+.contents,
-#mdfPosterBtn {
+#mdfPosterBtn,
+#imgInp {
 	display: none;
 }
 
@@ -707,4 +709,9 @@ ul.tab li.current {
 
 .tabcontent.current {
 	display: block;
+}
+
+#profile {
+	object-fit: cover;
+	cursor: pointer;
 }

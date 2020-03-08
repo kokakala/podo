@@ -27,7 +27,7 @@ hs_err_pid*
 ## ignoring target file
 target/
 
-# eclipse
+### Eclipse ###
 .project
 .classpath
 factoryConfiguration.json
@@ -37,9 +37,20 @@ factoryConfiguration.json
 *.ucls
 bin/
 
-# environments
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### VS Code ###
+.vscode/
+
+### Environments ###
 jspwork/
 Servers/
 apache-maven-3.6.3/
 properties/
-.properties
