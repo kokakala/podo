@@ -43,39 +43,19 @@ public class MemberController {
 	private LikeService likeService;
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
-	
-	// @CookieValue(value="storeIdCookie", required = false) Cookie storeIdCookie
+
 	@RequestMapping("login.do")
-	public String loginMember(Member member, HttpSession session, ModelAndView mv, HttpServletResponse response, HttpServletRequest request,
-//																@RequestParam("rememberMe") String rememberMe) {
-																	@RequestParam(defaultValue = "false") boolean rememberMe) {
-		log.info("rememberMe : {}", rememberMe);
+	public String loginMember(Member member, HttpSession session, ModelAndView mv,
+														HttpServletResponse response, HttpServletRequest request) {
 		Member loginUser = memberService.selectLoginMember(member);
-		
 		if (loginUser != null && bcryptPasswordEncoder.matches(member.getPassword(), loginUser.getPassword())) {
-			if (rememberMe) {
-				Cookie storeEmailCookie = new Cookie("email", member.getEmail());
-				Cookie storePwdCookie = new Cookie("pwd", member.getPassword());
-				storeEmailCookie.setMaxAge(60 * 60 * 24 * 7);
-        storePwdCookie.setMaxAge(60 * 60 * 24 * 7);
-        response.addCookie(storeEmailCookie);
-        response.addCookie(storePwdCookie);
-			} else {
-				Cookie[] cookies = request.getCookies();
-				for (int i = 0; i < cookies.length; i++) {
-					if (cookies[i].getName().equals("email") || cookies[i].getName().equals("pwd")) {
-						cookies[i].setMaxAge(0);
-						response.addCookie(cookies[i]);
-					}
-				}
-			}
 			session.setAttribute("loginUser", loginUser);
 		} else {
 			session.setAttribute("msg", "아이디와 비밀번호를 확인해주세요!");
 		}
 		return "redirect:" + request.getHeader("Referer");
 	}
-	
+
 	@RequestMapping("logout.do")
 	public String logout(HttpSession session) {
 		session.invalidate();

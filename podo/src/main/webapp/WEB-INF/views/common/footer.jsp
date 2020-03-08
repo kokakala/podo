@@ -9,7 +9,7 @@
 		<script src="resources/asterisk/js/jquery.ajaxchimp.min.js"></script>
 		<script src="resources/asterisk/js/mail-script.js"></script>
 		<script src="resources/asterisk/js/main.js"></script>
-		<script src="resources/asterisk/js/podo.js"></script>
+		<script src="resources/asterisk/js/comment.js"></script>
 	</head>
 <body>
 

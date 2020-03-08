@@ -82,14 +82,6 @@
 								<label for="pwd"><spring:message code="label.password" /></label>
 								<input type="password" class="form-control" name="password" id="pwd" placeholder="Password">
 							</div>
-							<div class="form-group">
-								<div class="form-check">
-									<input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
-									<label class="form-check-label" for="rememberMe">
-								  		<spring:message code="label.remember.me" />
-									</label>
-								</div>
-							</div>
 							<div class="modal-footer">
 								<button type="button" class="button" data-dismiss="modal"><spring:message code="button.cancel" /></button>
 								<button type="submit" id="btn-sign-in" class="button"><spring:message code="nav.menu.login" /></button>
@@ -110,44 +102,12 @@
 			});
 		
 			$(function(){
-			    if (getCookie("email")) {
-			       var email = getCookie("email").split(";")
-			       $("#email").val(email[0]);
-				}
-			    
-			    if (getCookie("pwd")) {
-			    	var pwd = getCookie("pwd").split(";")
-					$("#pwd").val(pwd[0]);
-				}  
-			    
-			    if ($("#email").val() != "" && $("#pwd").val() != ""){
-			        $("#rememberMe").attr("checked", true);
-			    }
-			});
-		 	
-			function getCookie(cookieName) {
-				cookieName = cookieName + '=';
-				var cookieData = document.cookie;
-				var start = cookieData.indexOf(cookieName);
-				var cookieValue = '';
-				if (start != -1) {
-					start += cookieName.length;
-					var end = cookieData.indexOf(';', start);
-					if (end == -1)
-						end = cookieData.length;
-					cookieValue = cookieData.substring(start, end);
-				}
-				return unescape(cookieValue);
-			}
-			
-			$(function(){
 				var msg = '${msg}';
 				if (msg != '') {
 					alert(msg);
 					<% session.removeAttribute("msg"); %>
 				}
 			});
-			
 		</script>
 	</body>
 </html>
