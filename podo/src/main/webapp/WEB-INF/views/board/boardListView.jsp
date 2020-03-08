@@ -11,7 +11,7 @@
 		</style>
 	</head>
 	<body>
-	
+    <!--================Hero Banner start =================-->
 		<section class="mb-30px">
 			<div class="container">
 				<div class="board-page-banner">
@@ -20,9 +20,22 @@
 				</div>
 			</div>
 		</section>
+    <!--================Hero Banner end =================-->
+		
+    <!--================ Advertisement start =================-->
+    <c:if test="${ (empty loginUser) or (loginUser.premium eq 'N')}">
+	    <div class="container" style="background-color: black; background-clip: content-box; margin-bottom: 30px;">
+	    	<div class="podo-ad-banner" onclick="location.href='premium.do'">
+	    		<div>
+		      	<spring:message code="placeholder.advertisement" />
+	    		</div>
+	    	</div>
+	    </div>
+    </c:if>
+    <!--================Advertisement end =================-->
 		
 		<div class="container">
-			<table class="table table-hover table-striped table-dark my-5 board-table">
+			<table class="table table-hover table-striped table-dark board-table">
 				<thead>
 				<tr>
 			      <th scope="col">#</th>

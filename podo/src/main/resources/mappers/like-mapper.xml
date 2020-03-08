@@ -95,9 +95,9 @@
 	
 	<delete id="deleteLikeMem">
 		delete from tb_like
-		where user_id = #{userId} and
-			  target_id = #{targetId} and
-			  type=2
+		where user_id = #{userId}
+			and target_id = #{targetId}
+			and type = 2
 	</delete>
 	
 	<select id="myPageLikeFilmListCount" resultType="_int">
@@ -121,8 +121,8 @@
 	<select id="myPageLikeUserListCount" resultType="_int">
 		select count(*)
 		from tb_like
-		where user_id=#{id} and
-			  type=2
+		where user_id = #{id}
+			and type=2
 	</select>
 	
 	<select id="myPageSelectLikeUser" resultMap="likeUserResultSet">
@@ -136,8 +136,8 @@
 	<select id="myPageLikeReviewListCount" resultType="_int">
 		select count(*)
 		from tb_like
-		where user_id=#{id} and
-			  type=3
+		where user_id=#{id}
+			and type=3
 	</select>
 	
 	<select id="myPageSelectLikeReview" resultMap="likeReviewResultSet">
@@ -162,7 +162,7 @@
 		delete from tb_like
 		where user_id = #{userId}
 		  and target_id = #{targetId}
-		  and type=3
+		  and type = 3
 	</delete>
 	
 	

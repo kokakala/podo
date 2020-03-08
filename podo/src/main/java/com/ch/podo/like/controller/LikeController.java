@@ -29,19 +29,41 @@ public class LikeController {
 	private LikeService likeService;
 	
 	@ResponseBody
-	@RequestMapping("likeClick.do")
-	public int likeClick(Like like, String status) {
-		
-		log.info("user like : {}", like);
+	@RequestMapping("likeMember.do")
+	public int likeMember(Like like, String flag) {
+		log.info("like member : {}", like);
 		int result = 0;
 		
-		if (status.equals("like")) {
+		if (Integer.parseInt(flag) > 0) {
+			log.info("like member insert 실행");
 			result = likeService.insertLikeMem(like);
 		} else {
+			log.info("like member insert 실행");
 			result = likeService.deleteLikeMem(like);
 		}
 		
 		return result;
+	}
+
+	// 리뷰 좋아요
+	@ResponseBody
+	@RequestMapping("likeReview.do")
+	public void likeReview(Like like, String flag, HttpServletResponse response)
+			throws JsonIOException, IOException {
+		int result = 0;
+		log.info("like review : {}", like);
+
+		if (Integer.parseInt(flag) > 0) {
+			log.info("like review insert 실행");
+			result = likeService.insertLikeReview(like);
+		} else {
+			log.info("like review insert 실행");
+			result = likeService.deleteLikeReview(like);
+		}
+		log.info("result : {}", result);
+		
+		Gson gson = new Gson();
+		gson.toJson(result, response.getWriter());
 	}
 
 	@RequestMapping("myPageSelectLikeFilm.do")
@@ -147,25 +169,6 @@ public class LikeController {
 			.addObject("tab", tab)
 			.setViewName("member/userPage");
 		return mv;
-	}
-
-	// 리뷰 좋아요
-	@ResponseBody
-	@RequestMapping("likeReviewClick.do")
-	public void likeReviewClick(Like like, String status, HttpServletResponse response)
-			throws JsonIOException, IOException {
-
-		int result = 0;
-		log.info("like : {}", like);
-
-		if (status.equals("like")) {
-			result = likeService.insertLikeReview(like);
-		} else {
-			result = likeService.deleteLikeReview(like);
-		}
-		
-		Gson gson = new Gson();
-		gson.toJson(result, response.getWriter());
 	}
 
 }

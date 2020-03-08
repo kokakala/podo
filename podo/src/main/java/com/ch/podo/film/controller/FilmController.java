@@ -36,8 +36,6 @@ import com.ch.podo.like.model.vo.Like;
 import com.ch.podo.member.model.vo.Member;
 import com.ch.podo.ratingFilm.model.service.RatingFilmService;
 import com.ch.podo.ratingFilm.model.vo.RatingFilm;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -276,7 +274,7 @@ public class FilmController {
 	 * 영화 페이지에서 좋아요 서비스
 	 * @param response
 	 * @param session
-	 * @param fid
+	 * @param targetId
 	 * @param flag
 	 * @throws JsonIOException
 	 * @throws IOException
@@ -285,24 +283,24 @@ public class FilmController {
 	@ResponseBody
 	@RequestMapping("likeFilm.do")
 	public int likeFilm(HttpServletResponse response, HttpSession session,
-											 String fid, @RequestParam("flag") int flag)
+											 String targetId, @RequestParam("flag") int flag)
 			throws JsonIOException, IOException {
 		Member loginUser = (Member)session.getAttribute("loginUser");
-		 log.info("loginUser : {}", loginUser);
+		log.info("loginUser : {}", loginUser);
 		
 		if (loginUser == null) {
 			return 0;
 		}
-		
+		log.info("flag : {}", flag);
 		Like like = new Like();
-		like.setTargetId(Integer.parseInt(fid));
+		like.setTargetId(Integer.parseInt(targetId));
 		like.setUserId(loginUser.getId());
 		
 		if (flag > 0) {
-			 log.info("like insert 실행");
+			log.info("like film insert 실행");
 			return likeService.insertLikeFilm(like);
 		} else {
-			 log.info("like delete 실행");
+			log.info("like film delete 실행");
 			return likeService.deleteLikeFilm(like);
 		}
 		

@@ -5,45 +5,6 @@
 <html>
 	<head>
 		<jsp:include page="../common/header.jsp"/>
-		<style>
-				/* --------------------- Tab Menu ---------------------  */
-				#container {
-					/* width:800px; */
-					margin:0 auto;
-					/* text-align:center */;
-				}
-				.tab {
-					list-style: none;
-					margin: 0;
-					padding: 0;
-					overflow: hidden;
-				}
-				/* Style the links inside the list items */
-				.tab li a {
-					display: inline-block;
-					color: #000;
-					text-align: center;
-					text-decoration: none;
-					padding: 14px 16px;
-					font-size: 18px;
-					transition: 0.3s;
-					cursor: pointer;
-				}
-				/* Style the tab content */
-				.tabcontent {
-					display: none;
-					/* background-color:rgb(230, 204, 255); */
-					padding: 6px 12px;
-					color:#fff;
-				}
-				ul.tab li.current{
-					/* background-color: rgb(230, 204, 255); */
-					color: rgb(230, 204, 255);
-				}
-				.tabcontent.current {
-					display: block;
-				}
-		</style>
 	</head>
 <body>
 	<c:if test="${ empty loginUser}">
@@ -91,9 +52,8 @@
 			</div>
 			
 				<div id="container">
-			
 						<!-- -------------------- Review --------------------------->
-						<div id="tab1" class="tabcontent current"><br>
+						<div id="tab1" class="tabcontent current">
 							<c:if test="${ !empty review }">
 							<!-------------------------- Review Tab Menu Body------------------------>
 							<section class="blog-post-area section-margin mt-4">
@@ -193,16 +153,15 @@
 							</section>
 							</c:if>
 							<c:if test="${ empty review }">
-								<div style="text-align: center;">
+								<div class="my-5">
 									<h3> 작성한 리뷰가 없습니다.</h3>
-									<br>
 								</div>
 							</c:if>
 						</div>
 						<!-- -------------------- review end -------------------------->
 					
 						<!-- -------------------- like-film ----------------------->
-						<div id="tab2" class="tabcontent"><br>
+						<div id="tab2" class="tabcontent">
 							<div class="container">
 								<c:if test="${ !empty likeFilmList }">
 									<div class="row">
@@ -226,8 +185,9 @@
 												<div class="row" style="margin-top: 10px;">
 													<div class="col">
                              	<button class='btn btn-danger likeBtn'>LIKED</button>
-                             	<input type="hidden" class="likeInp" value="1"/>
-                             	<input type="hidden" class="targetInp" value="${ likeFilm.targetId }"/>
+                             	<input type="hidden" class="likeFlag" value="0"/>
+                             	<input type="hidden" class="targetType" value="1"/>
+                             	<input type="hidden" class="targetId" value="${ likeFilm.targetId }"/>
 													</div>
 												</div>
 												<br>
@@ -312,9 +272,8 @@
 								</c:if>
 								<!-------------------------- 페이징바 끝 -------------------------->
 								<c:if test="${ FilmlistCount eq 0 }">
-									<div style="text-align: center;">
+									<div class="my-5">
 										<h3> 좋아한 영화가 없습니다.</h3>
-										<br>
 									</div>
 								</c:if>
 							</div>
@@ -322,7 +281,7 @@
 						<!-- -------------------- like-film end--------------------->
 						
 						<!--------------------- like-review start --------------------->
-						<div id="tab3" class="tabcontent"><br>
+						<div id="tab3" class="tabcontent">
 							<c:if test="${ !empty likeReviewList }">
 								<section class="blog-post-area section-margin mt-4">
 									<div class="container">
@@ -337,8 +296,9 @@
 												</div>
 												<div class="col-md-8">
 													<button class='btn btn-danger likeBtn'>LIKED</button>
-                            	<input type="hidden" class="likeInp" value="1"/>
-                            	<input type="hidden" class="targetInp" value="${ list.targetId }"/><br><br>
+                            	<input type="hidden" class="likeFlag" value="0"/>
+                             	<input type="hidden" class="targetType" value="3"/>
+                            	<input type="hidden" class="targetId" value="${ list.targetId }"/><br><br>
 													<a href="reviewDetail.do?id=${ list.targetId }">${list.titleKor}<br></a>
 													<p>${ list.content }</p>
 												</div>
@@ -424,9 +384,8 @@
 								</section>
 							</c:if>
 							<c:if test="${ empty likeReviewList }">
-								<div style="text-align: center;">
+								<div class="my-5">
 									<h3> 좋아한 리뷰가 없습니다.</h3>
-									<br>
 								</div>
 							</c:if>
 						</div>
@@ -434,7 +393,7 @@
 						<!--------------------- 라이크_리뷰 끝 ---------------------->
 						
 		   	    <!--------------------- 라이크_유저 시작 --------------------->
-						<div id="tab4" class="tabcontent"><br>
+						<div id="tab4" class="tabcontent">
 							<div class="container">
 								<c:if test="${ !empty likeUserList }">
 									<div class="row">
@@ -458,8 +417,9 @@
 												<div class="row" style="margin-top: 10px;">
 													<div class="col">
                              	<button class='btn btn-danger likeBtn'>LIKED</button>
-                             	<input type="hidden" class="likeInp" value="1"/>
-                             	<input type="hidden" class="targetInp" value="${ likeUserList.targetId }"/>
+                             	<input type="hidden" class="likeFlag" value="0"/>
+                             	<input type="hidden" class="targetType" value="2"/>
+                             	<input type="hidden" class="targetId" value="${ likeUserList.targetId }"/>
 													</div>
 												</div>
 											</div>
@@ -543,9 +503,8 @@
 								</c:if>
 								<!-------------------------- 페이징바 끝 -------------------------->
 									<c:if test="${ UserlistCount eq 0 }">
-									<div style="text-align: center;">
-										<h3> 좋아요 한 회원이 없습니다.</h3>
-										<br>
+									<div class="my-5">
+										<h3>좋아요 한 회원이 없습니다.</h3>
 									</div>
 								</c:if>
 							</div>
@@ -553,17 +512,18 @@
 						<!---------------------- 라이크_유저 끝 --------------------->
 						
 						<!-------------------------- 문의 시작 --------------------->
-						<c:if test="${ empty inquiry  }">
-							<div id="tab5" class="tabcontent"><br>
-								<div style="text-align: center;">
-									<h3> 문의한 내용이 없습니다.</h3>
+						<div id="tab5" class="tabcontent">
+							<div class="container">
+							<c:if test="${ empty inquiry  }">
+								<div class="my-5">
+									<h3>문의한 내용이 없습니다.</h3>
 								</div>
-								<button class="button" onclick="bye();">회원탈퇴</button>
-							</div>
-						</c:if>
+								<div class="d-flex justify-content-center">
+									<button class="button" onclick="bye();">회원탈퇴</button>
+								</div>
+							</c:if>
 						
-						<c:if test="${ not empty inquiry }">
-							<div id="tab5" class="tabcontent">
+							<c:if test="${ not empty inquiry }">
 								<table class="table table-striped table-dark">
 									<tr>
 										<th>#</th>
@@ -661,13 +621,13 @@
 										</nav>
 									</div>
 									<!-------------------------- 페이징바 끝 -------------------------->
-							</div>
-							<button class="button" onclick="bye();">회원탈퇴</button>
-						</c:if>
-					<!-------------------------- 문의 끝 ----------------------->
-				</div>
-				<!-------------------------- 탭 메뉴 끝 ------------------------>
-	</section>
+								<button class="button" onclick="bye();">회원탈퇴</button>
+							</c:if>
+						</div>
+						<!-------------------------- 문의 끝 ----------------------->
+					</div>
+					<!-------------------------- 탭 메뉴 끝 ------------------------>
+				</section>
   
 	<!-- 정보수정 모달 -->
 	<hr style="margin: 0;">
@@ -856,55 +816,57 @@
 	
 		$(function() {
 			var likeUser = $(".likeInp").val();
-			// console.log("처음인풋 : " + likeUser);
 			
 			$(".likeBtn").on("click", function(){
-				var targetId = $(".targetInp").val();
+				var $this = $(this);
+				console.log($this);
+				
 				var userId = "${loginUser.id}";
-				var likeInp = $(".likeInp").val();
-				var status = "";
+				var targetType = $this.parent().find(".targetType").val();
+				var targetId = $this.parent().find(".targetId").val();
+				var flag = $this.parent().find(".likeFlag").val();
+				console.log(targetType);
+				console.log(targetId);
+				console.log(flag);
 				
-				// console.log("버튼클릭시 라이크인풋: " + likeInp);
-				// console.log("버튼클릭시 타켓인풋 : " + targetId);
-				
-				if (likeInp == '0') {
-					status = "like";
-				} else if (likeInp == '1') {
-					status = "nonlike";
+				var likeUrl = "";
+				switch (targetType) {
+				case "1":
+					likeUrl = "likeFilm.do"; break;
+				case "2":
+					likeUrl = "likeMember.do"; break;
+				case "3":
+					likeUrl = "likeReview.do"; break;
 				}
-				// console.log(status);
+				
 				$.ajax({
-					url:"likeClick.do",
-					data:{userId:userId,
-							  targetId:targetId,
-							  status:status},
-					type:"post",
-					success:function(data){
+					url: likeUrl,
+					data: {
+						userId: userId,
+					  targetId: targetId,
+					  flag: flag
+				  },
+					type: "post",
+					success: function(data){
 						// console.log(data);
-						if (status == "like"){ // 좋아요클릭시
-							if (data == 1) {
-								$(".likeBtn").removeClass("btn-danger");
-								$(".likeBtn").removeClass("btn-secondary");
-								$(".likeBtn").addClass("btn-danger");
-								$(".likeBtn").text('LIKED');
-								$(".likeInp").val('1');
-							} else {
-								alert("좋아요 실패");
-							}
-						} else if (status == "nonlike") { // 좋아요 취소
-							if (data == 1) {
-								$(".likeBtn").removeClass("btn-danger");
-								$(".likeBtn").removeClass("btn-secondary");
-								$(".likeBtn").addClass("btn-secondary");
-								$(".likeBtn").text('LIKE');
-								$(".likeInp").val('0');
-							} else {
-								alert("좋아요 실패");
+						if (data != 1) {
+							alert("좋아요 실패");
+						} else {
+							if (flag == "1"){ // 좋아요
+								$this.removeClass("btn-secondary");
+								$this.addClass("btn-danger");
+								$this.text('LIKED');
+								$this.parent().find(".likeFlag").val('0');
+							} else if (flag == "0") { // 좋아요 취소
+								$this.removeClass("btn-danger");
+								$this.addClass("btn-secondary");
+								$this.text('LIKE');
+								$this.parent().find(".likeFlag").val('1');
 							}
 						}
-						// console.log("에이작스 후 : " + likeInp);
-					},error:function(){
-						// console.log("라이크 ajax 통신 실패");
+					},
+					error: function(){
+						console.error('ajax error');
 					}
 				});
 			});

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -6,8 +7,8 @@
 	</head>
 	<body>
 		<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-			<h1>유료 회원 가입</h1>
-			<p class="lead">단돈 1,100원으로 광고없이 포도를 이용해보세요!</p>
+			<h1><spring:message code="label.pricing.plan"/></h1>
+			<p class="lead"><spring:message code="placeholder.advertisement2"/></p>
 		</div>
 	
 		<div class="container">
@@ -15,38 +16,39 @@
 			
 				<div class="card premium-card shadow-sm">
 					<div class="card-header">
-						<h4 class="my-0 font-weight-normal">무료 회원</h4>
+						<h4 class="my-0 font-weight-normal"><spring:message code="label.user.free"/></h4>
 					</div>
 					<div class="card-body">
 						<h1 class="card-title pricing-card-title">
-							&#8361;0<!--  <small class="text-muted">/ 월</small> -->
+							<spring:message code="label.pay.free"/><small class="text-muted"><spring:message code="label.pay.per"/></small>
 						</h1>
 						<hr>
 						<ul class="list-unstyled mt-3 mb-4">
-							<li>무료 가입</li>
-							<li>무제한 이용</li>
+							<li><spring:message code="label.free.signup"/></li>
+							<li><spring:message code="label.unlimited.access"/></li>
 						</ul>
 						<button type="button" class="btn btn-lg btn-block btn-primary" onclick="freeJoin();">
-							가입하기
+							<spring:message code="button.signup"/>
 						</button>
 					</div>
 				</div>
 				
 				<div class="card premium-card shadow-sm">
 					<div class="card-header">
-						<h4 class="my-0 font-weight-normal">유료 회원</h4>
+						<h4 class="my-0 font-weight-normal"><spring:message code="label.user.membership"/></h4>
 					</div>
 					<div class="card-body">
 						<h1 class="card-title pricing-card-title">
-							&#8361;1,100<!--  <small class="text-muted">/ 월</small> -->
+<!-- 							&#8361;1,100<small>/ 월</small> -->
+							<spring:message code="label.pay.currency"/><small class="text-muted"><spring:message code="label.pay.per"/></small>
 						</h1>
 						<hr>
 						<ul class="list-unstyled mt-3 mb-4">
-							<li>광고 제거</li>
-							<li>무제한 이용</li>
+							<li><spring:message code="label.remove.adv"/></li>
+							<li><spring:message code="label.unlimited.access"/></li>
 						</ul>
 						<button type="button" class="btn btn-lg btn-block btn-primary" onclick="pay();">
-							구독하기
+							<spring:message code="button.subscribe"/>
 						</button>
 					</div>
 				</div>

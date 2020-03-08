@@ -87,12 +87,7 @@ public class LikeDao {
 	}
 
 	public int deleteLikeReview(Like like) {
-		return sqlSession.insert("likeMapper.deleteLikeReview", like);
+		return sqlSession.delete("likeMapper.deleteLikeReview", like);
 	}
-
-	/*
-	public int updateLikeCount(Like like) {
-		return sqlSession.update("reviewMapper.updateLikeCount", like);
-	}*/
 
 }

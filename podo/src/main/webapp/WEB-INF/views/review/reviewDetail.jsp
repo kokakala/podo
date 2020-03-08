@@ -61,11 +61,11 @@
 				<div class="btn-group mx-auto">
 					<c:if test="${ not empty likeReivew }">
 						<button class='button likeReviewBtn'><spring:message code="tooltip.liked"/></button>
-						<input type="hidden" class="likeInp" value="1" />
+						<input type="hidden" class="likeInp" value="0" />
 					</c:if>
 					<c:if test="${ empty likeReivew }">
 						<button class='button likeReviewBtn'><spring:message code="tooltip.like"/></button>
-						<input type="hidden" class="likeInp" value="0" />
+						<input type="hidden" class="likeInp" value="1" />
 					</c:if>
 					<a class="button declaration-modal btn-reply" href="#" data-toggle="modal"><spring:message code="button.report"/></a>
 					<c:if test="${loginUser.id eq r.memberId }">
@@ -213,46 +213,32 @@
 					const loginMemberId = "${loginUser.id}";
 					var targetId = "${ r.id }";
 					var likeInp = $(".likeInp").val();
-					var status = "";
-					
+
 					if (loginMemberId == '') alert('로그인 후 이용바랍니다.');
 					
-					if (likeInp == '0') {
-						status = "like";
-					} else if (likeInp == '1') {
-						status = "nonlike";
-					}
-					
 					$.ajax({
-							url: "likeReviewClick.do",
+							url: "likeReview.do",
 							data: {
 								userId : loginMemberId,
 								targetId : targetId,
-								status : status
+								flag : likeInp
 							},
 							type: "post",
 							success: function(data) {
-								
-							if (status == "like") { // 좋아요
-								if (data == 1) {
+							if (data > 0) {
+								if (likeInp == "0") { // 좋아요 취소
 									$(".likeReviewBtn").removeClass("btn-danger");
+									$(".likeReviewBtn").addClass("btn-secondary");
+									$(".likeReviewBtn").text('좋아요');
+									$(".likeInp").val('1');
+								} else if (likeInp == "1") { // 좋아요
 									$(".likeReviewBtn").removeClass("btn-secondary");
 									$(".likeReviewBtn").addClass("btn-danger");
-									$(".likeReviewBtn").text('LIKED');
-									$(".likeInp").val('1');
-								} else {
-									alert("좋아요 실패");
-								}
-							} else if (status == "nonlike") { // 좋아요 취소
-								if (data > 0) {
-									$(".likeReviewBtn").removeClass("btn-danger");
-									$(".likeReviewBtn").removeClass("btn-secondary");
-									$(".likeReviewBtn").addClass("btn-secondary");
-									$(".likeReviewBtn").text('LIKE');
+									$(".likeReviewBtn").text('좋아요 취소');
 									$(".likeInp").val('0');
-								} else {
-									alert("좋아요 취소 실패");
 								}
+							} else {
+								alert("좋아요 실패");
 							}
 						},
 						error : function() {

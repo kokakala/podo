@@ -330,10 +330,10 @@
 			/* 좋아요 AJAX */
 			$(document).on("click", ".btn-like-film, .btn-liked-film", function() {
 				// 영화 ID 찾기
-				// var fid = $(this).closest("tr").find("td").eq(1).text();
-				var fid = $(this).closest(".row").siblings("input[type=hidden]").val();
+				// var targetId = $(this).closest("tr").find("td").eq(1).text();
+				var targetId = $(this).closest(".row").siblings("input[type=hidden]").val();
 				var $this = $(this)[0];
-				// console.log(fid);
+				// console.log(targetId);
 	
 				// flag
 				if ($($this).hasClass("btn-like-film")) {
@@ -345,7 +345,7 @@
 				$.ajax({
 					url : "likeFilm.do",
 					data : {
-						"fid" : fid,
+						"targetId" : targetId,
 						"flag" : likeFlag
 					},
 					type : "post",

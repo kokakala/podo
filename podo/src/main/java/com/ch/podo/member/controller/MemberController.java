@@ -164,32 +164,36 @@ public class MemberController {
 	@RequestMapping("updateMember.do")
 	public String updateMember(Member mem, HttpSession session, ModelAndView mv, HttpServletRequest request,
 			@RequestParam(value = "uploadFile", required = false) MultipartFile file) {
-
+		log.info("file : {}", file);
 		// 정보수정만 한 경우
-		if (mem.getNewPassword().equals("")) {
-
+		if (mem.getNewPassword() == null || mem.getNewPassword().equals("")) {
+			
 			if (!file.getOriginalFilename().equals("")) {
+				log.info("file is not null");
 				String renameFileName = PodoRenamePolicy.rename(file, request, "/memberProfileImage");
+				log.info("renameFilName : {}", renameFileName);
 				mem.setImage(renameFileName);
 			} else {
 				mem.setImage(mem.getImage());
 			}
-
-			// 비밀번호만 변경 한 경우
+			
+			// 비밀번호만 변경할 경우
 		} else { // 패스워드 변경을 하면 암호화 된 패스워드를 Password에 대입
 			String encPassword = bcryptPasswordEncoder.encode(mem.getNewPassword());
 			mem.setPassword(encPassword);
 		} // 정보수정만 한 경우 updatePwd는 null
 
+		
+		log.info("mem : {}", mem);
 		int result = memberService.updateMember(mem);
 		mem.setStatus("Y");
 
 		if (result > 0) { // 업데이트 성공
 			session.setAttribute("loginUser", mem);
-			session.setAttribute("msg", "비밀번호 변경 성공");
+			session.setAttribute("msg", "성공적으로 변경되었습니다.");
 			return "redirect:mypage.do?id=" + mem.getId();
 		} else {
-			session.setAttribute("msg", "비밀번호 변경 실패");
+			session.setAttribute("msg", "변경하는 데 실패하였습니다. 관리자에게 문의해주세요.");
 			return "member/mypage";
 		}
 	}

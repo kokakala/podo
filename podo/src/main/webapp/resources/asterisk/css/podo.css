@@ -1,6 +1,7 @@
 @media (min-width: 768px) {
 	.main-banner,
 	.film-page-banner,
+	.review-page-banner,
 	.rec-page-banner,
 	.board-page-banner {
 		height: 600px;
@@ -10,6 +11,7 @@
 @media (max-width: 767px) {
 	.main-banner,
 	.film-page-banner,
+	.review-page-banner,
 	.rec-page-banner,
 	.board-page-banner {
 		height: 400px;
@@ -50,22 +52,27 @@
 
 .main-banner {
 	position: relative;
-	background: url(../img/banner/main-banner.png) center no-repeat;
+	background: url(../img/banner/main-banner.jpg) center no-repeat;
 	background-size: cover;
-	opacity: 0.85;
-	z-index: 1;
+/* 	opacity: 0.85; */
+/*   filter: brightness(0.5); */
 }
 
 .film-page-banner {
 	position: relative;
    background: url(../img/banner/film-page-banner.jpg) center no-repeat;
    background-size: cover;
-   /* filter: brightness(0.5); */
+}
+
+.review-page-banner {
+	position: relative;
+	background: url(../img/banner/review-page-banner.jpg) center no-repeat;
+	background-size: cover;
 }
 
 .rec-page-banner {
 	position: relative;
-	background: url(../img/banner/rec-page-banner.jpg) center no-repeat;
+	background: url(../img/banner/recommend-page-banner.jpg) center no-repeat;
 	background-size: cover;
 }
 
@@ -76,6 +83,7 @@
 }
 
 .film-page-banner span,
+.review-page-banner span,
 .rec-page-banner span,
 .board-page-banner span {
 	margin-left: 50px;
@@ -83,12 +91,14 @@
 }
 
 .film-page-banner .title,
+.review-page-banner .title,
 .rec-page-banner .title,
 .board-page-banner .title {
 	font-size: 40px;
 }
 
 .film-page-banner .content,
+.review-page-banner .content,
 .rec-page-banner .content,
 .board-page-banner .content {
 	font-size: 18px;
@@ -665,4 +675,36 @@ button.button {
 	100% {
 		opacity: 0;
 	}
+}
+
+.tab {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.tab li a {
+	display: inline-block;
+	color: #8f45ad;
+	text-align: center;
+	text-decoration: none;
+	padding: 14px 16px;
+	font-size: 18px;
+	transition: 0.3s;
+	cursor: pointer;
+}
+
+.tabcontent {
+	display: none;
+	padding: 6px 12px;
+	color: #fff;
+}
+
+ul.tab li.current {
+	background-color: #212529;
+}
+
+.tabcontent.current {
+	display: block;
 }

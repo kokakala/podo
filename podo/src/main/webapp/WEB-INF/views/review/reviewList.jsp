@@ -7,6 +7,28 @@
 		<jsp:include page="../common/header.jsp"/>
 	</head>
 	<body>
+    <!--================Hero Banner start =================-->
+		<section class="mb-30px">
+			<div class="container">
+				<div class="review-page-banner">
+					<br>
+					<span class="title"><spring:message code="label.banner.review"/></span>
+				</div>
+			</div>
+		</section>
+    <!--================Hero Banner end =================-->
+		
+    <!--================ Advertisement start =================-->
+    <c:if test="${ (empty loginUser) or (loginUser.premium eq 'N')}">
+	    <div class="container" style="background-color: black; background-clip: content-box; margin-bottom: 30px;">
+	    	<div class="podo-ad-banner" onclick="location.href='premium.do'">
+	    		<div>
+		      	<spring:message code="placeholder.advertisement" />
+	    		</div>
+	    	</div>
+	    </div>
+    </c:if>
+    <!--================Advertisement end =================-->
 		<div class="container my-5">
 		
 			<c:forEach items="${ list }" var="review">
